@@ -28,13 +28,13 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@main
 
       - name: Register tap checkout
-        run: brew tap --custom-remote crimsonknight/agent-crystal "$PWD"
+        run: brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
 
       - name: Audit formula
-        run: brew audit --strict --online crimsonknight/agent-crystal/agent-crystal
+        run: brew audit --strict --online crimson-knight/agent-crystal/agent-crystal
 
       - name: Install formula
-        run: brew install --build-from-source crimsonknight/agent-crystal/agent-crystal
+        run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
 
       - name: Smoke test commands
         run: |

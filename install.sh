@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly AGENT_CRYSTAL_TAP="${AGENT_CRYSTAL_TAP:-crimsonknight/agent-crystal}"
+readonly AGENT_CRYSTAL_TAP="${AGENT_CRYSTAL_TAP:-crimson-knight/agent-crystal}"
 readonly AGENT_CRYSTAL_FORMULA="${AGENT_CRYSTAL_FORMULA:-agent-crystal}"
 readonly AGENT_CRYSTAL_FORMULA_PATH="${AGENT_CRYSTAL_FORMULA_PATH:-}"
 
