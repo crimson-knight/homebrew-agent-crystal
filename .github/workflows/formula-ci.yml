@@ -1,0 +1,49 @@
+name: Formula CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+
+jobs:
+  brew-install:
+    name: "${{ matrix.os }} formula install"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14
+          - ubuntu-24.04
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Register tap checkout
+        run: brew tap --custom-remote crimsonknight/agent-crystal "$PWD"
+
+      - name: Audit formula
+        run: brew audit --strict --online crimsonknight/agent-crystal/agent-crystal
+
+      - name: Install formula
+        run: brew install --build-from-source crimsonknight/agent-crystal/agent-crystal
+
+      - name: Smoke test commands
+        run: |
+          acrystal --version
+          agent-crystal --version
+          test "$(acrystal eval 'puts 40 + 2')" = "42"
+
+      - name: Smoke test installer script
+        run: |
+          brew uninstall --force agent-crystal
+          AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
+          test "$(acrystal eval 'puts 6 * 7')" = "42"
