@@ -1,0 +1,117 @@
+name: Autobump formula
+
+# Watches crimson-knight/crystal for new releases and bumps the formula.
+# The bump commit is only pushed after the new version builds from source
+# and passes smoke tests ON THIS RUNNER — pushes made with GITHUB_TOKEN do
+# not trigger other workflows, so the gate must live here, not in Formula CI.
+#
+# Runs daily; for an immediate bump after cutting a release:
+#   gh workflow run autobump.yml -R crimson-knight/homebrew-agent-crystal
+
+on:
+  schedule:
+    - cron: "17 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autobump
+  cancel-in-progress: false
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+
+jobs:
+  autobump:
+    runs-on: macos-14
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@v4
+
+      - name: Detect new release
+        id: detect
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LATEST=$(gh api repos/crimson-knight/crystal/releases/latest --jq .tag_name)
+          CURRENT=$(sed -n 's/^  version "\(.*\)"$/\1/p' Formula/agent-crystal.rb)
+          echo "latest=${LATEST}" >> "$GITHUB_OUTPUT"
+          echo "current=v${CURRENT}" >> "$GITHUB_OUTPUT"
+          if [ "v${CURRENT}" = "${LATEST}" ]; then
+            echo "Formula already at ${LATEST}; nothing to do."
+            echo "bump=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Bumping ${CURRENT} -> ${LATEST}"
+            echo "bump=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update formula
+        if: steps.detect.outputs.bump == 'true'
+        run: |
+          TAG="${{ steps.detect.outputs.latest }}"
+          VERSION="${TAG#v}"
+          URL="https://github.com/crimson-knight/crystal/archive/refs/tags/${TAG}.tar.gz"
+          curl -fsSL "$URL" -o /tmp/source.tar.gz
+          SHA=$(shasum -a 256 /tmp/source.tar.gz | awk '{print $1}')
+          # Anchored to the formula's own 2-space-indented stanza lines; the
+          # boot resource's url/sha256/version lines are indented deeper and
+          # are not touched.
+          sed -i '' -E \
+            -e "s|^  url \".*\"$|  url \"${URL}\"|" \
+            -e "s|^  version \".*\"$|  version \"${VERSION}\"|" \
+            -e "s|^  sha256 \".*\"$|  sha256 \"${SHA}\"|" \
+            Formula/agent-crystal.rb
+          git diff --stat
+
+      - name: Set up Homebrew
+        if: steps.detect.outputs.bump == 'true'
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Register tap checkout
+        if: steps.detect.outputs.bump == 'true'
+        run: brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+
+      - name: Audit formula
+        if: steps.detect.outputs.bump == 'true'
+        run: brew audit --strict --online crimson-knight/agent-crystal/agent-crystal
+
+      - name: Build from source
+        if: steps.detect.outputs.bump == 'true'
+        run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
+
+      - name: Smoke test
+        if: steps.detect.outputs.bump == 'true'
+        run: |
+          acrystal --version
+          test "$(acrystal eval 'puts 40 + 2')" = "42"
+
+      - name: Incremental staleness regression
+        if: steps.detect.outputs.bump == 'true'
+        run: |
+          # Regression gate for the stale-binary bug fixed in
+          # v1.21.0-incremental-1: a trivial-body edit must land in the
+          # rebuilt binary, and a third rebuild must stay correct.
+          T=$(mktemp -d) && cd "$T" && mkdir src
+          printf 'module M\n  def self.val\n    1\n  end\nend\n' > src/m.cr
+          printf 'require "./src/m"\nputs M.val\n' > main.cr
+          export CRYSTAL_CACHE_DIR="$T/cache"
+          acrystal build --incremental main.cr -o app
+          test "$(./app)" = "1"
+          sed -i '' 's/    1$/    999/' src/m.cr
+          python3 -c "import os,time; s=os.stat('src/m.cr'); os.utime('src/m.cr',(s.st_atime, time.time()+3))"
+          acrystal build --incremental main.cr -o app
+          test "$(./app)" = "999"
+          acrystal build --incremental main.cr -o app
+          test "$(./app)" = "999"
+          echo "incremental regression: OK"
+
+      - name: Commit and push
+        if: steps.detect.outputs.bump == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/agent-crystal.rb
+          git commit -m "agent-crystal ${{ steps.detect.outputs.latest }} (autobump)"
+          git push origin HEAD:main
