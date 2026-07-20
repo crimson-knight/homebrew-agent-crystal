@@ -67,8 +67,15 @@ ensure_brew_shellenv() {
 
 install_formula() {
   if [[ -n "${AGENT_CRYSTAL_FORMULA_PATH}" ]]; then
-    log "Installing local formula at ${AGENT_CRYSTAL_FORMULA_PATH}"
-    brew install --build-from-source "${AGENT_CRYSTAL_FORMULA_PATH}"
+    # Newer Homebrew refuses to install a formula from a bare file path
+    # ("Homebrew requires formulae to be in a tap"), so register the
+    # checkout containing the formula as the tap and install through it.
+    local tap_dir
+    tap_dir="$(cd "$(dirname "${AGENT_CRYSTAL_FORMULA_PATH}")/.." && pwd)"
+    log "Registering ${tap_dir} as tap ${AGENT_CRYSTAL_TAP}"
+    brew tap --custom-remote "${AGENT_CRYSTAL_TAP}" "${tap_dir}" || true
+    log "Installing ${AGENT_CRYSTAL_TAP}/${AGENT_CRYSTAL_FORMULA} from local tap"
+    brew install --build-from-source "${AGENT_CRYSTAL_TAP}/${AGENT_CRYSTAL_FORMULA}"
     return 0
   fi
 
