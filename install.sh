@@ -87,12 +87,14 @@ install_formula() {
 }
 
 verify_install() {
-  command -v acrystal >/dev/null 2>&1 || die "`acrystal` was not installed on PATH"
-  command -v agent-crystal >/dev/null 2>&1 || die "`agent-crystal` was not installed on PATH"
+  local command_name
+  for command_name in crystal-alpha acrystal agent-crystal; do
+    command -v "${command_name}" >/dev/null 2>&1 || die "${command_name} was not installed on PATH"
+  done
 
   log
   log "Installed successfully:"
-  acrystal --version
+  crystal-alpha --version
 }
 
 main() {

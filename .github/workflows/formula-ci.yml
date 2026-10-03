@@ -22,13 +22,16 @@ jobs:
           - ubuntu-24.04
     steps:
       - name: Check out tap
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@main
+        uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # 2026.09.28.1
 
       - name: Register tap checkout
         run: brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+
+      - name: Style check
+        run: brew style crimson-knight/agent-crystal/agent-crystal
 
       - name: Audit formula
         run: brew audit --strict --online crimson-knight/agent-crystal/agent-crystal
@@ -36,14 +39,20 @@ jobs:
       - name: Install formula
         run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
 
+      - name: Run formula test block
+        run: brew test crimson-knight/agent-crystal/agent-crystal
+
       - name: Smoke test commands
         run: |
+          crystal-alpha --version
           acrystal --version
           agent-crystal --version
-          test "$(acrystal eval 'puts 40 + 2')" = "42"
+          test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
+          # Must not shadow or replace stock crystal from homebrew-core.
+          test "$(command -v crystal-alpha)" != "$(command -v crystal || true)"
 
       - name: Smoke test installer script
         run: |
           brew uninstall --force agent-crystal
           AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
-          test "$(acrystal eval 'puts 6 * 7')" = "42"
+          test "$(crystal-alpha eval 'puts 6 * 7')" = "42"

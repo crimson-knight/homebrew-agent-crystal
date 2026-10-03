@@ -28,7 +28,7 @@ jobs:
     runs-on: macos-14
     steps:
       - name: Check out tap
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Detect new release
         id: detect
@@ -67,7 +67,7 @@ jobs:
 
       - name: Set up Homebrew
         if: steps.detect.outputs.bump == 'true'
-        uses: Homebrew/actions/setup-homebrew@main
+        uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # 2026.09.28.1
 
       - name: Register tap checkout
         if: steps.detect.outputs.bump == 'true'
@@ -84,8 +84,8 @@ jobs:
       - name: Smoke test
         if: steps.detect.outputs.bump == 'true'
         run: |
-          acrystal --version
-          test "$(acrystal eval 'puts 40 + 2')" = "42"
+          crystal-alpha --version
+          test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
 
       - name: Incremental staleness regression
         if: steps.detect.outputs.bump == 'true'
@@ -97,13 +97,13 @@ jobs:
           printf 'module M\n  def self.val\n    1\n  end\nend\n' > src/m.cr
           printf 'require "./src/m"\nputs M.val\n' > main.cr
           export CRYSTAL_CACHE_DIR="$T/cache"
-          acrystal build --incremental main.cr -o app
+          crystal-alpha build --incremental main.cr -o app
           test "$(./app)" = "1"
           sed -i '' 's/    1$/    999/' src/m.cr
           python3 -c "import os,time; s=os.stat('src/m.cr'); os.utime('src/m.cr',(s.st_atime, time.time()+3))"
-          acrystal build --incremental main.cr -o app
+          crystal-alpha build --incremental main.cr -o app
           test "$(./app)" = "999"
-          acrystal build --incremental main.cr -o app
+          crystal-alpha build --incremental main.cr -o app
           test "$(./app)" = "999"
           echo "incremental regression: OK"
 
