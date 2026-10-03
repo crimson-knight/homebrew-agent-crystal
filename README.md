@@ -1,11 +1,15 @@
 # Agent Crystal Homebrew Tap
 
-This tap packages Agent Crystal and installs two command names:
+This tap packages Agent Crystal, the AgentC-enhanced Crystal compiler with
+incremental compilation, and installs three command names:
 
-- `acrystal`
-- `agent-crystal`
+- `crystal-alpha` (canonical; the name hooks, generators, and gates call)
+- `acrystal` (alias)
+- `agent-crystal` (alias)
 
-`acrystal` is the short everyday command. `agent-crystal` is the explicit long form.
+All three run the same compiler. Use `crystal-alpha` in scripts and docs. It
+installs beside stock `crystal` from homebrew-core and does not replace it, so
+the two can be installed together.
 
 ## Install
 
@@ -13,6 +17,9 @@ This tap packages Agent Crystal and installs two command names:
 brew tap crimson-knight/agent-crystal
 brew install agent-crystal
 ```
+
+The formula builds the compiler from source, which takes about 30 minutes. It
+works on macOS and on Linux through Linuxbrew.
 
 ## One-Liner Installer
 
@@ -25,6 +32,7 @@ That installer bootstraps Homebrew when necessary on macOS and Linux, then insta
 ## Verify
 
 ```bash
+crystal-alpha --version
 acrystal --version
 agent-crystal --version
 ```

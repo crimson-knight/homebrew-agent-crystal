@@ -57,7 +57,9 @@ class AgentCrystal < Formula
     ENV.prepend_path "PATH", buildpath/"boot/embedded/bin" if (buildpath/"boot/embedded/bin").directory?
     ENV["LLVM_CONFIG"] = llvm.opt_bin/"llvm-config"
     ENV["CRYSTAL_LIBRARY_PATH"] = ENV["HOMEBREW_LIBRARY_PATHS"]
-    ENV.append_path "CRYSTAL_LIBRARY_PATH", MacOS.sdk_path_if_needed/"usr/lib" if OS.mac? && MacOS.sdk_path_if_needed
+    if OS.mac? && (sdk_path = MacOS.sdk_path)
+      ENV.append_path "CRYSTAL_LIBRARY_PATH", sdk_path/"usr/lib"
+    end
     non_keg_only_runtime_deps.each do |dep|
       ENV.prepend_path "CRYSTAL_LIBRARY_PATH", dep.opt_lib
     end
@@ -85,15 +87,15 @@ class AgentCrystal < Formula
     stdlib_install_dir.install "src"
     (lib/"crystal").mkpath
 
-    install_wrapper("acrystal")
-    install_wrapper("agent-crystal")
-
-    install_completion("bash", "etc/completion.bash", "acrystal")
-    install_completion("bash", "etc/completion.bash", "agent-crystal")
-    install_completion("zsh", "etc/completion.zsh", "acrystal")
-    install_completion("zsh", "etc/completion.zsh", "agent-crystal")
-    install_completion("fish", "etc/completion.fish", "acrystal")
-    install_completion("fish", "etc/completion.fish", "agent-crystal")
+    # crystal-alpha is the canonical command name (agent hooks, generators and
+    # gates call it); acrystal and agent-crystal are kept as aliases.
+    shells = %w[bash zsh fish]
+    %w[crystal-alpha acrystal agent-crystal].each do |command_name|
+      install_wrapper(command_name)
+      shells.each do |shell|
+        install_completion(shell, "etc/completion.#{shell}", command_name)
+      end
+    end
   end
 
   def install_wrapper(command_name)
@@ -130,8 +132,12 @@ class AgentCrystal < Formula
   end
 
   test do
+    assert_match "Crystal", shell_output("#{bin}/crystal-alpha --version")
     assert_match "Crystal", shell_output("#{bin}/acrystal --version")
     assert_match "Crystal", shell_output("#{bin}/agent-crystal --version")
-    assert_equal "42\n", shell_output("#{bin}/acrystal eval 'puts 40 + 2'")
+    assert_equal "42\n", shell_output("#{bin}/crystal-alpha eval 'puts 40 + 2'")
+    assert_path_exists bash_completion/"crystal-alpha"
+    assert_path_exists zsh_completion/"_crystal-alpha"
+    assert_path_exists fish_completion/"crystal-alpha.fish"
   end
 end
