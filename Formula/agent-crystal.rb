@@ -57,7 +57,9 @@ class AgentCrystal < Formula
     ENV.prepend_path "PATH", buildpath/"boot/embedded/bin" if (buildpath/"boot/embedded/bin").directory?
     ENV["LLVM_CONFIG"] = llvm.opt_bin/"llvm-config"
     ENV["CRYSTAL_LIBRARY_PATH"] = ENV["HOMEBREW_LIBRARY_PATHS"]
-    ENV.append_path "CRYSTAL_LIBRARY_PATH", MacOS.sdk_path_if_needed/"usr/lib" if OS.mac? && MacOS.sdk_path_if_needed
+    if OS.mac? && (sdk_path = MacOS.sdk_path)
+      ENV.append_path "CRYSTAL_LIBRARY_PATH", sdk_path/"usr/lib"
+    end
     non_keg_only_runtime_deps.each do |dep|
       ENV.prepend_path "CRYSTAL_LIBRARY_PATH", dep.opt_lib
     end
