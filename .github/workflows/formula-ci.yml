@@ -36,6 +36,12 @@ jobs:
       - name: Audit formula
         run: brew audit --strict --online crimson-knight/agent-crystal/agent-crystal
 
+      - name: Unlink runner's preinstalled OpenSSL 1.1
+        # macos-14 images ship openssl@1.1 linked at /opt/homebrew/bin/openssl,
+        # which makes linking openssl@3 (a dependency) fail the install step.
+        if: runner.os == 'macOS'
+        run: brew unlink openssl@1.1 2>/dev/null || true
+
       - name: Install formula
         run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
 
