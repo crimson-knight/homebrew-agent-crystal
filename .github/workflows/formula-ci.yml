@@ -40,7 +40,13 @@ jobs:
         # macos-14 images ship openssl@1.1 linked at /opt/homebrew/bin/openssl,
         # which makes linking openssl@3 (a dependency) fail the install step.
         if: runner.os == 'macOS'
-        run: brew unlink openssl@1.1 2>/dev/null || true
+        # `brew unlink` is not enough: the image leaves symlinks into an
+        # openssl@1.1 keg that Homebrew no longer tracks, so remove them.
+        run: |
+          brew unlink openssl@1.1 2>/dev/null || true
+          prefix="$(brew --prefix)"
+          find "$prefix/bin" "$prefix/include" "$prefix/lib" "$prefix/share" -maxdepth 3 -type l \
+            -lname '*openssl@1.1*' -print -delete 2>/dev/null || true
 
       - name: Install formula
         run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
