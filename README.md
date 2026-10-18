@@ -42,7 +42,7 @@ before running that file. It then installs the `crimson-knight/agent-crystal` ta
 
 Installation verifies all three commands and compiles and runs an expression
 through `crystal-alpha`. CI exercises the formula and repository installer on
-macOS 14 and Ubuntu 24.04. Memory budget tooling records the installed compiler
+macOS 26 and Ubuntu 24.04. Memory budget tooling records the installed compiler
 backend, standard-library tree and native dependencies in its own reviewed
 toolchain profile.
 
