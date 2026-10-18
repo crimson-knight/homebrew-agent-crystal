@@ -57,7 +57,9 @@ class AgentCrystal < Formula
     ENV.prepend_path "PATH", buildpath/"boot/embedded/bin" if (buildpath/"boot/embedded/bin").directory?
     ENV["LLVM_CONFIG"] = llvm.opt_bin/"llvm-config"
     ENV["CRYSTAL_LIBRARY_PATH"] = ENV["HOMEBREW_LIBRARY_PATHS"]
-    ENV.append_path "CRYSTAL_LIBRARY_PATH", MacOS.sdk_path_if_needed/"usr/lib" if OS.mac? && MacOS.sdk_path_if_needed
+    if OS.mac? && (sdk_path = MacOS.sdk_path)
+      ENV.append_path "CRYSTAL_LIBRARY_PATH", sdk_path/"usr/lib"
+    end
     non_keg_only_runtime_deps.each do |dep|
       ENV.prepend_path "CRYSTAL_LIBRARY_PATH", dep.opt_lib
     end
@@ -87,13 +89,17 @@ class AgentCrystal < Formula
 
     install_wrapper("acrystal")
     install_wrapper("agent-crystal")
+    install_wrapper("crystal-alpha")
 
     install_completion("bash", "etc/completion.bash", "acrystal")
     install_completion("bash", "etc/completion.bash", "agent-crystal")
+    install_completion("bash", "etc/completion.bash", "crystal-alpha")
     install_completion("zsh", "etc/completion.zsh", "acrystal")
     install_completion("zsh", "etc/completion.zsh", "agent-crystal")
+    install_completion("zsh", "etc/completion.zsh", "crystal-alpha")
     install_completion("fish", "etc/completion.fish", "acrystal")
     install_completion("fish", "etc/completion.fish", "agent-crystal")
+    install_completion("fish", "etc/completion.fish", "crystal-alpha")
   end
 
   def install_wrapper(command_name)
@@ -111,8 +117,8 @@ class AgentCrystal < Formula
     when "bash"
       completion_dir = bash_completion
       file_name = command_name
-      content = content.gsub("complete -o default -F _crystal crystal",
-                             "complete -o default -F _crystal #{command_name}")
+      content = content.gsub(/^(complete(?: -o default)? -F _crystal) crystal$/,
+                             "\\1 #{command_name}")
     when "zsh"
       completion_dir = zsh_completion
       file_name = "_#{command_name}"
@@ -132,6 +138,8 @@ class AgentCrystal < Formula
   test do
     assert_match "Crystal", shell_output("#{bin}/acrystal --version")
     assert_match "Crystal", shell_output("#{bin}/agent-crystal --version")
+    assert_match "Crystal", shell_output("#{bin}/crystal-alpha --version")
     assert_equal "42\n", shell_output("#{bin}/acrystal eval 'puts 40 + 2'")
+    assert_equal "42\n", shell_output("#{bin}/crystal-alpha eval 'puts 40 + 2'")
   end
 end

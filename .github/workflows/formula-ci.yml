@@ -2,6 +2,7 @@ name: Formula CI
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -14,18 +15,23 @@ jobs:
   brew-install:
     name: "${{ matrix.os }} formula install"
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         os:
-          - macos-14
+          - macos-26
           - ubuntu-24.04
     steps:
       - name: Check out tap
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Test installer behavior with private commands
+        timeout-minutes: 2
+        run: ruby test/install_test.rb
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@main
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
 
       - name: Register tap checkout
         run: brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
@@ -40,10 +46,16 @@ jobs:
         run: |
           acrystal --version
           agent-crystal --version
+          crystal-alpha --version
           test "$(acrystal eval 'puts 40 + 2')" = "42"
+          test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
+
+      - name: Run formula tests
+        run: brew test crimson-knight/agent-crystal/agent-crystal
 
       - name: Smoke test installer script
         run: |
           brew uninstall --force agent-crystal
           AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
           test "$(acrystal eval 'puts 6 * 7')" = "42"
+          test "$(crystal-alpha eval 'puts 6 * 7')" = "42"

@@ -28,7 +28,7 @@ jobs:
     runs-on: macos-14
     steps:
       - name: Check out tap
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Detect new release
         id: detect
@@ -67,7 +67,7 @@ jobs:
 
       - name: Set up Homebrew
         if: steps.detect.outputs.bump == 'true'
-        uses: Homebrew/actions/setup-homebrew@main
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
 
       - name: Register tap checkout
         if: steps.detect.outputs.bump == 'true'
