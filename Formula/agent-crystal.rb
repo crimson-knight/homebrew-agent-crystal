@@ -87,13 +87,17 @@ class AgentCrystal < Formula
 
     install_wrapper("acrystal")
     install_wrapper("agent-crystal")
+    install_wrapper("crystal-alpha")
 
     install_completion("bash", "etc/completion.bash", "acrystal")
     install_completion("bash", "etc/completion.bash", "agent-crystal")
+    install_completion("bash", "etc/completion.bash", "crystal-alpha")
     install_completion("zsh", "etc/completion.zsh", "acrystal")
     install_completion("zsh", "etc/completion.zsh", "agent-crystal")
+    install_completion("zsh", "etc/completion.zsh", "crystal-alpha")
     install_completion("fish", "etc/completion.fish", "acrystal")
     install_completion("fish", "etc/completion.fish", "agent-crystal")
+    install_completion("fish", "etc/completion.fish", "crystal-alpha")
   end
 
   def install_wrapper(command_name)
@@ -111,8 +115,8 @@ class AgentCrystal < Formula
     when "bash"
       completion_dir = bash_completion
       file_name = command_name
-      content = content.gsub("complete -o default -F _crystal crystal",
-                             "complete -o default -F _crystal #{command_name}")
+      content = content.gsub(/^(complete(?: -o default)? -F _crystal) crystal$/,
+                             "\\1 #{command_name}")
     when "zsh"
       completion_dir = zsh_completion
       file_name = "_#{command_name}"
@@ -132,6 +136,8 @@ class AgentCrystal < Formula
   test do
     assert_match "Crystal", shell_output("#{bin}/acrystal --version")
     assert_match "Crystal", shell_output("#{bin}/agent-crystal --version")
+    assert_match "Crystal", shell_output("#{bin}/crystal-alpha --version")
     assert_equal "42\n", shell_output("#{bin}/acrystal eval 'puts 40 + 2'")
+    assert_equal "42\n", shell_output("#{bin}/crystal-alpha eval 'puts 40 + 2'")
   end
 end

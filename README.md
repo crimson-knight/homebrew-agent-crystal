@@ -1,11 +1,14 @@
 # Agent Crystal Homebrew Tap
 
-This tap packages Agent Crystal and installs two command names:
+This tap packages Agent Crystal and installs three command names:
 
 - `acrystal`
 - `agent-crystal`
+- `crystal-alpha`
 
 `acrystal` is the short everyday command. `agent-crystal` is the explicit long form.
+`crystal-alpha` is the entry point used by Amber V2 and the memory-budget tools.
+All three commands use the same compiler backend and standard library.
 
 ## Install
 
@@ -27,4 +30,5 @@ That installer bootstraps Homebrew when necessary on macOS and Linux, then insta
 ```bash
 acrystal --version
 agent-crystal --version
+crystal-alpha --version
 ```
