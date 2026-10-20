@@ -1,0 +1,699 @@
+{
+  "schema_version": 1,
+  "sdk": {
+    "commit": "08c30535c60b9097a5da664dc7072e89ec02cad7",
+    "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/08c30535c60b9097a5da664dc7072e89ec02cad7",
+    "archive_sha256": "a9a23059379a3c9799cff3504ac888f886abeb3cb8eac8f6fc44728d2ff7d1ff",
+    "archive_bytes": 113490,
+    "files": [
+      {
+        "file": ".github/workflows/docs.yml",
+        "mode": "100644",
+        "git_blob": "b0fea1acd2f03ab007b5dc2ee36b438bc001a952",
+        "bytes": 1408,
+        "sha256": "fcb841cc03404435571a02b838e3f08056a3bdc353afe7f970724f4b259a6b34"
+      },
+      {
+        "file": ".github/workflows/memory-budgets.yml",
+        "mode": "100644",
+        "git_blob": "471753cf1121da0366dee19f2bae357a9e12f3e2",
+        "bytes": 3094,
+        "sha256": "a7f7a29570870d7fd6af57f1a54284124f4732b2a7ff86c5d72ffc3c5725f776"
+      },
+      {
+        "file": ".github/workflows/native-memory-budgets.yml",
+        "mode": "100644",
+        "git_blob": "9badf8590b1eb91b22d10bc71c8ed6888a57187f",
+        "bytes": 5437,
+        "sha256": "ae050ba7506d647c4c0e74fc5a9f99056d600e003f637ae186ab4bb55b16d2ea"
+      },
+      {
+        "file": "LICENSE",
+        "mode": "100644",
+        "git_blob": "69e248c1d6d9dd08785da3e4ee4a2ac9e3750d82",
+        "bytes": 1068,
+        "sha256": "2584d6e9cb8712edbdd32680c9a474ca7fead3dfad24a860c2bde7e42ecb2717"
+      },
+      {
+        "file": "LICENSE-RUNTIME",
+        "mode": "100644",
+        "git_blob": "183a6f5420bb357c6605b3f6e154e18d1ff53a2b",
+        "bytes": 11798,
+        "sha256": "d936c11961ab8e041bb54a0dbf6148810a5b9f0a1130a9fd8c557a2252a17bdf"
+      },
+      {
+        "file": "PACKAGE_PINS.json",
+        "mode": "100644",
+        "git_blob": "3c326d826c47ff81bfe253fa3afb70857dab48d2",
+        "bytes": 9990,
+        "sha256": "5221f0184ebb206f175b2ea6516ea8d56d0d3d71ad1cc38a3bc43feadbe97a5f"
+      },
+      {
+        "file": "README.md",
+        "mode": "100644",
+        "git_blob": "f110a77ef73bd1fab7ab4596386b1a024d300add",
+        "bytes": 15466,
+        "sha256": "4eb42fddef1c6da2980153c9d2f096588b8a5d17750e29c882fc588e2ded3367"
+      },
+      {
+        "file": "docs/0.1.1/capabilities.md",
+        "mode": "100644",
+        "git_blob": "35c41a0bc1e7fb7e7fc214645910d9a0c8583e00",
+        "bytes": 2750,
+        "sha256": "44a5d840c5e00d60672f7c92804490ace7deaefb5d61c8ded68b59aa33dc3870"
+      },
+      {
+        "file": "docs/0.1.1/ci.md",
+        "mode": "100644",
+        "git_blob": "9bc21b91747c34cc2f0f1418e3941c534b29a259",
+        "bytes": 3363,
+        "sha256": "5fa916db56e98ce36d3ba7c5f1e136f05bbedb25f01e386e14a76a9e21d874ba"
+      },
+      {
+        "file": "docs/0.1.1/examples/fiber_budget_spec.cr",
+        "mode": "100644",
+        "git_blob": "7dbfafb2838bb18d191280a8c9850fdf82679167",
+        "bytes": 1319,
+        "sha256": "378c83d3ab60f877d70810b8a8816cc65c9f64eee04bdab263f1c1852fc4dfb9"
+      },
+      {
+        "file": "docs/0.1.1/fiber-budget.md",
+        "mode": "100644",
+        "git_blob": "554fac2bdba2aacbb4ab5fd636bd64cec0b4034e",
+        "bytes": 3412,
+        "sha256": "614f1d6bdb5b17d7fc793e350e9f55978672731bc32e44e1f6003acd50d11129"
+      },
+      {
+        "file": "docs/0.1.1/git-provider.md",
+        "mode": "100644",
+        "git_blob": "b6f8f5a306a884c72ad0173e5532e9df40f80084",
+        "bytes": 5316,
+        "sha256": "c9f33fb9bcf6dc7bab74894dfc722fc11419f51578dcb5dd3e074701c65dc26d"
+      },
+      {
+        "file": "docs/0.1.1/index.md",
+        "mode": "100644",
+        "git_blob": "375b45d1415716afd8849ad696f0662204ee31e9",
+        "bytes": 2972,
+        "sha256": "1fb98c47a70bac5d4175fec1139af7e2880a84eeaeccb17b793c8952d4ec7cad"
+      },
+      {
+        "file": "docs/0.1.1/native-toolchain.md",
+        "mode": "100644",
+        "git_blob": "4ea128ab070183313a53d94f9cc21717150b3bb6",
+        "bytes": 9041,
+        "sha256": "5a0fc398e7cac3cc2beb4e71677383bc722342105cb0268faeaae2d6a7550d33"
+      },
+      {
+        "file": "docs/0.1.1/prepare-toolchain.md",
+        "mode": "100644",
+        "git_blob": "794ffdb969d7a7da08c3e980644f4c6d7a710e70",
+        "bytes": 8309,
+        "sha256": "cdf175d9538fcd39165da44fd78fea4511eb76b665ddc162f426820bbccf170b"
+      },
+      {
+        "file": "docs/corpus-manifest.json",
+        "mode": "100644",
+        "git_blob": "39cfa6133ac034e6585002867efc2a4cba8f162f",
+        "bytes": 4636,
+        "sha256": "837e7c571b25af6e6aceb987268527f02d850f42f982f2e8d4911051cd03a5c8"
+      },
+      {
+        "file": "docs/corpus.json",
+        "mode": "100644",
+        "git_blob": "aa726933e818d434f92680786c1cbec050ff9d55",
+        "bytes": 3175,
+        "sha256": "b515d90dfe74db78ad0ae6184f12092c82bd599f6c3f2186a6f0c7ddb4ece4db"
+      },
+      {
+        "file": "examples/c_allocation_owner.cr",
+        "mode": "100644",
+        "git_blob": "47459880639c843289c0c54168d4c4412c7e4af8",
+        "bytes": 986,
+        "sha256": "fd0ed4ee727a7123af5a22c05b8333479f5d04c0da2d9cf552f1b1758ede8b69"
+      },
+      {
+        "file": "examples/external_process.cr",
+        "mode": "100644",
+        "git_blob": "8f94bbed29a8190a5939588f25c721bd0499ee5e",
+        "bytes": 891,
+        "sha256": "b058e01579c8bba89a9de8e1f5ad9174086f06b05a472e72116738a8b82f33e0"
+      },
+      {
+        "file": "examples/fiber_and_items.cr",
+        "mode": "100644",
+        "git_blob": "dfad50322c10c31d68674c65341e27262a635a67",
+        "bytes": 960,
+        "sha256": "8518be8089cf859cc084c32c93c2ef8345b0eefb2a28abe47ddbb0377fa31132"
+      },
+      {
+        "file": "examples/joined_process.cr",
+        "mode": "100644",
+        "git_blob": "9914417bc24e97ec3dd396ff1e7455ce27503462",
+        "bytes": 927,
+        "sha256": "2deaeaede98969696deeb51d154410e2170279894bfc71396bbeebab69d31154"
+      },
+      {
+        "file": "examples/process_memory.cr",
+        "mode": "100644",
+        "git_blob": "d2d39b8856648f6b57a535c622f27095c32af176",
+        "bytes": 1054,
+        "sha256": "fe542a321e56882efdbf8dacd73ddfcbaf04980e0a1c0dd93982c5ce0e8f416b"
+      },
+      {
+        "file": "examples/sqlite_cache.cr",
+        "mode": "100644",
+        "git_blob": "4d6f8e6f53bbb6771e7e7b4cbd5a948434b1ff59",
+        "bytes": 1510,
+        "sha256": "3f15eaba9d867d2ae680e93bc7e1cce5cea4ec867d7c478e02b98381c8bd1018"
+      },
+      {
+        "file": "examples/support/memory_budget_sample_record.cr",
+        "mode": "100644",
+        "git_blob": "436a09536cbe5a4eb07b2c51aacff715e9b5bab6",
+        "bytes": 188,
+        "sha256": "683f164b14ad9cd483f34d17283368dc533c21889811d640d6634de2ec4adda9"
+      },
+      {
+        "file": "runtime_overlay/crystal/system/thread.cr",
+        "mode": "100644",
+        "git_blob": "f95709191d12840ebbcbc2a6d03579e3519aceea",
+        "bytes": 7140,
+        "sha256": "7f5126246b4d2eae8e8128ad64077bde8f6504325f7f0d2e804686c227eb8e47"
+      },
+      {
+        "file": "runtime_overlay/fiber.cr",
+        "mode": "100644",
+        "git_blob": "305466a52898ed6fe221b9e1a634669adf5cf271",
+        "bytes": 13393,
+        "sha256": "2f1eefd6cac6065ec2e15bd8d7a02e1e19ceda91faf6282220c209efe5e68093"
+      },
+      {
+        "file": "runtime_overlay/fiber/allocation_tally.cr",
+        "mode": "100644",
+        "git_blob": "5ccdd3532f9856683dd626a8ae1b6f5ea3b1b55d",
+        "bytes": 19702,
+        "sha256": "ad6015c9f8e9adc2ffe5ee46a31ef63be16a8cfcfaad7264597f39ecb77855b1"
+      },
+      {
+        "file": "runtime_overlay/gc/boehm.cr",
+        "mode": "100644",
+        "git_blob": "26961c69713e86d0b0aac602305be2ee0ad92b60",
+        "bytes": 18894,
+        "sha256": "342b192533eb2e3b5fd82d8ab7a74f35512fb12d69f8b49d2fc7de1fa2d9474b"
+      },
+      {
+        "file": "runtime_overlay/manifest.json",
+        "mode": "100644",
+        "git_blob": "908ab30fa2bb9804338b4c451014de82d0459ecb",
+        "bytes": 653,
+        "sha256": "9f54bd1b56e15bee0b139bf2ae7396867b11d63ded7d7f0d849b698552d25fe3"
+      },
+      {
+        "file": "scripts/budget.rb",
+        "mode": "100644",
+        "git_blob": "0a9ace85652c155f83d008efc103d339200158a9",
+        "bytes": 873,
+        "sha256": "965d444799df5b5b0aac29e00b620c37cf54444040d29746f285582b18c8e519"
+      },
+      {
+        "file": "scripts/docs/manage_corpus.py",
+        "mode": "100644",
+        "git_blob": "0dbbcabf8623aa3fa1005ddefbe2ae1672c2a10f",
+        "bytes": 11711,
+        "sha256": "c385ac69d0858e57e6f69b5154ee0b6eb49fa5cd2413f1344b43c8b420cde907"
+      },
+      {
+        "file": "scripts/docs/test_corpus.py",
+        "mode": "100644",
+        "git_blob": "a23c4840e03fe023f00bf3fd316149ee903ffd59",
+        "bytes": 6071,
+        "sha256": "30451aefd56d89d81511eb94437eef84ced14ee03be8018b6ce93de97a502e1c"
+      },
+      {
+        "file": "scripts/git_provider.rb",
+        "mode": "100644",
+        "git_blob": "abb27b13c6b0ef3e46cd63732a2f277f4e62025b",
+        "bytes": 7100,
+        "sha256": "4c813fb3bd5a72ef96b25aada6ae4866d3aec225d78e7b0f39ad9c2aee8ae4f2"
+      },
+      {
+        "file": "scripts/install_bundle.rb",
+        "mode": "100644",
+        "git_blob": "c3b7b1a7642fe11ef0ab34fc136b926c74d857c9",
+        "bytes": 2946,
+        "sha256": "3f2536d054d4e7e68455cd34a84cbe0cac4c0a9a9ee4de4a4a07d6b92213e9a4"
+      },
+      {
+        "file": "scripts/install_frozen_dependencies.rb",
+        "mode": "100644",
+        "git_blob": "03ced6bd87001964981852bc19df1921419e94c4",
+        "bytes": 3597,
+        "sha256": "1445da62603be93fe1d9a455e2492768a61b0b35855db78a439a9717bbde643c"
+      },
+      {
+        "file": "scripts/native_environment.rb",
+        "mode": "100644",
+        "git_blob": "7f401a67f1c0c34b73789ca2030b175abaf62663",
+        "bytes": 12027,
+        "sha256": "ca07fc69dd4ba47658d109537e97eb0bc46352e5833c676920074cc4e3f3feae"
+      },
+      {
+        "file": "scripts/prepare_git_manifest.rb",
+        "mode": "100644",
+        "git_blob": "8aca7053f19a042d7606c877cddb64d8af268824",
+        "bytes": 3724,
+        "sha256": "fb863b952b2a5e1fe52f55b318be3a172c0b4f16b49f29471d2d8408a43e1a43"
+      },
+      {
+        "file": "scripts/prepare_native_manifest.rb",
+        "mode": "100644",
+        "git_blob": "37dd9c73b5f73dd2d71aaf9b89a0cde81636e35a",
+        "bytes": 1356,
+        "sha256": "c615640d8b2dca83cdc517768ae74850c776051573336cf9ace6edcbfcf3dd2f"
+      },
+      {
+        "file": "scripts/prepare_toolchain_profile.rb",
+        "mode": "100644",
+        "git_blob": "e4f7e2826922083ceb946e72822b63fe732c2ff7",
+        "bytes": 19370,
+        "sha256": "96bb4cae065f7db2f1b8fa33c5d2228ebd20bba986002bd5fccc421c6732dc48"
+      },
+      {
+        "file": "scripts/run_specs.rb",
+        "mode": "100644",
+        "git_blob": "3c978f16ee0aa8ad4fdd1bc7db5aaa738ef80e5d",
+        "bytes": 4371,
+        "sha256": "0a4dd4a4e1ba7f5d371a2f9ab050fd8cb32769ab6eaafbf9a4ac0ac09b68539d"
+      },
+      {
+        "file": "scripts/source_commit.rb",
+        "mode": "100644",
+        "git_blob": "5319303011ecc32d3569e7229e401c65d6f5438b",
+        "bytes": 356,
+        "sha256": "33c65cc4bcd4bd8a5c91fa7c0e6ad9468d9b4b5b05d8b62492531b16d31ae509"
+      },
+      {
+        "file": "scripts/toolchain_profile.rb",
+        "mode": "100644",
+        "git_blob": "41b628bf39a91c07b1ee3ca32d672782fae3a0ae",
+        "bytes": 15167,
+        "sha256": "3bf554c7bca8606bf24b3f4b01e41c552b2d454da8b253a164bf73622e117091"
+      },
+      {
+        "file": "shard.lock",
+        "mode": "100644",
+        "git_blob": "4f3e149cca07c12ee1243bedccd7beeaae8a4e4d",
+        "bytes": 24,
+        "sha256": "7068a888576c030d612e697cde0920042ad2f4bf744d16a4ef3ae916d3bc75b0"
+      },
+      {
+        "file": "shard.yml",
+        "mode": "100644",
+        "git_blob": "84de242ac300edf9bc2e2ec31316458e4e8f831d",
+        "bytes": 313,
+        "sha256": "1241d9353c290a5f72b4e05014e48e22084f8405f757952388f547b7fae400ba"
+      },
+      {
+        "file": "skills/crystal-memory-budgets/SKILL.md",
+        "mode": "100644",
+        "git_blob": "54d20e4a1a55b79bc14d9809ef5a6c9176a2bf35",
+        "bytes": 2932,
+        "sha256": "dd8fda6c5e0faa6cd85f5ac2cd2c187955697f041ce98c09999df2a08b5b44ce"
+      },
+      {
+        "file": "skills/crystal-memory-budgets/agents/openai.yaml",
+        "mode": "100644",
+        "git_blob": "b26ace49ea9e42b28bf3142deb95bab5234bac21",
+        "bytes": 250,
+        "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
+      },
+      {
+        "file": "spec/allocation_spec.cr",
+        "mode": "100644",
+        "git_blob": "9ebd4fed1a5b2c3814a5277a3f69c0b330d5a279",
+        "bytes": 4221,
+        "sha256": "727c98632d10a47e53b6f8ea1a3dd99cdd2ebc8b7f2c95af95df55b7d64c51a5"
+      },
+      {
+        "file": "spec/c_allocation_evidence_spec.cr",
+        "mode": "100644",
+        "git_blob": "955d9e930253193a27f3b776036b872176448365",
+        "bytes": 4355,
+        "sha256": "bbc22af3d815637bbff9c5ef96dd3c4261290ca00355cef960857c4dc4fee9ea"
+      },
+      {
+        "file": "spec/capability_identity_spec.cr",
+        "mode": "100644",
+        "git_blob": "9bcf5de7d4ee7055b74c14dcf1cce9be4aa0117a",
+        "bytes": 975,
+        "sha256": "e071ce8935994ea19d6a4dcb8d22ef5302f94f6571e51d58f13fa7cd106d2b1a"
+      },
+      {
+        "file": "spec/enforcement_spec.cr",
+        "mode": "100644",
+        "git_blob": "3d884af7ecf1de372cbafadb09eb1993e0d9321b",
+        "bytes": 5124,
+        "sha256": "706bb05278355aaa994a96f8c3f759b42c9f3dc44b806291333e8cc8742bc5b8"
+      },
+      {
+        "file": "spec/evidence_spec.cr",
+        "mode": "100644",
+        "git_blob": "f9d82843dcda6958c11a56e45a3cd0f31899648d",
+        "bytes": 1558,
+        "sha256": "5692acb55617d0280b3699ae70bfe34620691ddb888847916a175be9d37b8fa8"
+      },
+      {
+        "file": "spec/fixtures/c/SOURCE_PINS.json",
+        "mode": "100644",
+        "git_blob": "fb04f1f39a293a087199ec7ec72a78d29187ac7e",
+        "bytes": 1537,
+        "sha256": "43230cbf98d7e1deaab93e9550a650ded6c545468146c6b62d04cc548faad5bb"
+      },
+      {
+        "file": "spec/fixtures/c/corefoundation_string_released_1_run1.checkpoint.json",
+        "mode": "100644",
+        "git_blob": "3d777df6c4296d5160c10b8f784f53be47d7dd56",
+        "bytes": 2752,
+        "sha256": "0aa73286c6477ca439a8ed072d2522b2fc32b7c40362f338e8328590ea700292"
+      },
+      {
+        "file": "spec/fixtures/c/corefoundation_string_released_1_run1.symbolized.tsv",
+        "mode": "100644",
+        "git_blob": "816dfaf2d32c9b288a465c365ab6072263e7b516",
+        "bytes": 7348,
+        "sha256": "297617995ea297d13f4945698cdd2f0fafbe16b561fcc70dead59e425ce731e6"
+      },
+      {
+        "file": "spec/fixtures/c/labels_released_10_run1.checkpoint.json",
+        "mode": "100644",
+        "git_blob": "42b6511c7a579bdc54a4718518b04271b82e047c",
+        "bytes": 2740,
+        "sha256": "5a194976ea9c078409efad3be5dafbe0b38f77a1768184c58eb284806cfa4fb3"
+      },
+      {
+        "file": "spec/fixtures/c/labels_released_10_run1.tsv",
+        "mode": "100644",
+        "git_blob": "4402728cc322a651a81f2eac55ce2802571ea030",
+        "bytes": 3849,
+        "sha256": "723fb0578365a87d0317919f576605fc1f5e8dd84e99ac39b7a41a262e791df1"
+      },
+      {
+        "file": "spec/fixtures/task_vm_layout.c",
+        "mode": "100644",
+        "git_blob": "ec8e01a9f427ddf6791156009920dfd5a8c083f8",
+        "bytes": 622,
+        "sha256": "d5d295e20f0d62f5ff023babc952179cae8f2ca46012994e1fc9219181a6ae67"
+      },
+      {
+        "file": "spec/per_item_spec.cr",
+        "mode": "100644",
+        "git_blob": "b7cde57920210620ece8cd66908fcd096c0290a9",
+        "bytes": 469,
+        "sha256": "44439d20ff8b9e9fb1460126e402f75ee2f100c29ab72b6d1a427e86970b3787"
+      },
+      {
+        "file": "spec/process_memory_spec.cr",
+        "mode": "100644",
+        "git_blob": "db92951229e4755b57b2caacc524ec22369c98da",
+        "bytes": 2059,
+        "sha256": "70c767a2668fd761e0798b5cc075ce795433f7c16bd9b6f52643ca1ea7a3ea9a"
+      },
+      {
+        "file": "spec/spec_helper.cr",
+        "mode": "100644",
+        "git_blob": "adb2ea7585e52d50773a782e1ff3517368c52d8b",
+        "bytes": 94,
+        "sha256": "03e93a342882c6b853e450c09f827053dae0c34dfe03b4d0e188ee4475d09b2d"
+      },
+      {
+        "file": "spec/sqlite_connection_memory_spec.cr",
+        "mode": "100644",
+        "git_blob": "8d9cfc2af027894c69b24487d8cad72e3d873a17",
+        "bytes": 1938,
+        "sha256": "d32aa853e173a0bf37496d1d17b8f124d5ff9db5443a7ef1d1980ff34b55020f"
+      },
+      {
+        "file": "spec/support/memory_budget_example_holder.cr",
+        "mode": "100644",
+        "git_blob": "dc8b276348382a8e427a9962be958454224a7d7d",
+        "bytes": 199,
+        "sha256": "f6931a50429c7dc5730a6633bfe42f738f830089a4c5531df6169a1500aa3c67"
+      },
+      {
+        "file": "spec/support/memory_budget_spec_support.cr",
+        "mode": "100644",
+        "git_blob": "b5d455b516eb478ef93b71fa404e6b2c0ea1e416",
+        "bytes": 1417,
+        "sha256": "fa0a914f0d62493266366731cf72fabc9ad13adb928da005235bd80dc5847b71"
+      },
+      {
+        "file": "src/cli.cr",
+        "mode": "100644",
+        "git_blob": "4de267273804b1261bb85486958e87f3d07fe900",
+        "bytes": 994,
+        "sha256": "006778ba44bb121561e6da1b274f0523e4b621c4118cc1b60f6593434b820abe"
+      },
+      {
+        "file": "src/memory_budget.cr",
+        "mode": "100644",
+        "git_blob": "5a4beb28b68909a5a1386d64db1b7daa6a678f43",
+        "bytes": 464,
+        "sha256": "b07e2727c76775a2da7f7c1ab7a072c9f3820cbe63e3d9b4b1cc460639dc3c92"
+      },
+      {
+        "file": "src/memory_budget/allocation_memory_snapshot.cr",
+        "mode": "100644",
+        "git_blob": "d6a5c0602af06cbe0e8207d092ac2645e355ede9",
+        "bytes": 3331,
+        "sha256": "f9448ee68d82989796301d47c7d5f374c9005276e8c13b521bcd4339891d03f0"
+      },
+      {
+        "file": "src/memory_budget/available_memory_capability.cr",
+        "mode": "100644",
+        "git_blob": "083d1a6d245b90128166113ee2e69e377c8b9533",
+        "bytes": 621,
+        "sha256": "520edebe5b6cbfa9004884d0b632b48d172b85b52fac5bd10e9f6bba28222771"
+      },
+      {
+        "file": "src/memory_budget/c_allocation_coverage.cr",
+        "mode": "100644",
+        "git_blob": "ab1d272f52a690f9e9e4defd2ab7f35ec429c313",
+        "bytes": 1122,
+        "sha256": "c1b8440945f9eafc6d431fc9c9068e92a5844861fb858f359c4321250f8e9328"
+      },
+      {
+        "file": "src/memory_budget/memory_budget_error.cr",
+        "mode": "100644",
+        "git_blob": "b5b71ae9f63a6fd62587d076411ba676c2263406",
+        "bytes": 129,
+        "sha256": "4d5919cfb054cf5e5f23f28dbfa79fa4305c3a5f47a04de8cf605c5046ec4aa1"
+      },
+      {
+        "file": "src/memory_budget/memory_budget_verdict.cr",
+        "mode": "100644",
+        "git_blob": "6f67823ee54abdec54b3f3b06d9dfb91e784cba3",
+        "bytes": 917,
+        "sha256": "387866d859c1897e405c2d66e3263070b1c38ccf1b65708fa10137ac0a64c8eb"
+      },
+      {
+        "file": "src/memory_budget/memory_metric_limit.cr",
+        "mode": "100644",
+        "git_blob": "febc4e74c17d515848e0a8fd6f83038ac7a78617",
+        "bytes": 613,
+        "sha256": "df8becb27d0e90a33a201909f2fddc13ece53b1d99215699f5a667627c716789"
+      },
+      {
+        "file": "src/memory_budget/observed_memory_measurement.cr",
+        "mode": "100644",
+        "git_blob": "6bb4ffc856d0c8cc36cca922fae2f86145f4c1ba",
+        "bytes": 810,
+        "sha256": "fe89f45ef88940b31cfd053eb8122ae483979d01094576d4320ba22746741afa"
+      },
+      {
+        "file": "src/memory_budget/process_memory_snapshot.cr",
+        "mode": "100644",
+        "git_blob": "59d091b92d79c34e3c7dbc96351f0b852820a415",
+        "bytes": 6127,
+        "sha256": "88abbdaf71cf1ed9e0b830366e0803b9b4726e9b83f8cba8a80e0b7377749e10"
+      },
+      {
+        "file": "src/memory_budget/read_c_allocation_evidence.cr",
+        "mode": "100644",
+        "git_blob": "41105ae832536d0bdbb638d14116c8d85fb23a73",
+        "bytes": 5577,
+        "sha256": "aab83430bb4ddee1829a5d19fd610338aff00dc04bd2df53918242158cf82f98"
+      },
+      {
+        "file": "src/memory_budget/scenario_memory_contract.cr",
+        "mode": "100644",
+        "git_blob": "557d468ec7b2df305a9b1d5d6d584b0aca45ed71",
+        "bytes": 1858,
+        "sha256": "42d6dfb8817768e10036e557b46c838ca90b4d93666ccae28c5e3d6231fc062f"
+      },
+      {
+        "file": "src/memory_budget/scenario_memory_evidence.cr",
+        "mode": "100644",
+        "git_blob": "1634820bdda40f4d5317b9e012e4f3b34ca4922d",
+        "bytes": 1937,
+        "sha256": "e0b1175f818821d49a4e37400a160944a98b2a7eaa71874ac5068b237cb3bcda"
+      },
+      {
+        "file": "src/memory_budget/scenario_memory_policy.cr",
+        "mode": "100644",
+        "git_blob": "1952318a37417db791682c3ed533ea0fa26b8c6c",
+        "bytes": 2248,
+        "sha256": "cbc81c2309141e9965b1093e6cb7c6c137d347ade6f9576d699917a97bcaf066"
+      },
+      {
+        "file": "src/memory_budget/scenario_memory_report.cr",
+        "mode": "100644",
+        "git_blob": "44deb8c5f0016411ac3e179ff6366e872548c3b9",
+        "bytes": 667,
+        "sha256": "ec72d077aa241707e45e9cc2c35624abad00194236c150708212dfb31b1bb0ef"
+      },
+      {
+        "file": "src/memory_budget/spec_expectations.cr",
+        "mode": "100644",
+        "git_blob": "2822a7be5f4108c0c5e126a79b5f9120482f1b00",
+        "bytes": 3355,
+        "sha256": "f4299350c1a4a1fe1bc4fc32c65f90b3522f3a3e21f15f748bc59f4331034545"
+      },
+      {
+        "file": "src/memory_budget/sqlite_connection_memory.cr",
+        "mode": "100644",
+        "git_blob": "bc1f10271a69138754636fa2416687ec25e0e721",
+        "bytes": 1904,
+        "sha256": "60ba3ffea1f11924aaedd21af515c461d0f64413e28c313b67a44e8278d6e191"
+      },
+      {
+        "file": "src/memory_budget/verify_memory_contract_evidence.cr",
+        "mode": "100644",
+        "git_blob": "0d0b60ff5bd2a284097b930c114d0b1c89dfe883",
+        "bytes": 1278,
+        "sha256": "9f637cea1926c682d5bad97c5db15faa4409f3a0a8c923876d22f9517ad0db2f"
+      },
+      {
+        "file": "src/memory_budget/verify_scenario_memory_budget.cr",
+        "mode": "100644",
+        "git_blob": "775e27adbe9961faba7625817de06083091a2c0a",
+        "bytes": 3610,
+        "sha256": "436c87edf5812f27786e1eb95698b11cf8f3156b4ad57689c3c38ad647bd4bea"
+      },
+      {
+        "file": "templates/memory-budgets.yml",
+        "mode": "100644",
+        "git_blob": "6e6e859aef31471e7072c301dfc06bc04b697168",
+        "bytes": 2278,
+        "sha256": "46351d6c7d7848e1f65766205f0a2a430fb9d110c3259a2a4e2640b727b8295f"
+      },
+      {
+        "file": "templates/run_memory_budgets.rb",
+        "mode": "100644",
+        "git_blob": "0811bd4624bf11a7279aac84c3a6636a68f2555d",
+        "bytes": 11111,
+        "sha256": "31351dbe8be863e002af9d3e63cf9efcf9945dd4abe14fef9347192c82fb850d"
+      },
+      {
+        "file": "test/fixtures/native_environment_schema1.rb",
+        "mode": "100644",
+        "git_blob": "a73c2b4c78f70639e12e1ca2ca246eaa4b841493",
+        "bytes": 8498,
+        "sha256": "9368fed0c93473b95bdbbbcba708e2c1ad54a5a2f1c37a24a0d6af4f0599d851"
+      },
+      {
+        "file": "test/fixtures/toolchain_versions.json",
+        "mode": "100644",
+        "git_blob": "d95be462e8fccfeeba50dce4f98dd6127bf1a7d5",
+        "bytes": 940,
+        "sha256": "3367255add6702ac3dfacd652eb04168fd3c5fee29218ba6a2ae781e0159a129"
+      },
+      {
+        "file": "test/git_provider_fixture.rb",
+        "mode": "100644",
+        "git_blob": "1317f58f2a1f959f5d5dc7b61349425fc0c48c9c",
+        "bytes": 3590,
+        "sha256": "9c5fdf123a61c8082a5cf9baf2a56e5b402cffaa0f5d01f7650a002a0691755b"
+      },
+      {
+        "file": "test/git_provider_test.rb",
+        "mode": "100644",
+        "git_blob": "16990dbe853f385b6f717b4dc4c73f5321bcb19f",
+        "bytes": 12650,
+        "sha256": "570813cfe1228e2c3d5d2d134e6b73bd39b8b4988bbdeb50949b80520ea7279b"
+      },
+      {
+        "file": "test/native_environment_test.rb",
+        "mode": "100644",
+        "git_blob": "a51e4285dd0f59f35d455b8853dad5d01427aacc",
+        "bytes": 20953,
+        "sha256": "bc2eb1b8d80c39f0898dfc874d636e6bcaef7bd729fec7b7947edfbc489aab4e"
+      },
+      {
+        "file": "test/native_platform_behavior.rb",
+        "mode": "100644",
+        "git_blob": "697e4812ada525143efcf47d88c80fe232eec590",
+        "bytes": 17735,
+        "sha256": "0fab490b23c480d6b967602a456276bde5596e9ac3b2d95fae9a083d0bf23e95"
+      },
+      {
+        "file": "test/portable_toolchain_test.rb",
+        "mode": "100644",
+        "git_blob": "e17c9a27e569b50b798dae2a3bc316dda64fc983",
+        "bytes": 25762,
+        "sha256": "20ea734ee20e34cf8b708dc36cdc39cd3bbaf6f9deb869e2c6c9d8bc37ecd6d1"
+      },
+      {
+        "file": "test/toolchain_candidate_test.rb",
+        "mode": "100644",
+        "git_blob": "312bc3ea7f2bec646e054b217805ea5b8fcae11c",
+        "bytes": 16027,
+        "sha256": "b06a6de967eafc259197cef09a8bd1d864faa31f9b6de84bed6d6fad42901428"
+      },
+      {
+        "file": "toolchain.darwin-arm64.json",
+        "mode": "100644",
+        "git_blob": "d67edb63afebb3a2bd97c6338d5f13738c460fff",
+        "bytes": 866,
+        "sha256": "c93be62cedcbbbfd143c887cbc1071486584e921d2fb5eaeef2c54f7d9e72dca"
+      }
+    ]
+  },
+  "alpha": {
+    "formula_sha256": "7ce1726c8c792836ec6e84013a1906c800dfaefc30954e96f0974a6bf17ab5f7",
+    "version": "1.21.0-incremental-1",
+    "source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+    "source_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+    "stdlib_sha256": "6f24303c59170478d3153f9d6fc3f1e4d61cc50b24528b8ff4a46be8fbe7f6ab",
+    "stdlib_file_count": 1692,
+    "stdlib_directory_aliases": {
+      "lib_c/aarch64-android": "aarch64-linux-android",
+      "lib_c/aarch64-ios": "aarch64-darwin",
+      "lib_c/aarch64-ios-simulator": "aarch64-darwin",
+      "lib_c/aarch64-linux-android/c/linux": "../../linux",
+      "lib_c/aarch64-linux-gnu/c/linux": "../../linux",
+      "lib_c/aarch64-linux-musl/c/linux": "../../linux",
+      "lib_c/aarch64-watchos": "aarch64-darwin",
+      "lib_c/aarch64-watchos-simulator": "aarch64-darwin",
+      "lib_c/aarch64-windows-gnu": "x86_64-windows-msvc",
+      "lib_c/aarch64-windows-msvc": "x86_64-windows-msvc",
+      "lib_c/amd64-unknown-openbsd": "x86_64-openbsd",
+      "lib_c/arm-linux-gnueabihf/c/linux": "../../linux",
+      "lib_c/i386-linux-gnu/c/linux": "../../linux",
+      "lib_c/i386-linux-musl/c/linux": "../../linux",
+      "lib_c/i686-linux-gnu": "i386-linux-gnu",
+      "lib_c/i686-linux-musl": "i386-linux-musl",
+      "lib_c/x86_64-linux-gnu/c/linux": "../../linux",
+      "lib_c/x86_64-linux-musl/c/linux": "../../linux",
+      "lib_c/x86_64-macosx-darwin": "x86_64-darwin",
+      "lib_c/x86_64-portbld-freebsd": "x86_64-freebsd",
+      "lib_c/x86_64-unknown-freebsd": "x86_64-freebsd",
+      "lib_c/x86_64-windows-gnu": "x86_64-windows-msvc"
+    },
+    "full_versions": {
+      "Linux": "Crystal 1.21.0 (2026-07-20)\n\nLLVM: 21.1.8\nDefault target: x86_64-unknown-linux-gnu\n",
+      "Darwin": "Crystal 1.21.0 (2026-07-20)\n\nLLVM: 21.1.8\nDefault target: aarch64-apple-darwin25.6.0\n"
+    }
+  },
+  "scope": "Same-runner ordinary Alpha install plus package/compiler/spec/tutorial readiness; schema-3 native/Git/frozen-install and customer-device acceptance remain separate."
+}

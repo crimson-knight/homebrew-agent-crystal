@@ -15,7 +15,7 @@ jobs:
   brew-install:
     name: "${{ matrix.os }} formula install"
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 75
     strategy:
       fail-fast: false
       matrix:
@@ -29,6 +29,10 @@ jobs:
       - name: Test installer behavior with private commands
         timeout-minutes: 2
         run: ruby test/install_test.rb
+
+      - name: Test SDK source and result validation
+        timeout-minutes: 2
+        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p 'test_sdk_install_qualification.py' -v
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
@@ -59,3 +63,16 @@ jobs:
           AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
           test "$(acrystal eval 'puts 6 * 7')" = "42"
           test "$(crystal-alpha eval 'puts 6 * 7')" = "42"
+
+      - name: Exercise public SDK with the ordinary installed compiler
+        timeout-minutes: 15
+        run: PYTHONDONTWRITEBYTECODE=1 python3 test/sdk_install_qualification.py --output "$RUNNER_TEMP/sdk-readiness"
+
+      - name: Preserve actual SDK results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: sdk-readiness-${{ matrix.os }}
+          path: ${{ runner.temp }}/sdk-readiness
+          if-no-files-found: warn
+          retention-days: 30
