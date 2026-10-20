@@ -1,0 +1,99 @@
+{
+  "format": "atlas-runtime-crypto-source-api-receipt-v1",
+  "source_archive": {
+    "bytes": 4435186,
+    "sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+    "source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+    "url": "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-1.tar.gz"
+  },
+  "exact_sources": [
+    {
+      "source_path": "src/digest/digest.cr",
+      "bytes": 7189,
+      "sha256": "da11811b4f916e7ab0e218c2060e3373c58341d23aa3af35af28fc6481249a04",
+      "joined_actual_stdlib_file": true,
+      "source_url": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/digest/digest.cr"
+    },
+    {
+      "source_path": "src/io.cr",
+      "bytes": 32836,
+      "sha256": "d4c265b0096cd57c9ed7eea94ccc7bb96ff7ec78214cf82d8fa130a5c0b28b9f",
+      "joined_actual_stdlib_file": true,
+      "source_url": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/io.cr"
+    },
+    {
+      "source_path": "src/kernel.cr",
+      "bytes": 21801,
+      "sha256": "305cdae6784e26b44c926490fbb51f0ba7492cd3de758d5aa05b258edffe5d73",
+      "joined_actual_stdlib_file": true,
+      "source_url": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/kernel.cr"
+    },
+    {
+      "source_path": "src/openssl/digest.cr",
+      "bytes": 2237,
+      "sha256": "75a0ac5822a3dd52518f8b6aa810e3b1db333b99f7896a78a4780c6d8f3774af",
+      "joined_actual_stdlib_file": true,
+      "source_url": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/openssl/digest.cr"
+    },
+    {
+      "source_path": "src/io/file_descriptor.cr",
+      "bytes": 10839,
+      "sha256": "1dbbbee8c87eaff096f4fab217ccdae1996d9d2a91a549b8fbf9fbb994c6a3a2",
+      "joined_actual_stdlib_file": true,
+      "source_url": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/io/file_descriptor.cr"
+    }
+  ],
+  "calls": [
+    {
+      "call": "OpenSSL::Digest.new(\"SHA256\")",
+      "source": "src/openssl/digest.cr",
+      "line": 14,
+      "signature": "def initialize(@name : String)"
+    },
+    {
+      "call": "digest.update(\"atlas-runtime\")",
+      "source": "src/digest/digest.cr",
+      "line": 116,
+      "signature": "def update(data) : self"
+    },
+    {
+      "call": "digest.hexfinal",
+      "source": "src/digest/digest.cr",
+      "line": 156,
+      "signature": "def hexfinal : String"
+    },
+    {
+      "call": "STDOUT << <String> << \"\\n\"",
+      "source": "src/io.cr",
+      "line": 178,
+      "signature": "def <<(obj : _) : self"
+    },
+    {
+      "call": "STDOUT constant",
+      "source": "src/kernel.cr",
+      "line": 43,
+      "signature": "STDOUT = IO::FileDescriptor.from_stdio(1)"
+    }
+  ],
+  "actual_project_lookup_performed": false,
+  "actual_formatter_performed": false,
+  "actual_compiler_performed": false,
+  "available_source_cards": "Exact pinned source signatures joined to the accepted actual ordinary installed standard-library roster; source-derived cards only",
+  "required_actual_project_lookup": [
+    "amber-lsp lookup 'OpenSSL::Digest.new' --root <actual SDK private crypto project>",
+    "amber-lsp lookup 'OpenSSL::Digest#update' --root <actual SDK private crypto project>",
+    "amber-lsp lookup 'OpenSSL::Digest#hexfinal' --root <actual SDK private crypto project>",
+    "amber-lsp lookup 'IO#<<' --root <actual SDK private crypto project>"
+  ],
+  "pending": "Source-only ownership defers actual-project Amber LSP lookup/provider admission; hosted original wrapper format/build/runtime exercises remain scheduled by the qualifier",
+  "rubric": {
+    "major_1_2_3_4_6_7_8_9_12_13_14_15": "n/a: standalone constant-input fixture without application settings, JSON, Grant or shard changes",
+    "major_5": "Source selects the actual ordinary crystal-alpha wrapper and requires GREEN",
+    "major_10": "Pending actual hosted behavior; source/mock controls are separate",
+    "major_11": "Pending actual hosted format --check, scheduled before build"
+  },
+  "primary_sources": [
+    "https://docs.brew.sh/rubydoc/Formula.html#runtime_dependencies-instance_method",
+    "https://crystal-lang.org/api/1.20.0/OpenSSL/Digest.html"
+  ]
+}

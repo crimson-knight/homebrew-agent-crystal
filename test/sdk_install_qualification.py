@@ -70,18 +70,237 @@ def verify_formula_receipt(receipt, expected):
     require(installed[0].get("poured_from_bottle") is False, "This source-build qualification requires the actual same-job build")
 
 
-def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system):
+def literal_runtime_path(path):
+    path = pathlib.Path(path)
+    require(path.is_absolute() and not any(character in str(path) for character in ('"', "\\", "$", "`", "\n", "\r", ":")), "Runtime paths require literal absolute single-component library roots")
+    return path
+
+
+def derive_runtime_dependencies(metadata, brew_root):
+    """Resolve declared required/recommended/selected-optional metadata independently."""
+    brew_root = literal_runtime_path(brew_root)
+    formulae = metadata["formulae"]
+    require(isinstance(formulae, list) and 1 <= len(formulae) <= 256, "Bounded installed formula metadata roster required")
+    by_name = {}
+    for row in formulae:
+        name = row["name"]
+        require(re.fullmatch(r"[a-z0-9][a-z0-9+_.@-]*", name) is not None and name not in by_name, "Unique canonical installed formula names required")
+        by_name[name] = row
+    require("agent-crystal" in by_name, "Installed Alpha dependency root required")
+    visited, active, result = set(), set(), []
+    def visit(name):
+        require(name in by_name and name not in active, "Installed declared runtime dependency closure requires present acyclic metadata")
+        if name in visited:
+            return
+        active.add(name)
+        row = by_name[name]
+        installed = row["installed"]
+        require(isinstance(installed, list) and len(installed) == 1 and isinstance(installed[0]["version"], str), "One exact installed version per selected dependency required")
+        require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9+_.-]*", installed[0]["version"]) is not None, "Literal installed dependency version required")
+        options = installed[0].get("used_options", [])
+        require(isinstance(options, list) and all(isinstance(value, str) for value in options), "Actual selected installed dependency options required")
+        dependencies = list(row["dependencies"])
+        for entry in row.get("uses_from_macos", []):
+            if isinstance(entry, str):
+                dependencies.append(entry)
+            else:
+                require(isinstance(entry, dict) and len(entry) == 1, "Declared Linux uses-from-macOS dependency metadata required")
+                dependency_name, tags = next(iter(entry.items()))
+                tags = [tags] if isinstance(tags, str) else tags
+                require(isinstance(tags, list) and all(tag in ("build", "test", "recommended", "optional") for tag in tags), "Explicit uses-from-macOS dependency tags required")
+                if not set(tags).intersection(("build", "test")):
+                    dependencies.append(dependency_name)
+        dependencies += [value for value in row.get("recommended_dependencies", []) if "--without-" + value.rsplit("/", 1)[-1] not in options]
+        dependencies += [value for value in row.get("optional_dependencies", []) if "--with-" + value.rsplit("/", 1)[-1] in options]
+        require(all(isinstance(value, str) and re.fullmatch(r"(?:[a-zA-Z0-9_.@+-]+/)*[a-z0-9][a-z0-9+_.@-]*", value) is not None for value in dependencies), "Literal declared runtime dependency names required")
+        for dependency in sorted(set(dependencies)):
+            visit(dependency.rsplit("/", 1)[-1])
+        active.remove(name)
+        visited.add(name)
+        if name != "agent-crystal":
+            result.append({"name": name, "version": installed[0]["version"], "used_options": options,
+                           "opt_library": str(brew_root / "opt" / name / "lib")})
+    visit("agent-crystal")
+    return sorted(result, key=lambda row: row["name"])
+
+
+def runtime_directory_identity(path, contained_root):
+    path, contained_root = pathlib.Path(path), pathlib.Path(contained_root)
+    require(path.is_dir(), "Actual runtime library directory required")
+    resolved = path.resolve(strict=True)
+    require(resolved.is_relative_to(contained_root.resolve(strict=True)), "Runtime library directory escaped its admitted package/prefix root")
+    lexical, physical = path.lstat(), resolved.stat()
+    return {"path": str(path), "contained_root": str(contained_root), "resolved_path": str(resolved),
+            "symlink_target": os.readlink(path) if path.is_symlink() else None,
+            "device": lexical.st_dev, "inode": lexical.st_ino, "mode": lexical.st_mode,
+            "resolved_device": physical.st_dev, "resolved_inode": physical.st_ino, "resolved_mode": physical.st_mode}
+
+
+def runtime_dependency_identity(metadata, prefix, brew_root):
+    prefix, brew_root = literal_runtime_path(prefix), literal_runtime_path(brew_root)
+    rows = derive_runtime_dependencies(metadata, brew_root)
+    roots = [row for row in metadata["formulae"] if row["name"] == "agent-crystal"]
+    require(len(roots) == 1 and roots[0]["installed"][0]["version"] == prefix.name and prefix.parent.name == "agent-crystal" and prefix.parent.parent.resolve(strict=True) == (brew_root / "Cellar").resolve(strict=True), "Fresh Alpha root metadata version must match the actual installed package prefix")
+    paths = [str(brew_root / "lib")]
+    require((brew_root / "lib").is_dir(), "Ordinary Homebrew prefix library directory required")
+    prefix_library_identity = runtime_directory_identity(brew_root / "lib", brew_root)
+    for row in rows:
+        opt = brew_root / "opt" / row["name"]
+        require(opt.is_symlink(), "Installed dependency requires its actual opt alias")
+        physical = opt.resolve(strict=True)
+        expected = brew_root / "Cellar" / row["name"] / row["version"]
+        require(physical == expected.resolve(strict=True) and physical.is_dir(), "Installed dependency version/opt identity join required")
+        row["opt_alias_target"] = os.readlink(opt)
+        row["physical_prefix"] = str(physical)
+        row["identities"] = []
+        for path in (physical / "INSTALL_RECEIPT.json", physical / ".brew" / (row["name"] + ".rb")):
+            require(path.is_file() and not path.is_symlink() and path.stat().st_size <= 2 * 1024**2, "Bounded actual dependency receipt/formula identity required")
+            row["identities"].append({"path": str(path), "bytes": path.stat().st_size, "sha256": sha256(path)})
+        library = pathlib.Path(row["opt_library"])
+        row["has_library_directory"] = library.is_dir()
+        if row["has_library_directory"]:
+            require(library.resolve(strict=True).is_relative_to(physical), "Contained actual dependency library directory required")
+            row["library_path_identity"] = runtime_directory_identity(library, physical)
+            paths.append(str(library))
+        else:
+            require(not library.exists() and not library.is_symlink(), "Absent dependency library path requires ordinary absence")
+    paths = sorted(set(paths))
+    manifest = prefix / "share/agent-crystal/runtime_library_paths.txt"
+    require(manifest.is_file() and not manifest.is_symlink() and manifest.stat().st_size <= 64 * 1024, "Bounded ordinary installed runtime-path manifest required")
+    raw = manifest.read_bytes()
+    require(raw == ("\n".join(paths) + "\n").encode(), "Emitted runtime-path manifest differs from independently derived installed dependencies")
+    return {"root_installed_version": prefix.name, "root_prefix": str(prefix), "prefix_library_identity": prefix_library_identity, "library_paths": paths, "manifest": {"path": str(manifest), "bytes": len(raw), "sha256": sha256(manifest)},
+            "dependencies": rows, "scope": "Declared installed dependency paths and exact receipt/formula aliases; full loader closure remains separately unqualified"}
+
+
+def verify_runtime_dependency_identity(value):
+    prefix_library = value["prefix_library_identity"]
+    require(runtime_directory_identity(prefix_library["path"], prefix_library["contained_root"]) == prefix_library, "Homebrew prefix library directory/alias identity changed")
+    manifest = value["manifest"]
+    path = pathlib.Path(manifest["path"])
+    require(path.is_file() and not path.is_symlink() and path.stat().st_size == manifest["bytes"] and sha256(path) == manifest["sha256"], "Installed runtime manifest changed")
+    for row in value["dependencies"]:
+        opt = pathlib.Path(row["opt_library"]).parent
+        require(opt.is_symlink() and os.readlink(opt) == row["opt_alias_target"] and str(opt.resolve(strict=True)) == row["physical_prefix"], "Installed dependency opt alias changed")
+        library = pathlib.Path(row["opt_library"])
+        require(library.is_dir() is row["has_library_directory"], "Installed dependency library presence changed")
+        if row["has_library_directory"]:
+            identity = runtime_directory_identity(library, pathlib.Path(row["physical_prefix"]))
+            require(identity == row["library_path_identity"], "Installed dependency library path/alias identity changed")
+        else:
+            require(not library.exists() and not library.is_symlink(), "Absent dependency library path changed")
+        for identity in row["identities"]:
+            path = pathlib.Path(identity["path"])
+            require(path.is_file() and not path.is_symlink() and path.stat().st_size == identity["bytes"] and sha256(path) == identity["sha256"], "Installed dependency receipt/formula changed")
+
+
+def collect_runtime_dependency_identity(runner, brew, prefix, brew_root, output, cwd, environment=None):
+    text, errors = runner.run("runtime-dependency-metadata", [brew, "info", "--json=v2", "--installed"], cwd=cwd, environment=environment, seconds=45)
+    require(not errors, "Installed dependency metadata stderr requires review")
+    value = runtime_dependency_identity(json.loads(text), prefix, brew_root)
+    write_json(output / "RUNTIME_LIBRARY_PATHS.json", value)
+    return value
+
+
+def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system, runtime_identity=None):
     require(system in ("Linux", "Darwin"), "Wrapper platform requires a reviewed template")
     for path in (compiler, stdlib, homebrew_prefix):
         require(path.is_absolute() and not any(character in str(path) for character in ('"', "\\", "$", "`", "\n", "\r")),
                 "Wrapper source requires literal absolute Homebrew paths")
     parts = [re.escape('CRYSTAL_PATH="lib:' + str(stdlib) + '"')]
     if system == "Linux":
-        parts.append(re.escape('LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + str(homebrew_prefix / "lib") + '"'))
+        if callable(runtime_identity):
+            runtime_identity = runtime_identity()
+        require(compiler.parent.parent.name != "1.21.0-incremental-1_2" or runtime_identity is not None, "Qualified revision2 Linux wrapper requires independently verified runtime identity")
+        if runtime_identity is not None:
+            verify_runtime_dependency_identity(runtime_identity)
+        paths = runtime_identity["library_paths"] if runtime_identity is not None else [str(homebrew_prefix / "lib")]
+        require(paths == sorted(set(paths)) and paths and str(homebrew_prefix / "lib") in paths, "Exact canonical runtime library path roster required")
+        for path in paths:
+            literal_runtime_path(path)
+        parts.append(re.escape('LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + ":".join(paths) + '"'))
     parts.extend(["exec", re.escape('"' + str(compiler) + '"'), re.escape('"$@"')])
     pattern = r"\A#!/bin/bash\n" + r"[ \t]+".join(parts) + r"[ \t]*\n\Z"
     require(re.fullmatch(pattern, wrapper) is not None,
             "Alpha wrapper must match the exact static Homebrew Bash environment and argv template")
+
+
+def installed_alias_identity(entrypoint, physical):
+    entrypoint, physical = pathlib.Path(entrypoint).absolute(), pathlib.Path(physical)
+    require(entrypoint.is_file() and entrypoint.resolve(strict=True) == physical and physical.is_file() and not physical.is_symlink(), "Ordinary public alias requires the exact installed physical wrapper")
+    return {"path": str(physical), "sha256": sha256(physical), "entrypoint": str(entrypoint),
+            "entrypoint_resolved": str(entrypoint.resolve(strict=True)), "entrypoint_symlink_target": os.readlink(entrypoint) if entrypoint.is_symlink() else None}
+
+
+def verify_installed_alias_identity(value):
+    require(installed_alias_identity(value["entrypoint"], pathlib.Path(value["path"])) == value, "Ordinary public alias resolution or installed wrapper changed")
+
+
+def retain_failed_spec_binaries(private, output, writers_confirmed_retired):
+    observed = []
+    if writers_confirmed_retired is not True:
+        return {"retained": observed, "scope": "Original writers remain alive or unverifiable; private evidence preserved under existing return policy"}
+    for label in ("default-specs", "without-mt-specs"):
+        binary = private / label / "cache/crystal-run-spec.tmp"
+        if binary.exists() or binary.is_symlink():
+            require(binary.is_file() and not binary.is_symlink() and binary.stat().st_size <= 20 * 1024**2, "Bounded ordinary failed-spec ELF retention required")
+            destination = output / (label + "-failed-spec.bin")
+            before = sha256(binary)
+            shutil.copyfile(binary, destination)
+            require(sha256(binary) == before == sha256(destination), "Exact stable returned failed-spec binary snapshot required")
+            observed.append({"label": label, "path": destination.name, "sha256": before, "bytes": destination.stat().st_size})
+    return {"retained": observed, "scope": "Bounded failed same-job SDK spec ELF after verified original-group return; actual link-selection remains for independent metadata replay"}
+
+
+CRYPTO_CONSUMER = b'require "openssl"\n\ndigest = OpenSSL::Digest.new("SHA256")\ndigest.update("atlas-runtime")\nSTDOUT << digest.hexfinal << "\\n"\n'
+CRYPTO_EXPECTED = hashlib.sha256(b"atlas-runtime").hexdigest() + "\n"
+
+
+def exercise_crypto_consumer(runner, wrapper, private, output, environment):
+    source, binary = private / "crypto_consumer.cr", private / "crypto_consumer"
+    source.write_bytes(CRYPTO_CONSUMER)
+    (output / "CRYPTO_CONSUMER.cr").write_bytes(CRYPTO_CONSUMER)
+    readelf = pathlib.Path(shutil.which("readelf") or "").resolve(strict=True)
+    require(readelf.is_file(), "Ordinary Linux ELF metadata provider required")
+    readelf_identity = {"path": str(readelf), "sha256": sha256(readelf), "bytes": readelf.stat().st_size}
+    observed = {"passed": False, "source_sha256": sha256(source), "readelf": readelf_identity,
+                "actual_project_api_lookup_qualified": False, "api_lookup_scope": "Exact pinned source signatures documented in the source receipt; actual-project Amber LSP provider/lookup remains a separate gate",
+                "scope": "Ordinary installed wrapper builds and executes one OpenSSL SHA256 consumer; emitted ELF retained, complete loader closure remains separate"}
+    original_error = None
+    retention_error = None
+    try:
+        runner.run("crypto-consumer-format", [wrapper, "tool", "format", "--check", "--no-color", source], cwd=private, environment=environment, seconds=15)
+        stdout, errors = runner.run("crypto-consumer-build", [wrapper, "build", "--no-color", "--error-on-warnings", "-Dwithout_mt", "--threads", "1", source, "-o", binary],
+                                    cwd=private, environment=dict(environment, CRYSTAL_CACHE_DIR=str(private / "crypto-cache")), seconds=120)
+        require(not stdout and not errors, "Cryptographic consumer compilation requires GREEN")
+        require(binary.is_file() and not binary.is_symlink() and binary.stat().st_size <= 20 * 1024**2, "Bounded ordinary cryptographic consumer ELF required")
+        before = sha256(binary)
+        runner.run("crypto-consumer-elf", [readelf, "-W", "-d", "-l", binary], cwd=private, environment=environment, seconds=10)
+        stdout, errors = runner.run("crypto-consumer-runtime", [binary], cwd=private, environment=environment, seconds=10)
+        require(stdout == CRYPTO_EXPECTED and not errors, "Exact ordinary OpenSSL SHA256 behavior required")
+        require(sha256(binary) == before and sha256(source) == observed["source_sha256"] and sha256(readelf) == readelf_identity["sha256"], "Cryptographic source/binary/ELF metadata provider changed")
+        observed.update(passed=True, binary_sha256=before)
+    except Exception as error:
+        observed["error"] = f"{type(error).__name__}: {error}"
+        original_error = error
+    finally:
+        try:
+            if binary.exists() or binary.is_symlink():
+                require(runner.writers_confirmed_retired is True, "Crypto binary retention requires confirmed original writer retirement")
+                require(binary.is_file() and not binary.is_symlink() and binary.stat().st_size <= 20 * 1024**2, "Bounded ordinary crypto binary retention required")
+                before = sha256(binary)
+                shutil.copyfile(binary, output / "CRYPTO_CONSUMER.bin")
+                require(sha256(binary) == before == sha256(output / "CRYPTO_CONSUMER.bin"), "Exact stable returned cryptographic binary snapshot required")
+                observed["retained_binary"] = {"sha256": before, "bytes": binary.stat().st_size}
+        except Exception as error:
+            observed["retention_error"] = f"{type(error).__name__}: {error}"
+            observed["passed"] = False
+            retention_error = error
+        write_json(output / "CRYPTO_CONSUMER.json", observed)
+    if original_error is not None:
+        raise original_error
+    if retention_error is not None:
+        raise retention_error
 
 
 def extract_sdk(archive_path, destination, expected):
@@ -292,15 +511,30 @@ class Runner:
         return stdout_path.read_text(), stderr_path.read_text()
 
 
+def make_readiness_runner(output):
+    """Bound this SDK roster while delegating each command to the exact reviewed Runner."""
+    runner = Runner(output)
+    runner.maximum_command_count = 16 if platform.system() == "Linux" else 11
+    original_run = runner.run
+    def bounded_run(*arguments, **settings):
+        require(len(runner.records) < runner.maximum_command_count, "SDK exceeded its finite original/new command roster")
+        return original_run(*arguments, **settings)
+    runner.run = bounded_run
+    return runner
+
+
 def qualify(output, lock):
     output.mkdir(parents=True, exist_ok=False)
-    runner = Runner(output)
+    runner = make_readiness_runner(output)
     result = {"passed": False, "scope": lock["scope"], "sdk_commit": lock["sdk"]["commit"],
               "full_native_provider_acceptance": False, "frozen_dependency_installation_accepted": False,
               "customer_device_accepted": False, "compiler_color": "UNEXECUTED",
               "owned_group_observation_scope": "original POSIX process group",
               "actual_group_recovery_qualified": False, "detached_session_coverage_qualified": False}
     private = None
+    runtime_identity = None
+    package_inputs = {}
+    linux_aliases = {}
     try:
         require(platform.system() in lock["alpha"]["full_versions"], "Runner platform requires a reviewed expectation")
         require(shutil.disk_usage(output).free >= 13 * 1024**3, "SDK readiness requires 3 GiB projection plus a 10 GiB disk floor")
@@ -335,13 +569,27 @@ def qualify(output, lock):
         require(sha256(prefix / ".brew/agent-crystal.rb") == lock["alpha"]["formula_sha256"], "Installed formula source differs")
         shutil.copyfile(prefix / ".brew/agent-crystal.rb", output / "INSTALLED_FORMULA.rb")
         shutil.copyfile(prefix / "INSTALL_RECEIPT.json", output / "INSTALL_RECEIPT.json")
+        package_inputs = {str(path): sha256(path) for path in (repository / "Formula/agent-crystal.rb", prefix / ".brew/agent-crystal.rb", prefix / "INSTALL_RECEIPT.json", pathlib.Path(__file__), pathlib.Path(__file__).with_name("sdk_source_lock.json"))}
+        write_json(output / "PACKAGE_INPUTS_BEFORE.json", package_inputs)
         compiler = prefix / "libexec/agent-crystal-bin"
         entrypoint = pathlib.Path(shutil.which("crystal-alpha") or "").resolve()
         require(entrypoint == prefix / "bin/crystal-alpha", "crystal-alpha must select this ordinary formula installation")
         wrapper = entrypoint.read_text()
         (output / "COMPILER_WRAPPER.sh").write_text(wrapper)
         stdlib = prefix / "share/agent-crystal/src"
-        verify_wrapper(wrapper, compiler, stdlib, brew_root, platform.system())
+        if platform.system() == "Linux":
+            runtime_identity = collect_runtime_dependency_identity(runner, brew, prefix, brew_root, output, source)
+        verify_wrapper(wrapper, compiler, stdlib, brew_root, platform.system(), runtime_identity)
+        linux_aliases = {}
+        if runtime_identity is not None:
+            for alias in ("acrystal", "agent-crystal", "crystal-alpha"):
+                alias_path = prefix / "bin" / alias
+                alias_entrypoint = pathlib.Path(shutil.which(alias) or "").absolute()
+                require(alias_entrypoint.resolve(strict=True) == alias_path, "Every Linux alias must select the same ordinary formula")
+                verify_wrapper(alias_path.read_text(), compiler, stdlib, brew_root, "Linux", runtime_identity)
+                linux_aliases[alias] = installed_alias_identity(alias_entrypoint, alias_path)
+                (output / (alias + "-wrapper.sh")).write_bytes(alias_path.read_bytes())
+            write_json(output / "LINUX_ALIAS_WRAPPERS.json", linux_aliases)
         stdlib_identity = tree_identity(stdlib)
         write_json(output / "STDLIB_BEFORE.json", stdlib_identity)
         verify_stdlib(stdlib_identity, lock["alpha"])
@@ -382,6 +630,8 @@ def qualify(output, lock):
         installed = verify_bundle(bundle)
         require(sha256(bundle / "PACKAGE_PINS.json") == sha256(source / "PACKAGE_PINS.json"), "Installed manifest differs from the pinned public source")
         write_json(output / "INSTALLED_BUNDLE_BEFORE.json", installed)
+        if platform.system() == "Linux":
+            exercise_crypto_consumer(runner, entrypoint, private, output, environment)
         for label, flags in (("default-specs", []), ("without-mt-specs", ["-Dwithout_mt"])):
             environment["CRYSTAL_CACHE_DIR"] = str(private / label / "cache")
             stdout, stderr = runner.run(label, [ruby_launcher, bundle / "scripts/budget.rb", "spec", "-Dfiber_allocation_tally", *flags],
@@ -407,8 +657,15 @@ def qualify(output, lock):
         require(sha256(binary) == binary_digest, "Both tutorial controls require the same executable")
         require(sha256(compiler) == profile["compiler_sha256"] and sha256(entrypoint) == profile["wrapper_sha256"], "Alpha compiler changed during execution")
         require(sha256(ruby_backend) == profile["ruby_sha256"] and sha256(ruby_launcher) == profile["ruby_launcher_sha256"], "Ruby provider changed during execution")
+        for path, expected in package_inputs.items():
+            require(sha256(path) == expected, "Installed package/formula/qualifier/source-lock inputs changed")
+        write_json(output / "PACKAGE_INPUTS_AFTER.json", {path: sha256(path) for path in package_inputs})
         verify_source(source, lock["sdk"]["files"])
         require(verify_bundle(bundle) == installed, "SDK bundle changed during execution")
+        if runtime_identity is not None:
+            verify_runtime_dependency_identity(runtime_identity)
+            for alias in linux_aliases.values():
+                verify_installed_alias_identity(alias)
         after = tree_identity(stdlib)
         write_json(output / "STDLIB_AFTER.json", after)
         verify_stdlib(after, lock["alpha"])
@@ -422,7 +679,36 @@ def qualify(output, lock):
         result["private_directory"] = str(private) if private is not None else None
         result["owned_group_observations"] = runner.group_observations
         result["writers_confirmed_retired"] = runner.writers_confirmed_retired
+        finalization_errors = []
+        final_package_inputs = {}
+        for path, expected in package_inputs.items():
+            try:
+                observed = sha256(path)
+                final_package_inputs[path] = observed
+                require(observed == expected, "Installed package/formula/qualifier/source-lock inputs changed")
+            except Exception as error:
+                finalization_errors.append(f"Package {path}: {type(error).__name__}: {error}")
+        if package_inputs:
+            write_json(output / "PACKAGE_INPUTS_AFTER.json", final_package_inputs)
+        if runtime_identity is not None:
+            try:
+                verify_runtime_dependency_identity(runtime_identity)
+            except Exception as error:
+                finalization_errors.append(f"Runtime identity: {type(error).__name__}: {error}")
+        for alias in linux_aliases.values():
+            try:
+                verify_installed_alias_identity(alias)
+            except Exception as error:
+                finalization_errors.append(f"Alias {alias['path']}: {type(error).__name__}: {error}")
+        result["finalization_errors"] = finalization_errors
+        if finalization_errors:
+            result["passed"] = False
         try:
+            if private is not None and result.get("passed") is not True:
+                try:
+                    result["failed_spec_binary_evidence"] = retain_failed_spec_binaries(private, output, runner.writers_confirmed_retired)
+                except Exception as retention_error:
+                    result["failed_spec_binary_retention_error"] = f"{type(retention_error).__name__}: {retention_error}"
             if private is not None and not runner.writers_confirmed_retired:
                 result["private_cache_removed"] = False
                 result["private_cache_preserved"] = True
@@ -440,6 +726,12 @@ def qualify(output, lock):
                 result["passed"] = False
                 result.setdefault("cleanup_error", "Private source and cache removal remains incomplete")
             result["command_count"] = len(runner.records)
+            result["maximum_command_count"] = runner.maximum_command_count
+            result["maximum_seconds"] = 840
+            result["terminal_elapsed_seconds"] = time.monotonic() - (runner.deadline - 840)
+            if result["terminal_elapsed_seconds"] > 840:
+                result["passed"] = False
+                result["finalization_errors"].append("Complete SDK terminal time budget exceeded")
             write_json(output / "READINESS_RESULT.json", result)
     print(json.dumps(result, indent=2))
     return 0 if result["passed"] else 1

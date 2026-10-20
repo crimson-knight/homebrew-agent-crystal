@@ -7,17 +7,20 @@ import json
 import os
 import pathlib
 import platform
+import re
 import resource
 import shutil
 import sys
+import struct
 import time
 
 FIXTURE = b"puts 40 + 2\n"
-DRIVER_SHA256 = "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797"
-LOCK_SHA256 = "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4"
+DRIVER_SHA256 = "f6b709e32790ad89a160910afac03beeffa5f160d7b06af4027ceae9f98da396"
+LOCK_SHA256 = "40d43a7faa200a125448b02ddeaf2b0e9bd043f54de847edd970ede48dabe79d"
 MAXIMUM_SECONDS = 240
 MAXIMUM_RAW_BYTES = 32 * 1024**2
 MAXIMUM_BINARY_BYTES = 16 * 1024**2
+MAXIMUM_DISASSEMBLY_WINDOW_BYTES = 256
 HOMEBREW_CONTEXT_KEYS = ("USER", "LOGNAME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "XDG_DATA_HOME",
     "HOMEBREW_XDG_CONFIG_HOME", "HOMEBREW_USER_CONFIG_HOME", "HOMEBREW_USER_CACHE_HOME",
     "HOMEBREW_CACHE", "HOMEBREW_PREFIX", "HOMEBREW_CELLAR", "HOMEBREW_REPOSITORY",
@@ -105,6 +108,68 @@ def contrast_phase(build, run, output):
     return "arithmetic_build_and_runtime_passed"
 
 
+def disassembly_selection(binary, debugger_text=None):
+    """Select a finite ELF address window, or an explicitly unqualified entry symbol."""
+    try:
+        require(binary.stat().st_size <= MAXIMUM_BINARY_BYTES, "Finite generated ELF required")
+        with binary.open("rb") as stream:
+            raw = stream.read(MAXIMUM_BINARY_BYTES + 1)
+        require(64 <= len(raw) <= MAXIMUM_BINARY_BYTES and raw[:6] == b"\x7fELF\x02\x01",
+                "ELF64 little-endian metadata required for an address selection")
+        header = struct.unpack_from("<16sHHIQQQIHHHHHH", raw)
+        kind, machine, entry, offset, size, count = header[1], header[2], header[4], header[5], header[9], header[10]
+        require(kind in (2, 3) and machine == 62 and size == 56 and 1 <= count <= 256
+                and offset + size * count <= len(raw), "Bounded x86-64 ELF program headers required")
+        segments = []
+        for index in range(count):
+            row = struct.unpack_from("<IIQQQQQQ", raw, offset + index * size)
+            require(row[2] + row[5] <= len(raw) and row[5] <= row[6], "Contained ELF load segment required")
+            if row[0] == 1 and row[1] & 1:
+                segments.append(row)
+        center, basis, runtime_pc = entry, "ELF entry point", None
+        if debugger_text is not None:
+            require("SIGILL" in debugger_text, "Actual debugger SIGILL required for fault selection")
+            pcs = re.findall(r"(?m)^rip\s+0x([0-9a-fA-F]+)\b", debugger_text)
+            entries = re.findall(r"(?m)^\s*Entry point:\s*0x([0-9a-fA-F]+)\b", debugger_text)
+            require(len(pcs) == len(entries) == 1, "One actual RIP and runtime ELF entry point required")
+            runtime_pc, runtime_entry = int(pcs[0], 16), int(entries[0], 16)
+            slide = runtime_entry - entry
+            require((kind == 2 and slide == 0) or (kind == 3 and slide >= 0 and slide % 4096 == 0),
+                    "Exact executable or page-aligned PIE relocation required")
+            center, basis = runtime_pc - slide, "Actual SIGILL RIP mapped through runtime ELF entry point"
+        matches = [row for row in segments if row[3] <= center < row[3] + row[5]]
+        require(len(matches) == 1, "One file-backed executable segment must contain the selection")
+        segment = matches[0]
+        start = max(segment[3], center - (64 if debugger_text is not None else 0))
+        stop = min(segment[3] + segment[5], start + MAXIMUM_DISASSEMBLY_WINDOW_BYTES)
+        require(start <= center < stop and 0 < stop - start <= MAXIMUM_DISASSEMBLY_WINDOW_BYTES,
+                "Finite selected instruction window required")
+        result = {"kind": "address-window", "selection_qualified": True, "basis": basis,
+                  "start_address": start, "stop_address": stop, "center_address": center,
+                  "maximum_window_bytes": MAXIMUM_DISASSEMBLY_WINDOW_BYTES,
+                  "runtime_rip": runtime_pc, "binary_sha256": hashlib.sha256(raw).hexdigest()}
+        if debugger_text is not None:
+            file_offset = segment[2] + center - segment[3]
+            result["fault_file_offset"] = file_offset
+            result["fault_file_bytes_hex"] = raw[file_offset:min(file_offset + 16, segment[2] + segment[5])].hex()
+        return result
+    except (RuntimeError, struct.error, ValueError) as error:
+        return {"kind": "selected-symbol", "symbol": "_start", "selection_qualified": False,
+                "selection_error": f"{type(error).__name__}: {error}",
+                "scope": "Bounded provider output still applies; this entry-symbol fallback qualifies no fault address."}
+
+
+def disassembly_arguments(tool, binary, selection):
+    if selection["kind"] == "address-window":
+        start, stop = selection["start_address"], selection["stop_address"]
+        require(type(start) is int and type(stop) is int and 0 <= start < stop
+                and stop - start <= MAXIMUM_DISASSEMBLY_WINDOW_BYTES, "Exact finite disassembly addresses required")
+        return [tool, "-d", "--start-address=" + hex(start), "--stop-address=" + hex(stop), binary]
+    require(selection["kind"] == "selected-symbol" and selection["symbol"] == "_start",
+            "Exact entry-symbol fallback required")
+    return [tool, "-d", "--disassemble=_start", binary]
+
+
 def environment_for(cache):
     environment = {key: value for key, value in os.environ.items()
                    if key in ("PATH", "HOME", "TMPDIR", "LANG", "LC_ALL")}
@@ -181,6 +246,8 @@ def qualify(arguments):
                  str(lock_path): LOCK_SHA256}
     stdlib = None
     before = None
+    runtime_identity = {}
+    runtime_aliases = {}
     try:
         write_json(output / "CPU_METADATA.json", cpu_metadata(output))
         filtered_environment = dict(environment_for(output / "metadata-cache"),
@@ -225,10 +292,21 @@ def qualify(arguments):
         protected[str(compiler)] = digest(compiler)
         result["providers"]["compiler"] = provider(compiler)
         aliases = {}
+        runtime_identity = {}
+        def runtime_context():
+            if not runtime_identity:
+                record = command("runtime-dependency-metadata", [brew, "info", "--json=v2", "--installed"], 45)
+                require(command_passed(record, output), "Actual installed runtime dependency metadata required")
+                value = driver.runtime_dependency_identity(json.loads((output / "runtime-dependency-metadata.stdout.txt").read_text()), prefix, brew_root)
+                runtime_identity.update(value)
+                write_json(output / "RUNTIME_LIBRARY_PATHS.json", value)
+            runtime_aliases[alias] = driver.installed_alias_identity(alias_entrypoint, wrapper)
+            return runtime_identity
         for alias in ("acrystal", "agent-crystal", "crystal-alpha"):
-            wrapper = pathlib.Path(shutil.which(alias) or "").resolve(strict=True)
+            alias_entrypoint = pathlib.Path(shutil.which(alias) or "").absolute()
+            wrapper = alias_entrypoint.resolve(strict=True)
             require(wrapper == prefix / "bin" / alias, "Alias requires the same ordinary installation")
-            driver.verify_wrapper(wrapper.read_text(), compiler, stdlib, brew_root, "Linux")
+            driver.verify_wrapper(wrapper.read_text(), compiler, stdlib, brew_root, "Linux", runtime_context)
             protected[str(wrapper)] = digest(wrapper)
             result["providers"][alias] = provider(wrapper)
             shutil.copyfile(wrapper, output / (alias + "-wrapper.txt"))
@@ -257,20 +335,31 @@ def qualify(arguments):
                             "--threads", "1", fixture, "-o", binary], 60, env)
             runtime = None
             row = {"target_flags": flags, "build": build}
+            result["contrasts"][target] = row
             if command_passed(build, output):
                 require(binary.is_file() and not binary.is_symlink() and binary.stat().st_size <= MAXIMUM_BINARY_BYTES,
                         "Finite regular generated binary required")
                 row["binary_before"] = provider(binary)
                 runtime = command(target + "-runtime", [binary], 10, env)
                 row["runtime"] = runtime
-                row["disassembly"] = command(target + "-disassembly", [tools["objdump"], "-d", binary], 15, env)
-                require(command_passed(row["disassembly"], output), "Complete disassembly required")
+                debugger_text = None
                 if runtime["exit_code"] == -4 and "gdb" in tools:
                     row["debugger"] = command(target + "-fault-location", [tools["gdb"], "--batch", "-nx", "-nh",
                         "-iex", "set auto-load off",
                         "-ex", "set pagination off", "-ex", "set debuginfod enabled off",
                         "-ex", "set startup-with-shell off", "-ex", "run", "-ex", "info registers",
-                        "-ex", "x/16i $pc-16", "-ex", "info symbol $pc", "--args", binary], 15, env)
+                        "-ex", "info files", "-ex", "x/16i $pc", "-ex", "x/16xb $pc",
+                        "-ex", "info symbol $pc", "--args", binary], 15, env)
+                    if row["debugger"]["exit_code"] == 0:
+                        debugger_text = (output / (target + "-fault-location.stdout.txt")).read_text()
+                row["disassembly_selection"] = disassembly_selection(binary, debugger_text)
+                row["fault_address_qualified"] = (runtime["exit_code"] == -4 and debugger_text is not None
+                    and row["disassembly_selection"]["selection_qualified"] is True)
+                row["fault_evidence_scope"] = ("Actual debugger RIP and retained ELF address bytes"
+                    if row["fault_address_qualified"] else "Fault-address qualification pending when no valid in-binary debugger mapping is retained")
+                row["disassembly"] = command(target + "-disassembly",
+                    disassembly_arguments(tools["objdump"], binary, row["disassembly_selection"]), 15, env)
+                require(command_passed(row["disassembly"], output), "Complete selected disassembly required")
                 row["binary_after"] = provider(binary)
                 require(row["binary_before"] == row["binary_after"], "Generated binary changed during runtime or disassembly")
             row["eval"] = command(target + "-eval", [aliases["acrystal"], "eval", *flags, "puts 40 + 2"], 45, env)
@@ -278,6 +367,8 @@ def qualify(arguments):
             row["eval_matches_42"] = command_passed(row["eval"], output, b"42\n")
             result["contrasts"][target] = row
             write_json(output / "CPU_DIAGNOSTIC.json", result)
+        if runtime_identity:
+            driver.verify_runtime_dependency_identity(runtime_identity)
         result["diagnostic_complete"] = True
     except Exception as error:
         result["error"] = f"{type(error).__name__}: {error}"
@@ -313,6 +404,19 @@ def qualify(arguments):
             # Final provider failure is evidence, and shares the retained result
             # with the original command and cleanup errors.
             result["finalization_errors"] = []
+            if runtime_identity:
+                try:
+                    driver.verify_runtime_dependency_identity(runtime_identity)
+                except Exception as final_error:
+                    result["diagnostic_complete"] = False
+                    result["finalization_errors"].append(f"Runtime identity: {type(final_error).__name__}: {final_error}")
+            result["ordinary_alias_identities"] = runtime_aliases
+            for alias_identity in runtime_aliases.values():
+                try:
+                    driver.verify_installed_alias_identity(alias_identity)
+                except Exception as final_error:
+                    result["diagnostic_complete"] = False
+                    result["finalization_errors"].append(f"Ordinary alias: {type(final_error).__name__}: {final_error}")
             result["python_provider"] = None
             try:
                 result["python_provider"] = provider(pathlib.Path(sys.executable))

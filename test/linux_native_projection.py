@@ -288,11 +288,42 @@ def extract_absolute_paths(raw):
     return sorted(set(re.findall(r'(?<![A-Za-z0-9])(/[^\s\[\]()<>;,:]+)', raw)))
 
 
+def classify_elf_candidates(roster, pending, seen, result):
+    """Retain directories and regular non-ELF inputs separately from ELF providers."""
+    physical = []
+    for path in sorted(set(pending) - seen):
+        resolved = roster.add(path, required=True)
+        row = roster.entries[resolved]
+        observed = Path(resolved).lstat()
+        classification = {'requested_path': path, 'resolved_path': resolved, 'kind': row['kind'], 'mode': row['mode']}
+        if row['kind'] == 'directory':
+            need(stat.S_ISDIR(observed.st_mode) and stat.S_IMODE(observed.st_mode) == row['mode'],
+                 'ELF candidate directory changed its kind or mode')
+            classification['classification'] = 'directory-provenance'
+        else:
+            need(row['kind'] == 'file' and stat.S_ISREG(observed.st_mode)
+                 and stat.S_IMODE(observed.st_mode) == row['mode'], 'ELF candidate requires its current regular-file kind and mode')
+            with Path(resolved).open('rb') as stream:
+                is_elf = stream.read(4) == b'\x7fELF'
+            classification.update(classification='ELF-provider' if is_elf else 'regular-non-ELF',
+                                  bytes=row['bytes'], sha256=row['sha256'])
+            if is_elf and resolved not in physical:
+                physical.append(resolved)
+        result.setdefault('ELF_candidate_classifications', []).append(classification)
+        if classification['classification'] != 'ELF-provider':
+            result.setdefault('non_ELF_candidates', []).append(classification)
+        seen.update((path, resolved))
+    result['non_ELF_candidate_count'] = len(result.get('non_ELF_candidates', []))
+    need(len(physical) <= 96, 'Static ELF discovery wave exceeds its input budget')
+    return physical
+
+
 def collect(args):
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     result = {'format': 'atlas-linux-native-projection-candidate-v1', 'admitted': False, 'native_manifest_accepted': False, 'execution_admitted': False, 'compiler_jobs': 0, 'container_jobs': 0, 'actual_Grant_cells': 0, 'state': 'collecting-unreviewed-metadata', 'pending': ['independent exact native roster/profile review', 'complete header/link-input closure', 'actual proposed-container loader/link/GMP/SQLite canaries', 'SDK readiness and complete Grant build admission']}
     roster = runner = None
+    runtime_identity = {}
     try:
         need(sys.platform == 'linux' and os.environ.get('GITHUB_ACTIONS') == 'true' and re.fullmatch('[1-9][0-9]*', os.environ.get('GITHUB_RUN_ID', '')), 'Actual projection collection requires the hosted Linux job')
         pin(__file__, args.source_sha256)
@@ -319,10 +350,25 @@ def collect(args):
         for name in ('INSTALL_RECEIPT.json', '.brew/agent-crystal.rb'):
             roster.add(prefix / name, required=True)
             shutil.copyfile(prefix / name, output / Path(name).name)
-        wrapper = Path(shutil.which('crystal-alpha') or '').resolve(strict=True)
+        wrapper_entrypoint = Path(shutil.which('crystal-alpha') or '').absolute()
+        wrapper = wrapper_entrypoint.resolve(strict=True)
         compiler, stdlib = prefix / 'libexec/agent-crystal-bin', prefix / 'share/agent-crystal/src'
         need(wrapper == prefix / 'bin/crystal-alpha', 'The ordinary formula wrapper must be selected')
-        driver.verify_wrapper(wrapper.read_text(), compiler, stdlib, brew_root, 'Linux')
+        runtime_identity = {}
+        def runtime_context():
+            text, errors = commands.run('runtime-dependency-metadata', [brew, 'info', '--json=v2', '--installed'], seconds=45)
+            need(not errors, 'Actual installed runtime metadata stderr requires review')
+            value = driver.runtime_dependency_identity(json.loads(text), prefix, brew_root)
+            runtime_identity.update(value)
+            result['ordinary_alias_identity'] = driver.installed_alias_identity(wrapper_entrypoint, wrapper)
+            dump(output / 'RUNTIME_LIBRARY_PATHS.json', value)
+            roster.add(value['manifest']['path'], required=True)
+            for row in value['dependencies']:
+                roster.add(Path(row['opt_library']).parent, required=True)
+                if row['has_library_directory']: roster.add(row['opt_library'], required=True)
+                for identity in row['identities']: roster.add(identity['path'], required=True)
+            return value
+        driver.verify_wrapper(wrapper.read_text(), compiler, stdlib, brew_root, 'Linux', runtime_context)
         stdlib_before = stdlib_identity(stdlib, roster)
         driver.verify_stdlib(stdlib_before, lock['alpha'])
         dump(output / 'STDLIB_BEFORE.json', stdlib_before)
@@ -389,16 +435,12 @@ def collect(args):
         pending = [str(compiler), str(Path(sys.executable).resolve())] + list(tools.values())
         pending += [path for path, row in roster.entries.items() if row['kind'] == 'file' and ('.so' in Path(path).name or Path(path).name.startswith('ld-linux'))]
         seen = set()
+        executed_elf_waves = 0
         for wave in range(3):
-            physical = []
-            for path in sorted(set(pending) - seen):
-                resolved = roster.add(path, required=True)
-                with Path(resolved).open('rb') as stream: is_elf = stream.read(4) == b'\x7fELF'
-                if is_elf: physical.append(resolved)
-                seen.add(path)
-            need(len(physical) <= 96, 'Static ELF discovery wave exceeds its input budget')
+            physical = classify_elf_candidates(roster, pending, seen, result)
             if not physical: break
             raw = commands.run('elf-wave-' + str(wave), [tools['readelf'], '-W', '-d', '-l', *physical])[0]
+            executed_elf_waves += 1
             pending = []
             search_directories = [str(brew_root / 'lib'), str(prefix / 'lib')] + elf_search_directories(raw, physical)
             result.setdefault('observed_elf_search_directories', []).extend(search_directories)
@@ -410,10 +452,13 @@ def collect(args):
                 pending.extend(paths)
             for path in extract_absolute_paths(raw):
                 if Path(path).exists(): pending.append(path)
-        result['static_elf_waves'] = wave + 1
+        result['static_elf_waves'] = executed_elf_waves
+        result['ELF_candidate_waves_considered'] = wave + 1
         result['static_resolution_scope'] = 'Union of observed cache, RUNPATH/RPATH and Linuxbrew search candidates; actual loader choice remains unqualified'
         result['observed_elf_search_directories'] = sorted(set(result.get('observed_elf_search_directories', [])))
         result['unvisited_elf_candidates'] = sorted(set(pending) - seen)
+        if runtime_identity:
+            driver.verify_runtime_dependency_identity(runtime_identity)
         stdlib_after = stdlib_identity(stdlib, roster)
         driver.verify_stdlib(stdlib_after, lock['alpha'])
         need(stdlib_before == stdlib_after, 'Installed standard library changed during metadata collection')
@@ -425,6 +470,19 @@ def collect(args):
     except Exception as error:
         result.update(state='metadata-collection-refused', metadata_collection_passed=False, error=type(error).__name__ + ': ' + str(error))
     finally:
+        result['finalization_errors'] = []
+        if runtime_identity:
+            try:
+                driver.verify_runtime_dependency_identity(runtime_identity)
+            except Exception as final_error:
+                result.update(state='metadata-collection-refused', metadata_collection_passed=False)
+                result['finalization_errors'].append(type(final_error).__name__ + ': ' + str(final_error))
+        if 'ordinary_alias_identity' in result:
+            try:
+                driver.verify_installed_alias_identity(result['ordinary_alias_identity'])
+            except Exception as final_error:
+                result.update(state='metadata-collection-refused', metadata_collection_passed=False)
+                result['finalization_errors'].append(type(final_error).__name__ + ': ' + str(final_error))
         if roster:
             dump(output / 'NATIVE_PATH_ROSTER.json', {'entries': roster.entries, 'missing': roster.missing, 'hashed_bytes': roster.total_bytes, 'entry_count': len(roster.entries)})
             result['proposed_original_read_only_mounts'] = list(ORIGINAL_MOUNTS)

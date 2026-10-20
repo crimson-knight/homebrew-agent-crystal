@@ -28,7 +28,9 @@ jobs:
 
       - name: Test installer behavior with private commands
         timeout-minutes: 2
-        run: ruby test/install_test.rb
+        run: |
+          ruby test/install_test.rb
+          ruby test/runtime_library_paths_formula_test.rb
 
       - name: Test SDK source and result validation
         timeout-minutes: 2
@@ -52,7 +54,7 @@ jobs:
           provider = pathlib.Path(sys.executable).resolve()
           sys.argv = [str(source),
               "--driver", "test/sdk_install_qualification.py",
-              "--driver-sha256", "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797",
+              "--driver-sha256", "f6b709e32790ad89a160910afac03beeffa5f160d7b06af4027ceae9f98da396",
               "--source-sha256", expected_source,
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--python-version", platform.python_version(),
@@ -109,7 +111,7 @@ jobs:
           import sys
 
           source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
-          expected = "7d571ba0e3d16673dd1e173fbd0450d52d87e0f215b2098c7c6415cd3086092f"
+          expected = "84720d04ff8117f4319044035a9b489ea6cf435b560f71eddd466707abde4dfe"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("CPU diagnostic source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
@@ -134,18 +136,18 @@ jobs:
           import os
 
           source = pathlib.Path("test/linux_native_projection.py").resolve()
-          expected = "c3e782e66b3a9c7451215bf99425cd52c5dcfb8a03e5728b08e80a75c06372d4"
+          expected = "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("Native projection collector source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
           sys.argv = [str(source),
               "--source-sha256", expected,
               "--driver", "test/sdk_install_qualification.py",
-              "--driver-sha256", "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797",
+              "--driver-sha256", "f6b709e32790ad89a160910afac03beeffa5f160d7b06af4027ceae9f98da396",
               "--linux-reader", "test/linux_projection_identity.py",
               "--linux-reader-sha256", "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb",
               "--source-lock", "test/sdk_source_lock.json",
-              "--source-lock-sha256", "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4",
+              "--source-lock-sha256", "40d43a7faa200a125448b02ddeaf2b0e9bd043f54de847edd970ede48dabe79d",
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--repository", str(pathlib.Path.cwd()),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-native-projection")]
