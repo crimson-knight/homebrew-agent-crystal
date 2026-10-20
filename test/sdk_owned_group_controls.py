@@ -15,13 +15,14 @@ import stat
 import sys
 import time
 
-REVIEWED_DRIVER_ANCESTOR_SHA256 = "36c7789942fc3c922f5316c5f6c298667cf4dbf75484981ee913f8a614284df9"
-REVIEWED_RUNNER_SOURCE_SHA256 = "a7bffb7a8e18dc705ad93642b0cdd14ddc70cc8130666b0b17e68950461f88db"
+REVIEWED_DRIVER_ANCESTOR_SHA256 = "89ed2148b3e6fa6089a8dbec1ed498ffa393f583b8ff1f27e132846d365eb09d"
+REVIEWED_RUNNER_SOURCE_SHA256 = "f7cc290c415ae14d6c0c4093c1361aeb78d7bbaf94ec9512dde89ff6f887f48f"
 OUTPUT_LIMIT = 1024 * 1024
 PRIMARY_SECONDS = 35
 FINAL_SECONDS = 5
 NORMAL_SECONDS = 3
 LEADER_SECONDS = 4
+NATURAL_SECONDS = 4
 DESCENDANT_SECONDS = 6
 NORMAL_SOURCE = 'import os\nprint("normal-fixture-exit", flush=True)\n'
 DESCENDANT_SOURCE = r'''import json
@@ -64,6 +65,40 @@ os.close(writer)
 assert os.read(reader, 1) == b"R"
 os.close(reader)
 print("leader-exit-with-live-descendant", flush=True)
+os._exit(0)
+'''
+NATURAL_SOURCE = r'''import json
+import os
+from pathlib import Path
+import sys
+import time
+
+root = Path(sys.argv[1])
+token = sys.argv[2]
+leader = os.getpid()
+group = os.getpgrp()
+if group != leader:
+    raise RuntimeError("The natural fixture requires its original leader group")
+reader, writer = os.pipe()
+child = os.fork()
+if child == 0:
+    os.close(reader)
+    ready = {"token": token, "leader_pid": leader, "child_pid": os.getpid(),
+             "group": os.getpgrp(), "uid": os.getuid(), "phase": "ready"}
+    (root / "NATURAL_CHILD_READY.json").write_text(json.dumps(ready) + "\n")
+    os.write(writer, b"R")
+    os.close(writer)
+    deadline = time.monotonic() + 0.6
+    while time.monotonic() < deadline:
+        time.sleep(0.01)
+    (root / "NATURAL_RETIREMENT_INTENT.json").write_text(json.dumps(dict(ready, phase="naturally_retired")) + "\n")
+    print("natural-descendant-self-exit", flush=True)
+    os._exit(0)
+os.close(writer)
+if os.read(reader, 1) != b"R":
+    raise RuntimeError("The natural child must publish its ready identity")
+os.close(reader)
+print("leader-exit-before-natural-retirement", flush=True)
 os._exit(0)
 '''
 
@@ -147,6 +182,11 @@ def verify_record(record, expected):
             "Exact direct-child-return original-group state required")
     require(record["original_group"] == observation["group"] == record["pid"], "Exact original process-group identity required")
     require(record["writers_confirmed_retired"] is (expected == "absent"), "Exact original-group retirement flag required")
+    samples = observation["samples"]
+    require(type(samples) is list and 1 <= len(samples) <= 128
+            and observation["initial_sample"] == samples[0] and observation["terminal_sample"] == samples[-1]
+            and samples[-1]["status"] == expected and observation["maximum_drain_seconds"] == 5.0,
+            "Bounded initial and terminal original-group samples required")
     for field in ("stdout_sha256", "stderr_sha256"):
         if expected == "absent":
             require(type(record[field]) is str and re.fullmatch(r"[0-9a-f]{64}", record[field]) is not None,
@@ -184,7 +224,7 @@ def execute(arguments):
     result = {"passed": False, "scope": "real hosted original POSIX process-group observation controls",
               "group_recovery_qualified": False, "detached_session_coverage_qualified": False,
               "full_native_provider_acceptance": False, "compiler_jobs": 0, "ssh_jobs": 0,
-              "maximum_concurrent_fixture_processes_by_source": 2, "fixture_processes_expected": 3,
+              "maximum_concurrent_fixture_processes_by_source": 2, "fixture_processes_expected": 5,
               "time_limit_seconds": 45, "output_limit_bytes": OUTPUT_LIMIT,
               "output_accounting": "evidence tree plus duplicate final JSON stdout",
               "sources_and_provider_before": before, "python_version": sys.version,
@@ -205,10 +245,12 @@ def execute(arguments):
         fixture_root = output / "fixture sources"
         fixture_root.mkdir()
         normal = fixture_root / "normal_exit.py"
+        natural = fixture_root / "natural_group_retirement.py"
         descendant = fixture_root / "same_group_descendant.py"
         normal.write_text(NORMAL_SOURCE)
+        natural.write_text(NATURAL_SOURCE)
         descendant.write_text(DESCENDANT_SOURCE)
-        fixture_sources = [reference(path) for path in (normal, descendant)]
+        fixture_sources = [reference(path) for path in (normal, natural, descendant)]
         save(output / "FIXTURE_SOURCE_IDENTITIES.json", fixture_sources)
         spec = importlib.util.spec_from_file_location("reviewed_sdk_original_group_driver", driver)
         sdk = importlib.util.module_from_spec(spec)
@@ -222,13 +264,30 @@ def execute(arguments):
                    environment=environment, seconds=NORMAL_SECONDS)
         verify_record(runner.records[-1], "absent")
         result["normal_exit"] = {"passed": True, "record": runner.records[-1]}
+        runner.run("natural-retirement", [python, "-I", "-S", "-B", natural, private, token], cwd=private,
+                   environment=environment, seconds=NATURAL_SECONDS)
+        natural_record = runner.records[-1]
+        verify_record(natural_record, "absent")
+        natural_ready = json.loads((private / "NATURAL_CHILD_READY.json").read_text())
+        natural_intent = json.loads((private / "NATURAL_RETIREMENT_INTENT.json").read_text())
+        require(natural_record["terminal_group_observation"]["initial_sample"]["status"] == "present"
+                and len(natural_record["terminal_group_observation"]["samples"]) >= 2
+                and natural_ready["token"] == token and natural_ready["group"] == natural_ready["leader_pid"] == natural_record["pid"]
+                and type(natural_ready["child_pid"]) is int and natural_ready["child_pid"] > 1
+                and natural_ready["child_pid"] != natural_ready["leader_pid"]
+                and natural_intent == dict(natural_ready, phase="naturally_retired"),
+                "The same-group child must retire naturally during the bounded original command interval")
+        save(output / "NATURAL_GROUP_RETIREMENT.json", {"passed": True, "record": natural_record,
+            "child": natural_ready, "intent": natural_intent, "driver_group_recovery_performed": False})
+        result["natural_retirement"] = {"passed": True, "record": natural_record,
+            "child_pid": natural_ready["child_pid"], "driver_group_recovery_performed": False}
         refusal = None
         try:
             runner.run("live-descendant", [python, "-I", "-S", "-B", descendant, private, token], cwd=private,
                        environment=environment, seconds=LEADER_SECONDS)
         except sdk.QualificationError as error:
             refusal = str(error)
-        require(refusal is not None and len(runner.records) == 2, "Live descendant must earn an actual refused command")
+        require(refusal is not None and len(runner.records) == 3, "Live descendant must earn an actual refused command")
         record = runner.records[-1]
         verify_record(record, "present")
         ready = json.loads((private / "CHILD_READY.json").read_text())
@@ -252,12 +311,12 @@ def execute(arguments):
         result["live_descendant"] = {"passed": True, "original_refusal_preserved": True,
             "independently_observed_absence_after_self_retirement": True, "driver_group_recovery_performed": False,
             "group": record["original_group"], "child_pid": ready["child_pid"]}
-        result["actual_fixture_pids"] = [runner.records[0]["pid"], record["pid"], ready["child_pid"]]
-        require(len(set(result["actual_fixture_pids"])) == 3, "Three distinct actual fixture process identities required")
+        result["actual_fixture_pids"] = [runner.records[0]["pid"], natural_record["pid"], natural_ready["child_pid"], record["pid"], ready["child_pid"]]
+        require(len(set(result["actual_fixture_pids"])) == 5, "Five distinct actual fixture process identities required")
         result["sources_and_provider_after"] = [reference(path) for path in (source, driver, python)]
         require(result["sources_and_provider_after"] == before,
                 "Exact original source and Python provider must remain fixed")
-        result["fixture_sources_after"] = [reference(path) for path in (normal, descendant)]
+        result["fixture_sources_after"] = [reference(path) for path in (normal, natural, descendant)]
         require(result["fixture_sources_after"] == fixture_sources,
                 "Exact fixture source must remain fixed")
         require(time.monotonic() - started < 40 and output_bytes(output) < OUTPUT_LIMIT - 128 * 1024,

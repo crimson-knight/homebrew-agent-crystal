@@ -176,40 +176,146 @@ class CompilerWrapperTest(unittest.TestCase):
 
 
 class OwnedGroupObservationTest(unittest.TestCase):
-    def observe(self, observation_error):
+    class Clock:
+        def __init__(self):
+            self.now = 100.0
+
+        def monotonic(self):
+            return self.now
+
+        def sleep(self, seconds):
+            self.now += seconds
+
+    def observe(self, observation_error, seconds=300, should_pass=False, return_delay=0):
         with tempfile.TemporaryDirectory() as temporary:
             output = pathlib.Path(temporary)
-            process = SimpleNamespace(pid=765432, poll=lambda: 0, wait=lambda timeout: 0)
+            clock = self.Clock()
+            def returned(timeout):
+                clock.now += return_delay
+                return 0
+            process = SimpleNamespace(pid=765432, poll=lambda: 0, wait=returned)
             with mock.patch.object(SDK.subprocess, "Popen", return_value=process), \
-                    mock.patch.object(SDK.os, "killpg", side_effect=observation_error) as signal_group:
+                    mock.patch.object(SDK.os, "killpg", side_effect=observation_error) as signal_group, \
+                    mock.patch.object(SDK.time, "monotonic", side_effect=clock.monotonic), \
+                    mock.patch.object(SDK.time, "sleep", side_effect=clock.sleep), \
+                    mock.patch.object(SDK.Runner, "group_diagnostics", return_value={"group": 765432, "scope": "mocked metadata"}):
                 runner = SDK.Runner(output)
-                if isinstance(observation_error, ProcessLookupError):
-                    self.assertEqual(runner.run("modeled-command", ["metadata-only"], cwd=output), ("", ""))
+                if should_pass:
+                    self.assertEqual(runner.run("modeled-command", ["metadata-only"], cwd=output, seconds=seconds), ("", ""))
                 else:
                     with self.assertRaises(SDK.QualificationError):
-                        runner.run("modeled-command", ["metadata-only"], cwd=output)
-                self.assertEqual(signal_group.call_args_list, [mock.call(process.pid, 0)])
-                return runner, json.loads((output / "COMMANDS.json").read_text())[0]
+                        runner.run("modeled-command", ["metadata-only"], cwd=output, seconds=seconds)
+                self.assertTrue(all(call == mock.call(process.pid, 0) for call in signal_group.call_args_list))
+                return runner, json.loads((output / "COMMANDS.json").read_text())[0], signal_group.call_count
 
     def test_absent_group_accepts_stable_output_after_direct_exit(self):
-        runner, record = self.observe(ProcessLookupError("modeled absent group"))
+        runner, record, samples = self.observe(ProcessLookupError("modeled absent group"), should_pass=True)
         self.assertTrue(runner.writers_confirmed_retired)
         self.assertEqual(record["terminal_group_observation"]["status"], "absent")
         self.assertEqual(record["stdout_sha256"], hashlib.sha256(b"").hexdigest())
+        self.assertEqual(samples, 1)
+
+    def test_briefly_present_group_earns_hashes_after_observed_absence(self):
+        runner, record, samples = self.observe([None, ProcessLookupError("modeled retirement")], should_pass=True)
+        observation = record["terminal_group_observation"]
+        self.assertEqual(samples, 2)
+        self.assertEqual(observation["initial_sample"]["status"], "present")
+        self.assertEqual(observation["terminal_sample"]["status"], "absent")
+        self.assertGreater(observation["elapsed_seconds"], 0)
+        self.assertTrue(runner.writers_confirmed_retired)
+        self.assertIsNotNone(record["stdout_sha256"])
 
     def test_present_group_keeps_output_unqualified(self):
-        runner, record = self.observe(None)
+        runner, record, samples = self.observe(None)
         self.assertFalse(runner.writers_confirmed_retired)
         self.assertEqual(record["terminal_group_observation"]["status"], "present")
         self.assertIsNone(record["stdout_sha256"])
         self.assertIsNone(record["stderr_sha256"])
+        self.assertTrue(2 <= samples <= 128)
+        self.assertLessEqual(record["terminal_group_observation"]["elapsed_seconds"], 5.0 + 0.00001)
+
+    def test_drain_uses_original_one_second_command_deadline(self):
+        runner, record, samples = self.observe(None, seconds=1)
+        observation = record["terminal_group_observation"]
+        self.assertLessEqual(observation["elapsed_seconds"], 1.0 + 0.00001)
+        self.assertEqual(observation["drain_deadline"], observation["original_command_deadline"])
+        self.assertFalse(runner.writers_confirmed_retired)
+
+    def test_observer_has_a_finite_sample_cap_with_static_mocked_clock(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            runner = SDK.Runner(pathlib.Path(temporary))
+            with mock.patch.object(SDK.os, "killpg"), mock.patch.object(SDK.time, "monotonic", return_value=0), \
+                 mock.patch.object(SDK.time, "sleep"):
+                result = runner.observe_group(765432, 10)
+        self.assertEqual(len(result["samples"]), 128)
+        self.assertEqual(result["status"], "present")
+
+    def test_raw_output_limit_still_stops_a_live_group_drain(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = pathlib.Path(temporary)
+            stdout, stderr = output / "stdout", output / "stderr"
+            stdout.write_bytes(b"x" * (4 * 1024 * 1024 + 1))
+            stderr.write_bytes(b"")
+            runner = SDK.Runner(output)
+            with mock.patch.object(SDK.os, "killpg"), mock.patch.object(SDK.time, "monotonic", return_value=0), \
+                 mock.patch.object(SDK.time, "sleep") as sleep:
+                result = runner.observe_group(765432, 10, (stdout, stderr))
+            self.assertTrue(result["raw_output_budget_exceeded"])
+            self.assertEqual(len(result["samples"]), 1)
+            self.assertEqual(result["status"], "present")
+            sleep.assert_not_called()
+
+    def test_already_expired_completed_command_refuses_even_with_absent_group(self):
+        runner, record, samples = self.observe(ProcessLookupError("modeled absent"), seconds=1, return_delay=1.1)
+        self.assertEqual(samples, 1)
+        self.assertIn("time budget", record["refusal"])
+        self.assertTrue(runner.writers_confirmed_retired)
 
     def test_unverifiable_group_keeps_output_unqualified(self):
-        runner, record = self.observe(PermissionError("modeled group observation refusal"))
+        runner, record, samples = self.observe(PermissionError("modeled group observation refusal"))
         self.assertFalse(runner.writers_confirmed_retired)
         self.assertEqual(record["terminal_group_observation"]["status"], "unverifiable")
         self.assertIsNone(record["stdout_sha256"])
         self.assertIn("PermissionError", record["terminal_group_observation"]["error"])
+        self.assertEqual(samples, 1)
+
+    def test_diagnostics_retain_finite_identity_and_state_fields(self):
+        fields = [b"S", b"10", b"765432", b"765432"] + [b"0"] * 15 + [b"12345"]
+        raw = b"42 (process-name-sentinel) " + b" ".join(fields) + b"\n"
+        entries = mock.MagicMock()
+        entries.__enter__.return_value = iter([SimpleNamespace(name="42")])
+        with tempfile.TemporaryDirectory() as temporary:
+            runner = SDK.Runner(pathlib.Path(temporary))
+            with mock.patch.object(SDK.platform, "system", return_value="Linux"), \
+                 mock.patch.object(SDK.time, "monotonic", return_value=0), \
+                 mock.patch.object(SDK.os, "scandir", return_value=entries), \
+                 mock.patch.object(SDK.pathlib.Path, "open", return_value=io.BytesIO(raw)), \
+                 mock.patch.object(SDK.pathlib.Path, "stat", return_value=SimpleNamespace(st_uid=501)):
+                result = runner.group_diagnostics(765432, 0, {"status": "present"}, 1)
+        self.assertEqual(result["member_rows"], [{"pid": 42, "ppid": 10, "pgid": 765432,
+            "sid": 765432, "uid": 501, "state": "S", "start_ticks": 12345}])
+        self.assertNotIn("process-name-sentinel", json.dumps(result))
+
+    def test_original_timeout_and_unresolved_group_errors_both_survive(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = pathlib.Path(temporary)
+            clock = self.Clock()
+            def running():
+                clock.now += 2
+                return None
+            process = SimpleNamespace(pid=765432, poll=running, wait=lambda timeout: -9)
+            with mock.patch.object(SDK.subprocess, "Popen", return_value=process), \
+                 mock.patch.object(SDK.os, "killpg"), \
+                 mock.patch.object(SDK.time, "monotonic", side_effect=clock.monotonic), \
+                 mock.patch.object(SDK.time, "sleep", side_effect=clock.sleep), \
+                 mock.patch.object(SDK.Runner, "group_diagnostics", return_value={"group": process.pid}):
+                runner = SDK.Runner(output)
+                with self.assertRaises(SDK.QualificationError):
+                    runner.run("deadline", ["metadata-only"], cwd=output, seconds=1)
+            record = runner.records[0]
+            self.assertIn("Command exceeded its time budget", record["refusal"])
+            self.assertIn("Original owned process group is present", record["refusal"])
+            self.assertIsNone(record["stdout_sha256"])
 
 
 class CleanupEvidenceTest(unittest.TestCase):

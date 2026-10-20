@@ -142,6 +142,10 @@ def verify_spec_result(stdout, stderr, expected_count, expected_failures=0):
 
 
 class Runner:
+    GROUP_DRAIN_SECONDS = 5.0
+    GROUP_POLL_SECONDS = 0.05
+    MAXIMUM_GROUP_SAMPLES = 128
+
     def __init__(self, output):
         self.output = output
         self.records = []
@@ -149,14 +153,101 @@ class Runner:
         self.writers_confirmed_retired = True
         self.deadline = time.monotonic() + 840
 
+    def observe_group(self, group, command_deadline, stream_paths=()):
+        started = time.monotonic()
+        deadline = min(command_deadline, self.deadline, started + self.GROUP_DRAIN_SECONDS)
+        observation = {"group": group, "phase": "direct_child_returned", "status": "unverifiable",
+            "scope": "original POSIX process group", "maximum_drain_seconds": self.GROUP_DRAIN_SECONDS,
+            "original_command_deadline": command_deadline, "drain_deadline": deadline, "samples": []}
+        for _ in range(self.MAXIMUM_GROUP_SAMPLES):
+            sample = {"elapsed_seconds": max(0, time.monotonic() - started)}
+            try:
+                os.killpg(group, 0)
+                sample["status"] = "present"
+            except ProcessLookupError:
+                sample["status"] = "absent"
+            except OSError as error:
+                sample.update(status="unverifiable", error=f"{type(error).__name__}: {error}")
+            observation["samples"].append(sample)
+            observation["status"] = sample["status"]
+            if "error" in sample:
+                observation["error"] = sample["error"]
+            if stream_paths and sum(path.stat().st_size for path in stream_paths) > 4 * 1024 * 1024:
+                observation["raw_output_budget_exceeded"] = True
+                break
+            if sample["status"] != "present":
+                break
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            time.sleep(min(self.GROUP_POLL_SECONDS, remaining))
+        observation["elapsed_seconds"] = max(0, time.monotonic() - started)
+        observation["initial_sample"] = dict(observation["samples"][0])
+        observation["terminal_sample"] = dict(observation["samples"][-1])
+        observation["bounded_drain_exhausted"] = observation["status"] == "present"
+        return observation
+
+    def group_diagnostics(self, group, code, observation, command_deadline):
+        """Record finite identities/states; absence qualification uses signal zero."""
+        result = {"group": group, "direct_child_pid": group, "direct_child_exit_code": code,
+            "last_group_status": observation["status"], "member_rows": [],
+            "maximum_member_rows": 64, "maximum_scanned_entries": 4096,
+            "scope": "non-secret original-group metadata; original-group absence is a separate gate"}
+        deadline = min(command_deadline, self.deadline, time.monotonic() + 0.15)
+        if platform.system() != "Linux":
+            result["member_observation"] = "Linux proc metadata applies to the Ubuntu case; aggregate group state is retained on this platform"
+            return result
+        if time.monotonic() >= deadline:
+            result["member_observation"] = "original command deadline reached"
+            return result
+        scanned, vanished = 0, 0
+        result["member_observation"] = "bounded Linux proc identity/state read"
+        try:
+            with os.scandir("/proc") as entries:
+                for entry in entries:
+                    scanned += 1
+                    if scanned > 4096 or time.monotonic() >= deadline:
+                        result["truncated"] = True
+                        break
+                    if not entry.name.isdecimal():
+                        continue
+                    try:
+                        directory = pathlib.Path("/proc") / entry.name
+                        with (directory / "stat").open("rb") as stream:
+                            raw = stream.read(16385)
+                        require(len(raw) <= 16384, "Bounded process-stat metadata required")
+                        fields = raw.rsplit(b")", 1)[1].split()
+                        require(len(fields) >= 20, "Complete process identity metadata required")
+                        if int(fields[2]) != group:
+                            continue
+                        require(re.fullmatch(rb"[A-Za-z]", fields[0]) is not None, "One process-state code required")
+                        result["member_rows"].append({"pid": int(entry.name), "ppid": int(fields[1]),
+                            "pgid": int(fields[2]), "sid": int(fields[3]), "uid": directory.stat().st_uid,
+                            "state": fields[0].decode("ascii"), "start_ticks": int(fields[19])})
+                        if len(result["member_rows"]) >= 64:
+                            result["truncated"] = True
+                            break
+                    except (OSError, ValueError, IndexError, QualificationError):
+                        vanished += 1
+        except OSError as error:
+            result["diagnostic_error"] = f"{type(error).__name__}: {error}"
+        result.update(scanned_entries=min(scanned, 4096), unavailable_or_changed_entries=vanished)
+        return result
+
     def run(self, label, arguments, *, cwd, environment=None, expected_exit=0, seconds=300):
         stdout_path = self.output / (label + ".stdout.txt")
         stderr_path = self.output / (label + ".stderr.txt")
         started = time.monotonic()
         seconds = min(seconds, self.deadline - started)
         require(seconds >= 1, "SDK step exhausted its complete time budget")
+        command_deadline = started + seconds
         process = None
         reason = None
+        def refuse(message):
+            nonlocal reason
+            if reason and message in reason.split("; "):
+                return
+            reason = reason + "; " + message if reason else message
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
             self.writers_confirmed_retired = False
             process = subprocess.Popen([str(arg) for arg in arguments], cwd=cwd, env=environment,
@@ -164,33 +255,32 @@ class Runner:
             group_observation = {"group": process.pid, "status": "unverifiable", "phase": "started"}
             self.group_observations.append(group_observation)
             while process.poll() is None:
-                if time.monotonic() - started > seconds:
-                    reason = "Command exceeded its time budget"
+                if time.monotonic() > command_deadline:
+                    refuse("Command exceeded its time budget")
                 if stdout_path.stat().st_size + stderr_path.stat().st_size > 4 * 1024 * 1024:
-                    reason = "Command exceeded its raw-output budget"
+                    refuse("Command exceeded its raw-output budget")
                 if reason:
                     os.killpg(process.pid, signal.SIGKILL)
                     break
                 time.sleep(0.1)
             code = process.wait(timeout=10)
-            group_observation["phase"] = "direct_child_returned"
-            try:
-                os.killpg(process.pid, 0)
-                group_observation["status"] = "present"
-            except ProcessLookupError:
-                group_observation["status"] = "absent"
-            except OSError as group_error:
-                group_observation["status"] = "unverifiable"
-                group_observation["error"] = f"{type(group_error).__name__}: {group_error}"
+            group_observation.update(self.observe_group(process.pid, command_deadline, (stdout_path, stderr_path)))
             self.writers_confirmed_retired = group_observation["status"] == "absent"
             if not self.writers_confirmed_retired:
-                group_reason = "Original owned process group is " + group_observation["status"]
-                reason = reason + "; " + group_reason if reason else group_reason
+                refuse("Original owned process group is " + group_observation["status"])
+                try:
+                    group_observation["diagnostics"] = self.group_diagnostics(process.pid, code, group_observation, command_deadline)
+                except Exception as diagnostic_error:
+                    group_observation["diagnostics"] = {"group": process.pid,
+                        "diagnostic_error": f"{type(diagnostic_error).__name__}: {diagnostic_error}"}
+            if time.monotonic() > command_deadline:
+                refuse("Command exceeded its time budget")
         if stdout_path.stat().st_size + stderr_path.stat().st_size > 4 * 1024 * 1024:
-            reason = "Command exceeded its raw-output budget"
+            refuse("Command exceeded its raw-output budget")
         record = {"label": label, "arguments": [str(arg) for arg in arguments],
                   "pid": process.pid, "exit_code": code, "expected_exit": expected_exit,
                   "elapsed_seconds": time.monotonic() - started, "refusal": reason,
+                  "maximum_seconds": seconds,
                   "original_group": process.pid, "terminal_group_observation": dict(group_observation),
                   "writers_confirmed_retired": self.writers_confirmed_retired,
                   "stdout_sha256": sha256(stdout_path) if self.writers_confirmed_retired else None,

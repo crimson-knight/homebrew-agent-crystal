@@ -42,14 +42,19 @@ The step reserves 15 minutes within the 75-minute formula job, admits a 3-GiB di
 projection above a 10-GiB free-space floor, and retains raw command output and a
 machine-readable result even when a check fails. Each command has a finite timeout
 and output bound. After its direct child returns, the runner observes the original
-POSIX process group. Confirmed absence admits its output hashes. A present or
+POSIX process group for up to five seconds, capped by the original command and
+complete-step deadlines. Initial and terminal samples record the observed retirement
+interval. Confirmed absence admits its output hashes. A present or
 unverifiable group refuses the command and preserves its private source and cache.
 Cleanup failures retain both the original error and the cleanup error in the
-result. This group observation covers the original group; process recovery and
+result. Unresolved Linux groups also retain bounded process identity/state metadata
+with names and arguments omitted. This group observation covers the original group; process recovery and
 detached sessions retain separate qualification gates.
 
-Before the installation, a separate hosted control exercises a real normal exit
-and a same-group descendant that remains after its leader exits. The latter must
+Before the installation, a separate hosted control exercises a real normal exit,
+a same-group child that naturally retires after 0.6 seconds, and a held same-group
+descendant that remains after its leader exits. Natural retirement must be observed
+inside the original command interval before its output is accepted. The held child must
 earn a refused command with null output hashes. Its cooperative self-exit and a
 subsequent group-absence observation produce separate receipts before private-cache
 removal. The control pins its script and the complete reviewed driver, records the

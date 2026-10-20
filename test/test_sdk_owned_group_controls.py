@@ -15,16 +15,19 @@ SPEC.loader.exec_module(CONTROL)
 
 
 def command_record(status):
+    sample = {"status": status, "elapsed_seconds": 0.1}
     return {"pid": 765432, "original_group": 765432,
-            "terminal_group_observation": {"group": 765432, "phase": "direct_child_returned", "status": status},
+            "terminal_group_observation": {"group": 765432, "phase": "direct_child_returned", "status": status,
+                "samples": [sample], "initial_sample": sample, "terminal_sample": sample, "maximum_drain_seconds": 5.0},
             "writers_confirmed_retired": status == "absent",
             "stdout_sha256": "a" * 64 if status == "absent" else None,
             "stderr_sha256": "b" * 64 if status == "absent" else None}
 
 
 class HostedSourceTest(unittest.TestCase):
-    def test_compiles_controller_and_both_fixture_sources(self):
+    def test_compiles_controller_and_all_three_fixture_sources(self):
         for label, text in [(str(PATH), PATH.read_text()), ("normal", CONTROL.NORMAL_SOURCE),
+                            ("natural", CONTROL.NATURAL_SOURCE),
                             ("descendant", CONTROL.DESCENDANT_SOURCE)]:
             compile(text, label, "exec")
 
@@ -40,6 +43,12 @@ class HostedSourceTest(unittest.TestCase):
         self.assertIn('phase = "self_deadline"', CONTROL.DESCENDANT_SOURCE)
         self.assertIn('phase = "released"', CONTROL.DESCENDANT_SOURCE)
         self.assertEqual(CONTROL.DESCENDANT_SECONDS, 6)
+        natural = ast.parse(CONTROL.NATURAL_SOURCE)
+        natural_calls = [node for node in ast.walk(natural) if isinstance(node, ast.Call)]
+        self.assertEqual(sum(isinstance(node.func, ast.Attribute) and node.func.attr == "fork" for node in natural_calls), 1)
+        self.assertFalse(any(isinstance(node.func, ast.Attribute) and node.func.attr in ("Popen", "setsid", "setpgid") for node in natural_calls))
+        self.assertIn("time.monotonic() + 0.6", CONTROL.NATURAL_SOURCE)
+        self.assertIn('phase="naturally_retired"', CONTROL.NATURAL_SOURCE)
 
     def test_local_and_self_hosted_environments_refuse_before_real_controls(self):
         for environment in ({}, {"GITHUB_ACTIONS": "true"},
@@ -62,9 +71,10 @@ class HostedSourceTest(unittest.TestCase):
         execute = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "execute")
         run_calls = [node for node in ast.walk(execute) if isinstance(node, ast.Call)
                      and isinstance(node.func, ast.Attribute) and node.func.attr == "run"]
-        self.assertEqual(len(run_calls), 2)
+        self.assertEqual(len(run_calls), 3)
         self.assertEqual((CONTROL.PRIMARY_SECONDS, CONTROL.FINAL_SECONDS), (35, 5))
         self.assertEqual((CONTROL.NORMAL_SECONDS, CONTROL.LEADER_SECONDS), (3, 4))
+        self.assertEqual(CONTROL.NATURAL_SECONDS, 4)
         self.assertEqual(CONTROL.OUTPUT_LIMIT, 1024 * 1024)
 
     def test_reviewed_driver_hash_matches_retained_complete_proposal(self):
