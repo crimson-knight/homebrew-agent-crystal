@@ -7,6 +7,7 @@ import pathlib
 import tarfile
 import tempfile
 import unittest
+import shlex
 
 
 MODULE_PATH = pathlib.Path(__file__).with_name("sdk_install_qualification.py")
@@ -134,6 +135,29 @@ class FormulaReceiptTest(unittest.TestCase):
         for changed in mutations:
             with self.subTest(changed=changed), self.assertRaises(SDK.QualificationError):
                 SDK.verify_formula_receipt(changed, expected)
+
+
+class CompilerWrapperTest(unittest.TestCase):
+    def test_accepts_actual_homebrew_environment_assignments_before_exec(self):
+        prefix = pathlib.Path("/home/linuxbrew/.linuxbrew")
+        install = prefix / "Cellar/agent-crystal/1.21.0-incremental-1"
+        compiler = install / "libexec/agent-crystal-bin"
+        stdlib = install / "share/agent-crystal/src"
+        wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + str(prefix / "lib") + '" exec "' + str(compiler) + '"  "$@"\n'
+        SDK.verify_wrapper(wrapper, compiler, stdlib, prefix, "Linux")
+        for changed in (wrapper.replace(str(compiler), "/other/compiler"),
+                        wrapper.replace("CRYSTAL_PATH=", "OTHER_PATH="),
+                        wrapper.replace("LD_RUN_PATH=", "OTHER_LOADER="),
+                        wrapper + "printf unexpected\\n\n"):
+            with self.subTest(changed=changed), self.assertRaises(SDK.QualificationError):
+                SDK.verify_wrapper(changed, compiler, stdlib, prefix, "Linux")
+
+    def test_accepts_static_darwin_wrapper_with_spaces(self):
+        prefix = pathlib.Path("/ordinary prefix with spaces")
+        compiler = prefix / "Cellar/agent-crystal/1.21.0-incremental-1/libexec/agent-crystal-bin"
+        stdlib = compiler.parent.parent / "share/agent-crystal/src"
+        wrapper = "#!/bin/bash\n" + shlex.quote("CRYSTAL_PATH=lib:" + str(stdlib)) + " exec " + shlex.quote(str(compiler)) + ' "$@"\n'
+        SDK.verify_wrapper(wrapper, compiler, stdlib, prefix, "Darwin")
 
 
 if __name__ == "__main__":

@@ -70,6 +70,14 @@ def verify_formula_receipt(receipt, expected):
     require(installed[0].get("poured_from_bottle") is False, "This source-build qualification requires the actual same-job build")
 
 
+def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system):
+    commands = [shlex.split(line) for line in wrapper.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+    assignments = ["CRYSTAL_PATH=lib:" + str(stdlib)]
+    if system == "Linux":
+        assignments.append("LD_RUN_PATH=${LD_RUN_PATH:+${LD_RUN_PATH}:}" + str(homebrew_prefix / "lib"))
+    require(commands == [assignments + ["exec", str(compiler), "$@"]], "Alpha wrapper/backend or declared environment binding differs")
+
+
 def extract_sdk(archive_path, destination, expected):
     require(sha256(archive_path) == expected["archive_sha256"], "SDK archive SHA-256 mismatch")
     require(pathlib.Path(archive_path).stat().st_size == expected["archive_bytes"], "SDK archive size mismatch")
@@ -200,6 +208,8 @@ def qualify(output, lock):
         require(brew is not None, "Ordinary Homebrew installation is required")
         prefix_text, _ = runner.run("brew-prefix", [brew, "--prefix", "agent-crystal"], cwd=source, seconds=45)
         prefix = pathlib.Path(prefix_text.strip()).resolve()
+        brew_root_text, _ = runner.run("brew-root", [brew, "--prefix"], cwd=source, seconds=45)
+        brew_root = pathlib.Path(brew_root_text.strip()).resolve()
         receipt_text, _ = runner.run("brew-receipt", [brew, "info", "--json=v2", "agent-crystal"], cwd=source, seconds=45)
         receipt = json.loads(receipt_text)["formulae"]
         verify_formula_receipt(receipt, lock["alpha"])
@@ -211,9 +221,8 @@ def qualify(output, lock):
         require(entrypoint == prefix / "bin/crystal-alpha", "crystal-alpha must select this ordinary formula installation")
         wrapper = entrypoint.read_text()
         (output / "COMPILER_WRAPPER.sh").write_text(wrapper)
-        commands = [shlex.split(line) for line in wrapper.splitlines() if line.lstrip().startswith("exec ")]
-        require(commands == [["exec", str(compiler), "$@"]], "Alpha wrapper/backend binding differs")
         stdlib = prefix / "share/agent-crystal/src"
+        verify_wrapper(wrapper, compiler, stdlib, brew_root, platform.system())
         stdlib_identity = tree_identity(stdlib)
         verify_stdlib(stdlib_identity, lock["alpha"])
         write_json(output / "STDLIB_BEFORE.json", stdlib_identity)
