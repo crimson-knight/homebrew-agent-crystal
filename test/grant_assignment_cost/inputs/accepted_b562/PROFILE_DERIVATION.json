@@ -1,0 +1,12 @@
+{
+  "alpha_source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "native_git_and_frozen_install_scope": "Pending separate schema-3 qualification",
+  "policy": "Exact formula source/version/checksum, same-job ordinary install, independently source-derived complete stdlib and alias expectations, static wrapper/backend binding, immutable observed backend/Ruby hashes.",
+  "profile_schema": 1,
+  "profile_sha256": "b562503cee1262e222b545771510f5c60b7f018b2720be17f1c53654fc4ce715",
+  "qualified_scope": "Compiler, standard library, package/spec/tutorial readiness",
+  "ruby": {
+    "path": "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+    "version": "ruby 3.4.11 (2026-09-23 revision 592f1ffdb3) +PRISM [arm64-darwin25]"
+  }
+}

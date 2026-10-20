@@ -1,0 +1,55 @@
+{
+  "list_of_capabilities": [
+    {
+      "backend_name": "crystal_stdlib_allocation_tally",
+      "backend_revision": "1",
+      "measurement_scope": "fiber",
+      "metric_name": "crystal_allocation_calls",
+      "platform_profile": "any"
+    },
+    {
+      "backend_name": "crystal_stdlib_allocation_tally",
+      "backend_revision": "1",
+      "measurement_scope": "fiber",
+      "metric_name": "crystal_requested_bytes",
+      "platform_profile": "any"
+    },
+    {
+      "backend_name": "crystal_stdlib_allocation_tally",
+      "backend_revision": "1",
+      "measurement_scope": "joined_process",
+      "metric_name": "crystal_allocation_calls",
+      "platform_profile": "any"
+    },
+    {
+      "backend_name": "crystal_stdlib_allocation_tally",
+      "backend_revision": "1",
+      "measurement_scope": "joined_process",
+      "metric_name": "crystal_requested_bytes",
+      "platform_profile": "any"
+    }
+  ],
+  "list_of_measurements": [
+    {
+      "backend_revision": "1",
+      "has_complete_coverage": true,
+      "measured_value": 1,
+      "measurement_scope": "fiber",
+      "metric_name": "crystal_allocation_calls",
+      "platform_profile": "any",
+      "scenario_name": "construct_record"
+    },
+    {
+      "backend_revision": "1",
+      "has_complete_coverage": true,
+      "measured_value": 8,
+      "measurement_scope": "fiber",
+      "metric_name": "crystal_requested_bytes",
+      "platform_profile": "any",
+      "scenario_name": "construct_record"
+    }
+  ],
+  "list_of_violations": [],
+  "scenario_name": "construct_record",
+  "verdict_status": "passed"
+}

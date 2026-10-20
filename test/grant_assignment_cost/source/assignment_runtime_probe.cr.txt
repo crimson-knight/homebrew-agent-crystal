@@ -1,0 +1,134 @@
+require "../../src/grant"
+require "../../src/adapter/sqlite"
+require "../../performance/vendor/memory_budget/src/memory_budget"
+
+module AtlasAssignmentRuntime
+  ITERATIONS = 10_000
+
+  class Entry < Grant::Base
+    column id : Int64, primary: true
+    column first_name : String?
+    column age : Int32?
+    column is_active : Bool?
+  end
+
+  class AlternateEntry < Grant::Base
+    column id : Int64, primary: true
+    column first_name : String?
+    column age : Int32?
+    column is_active : Bool?
+  end
+
+  struct Settings
+    getter injects_allocation_regression? : Bool
+
+    def initialize(@injects_allocation_regression : Bool = false)
+    end
+  end
+
+  struct Observation
+    include JSON::Serializable
+
+    getter scenario : String
+    getter iterations : Int32
+    getter allocation_calls : UInt64
+    getter requested_bytes : UInt64
+    getter elapsed_seconds : Float64
+    getter checksum : Int64
+
+    def initialize(@scenario, @iterations, @allocation_calls, @requested_bytes, @elapsed_seconds, @checksum)
+    end
+  end
+
+  struct Report
+    include JSON::Serializable
+
+    getter schema_version : Int32 = 1
+    getter list_of_observations : Array(Observation)
+    getter value_container_size_bytes : Int32
+    getter broad_input_value_size_bytes : Int32 = sizeof(Grant::Columns::Type)
+    getter narrow_input_value_size_bytes : Int32 = sizeof(Int32 | String)
+    getter has_value_container? : Bool
+    getter compiled_stack_peak_qualified? : Bool = false
+
+    def initialize(@list_of_observations, @value_container_size_bytes, @has_value_container)
+    end
+  end
+
+  def self.measure(scenario : String, &) : Observation
+    checksum = 0_i64
+    started = Time.monotonic
+    snapshot = MemoryBudget::AllocationMemorySnapshot.measure_fiber_allocations do
+      checksum = yield
+    end
+    elapsed = (Time.monotonic - started).total_seconds
+    raise "Assignment runtime checksum changed" unless checksum == ITERATIONS.to_i64 * 42
+    Observation.new(scenario, ITERATIONS, snapshot.allocation_calls, snapshot.requested_bytes, elapsed, checksum)
+  end
+end
+
+settings = AtlasAssignmentRuntime::Settings.new(ENV["ATLAS_ASSIGNMENT_INJECT_ALLOCATION_REGRESSION"]? == "1")
+list_of_observations = [] of AtlasAssignmentRuntime::Observation
+list_of_regression_buffers = Array(Bytes).new(1)
+full_payload = {"first_name" => "Ada", "age" => 42, "is_active" => true} of String => Grant::Columns::Type
+narrow_payload = {"age" => 42, "first_name" => "Ada"} of String => Int32 | String
+entry = AtlasAssignmentRuntime::Entry.new
+
+# Warm all operations before the measured windows; every arm uses these bytes.
+100.times do
+  AtlasAssignmentRuntime::Entry.new(first_name: "Ada", age: 42, is_active: true)
+  AtlasAssignmentRuntime::Entry.new(full_payload)
+  entry.assign_mass_assignment_column("age", narrow_payload["age"])
+  entry.assign_mass_assignment_column("age", full_payload["age"])
+end
+
+list_of_observations << AtlasAssignmentRuntime.measure("constructor_keyword") do
+  checksum = 0_i64
+  AtlasAssignmentRuntime::ITERATIONS.times do
+    record = AtlasAssignmentRuntime::Entry.new(first_name: "Ada", age: 42, is_active: true)
+    checksum += record.age || 0
+  end
+  checksum
+end
+
+list_of_observations << AtlasAssignmentRuntime.measure("constructor_full_hash") do
+  checksum = 0_i64
+  AtlasAssignmentRuntime::ITERATIONS.times do
+    record = AtlasAssignmentRuntime::Entry.new(full_payload)
+    checksum += record.age || 0
+  end
+  checksum
+end
+
+list_of_observations << AtlasAssignmentRuntime.measure("direct_assignment_narrow") do
+  checksum = 0_i64
+  AtlasAssignmentRuntime::ITERATIONS.times do
+    entry.assign_mass_assignment_column("age", narrow_payload["age"])
+    checksum += entry.age || 0
+  end
+  checksum
+end
+
+list_of_observations << AtlasAssignmentRuntime.measure("direct_assignment_full") do
+  checksum = 0_i64
+  AtlasAssignmentRuntime::ITERATIONS.times do
+    entry.assign_mass_assignment_column("age", full_payload["age"])
+    checksum += entry.age || 0
+    if settings.injects_allocation_regression?
+      list_of_regression_buffers.clear
+      list_of_regression_buffers << Bytes.new(4096, 1_u8)
+    end
+  end
+  checksum
+end
+
+{% if Grant::Columns.has_constant?(:MassAssignmentValue) %}
+  value_container_size = sizeof(Grant::Columns::MassAssignmentValue)
+  has_value_container = true
+{% else %}
+  value_container_size = 0
+  has_value_container = false
+{% end %}
+
+report = AtlasAssignmentRuntime::Report.new(list_of_observations, value_container_size, has_value_container)
+STDOUT.puts "ATLAS_ASSIGNMENT_RUNTIME=#{report.to_json}"

@@ -1,0 +1,1131 @@
+require "../../../../src/grant"
+require "../../../../src/adapter/sqlite"
+require "json"
+
+class AcceptancePerson0000 < Grant::Base
+  connection acceptance
+  table acceptance_person_0000
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 0_i64) }
+  belongs_to parent : AcceptancePerson0001, optional: true
+  has_many children : AcceptancePerson0009, foreign_key: parent_id
+end
+
+class AcceptancePerson0001 < Grant::Base
+  connection acceptance
+  table acceptance_person_0001
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 1_i64) }
+  belongs_to parent : AcceptancePerson0002, optional: true
+  has_many children : AcceptancePerson0000, foreign_key: parent_id
+end
+
+class AcceptancePerson0002 < Grant::Base
+  connection acceptance
+  table acceptance_person_0002
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 2_i64) }
+  belongs_to parent : AcceptancePerson0003, optional: true
+  has_many children : AcceptancePerson0001, foreign_key: parent_id
+end
+
+class AcceptancePerson0003 < Grant::Base
+  connection acceptance
+  table acceptance_person_0003
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 3_i64) }
+  belongs_to parent : AcceptancePerson0004, optional: true
+  has_many children : AcceptancePerson0002, foreign_key: parent_id
+end
+
+class AcceptancePerson0004 < Grant::Base
+  connection acceptance
+  table acceptance_person_0004
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 4_i64) }
+  belongs_to parent : AcceptancePerson0005, optional: true
+  has_many children : AcceptancePerson0003, foreign_key: parent_id
+end
+
+class AcceptancePerson0005 < Grant::Base
+  connection acceptance
+  table acceptance_person_0005
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 5_i64) }
+  belongs_to parent : AcceptancePerson0006, optional: true
+  has_many children : AcceptancePerson0004, foreign_key: parent_id
+end
+
+class AcceptancePerson0006 < Grant::Base
+  connection acceptance
+  table acceptance_person_0006
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 6_i64) }
+  belongs_to parent : AcceptancePerson0007, optional: true
+  has_many children : AcceptancePerson0005, foreign_key: parent_id
+end
+
+class AcceptancePerson0007 < Grant::Base
+  connection acceptance
+  table acceptance_person_0007
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 7_i64) }
+  belongs_to parent : AcceptancePerson0008, optional: true
+  has_many children : AcceptancePerson0006, foreign_key: parent_id
+end
+
+class AcceptancePerson0008 < Grant::Base
+  connection acceptance
+  table acceptance_person_0008
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 8_i64) }
+  belongs_to parent : AcceptancePerson0009, optional: true
+  has_many children : AcceptancePerson0007, foreign_key: parent_id
+end
+
+class AcceptancePerson0009 < Grant::Base
+  connection acceptance
+  table acceptance_person_0009
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 9_i64) }
+  belongs_to parent : AcceptancePerson0000, optional: true
+  has_many children : AcceptancePerson0008, foreign_key: parent_id
+end
+
+module GrantCompileAcceptance
+  class AcceptanceBehaviorError < Exception
+  end
+
+  class BehaviorReceipt
+    include JSON::Serializable
+    getter schema_version : Int32 = 1
+    getter model_count : Int32
+    getter workload : String
+    getter list_of_models : Array(String) = [] of String
+    getter list_of_operations : Array(String) = [] of String
+    getter list_of_field_checks : Array(String) = [] of String
+    getter list_of_association_edges : Array(String) = [] of String
+    getter assertion_failures : Array(String) = [] of String
+
+    def initialize(@model_count : Int32, @workload : String)
+    end
+  end
+
+  class VerifyEveryModelQueryAndAssociation
+    def initialize(@has_invalid_first_name : Bool, @has_invalid_association_first_name : Bool)
+    end
+
+    private def require_behavior(condition : Bool, message : String) : Nil
+      raise AcceptanceBehaviorError.new(message) unless condition
+    end
+
+    private def require_record_id(record_id : Int64?) : Int64
+      if value = record_id
+        value
+      else
+        raise AcceptanceBehaviorError.new("Persisted record has no identifier")
+      end
+    end
+
+    private def create_acceptance_person_0000 : AcceptancePerson0000
+      AcceptancePerson0000.create!(
+        first_name: "Person0000",
+        email: "person0000@example.test",
+        age: 37,
+        is_active: true,
+        score: 1.5,
+        country_code: "US",
+        notes: nil,
+        rating: nil,
+        balance: nil,
+        group_number: 9000000000_i64,
+        settings_text: nil,
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 0_i64
+      )
+    end
+
+    private def create_acceptance_person_0001 : AcceptancePerson0001
+      AcceptancePerson0001.create!(
+        first_name: "Person0001",
+        email: "person0001@example.test",
+        age: 37,
+        is_active: false,
+        score: 1.5,
+        country_code: "US",
+        notes: "fixture",
+        rating: 7,
+        balance: 12.5,
+        group_number: 9000000001_i64,
+        settings_text: "{}",
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 1_i64
+      )
+    end
+
+    private def create_acceptance_person_0002 : AcceptancePerson0002
+      AcceptancePerson0002.create!(
+        first_name: "Person0002",
+        email: "person0002@example.test",
+        age: 37,
+        is_active: true,
+        score: 1.5,
+        country_code: "US",
+        notes: nil,
+        rating: nil,
+        balance: nil,
+        group_number: 9000000002_i64,
+        settings_text: nil,
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 2_i64
+      )
+    end
+
+    private def create_acceptance_person_0003 : AcceptancePerson0003
+      AcceptancePerson0003.create!(
+        first_name: "Person0003",
+        email: "person0003@example.test",
+        age: 37,
+        is_active: false,
+        score: 1.5,
+        country_code: "US",
+        notes: "fixture",
+        rating: 7,
+        balance: 12.5,
+        group_number: 9000000003_i64,
+        settings_text: "{}",
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 3_i64
+      )
+    end
+
+    private def create_acceptance_person_0004 : AcceptancePerson0004
+      AcceptancePerson0004.create!(
+        first_name: "Person0004",
+        email: "person0004@example.test",
+        age: 37,
+        is_active: true,
+        score: 1.5,
+        country_code: "US",
+        notes: nil,
+        rating: nil,
+        balance: nil,
+        group_number: 9000000004_i64,
+        settings_text: nil,
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 4_i64
+      )
+    end
+
+    private def create_acceptance_person_0005 : AcceptancePerson0005
+      AcceptancePerson0005.create!(
+        first_name: "Person0005",
+        email: "person0005@example.test",
+        age: 37,
+        is_active: false,
+        score: 1.5,
+        country_code: "US",
+        notes: "fixture",
+        rating: 7,
+        balance: 12.5,
+        group_number: 9000000005_i64,
+        settings_text: "{}",
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 5_i64
+      )
+    end
+
+    private def create_acceptance_person_0006 : AcceptancePerson0006
+      AcceptancePerson0006.create!(
+        first_name: "Person0006",
+        email: "person0006@example.test",
+        age: 37,
+        is_active: true,
+        score: 1.5,
+        country_code: "US",
+        notes: nil,
+        rating: nil,
+        balance: nil,
+        group_number: 9000000006_i64,
+        settings_text: nil,
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 6_i64
+      )
+    end
+
+    private def create_acceptance_person_0007 : AcceptancePerson0007
+      AcceptancePerson0007.create!(
+        first_name: "Person0007",
+        email: "person0007@example.test",
+        age: 37,
+        is_active: false,
+        score: 1.5,
+        country_code: "US",
+        notes: "fixture",
+        rating: 7,
+        balance: 12.5,
+        group_number: 9000000007_i64,
+        settings_text: "{}",
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 7_i64
+      )
+    end
+
+    private def create_acceptance_person_0008 : AcceptancePerson0008
+      AcceptancePerson0008.create!(
+        first_name: "Person0008",
+        email: "person0008@example.test",
+        age: 37,
+        is_active: true,
+        score: 1.5,
+        country_code: "US",
+        notes: nil,
+        rating: nil,
+        balance: nil,
+        group_number: 9000000008_i64,
+        settings_text: nil,
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 8_i64
+      )
+    end
+
+    private def create_acceptance_person_0009 : AcceptancePerson0009
+      AcceptancePerson0009.create!(
+        first_name: "Person0009",
+        email: "person0009@example.test",
+        age: 37,
+        is_active: false,
+        score: 1.5,
+        country_code: "US",
+        notes: "fixture",
+        rating: 7,
+        balance: 12.5,
+        group_number: 9000000009_i64,
+        settings_text: "{}",
+        created_at: Time.utc(2026, 1, 1),
+        updated_at: Time.utc(2026, 1, 1),
+        sequence_number: 9_i64
+      )
+    end
+
+    def perform : Nil
+      receipt = BehaviorReceipt.new(10, "all_model_queries_and_associations")
+      list_of_record_ids = [] of Int64
+      created_0000 = create_acceptance_person_0000
+      list_of_record_ids << require_record_id(created_0000.id)
+      receipt.list_of_operations << "AcceptancePerson0000/create"
+      created_0001 = create_acceptance_person_0001
+      list_of_record_ids << require_record_id(created_0001.id)
+      receipt.list_of_operations << "AcceptancePerson0001/create"
+      created_0002 = create_acceptance_person_0002
+      list_of_record_ids << require_record_id(created_0002.id)
+      receipt.list_of_operations << "AcceptancePerson0002/create"
+      created_0003 = create_acceptance_person_0003
+      list_of_record_ids << require_record_id(created_0003.id)
+      receipt.list_of_operations << "AcceptancePerson0003/create"
+      created_0004 = create_acceptance_person_0004
+      list_of_record_ids << require_record_id(created_0004.id)
+      receipt.list_of_operations << "AcceptancePerson0004/create"
+      created_0005 = create_acceptance_person_0005
+      list_of_record_ids << require_record_id(created_0005.id)
+      receipt.list_of_operations << "AcceptancePerson0005/create"
+      created_0006 = create_acceptance_person_0006
+      list_of_record_ids << require_record_id(created_0006.id)
+      receipt.list_of_operations << "AcceptancePerson0006/create"
+      created_0007 = create_acceptance_person_0007
+      list_of_record_ids << require_record_id(created_0007.id)
+      receipt.list_of_operations << "AcceptancePerson0007/create"
+      created_0008 = create_acceptance_person_0008
+      list_of_record_ids << require_record_id(created_0008.id)
+      receipt.list_of_operations << "AcceptancePerson0008/create"
+      created_0009 = create_acceptance_person_0009
+      list_of_record_ids << require_record_id(created_0009.id)
+      receipt.list_of_operations << "AcceptancePerson0009/create"
+      created_0000.parent_id = list_of_record_ids[1]
+      created_0000.save!
+      created_0001.parent_id = list_of_record_ids[2]
+      created_0001.save!
+      created_0002.parent_id = list_of_record_ids[3]
+      created_0002.save!
+      created_0003.parent_id = list_of_record_ids[4]
+      created_0003.save!
+      created_0004.parent_id = list_of_record_ids[5]
+      created_0004.save!
+      created_0005.parent_id = list_of_record_ids[6]
+      created_0005.save!
+      created_0006.parent_id = list_of_record_ids[7]
+      created_0006.save!
+      created_0007.parent_id = list_of_record_ids[8]
+      created_0007.save!
+      created_0008.parent_id = list_of_record_ids[9]
+      created_0008.save!
+      created_0009.parent_id = list_of_record_ids[0]
+      created_0009.save!
+      if @has_invalid_first_name
+        Grant.connection("acceptance").execute("UPDATE acceptance_person_0000 SET first_name = 'invalid-canary'")
+      end
+      list_of_people_0000 = AcceptancePerson0000.where(sequence_number: 0_i64).all.to_a
+      require_behavior(list_of_people_0000.size == 1, "AcceptancePerson0000 hydration count")
+      person_0000 = list_of_people_0000.first
+      require_behavior(person_0000.id == list_of_record_ids[0], "AcceptancePerson0000 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0000/id"
+      require_behavior(person_0000.first_name == "Person0000", "AcceptancePerson0000 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0000/first_name"
+      require_behavior(person_0000.email == "person0000@example.test", "AcceptancePerson0000 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0000/email"
+      require_behavior(person_0000.age == 37, "AcceptancePerson0000 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0000/age"
+      require_behavior(person_0000.is_active == true, "AcceptancePerson0000 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0000/is_active"
+      require_behavior(person_0000.score == 1.5, "AcceptancePerson0000 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0000/score"
+      require_behavior(person_0000.country_code == "US", "AcceptancePerson0000 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0000/country_code"
+      require_behavior(person_0000.notes.nil?, "AcceptancePerson0000 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0000/notes"
+      require_behavior(person_0000.rating.nil?, "AcceptancePerson0000 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0000/rating"
+      require_behavior(person_0000.balance.nil?, "AcceptancePerson0000 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0000/balance"
+      require_behavior(person_0000.group_number == 9000000000_i64, "AcceptancePerson0000 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0000/group_number"
+      require_behavior(person_0000.settings_text.nil?, "AcceptancePerson0000 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0000/settings_text"
+      require_behavior(person_0000.created_at == created_0000.created_at, "AcceptancePerson0000 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0000/created_at"
+      require_behavior(person_0000.updated_at == created_0000.updated_at, "AcceptancePerson0000 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0000/updated_at"
+      require_behavior(person_0000.parent_id == list_of_record_ids[1], "AcceptancePerson0000 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0000/parent_id"
+      require_behavior(person_0000.sequence_number == 0_i64, "AcceptancePerson0000 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0000/sequence_number"
+      require_behavior(AcceptancePerson0000.expected_sequence.all.to_a.size == 1, "AcceptancePerson0000 named scope")
+      receipt.list_of_models << "AcceptancePerson0000"
+      receipt.list_of_operations << "AcceptancePerson0000/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0000/scope"
+      if @has_invalid_association_first_name
+        Grant.connection("acceptance").execute("UPDATE acceptance_person_0001 SET first_name = 'invalid-association-canary'")
+      end
+      if parent_0000 = person_0000.parent
+        require_behavior(parent_0000.id == list_of_record_ids[1], "AcceptancePerson0000 parent edge")
+        require_behavior(parent_0000.first_name == "Person0001", "AcceptancePerson0000 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0000 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0000/parent/AcceptancePerson0001"
+      list_of_children_0000 = person_0000.children.all
+      require_behavior(list_of_children_0000.size == 1 && list_of_children_0000.first.id == list_of_record_ids[9], "AcceptancePerson0000 children edge")
+      require_behavior(list_of_children_0000.first.first_name == "Person0009", "AcceptancePerson0000 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0000/children/AcceptancePerson0009"
+      eager_person_0000 = AcceptancePerson0000.where(sequence_number: 0_i64).includes(:parent).all.to_a.first
+      if eager_parent_0000 = eager_person_0000.parent
+        require_behavior(eager_parent_0000.id == list_of_record_ids[1], "AcceptancePerson0000 eager parent edge")
+        require_behavior(eager_parent_0000.first_name == "Person0001", "AcceptancePerson0000 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0000 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0000/eager_parent/AcceptancePerson0001"
+      list_of_people_0001 = AcceptancePerson0001.where(sequence_number: 1_i64).all.to_a
+      require_behavior(list_of_people_0001.size == 1, "AcceptancePerson0001 hydration count")
+      person_0001 = list_of_people_0001.first
+      require_behavior(person_0001.id == list_of_record_ids[1], "AcceptancePerson0001 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0001/id"
+      require_behavior(person_0001.first_name == "Person0001", "AcceptancePerson0001 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0001/first_name"
+      require_behavior(person_0001.email == "person0001@example.test", "AcceptancePerson0001 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0001/email"
+      require_behavior(person_0001.age == 37, "AcceptancePerson0001 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0001/age"
+      require_behavior(person_0001.is_active == false, "AcceptancePerson0001 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0001/is_active"
+      require_behavior(person_0001.score == 1.5, "AcceptancePerson0001 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0001/score"
+      require_behavior(person_0001.country_code == "US", "AcceptancePerson0001 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0001/country_code"
+      require_behavior(person_0001.notes == "fixture", "AcceptancePerson0001 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0001/notes"
+      require_behavior(person_0001.rating == 7, "AcceptancePerson0001 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0001/rating"
+      require_behavior(person_0001.balance == 12.5, "AcceptancePerson0001 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0001/balance"
+      require_behavior(person_0001.group_number == 9000000001_i64, "AcceptancePerson0001 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0001/group_number"
+      require_behavior(person_0001.settings_text == "{}", "AcceptancePerson0001 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0001/settings_text"
+      require_behavior(person_0001.created_at == created_0001.created_at, "AcceptancePerson0001 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0001/created_at"
+      require_behavior(person_0001.updated_at == created_0001.updated_at, "AcceptancePerson0001 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0001/updated_at"
+      require_behavior(person_0001.parent_id == list_of_record_ids[2], "AcceptancePerson0001 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0001/parent_id"
+      require_behavior(person_0001.sequence_number == 1_i64, "AcceptancePerson0001 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0001/sequence_number"
+      require_behavior(AcceptancePerson0001.expected_sequence.all.to_a.size == 1, "AcceptancePerson0001 named scope")
+      receipt.list_of_models << "AcceptancePerson0001"
+      receipt.list_of_operations << "AcceptancePerson0001/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0001/scope"
+      if parent_0001 = person_0001.parent
+        require_behavior(parent_0001.id == list_of_record_ids[2], "AcceptancePerson0001 parent edge")
+        require_behavior(parent_0001.first_name == "Person0002", "AcceptancePerson0001 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0001 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0001/parent/AcceptancePerson0002"
+      list_of_children_0001 = person_0001.children.all
+      require_behavior(list_of_children_0001.size == 1 && list_of_children_0001.first.id == list_of_record_ids[0], "AcceptancePerson0001 children edge")
+      require_behavior(list_of_children_0001.first.first_name == "Person0000", "AcceptancePerson0001 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0001/children/AcceptancePerson0000"
+      eager_person_0001 = AcceptancePerson0001.where(sequence_number: 1_i64).includes(:parent).all.to_a.first
+      if eager_parent_0001 = eager_person_0001.parent
+        require_behavior(eager_parent_0001.id == list_of_record_ids[2], "AcceptancePerson0001 eager parent edge")
+        require_behavior(eager_parent_0001.first_name == "Person0002", "AcceptancePerson0001 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0001 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0001/eager_parent/AcceptancePerson0002"
+      list_of_people_0002 = AcceptancePerson0002.where(sequence_number: 2_i64).all.to_a
+      require_behavior(list_of_people_0002.size == 1, "AcceptancePerson0002 hydration count")
+      person_0002 = list_of_people_0002.first
+      require_behavior(person_0002.id == list_of_record_ids[2], "AcceptancePerson0002 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0002/id"
+      require_behavior(person_0002.first_name == "Person0002", "AcceptancePerson0002 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0002/first_name"
+      require_behavior(person_0002.email == "person0002@example.test", "AcceptancePerson0002 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0002/email"
+      require_behavior(person_0002.age == 37, "AcceptancePerson0002 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0002/age"
+      require_behavior(person_0002.is_active == true, "AcceptancePerson0002 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0002/is_active"
+      require_behavior(person_0002.score == 1.5, "AcceptancePerson0002 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0002/score"
+      require_behavior(person_0002.country_code == "US", "AcceptancePerson0002 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0002/country_code"
+      require_behavior(person_0002.notes.nil?, "AcceptancePerson0002 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0002/notes"
+      require_behavior(person_0002.rating.nil?, "AcceptancePerson0002 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0002/rating"
+      require_behavior(person_0002.balance.nil?, "AcceptancePerson0002 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0002/balance"
+      require_behavior(person_0002.group_number == 9000000002_i64, "AcceptancePerson0002 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0002/group_number"
+      require_behavior(person_0002.settings_text.nil?, "AcceptancePerson0002 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0002/settings_text"
+      require_behavior(person_0002.created_at == created_0002.created_at, "AcceptancePerson0002 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0002/created_at"
+      require_behavior(person_0002.updated_at == created_0002.updated_at, "AcceptancePerson0002 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0002/updated_at"
+      require_behavior(person_0002.parent_id == list_of_record_ids[3], "AcceptancePerson0002 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0002/parent_id"
+      require_behavior(person_0002.sequence_number == 2_i64, "AcceptancePerson0002 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0002/sequence_number"
+      require_behavior(AcceptancePerson0002.expected_sequence.all.to_a.size == 1, "AcceptancePerson0002 named scope")
+      receipt.list_of_models << "AcceptancePerson0002"
+      receipt.list_of_operations << "AcceptancePerson0002/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0002/scope"
+      if parent_0002 = person_0002.parent
+        require_behavior(parent_0002.id == list_of_record_ids[3], "AcceptancePerson0002 parent edge")
+        require_behavior(parent_0002.first_name == "Person0003", "AcceptancePerson0002 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0002 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0002/parent/AcceptancePerson0003"
+      list_of_children_0002 = person_0002.children.all
+      require_behavior(list_of_children_0002.size == 1 && list_of_children_0002.first.id == list_of_record_ids[1], "AcceptancePerson0002 children edge")
+      require_behavior(list_of_children_0002.first.first_name == "Person0001", "AcceptancePerson0002 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0002/children/AcceptancePerson0001"
+      eager_person_0002 = AcceptancePerson0002.where(sequence_number: 2_i64).includes(:parent).all.to_a.first
+      if eager_parent_0002 = eager_person_0002.parent
+        require_behavior(eager_parent_0002.id == list_of_record_ids[3], "AcceptancePerson0002 eager parent edge")
+        require_behavior(eager_parent_0002.first_name == "Person0003", "AcceptancePerson0002 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0002 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0002/eager_parent/AcceptancePerson0003"
+      list_of_people_0003 = AcceptancePerson0003.where(sequence_number: 3_i64).all.to_a
+      require_behavior(list_of_people_0003.size == 1, "AcceptancePerson0003 hydration count")
+      person_0003 = list_of_people_0003.first
+      require_behavior(person_0003.id == list_of_record_ids[3], "AcceptancePerson0003 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0003/id"
+      require_behavior(person_0003.first_name == "Person0003", "AcceptancePerson0003 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0003/first_name"
+      require_behavior(person_0003.email == "person0003@example.test", "AcceptancePerson0003 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0003/email"
+      require_behavior(person_0003.age == 37, "AcceptancePerson0003 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0003/age"
+      require_behavior(person_0003.is_active == false, "AcceptancePerson0003 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0003/is_active"
+      require_behavior(person_0003.score == 1.5, "AcceptancePerson0003 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0003/score"
+      require_behavior(person_0003.country_code == "US", "AcceptancePerson0003 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0003/country_code"
+      require_behavior(person_0003.notes == "fixture", "AcceptancePerson0003 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0003/notes"
+      require_behavior(person_0003.rating == 7, "AcceptancePerson0003 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0003/rating"
+      require_behavior(person_0003.balance == 12.5, "AcceptancePerson0003 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0003/balance"
+      require_behavior(person_0003.group_number == 9000000003_i64, "AcceptancePerson0003 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0003/group_number"
+      require_behavior(person_0003.settings_text == "{}", "AcceptancePerson0003 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0003/settings_text"
+      require_behavior(person_0003.created_at == created_0003.created_at, "AcceptancePerson0003 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0003/created_at"
+      require_behavior(person_0003.updated_at == created_0003.updated_at, "AcceptancePerson0003 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0003/updated_at"
+      require_behavior(person_0003.parent_id == list_of_record_ids[4], "AcceptancePerson0003 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0003/parent_id"
+      require_behavior(person_0003.sequence_number == 3_i64, "AcceptancePerson0003 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0003/sequence_number"
+      require_behavior(AcceptancePerson0003.expected_sequence.all.to_a.size == 1, "AcceptancePerson0003 named scope")
+      receipt.list_of_models << "AcceptancePerson0003"
+      receipt.list_of_operations << "AcceptancePerson0003/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0003/scope"
+      if parent_0003 = person_0003.parent
+        require_behavior(parent_0003.id == list_of_record_ids[4], "AcceptancePerson0003 parent edge")
+        require_behavior(parent_0003.first_name == "Person0004", "AcceptancePerson0003 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0003 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0003/parent/AcceptancePerson0004"
+      list_of_children_0003 = person_0003.children.all
+      require_behavior(list_of_children_0003.size == 1 && list_of_children_0003.first.id == list_of_record_ids[2], "AcceptancePerson0003 children edge")
+      require_behavior(list_of_children_0003.first.first_name == "Person0002", "AcceptancePerson0003 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0003/children/AcceptancePerson0002"
+      eager_person_0003 = AcceptancePerson0003.where(sequence_number: 3_i64).includes(:parent).all.to_a.first
+      if eager_parent_0003 = eager_person_0003.parent
+        require_behavior(eager_parent_0003.id == list_of_record_ids[4], "AcceptancePerson0003 eager parent edge")
+        require_behavior(eager_parent_0003.first_name == "Person0004", "AcceptancePerson0003 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0003 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0003/eager_parent/AcceptancePerson0004"
+      list_of_people_0004 = AcceptancePerson0004.where(sequence_number: 4_i64).all.to_a
+      require_behavior(list_of_people_0004.size == 1, "AcceptancePerson0004 hydration count")
+      person_0004 = list_of_people_0004.first
+      require_behavior(person_0004.id == list_of_record_ids[4], "AcceptancePerson0004 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0004/id"
+      require_behavior(person_0004.first_name == "Person0004", "AcceptancePerson0004 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0004/first_name"
+      require_behavior(person_0004.email == "person0004@example.test", "AcceptancePerson0004 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0004/email"
+      require_behavior(person_0004.age == 37, "AcceptancePerson0004 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0004/age"
+      require_behavior(person_0004.is_active == true, "AcceptancePerson0004 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0004/is_active"
+      require_behavior(person_0004.score == 1.5, "AcceptancePerson0004 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0004/score"
+      require_behavior(person_0004.country_code == "US", "AcceptancePerson0004 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0004/country_code"
+      require_behavior(person_0004.notes.nil?, "AcceptancePerson0004 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0004/notes"
+      require_behavior(person_0004.rating.nil?, "AcceptancePerson0004 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0004/rating"
+      require_behavior(person_0004.balance.nil?, "AcceptancePerson0004 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0004/balance"
+      require_behavior(person_0004.group_number == 9000000004_i64, "AcceptancePerson0004 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0004/group_number"
+      require_behavior(person_0004.settings_text.nil?, "AcceptancePerson0004 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0004/settings_text"
+      require_behavior(person_0004.created_at == created_0004.created_at, "AcceptancePerson0004 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0004/created_at"
+      require_behavior(person_0004.updated_at == created_0004.updated_at, "AcceptancePerson0004 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0004/updated_at"
+      require_behavior(person_0004.parent_id == list_of_record_ids[5], "AcceptancePerson0004 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0004/parent_id"
+      require_behavior(person_0004.sequence_number == 4_i64, "AcceptancePerson0004 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0004/sequence_number"
+      require_behavior(AcceptancePerson0004.expected_sequence.all.to_a.size == 1, "AcceptancePerson0004 named scope")
+      receipt.list_of_models << "AcceptancePerson0004"
+      receipt.list_of_operations << "AcceptancePerson0004/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0004/scope"
+      if parent_0004 = person_0004.parent
+        require_behavior(parent_0004.id == list_of_record_ids[5], "AcceptancePerson0004 parent edge")
+        require_behavior(parent_0004.first_name == "Person0005", "AcceptancePerson0004 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0004 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0004/parent/AcceptancePerson0005"
+      list_of_children_0004 = person_0004.children.all
+      require_behavior(list_of_children_0004.size == 1 && list_of_children_0004.first.id == list_of_record_ids[3], "AcceptancePerson0004 children edge")
+      require_behavior(list_of_children_0004.first.first_name == "Person0003", "AcceptancePerson0004 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0004/children/AcceptancePerson0003"
+      eager_person_0004 = AcceptancePerson0004.where(sequence_number: 4_i64).includes(:parent).all.to_a.first
+      if eager_parent_0004 = eager_person_0004.parent
+        require_behavior(eager_parent_0004.id == list_of_record_ids[5], "AcceptancePerson0004 eager parent edge")
+        require_behavior(eager_parent_0004.first_name == "Person0005", "AcceptancePerson0004 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0004 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0004/eager_parent/AcceptancePerson0005"
+      list_of_people_0005 = AcceptancePerson0005.where(sequence_number: 5_i64).all.to_a
+      require_behavior(list_of_people_0005.size == 1, "AcceptancePerson0005 hydration count")
+      person_0005 = list_of_people_0005.first
+      require_behavior(person_0005.id == list_of_record_ids[5], "AcceptancePerson0005 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0005/id"
+      require_behavior(person_0005.first_name == "Person0005", "AcceptancePerson0005 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0005/first_name"
+      require_behavior(person_0005.email == "person0005@example.test", "AcceptancePerson0005 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0005/email"
+      require_behavior(person_0005.age == 37, "AcceptancePerson0005 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0005/age"
+      require_behavior(person_0005.is_active == false, "AcceptancePerson0005 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0005/is_active"
+      require_behavior(person_0005.score == 1.5, "AcceptancePerson0005 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0005/score"
+      require_behavior(person_0005.country_code == "US", "AcceptancePerson0005 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0005/country_code"
+      require_behavior(person_0005.notes == "fixture", "AcceptancePerson0005 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0005/notes"
+      require_behavior(person_0005.rating == 7, "AcceptancePerson0005 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0005/rating"
+      require_behavior(person_0005.balance == 12.5, "AcceptancePerson0005 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0005/balance"
+      require_behavior(person_0005.group_number == 9000000005_i64, "AcceptancePerson0005 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0005/group_number"
+      require_behavior(person_0005.settings_text == "{}", "AcceptancePerson0005 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0005/settings_text"
+      require_behavior(person_0005.created_at == created_0005.created_at, "AcceptancePerson0005 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0005/created_at"
+      require_behavior(person_0005.updated_at == created_0005.updated_at, "AcceptancePerson0005 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0005/updated_at"
+      require_behavior(person_0005.parent_id == list_of_record_ids[6], "AcceptancePerson0005 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0005/parent_id"
+      require_behavior(person_0005.sequence_number == 5_i64, "AcceptancePerson0005 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0005/sequence_number"
+      require_behavior(AcceptancePerson0005.expected_sequence.all.to_a.size == 1, "AcceptancePerson0005 named scope")
+      receipt.list_of_models << "AcceptancePerson0005"
+      receipt.list_of_operations << "AcceptancePerson0005/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0005/scope"
+      if parent_0005 = person_0005.parent
+        require_behavior(parent_0005.id == list_of_record_ids[6], "AcceptancePerson0005 parent edge")
+        require_behavior(parent_0005.first_name == "Person0006", "AcceptancePerson0005 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0005 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0005/parent/AcceptancePerson0006"
+      list_of_children_0005 = person_0005.children.all
+      require_behavior(list_of_children_0005.size == 1 && list_of_children_0005.first.id == list_of_record_ids[4], "AcceptancePerson0005 children edge")
+      require_behavior(list_of_children_0005.first.first_name == "Person0004", "AcceptancePerson0005 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0005/children/AcceptancePerson0004"
+      eager_person_0005 = AcceptancePerson0005.where(sequence_number: 5_i64).includes(:parent).all.to_a.first
+      if eager_parent_0005 = eager_person_0005.parent
+        require_behavior(eager_parent_0005.id == list_of_record_ids[6], "AcceptancePerson0005 eager parent edge")
+        require_behavior(eager_parent_0005.first_name == "Person0006", "AcceptancePerson0005 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0005 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0005/eager_parent/AcceptancePerson0006"
+      list_of_people_0006 = AcceptancePerson0006.where(sequence_number: 6_i64).all.to_a
+      require_behavior(list_of_people_0006.size == 1, "AcceptancePerson0006 hydration count")
+      person_0006 = list_of_people_0006.first
+      require_behavior(person_0006.id == list_of_record_ids[6], "AcceptancePerson0006 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0006/id"
+      require_behavior(person_0006.first_name == "Person0006", "AcceptancePerson0006 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0006/first_name"
+      require_behavior(person_0006.email == "person0006@example.test", "AcceptancePerson0006 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0006/email"
+      require_behavior(person_0006.age == 37, "AcceptancePerson0006 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0006/age"
+      require_behavior(person_0006.is_active == true, "AcceptancePerson0006 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0006/is_active"
+      require_behavior(person_0006.score == 1.5, "AcceptancePerson0006 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0006/score"
+      require_behavior(person_0006.country_code == "US", "AcceptancePerson0006 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0006/country_code"
+      require_behavior(person_0006.notes.nil?, "AcceptancePerson0006 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0006/notes"
+      require_behavior(person_0006.rating.nil?, "AcceptancePerson0006 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0006/rating"
+      require_behavior(person_0006.balance.nil?, "AcceptancePerson0006 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0006/balance"
+      require_behavior(person_0006.group_number == 9000000006_i64, "AcceptancePerson0006 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0006/group_number"
+      require_behavior(person_0006.settings_text.nil?, "AcceptancePerson0006 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0006/settings_text"
+      require_behavior(person_0006.created_at == created_0006.created_at, "AcceptancePerson0006 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0006/created_at"
+      require_behavior(person_0006.updated_at == created_0006.updated_at, "AcceptancePerson0006 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0006/updated_at"
+      require_behavior(person_0006.parent_id == list_of_record_ids[7], "AcceptancePerson0006 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0006/parent_id"
+      require_behavior(person_0006.sequence_number == 6_i64, "AcceptancePerson0006 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0006/sequence_number"
+      require_behavior(AcceptancePerson0006.expected_sequence.all.to_a.size == 1, "AcceptancePerson0006 named scope")
+      receipt.list_of_models << "AcceptancePerson0006"
+      receipt.list_of_operations << "AcceptancePerson0006/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0006/scope"
+      if parent_0006 = person_0006.parent
+        require_behavior(parent_0006.id == list_of_record_ids[7], "AcceptancePerson0006 parent edge")
+        require_behavior(parent_0006.first_name == "Person0007", "AcceptancePerson0006 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0006 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0006/parent/AcceptancePerson0007"
+      list_of_children_0006 = person_0006.children.all
+      require_behavior(list_of_children_0006.size == 1 && list_of_children_0006.first.id == list_of_record_ids[5], "AcceptancePerson0006 children edge")
+      require_behavior(list_of_children_0006.first.first_name == "Person0005", "AcceptancePerson0006 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0006/children/AcceptancePerson0005"
+      eager_person_0006 = AcceptancePerson0006.where(sequence_number: 6_i64).includes(:parent).all.to_a.first
+      if eager_parent_0006 = eager_person_0006.parent
+        require_behavior(eager_parent_0006.id == list_of_record_ids[7], "AcceptancePerson0006 eager parent edge")
+        require_behavior(eager_parent_0006.first_name == "Person0007", "AcceptancePerson0006 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0006 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0006/eager_parent/AcceptancePerson0007"
+      list_of_people_0007 = AcceptancePerson0007.where(sequence_number: 7_i64).all.to_a
+      require_behavior(list_of_people_0007.size == 1, "AcceptancePerson0007 hydration count")
+      person_0007 = list_of_people_0007.first
+      require_behavior(person_0007.id == list_of_record_ids[7], "AcceptancePerson0007 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0007/id"
+      require_behavior(person_0007.first_name == "Person0007", "AcceptancePerson0007 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0007/first_name"
+      require_behavior(person_0007.email == "person0007@example.test", "AcceptancePerson0007 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0007/email"
+      require_behavior(person_0007.age == 37, "AcceptancePerson0007 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0007/age"
+      require_behavior(person_0007.is_active == false, "AcceptancePerson0007 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0007/is_active"
+      require_behavior(person_0007.score == 1.5, "AcceptancePerson0007 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0007/score"
+      require_behavior(person_0007.country_code == "US", "AcceptancePerson0007 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0007/country_code"
+      require_behavior(person_0007.notes == "fixture", "AcceptancePerson0007 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0007/notes"
+      require_behavior(person_0007.rating == 7, "AcceptancePerson0007 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0007/rating"
+      require_behavior(person_0007.balance == 12.5, "AcceptancePerson0007 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0007/balance"
+      require_behavior(person_0007.group_number == 9000000007_i64, "AcceptancePerson0007 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0007/group_number"
+      require_behavior(person_0007.settings_text == "{}", "AcceptancePerson0007 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0007/settings_text"
+      require_behavior(person_0007.created_at == created_0007.created_at, "AcceptancePerson0007 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0007/created_at"
+      require_behavior(person_0007.updated_at == created_0007.updated_at, "AcceptancePerson0007 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0007/updated_at"
+      require_behavior(person_0007.parent_id == list_of_record_ids[8], "AcceptancePerson0007 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0007/parent_id"
+      require_behavior(person_0007.sequence_number == 7_i64, "AcceptancePerson0007 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0007/sequence_number"
+      require_behavior(AcceptancePerson0007.expected_sequence.all.to_a.size == 1, "AcceptancePerson0007 named scope")
+      receipt.list_of_models << "AcceptancePerson0007"
+      receipt.list_of_operations << "AcceptancePerson0007/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0007/scope"
+      if parent_0007 = person_0007.parent
+        require_behavior(parent_0007.id == list_of_record_ids[8], "AcceptancePerson0007 parent edge")
+        require_behavior(parent_0007.first_name == "Person0008", "AcceptancePerson0007 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0007 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0007/parent/AcceptancePerson0008"
+      list_of_children_0007 = person_0007.children.all
+      require_behavior(list_of_children_0007.size == 1 && list_of_children_0007.first.id == list_of_record_ids[6], "AcceptancePerson0007 children edge")
+      require_behavior(list_of_children_0007.first.first_name == "Person0006", "AcceptancePerson0007 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0007/children/AcceptancePerson0006"
+      eager_person_0007 = AcceptancePerson0007.where(sequence_number: 7_i64).includes(:parent).all.to_a.first
+      if eager_parent_0007 = eager_person_0007.parent
+        require_behavior(eager_parent_0007.id == list_of_record_ids[8], "AcceptancePerson0007 eager parent edge")
+        require_behavior(eager_parent_0007.first_name == "Person0008", "AcceptancePerson0007 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0007 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0007/eager_parent/AcceptancePerson0008"
+      list_of_people_0008 = AcceptancePerson0008.where(sequence_number: 8_i64).all.to_a
+      require_behavior(list_of_people_0008.size == 1, "AcceptancePerson0008 hydration count")
+      person_0008 = list_of_people_0008.first
+      require_behavior(person_0008.id == list_of_record_ids[8], "AcceptancePerson0008 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0008/id"
+      require_behavior(person_0008.first_name == "Person0008", "AcceptancePerson0008 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0008/first_name"
+      require_behavior(person_0008.email == "person0008@example.test", "AcceptancePerson0008 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0008/email"
+      require_behavior(person_0008.age == 37, "AcceptancePerson0008 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0008/age"
+      require_behavior(person_0008.is_active == true, "AcceptancePerson0008 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0008/is_active"
+      require_behavior(person_0008.score == 1.5, "AcceptancePerson0008 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0008/score"
+      require_behavior(person_0008.country_code == "US", "AcceptancePerson0008 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0008/country_code"
+      require_behavior(person_0008.notes.nil?, "AcceptancePerson0008 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0008/notes"
+      require_behavior(person_0008.rating.nil?, "AcceptancePerson0008 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0008/rating"
+      require_behavior(person_0008.balance.nil?, "AcceptancePerson0008 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0008/balance"
+      require_behavior(person_0008.group_number == 9000000008_i64, "AcceptancePerson0008 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0008/group_number"
+      require_behavior(person_0008.settings_text.nil?, "AcceptancePerson0008 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0008/settings_text"
+      require_behavior(person_0008.created_at == created_0008.created_at, "AcceptancePerson0008 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0008/created_at"
+      require_behavior(person_0008.updated_at == created_0008.updated_at, "AcceptancePerson0008 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0008/updated_at"
+      require_behavior(person_0008.parent_id == list_of_record_ids[9], "AcceptancePerson0008 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0008/parent_id"
+      require_behavior(person_0008.sequence_number == 8_i64, "AcceptancePerson0008 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0008/sequence_number"
+      require_behavior(AcceptancePerson0008.expected_sequence.all.to_a.size == 1, "AcceptancePerson0008 named scope")
+      receipt.list_of_models << "AcceptancePerson0008"
+      receipt.list_of_operations << "AcceptancePerson0008/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0008/scope"
+      if parent_0008 = person_0008.parent
+        require_behavior(parent_0008.id == list_of_record_ids[9], "AcceptancePerson0008 parent edge")
+        require_behavior(parent_0008.first_name == "Person0009", "AcceptancePerson0008 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0008 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0008/parent/AcceptancePerson0009"
+      list_of_children_0008 = person_0008.children.all
+      require_behavior(list_of_children_0008.size == 1 && list_of_children_0008.first.id == list_of_record_ids[7], "AcceptancePerson0008 children edge")
+      require_behavior(list_of_children_0008.first.first_name == "Person0007", "AcceptancePerson0008 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0008/children/AcceptancePerson0007"
+      eager_person_0008 = AcceptancePerson0008.where(sequence_number: 8_i64).includes(:parent).all.to_a.first
+      if eager_parent_0008 = eager_person_0008.parent
+        require_behavior(eager_parent_0008.id == list_of_record_ids[9], "AcceptancePerson0008 eager parent edge")
+        require_behavior(eager_parent_0008.first_name == "Person0009", "AcceptancePerson0008 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0008 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0008/eager_parent/AcceptancePerson0009"
+      list_of_people_0009 = AcceptancePerson0009.where(sequence_number: 9_i64).all.to_a
+      require_behavior(list_of_people_0009.size == 1, "AcceptancePerson0009 hydration count")
+      person_0009 = list_of_people_0009.first
+      require_behavior(person_0009.id == list_of_record_ids[9], "AcceptancePerson0009 field id")
+      receipt.list_of_field_checks << "AcceptancePerson0009/id"
+      require_behavior(person_0009.first_name == "Person0009", "AcceptancePerson0009 field first_name")
+      receipt.list_of_field_checks << "AcceptancePerson0009/first_name"
+      require_behavior(person_0009.email == "person0009@example.test", "AcceptancePerson0009 field email")
+      receipt.list_of_field_checks << "AcceptancePerson0009/email"
+      require_behavior(person_0009.age == 37, "AcceptancePerson0009 field age")
+      receipt.list_of_field_checks << "AcceptancePerson0009/age"
+      require_behavior(person_0009.is_active == false, "AcceptancePerson0009 field is_active")
+      receipt.list_of_field_checks << "AcceptancePerson0009/is_active"
+      require_behavior(person_0009.score == 1.5, "AcceptancePerson0009 field score")
+      receipt.list_of_field_checks << "AcceptancePerson0009/score"
+      require_behavior(person_0009.country_code == "US", "AcceptancePerson0009 field country_code")
+      receipt.list_of_field_checks << "AcceptancePerson0009/country_code"
+      require_behavior(person_0009.notes == "fixture", "AcceptancePerson0009 field notes")
+      receipt.list_of_field_checks << "AcceptancePerson0009/notes"
+      require_behavior(person_0009.rating == 7, "AcceptancePerson0009 field rating")
+      receipt.list_of_field_checks << "AcceptancePerson0009/rating"
+      require_behavior(person_0009.balance == 12.5, "AcceptancePerson0009 field balance")
+      receipt.list_of_field_checks << "AcceptancePerson0009/balance"
+      require_behavior(person_0009.group_number == 9000000009_i64, "AcceptancePerson0009 field group_number")
+      receipt.list_of_field_checks << "AcceptancePerson0009/group_number"
+      require_behavior(person_0009.settings_text == "{}", "AcceptancePerson0009 field settings_text")
+      receipt.list_of_field_checks << "AcceptancePerson0009/settings_text"
+      require_behavior(person_0009.created_at == created_0009.created_at, "AcceptancePerson0009 field created_at")
+      receipt.list_of_field_checks << "AcceptancePerson0009/created_at"
+      require_behavior(person_0009.updated_at == created_0009.updated_at, "AcceptancePerson0009 field updated_at")
+      receipt.list_of_field_checks << "AcceptancePerson0009/updated_at"
+      require_behavior(person_0009.parent_id == list_of_record_ids[0], "AcceptancePerson0009 field parent_id")
+      receipt.list_of_field_checks << "AcceptancePerson0009/parent_id"
+      require_behavior(person_0009.sequence_number == 9_i64, "AcceptancePerson0009 field sequence_number")
+      receipt.list_of_field_checks << "AcceptancePerson0009/sequence_number"
+      require_behavior(AcceptancePerson0009.expected_sequence.all.to_a.size == 1, "AcceptancePerson0009 named scope")
+      receipt.list_of_models << "AcceptancePerson0009"
+      receipt.list_of_operations << "AcceptancePerson0009/hydrate"
+      receipt.list_of_operations << "AcceptancePerson0009/scope"
+      if parent_0009 = person_0009.parent
+        require_behavior(parent_0009.id == list_of_record_ids[0], "AcceptancePerson0009 parent edge")
+        require_behavior(parent_0009.first_name == "Person0000", "AcceptancePerson0009 parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0009 missing parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0009/parent/AcceptancePerson0000"
+      list_of_children_0009 = person_0009.children.all
+      require_behavior(list_of_children_0009.size == 1 && list_of_children_0009.first.id == list_of_record_ids[8], "AcceptancePerson0009 children edge")
+      require_behavior(list_of_children_0009.first.first_name == "Person0008", "AcceptancePerson0009 children model identity")
+      receipt.list_of_association_edges << "AcceptancePerson0009/children/AcceptancePerson0008"
+      eager_person_0009 = AcceptancePerson0009.where(sequence_number: 9_i64).includes(:parent).all.to_a.first
+      if eager_parent_0009 = eager_person_0009.parent
+        require_behavior(eager_parent_0009.id == list_of_record_ids[0], "AcceptancePerson0009 eager parent edge")
+        require_behavior(eager_parent_0009.first_name == "Person0000", "AcceptancePerson0009 eager parent model identity")
+      else
+        raise AcceptanceBehaviorError.new("AcceptancePerson0009 missing eager parent")
+      end
+      receipt.list_of_association_edges << "AcceptancePerson0009/eager_parent/AcceptancePerson0000"
+      STDOUT.puts "GRANT_COMPILE_ACCEPTANCE_BEHAVIOR=#{receipt.to_json}"
+      nil
+    end
+  end
+end
+
+database_url = ENV["GRANT_COMPILE_ACCEPTANCE_DATABASE_URL"]? || raise GrantCompileAcceptance::AcceptanceBehaviorError.new("A dedicated acceptance database URL is required")
+has_invalid_first_name = ENV["GRANT_COMPILE_ACCEPTANCE_INJECT_INVALID_FIRST_NAME"]? == "1"
+has_invalid_association_first_name = ENV["GRANT_COMPILE_ACCEPTANCE_INJECT_INVALID_ASSOCIATION_FIRST_NAME"]? == "1"
+Grant::ConnectionRegistry.establish_connection(database: "acceptance", adapter: Grant::Adapter::Sqlite, url: database_url, pool_size: 1, initial_pool_size: 1, max_idle_pool_size: 1)
+Grant.connection("acceptance").with_connection do |_raw_connection|
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0000 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0001 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0002 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0003 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0004 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0005 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0006 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0007 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0008 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  Grant.connection("acceptance").execute("CREATE TABLE acceptance_person_0009 (id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, age INTEGER NOT NULL, is_active BOOLEAN NOT NULL, score DOUBLE NOT NULL, country_code VARCHAR(8) NOT NULL, notes TEXT, rating INTEGER, balance DOUBLE, group_number BIGINT NOT NULL, settings_text TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, parent_id BIGINT, sequence_number BIGINT NOT NULL)")
+  GrantCompileAcceptance::VerifyEveryModelQueryAndAssociation.new(has_invalid_first_name, has_invalid_association_first_name).perform
+end

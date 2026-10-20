@@ -1,0 +1,141 @@
+require "spec"
+require "../../src/grant"
+require "../../src/adapter/sqlite"
+
+module AtlasCheckedConversionCaller
+  alias ObservedScalar = Bool | Int32 | String | Nil
+
+  struct Settings
+    getter canary : String?
+
+    def initialize(@canary : String? = nil)
+    end
+  end
+
+  class Entry < Grant::Base
+    column id : Int64, primary: true
+    column first_name : String?
+    column age : Int32?
+    column active : Bool?
+  end
+
+  class AlternateEntry < Grant::Base
+    column id : Int64, primary: true
+    column first_name : String?
+    column age : Int32?
+    column active : Bool?
+  end
+
+  struct ErrorObservation
+    include JSON::Serializable
+
+    getter field : String = ""
+    getter error_class : String = ""
+    @[JSON::Field(emit_null: true)]
+    getter message : String? = nil
+    @[JSON::Field(emit_null: true)]
+    getter error_type : Symbol? = nil
+
+    def initialize(error : Grant::Error)
+      @field = "#{error.field}"
+      @error_class = "#{error.class}"
+      @message = error.message
+      @error_type = error.type
+    end
+  end
+
+  struct Observation
+    include JSON::Serializable
+
+    getter case_id : String = ""
+    @[JSON::Field(emit_null: true)]
+    getter first_name : String? = nil
+    @[JSON::Field(emit_null: true)]
+    getter age : Int32? = nil
+    @[JSON::Field(emit_null: true)]
+    getter active : Bool? = nil
+    @[JSON::Field(emit_null: true)]
+    getter raw_age : ObservedScalar = nil
+    @[JSON::Field(emit_null: true)]
+    getter age_change : Tuple(ObservedScalar, ObservedScalar)? = nil
+    getter list_of_errors : Array(ErrorObservation) = [] of ErrorObservation
+
+    def initialize(@case_id : String, @first_name : String?, @age : Int32?, @active : Bool?,
+                   @raw_age : ObservedScalar, @age_change : Tuple(ObservedScalar, ObservedScalar)?,
+                   @list_of_errors : Array(ErrorObservation))
+    end
+  end
+
+  struct Report
+    include JSON::Serializable
+
+    getter schema_version : Int32 = 1
+    getter list_of_observations : Array(Observation) = [] of Observation
+
+    def initialize(@list_of_observations : Array(Observation))
+    end
+  end
+
+  def self.observed_scalar(value : Grant::Base::DirtyValue | Grant::Columns::Type) : ObservedScalar
+    if value.is_a?(ObservedScalar)
+      value
+    else
+      raise "Fixture observes only its declared scalar column values"
+    end
+  end
+
+  # Captures the two concrete fixture receivers for an internal parity check.
+  # :nodoc:
+  def self.observe(case_id : String, entry : T) : Observation forall T
+    # This explicit restriction proves the unresolved inherited receiver API.
+    changes : Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue)) = entry.changes
+    age_change = if pair = changes["age"]?
+                   {observed_scalar(pair[0]), observed_scalar(pair[1])}
+                 end
+    Observation.new(case_id, entry.first_name, entry.age, entry.active,
+      observed_scalar(entry.attribute_before_type_cast("age")), age_change,
+      entry.errors.map { |error| ErrorObservation.new(error) })
+  end
+
+  # Exercises the broad input union on each concrete fixture model.
+  # :nodoc:
+  def self.assign_column_input(entry : T, attribute_name : String, value : Grant::Columns::Type) : Nil forall T
+    # Hash lookup preserves the canonical broad incoming union at this boundary.
+    payload = {attribute_name => value} of String => Grant::Columns::Type
+    entry.assign_mass_assignment_column(attribute_name, payload[attribute_name])
+  end
+end
+
+list_of_narrow_observations = [] of AtlasCheckedConversionCaller::Observation
+
+describe "Grant original input rejection diagnostics" do
+  it "retains the narrow Bool or String rejection type" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    payload = {"age" => false, "first_name" => "Ada"} of String => Bool | String
+    entry.assign_mass_assignment_column("age", payload["age"])
+    entry.age.should be_nil
+    entry.errors.size.should eq(1)
+    list_of_narrow_observations << AtlasCheckedConversionCaller.observe("narrow_bool_string", entry)
+  end
+
+  it "retains the full column-union rejection type" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    payload = {"age" => false} of String => Grant::Columns::Type
+    entry.assign_mass_assignment_column("age", payload["age"])
+    entry.age.should be_nil
+    entry.errors.size.should eq(1)
+    list_of_narrow_observations << AtlasCheckedConversionCaller.observe("full_column_union", entry)
+  end
+
+  it "retains a direct Boolean rejection type" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    entry.assign_mass_assignment_column("age", false)
+    entry.age.should be_nil
+    entry.errors.size.should eq(1)
+    list_of_narrow_observations << AtlasCheckedConversionCaller.observe("direct_bool", entry)
+  end
+end
+
+Spec.after_suite do
+  STDOUT.puts "ATLAS_ASSIGNMENT_NARROW_ERRORS=#{AtlasCheckedConversionCaller::Report.new(list_of_narrow_observations).to_json}"
+end

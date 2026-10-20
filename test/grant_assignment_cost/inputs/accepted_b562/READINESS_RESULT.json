@@ -1,0 +1,299 @@
+{
+  "actual_group_recovery_qualified": false,
+  "command_count": 11,
+  "compiler_color": "GREEN",
+  "customer_device_accepted": false,
+  "default_examples": 39,
+  "detached_session_coverage_qualified": false,
+  "frozen_dependency_installation_accepted": false,
+  "full_native_provider_acceptance": false,
+  "installed_bundle_files": 68,
+  "owned_group_observation_scope": "original POSIX process group",
+  "owned_group_observations": [
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2100.720197083,
+      "elapsed_seconds": 0.0002648750000844302,
+      "group": 64968,
+      "initial_sample": {
+        "elapsed_seconds": 3.816699972958304e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2140.484111291,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.816699972958304e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.816699972958304e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2100.951542708,
+      "elapsed_seconds": 0.000248082999860344,
+      "group": 64975,
+      "initial_sample": {
+        "elapsed_seconds": 3.420799976083799e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2140.722070291,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.420799976083799e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.420799976083799e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2101.965784791,
+      "elapsed_seconds": 0.0002645419999680598,
+      "group": 64981,
+      "initial_sample": {
+        "elapsed_seconds": 3.6625000120693585e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2140.953109,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.6625000120693585e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.6625000120693585e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2102.321119458,
+      "elapsed_seconds": 0.0002763330003290321,
+      "group": 65065,
+      "initial_sample": {
+        "elapsed_seconds": 3.391700010979548e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2127.109131666,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.391700010979548e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.391700010979548e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2102.565858416,
+      "elapsed_seconds": 0.00014179199979480472,
+      "group": 65066,
+      "initial_sample": {
+        "elapsed_seconds": 2.329199969608453e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2127.324106458,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.329199969608453e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.329199969608453e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2102.804717083,
+      "elapsed_seconds": 0.0003247499998906278,
+      "group": 65067,
+      "initial_sample": {
+        "elapsed_seconds": 2.141699997082469e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2127.586282458,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.141699997082469e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.141699997082469e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2110.22710375,
+      "elapsed_seconds": 0.0004742910000459233,
+      "group": 65068,
+      "initial_sample": {
+        "elapsed_seconds": 0.00012675000016315607,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2397.811331291,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 0.00012675000016315607,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 0.00012675000016315607,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2118.066591958,
+      "elapsed_seconds": 0.0022489999996651022,
+      "group": 65400,
+      "initial_sample": {
+        "elapsed_seconds": 0.0001967919997696299,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2405.23119625,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 0.0001967919997696299,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 0.0001967919997696299,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2123.325037958,
+      "elapsed_seconds": 0.00012983299984625774,
+      "group": 66037,
+      "initial_sample": {
+        "elapsed_seconds": 1.4125000234344043e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2413.076734833,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.4125000234344043e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.4125000234344043e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2123.483247791,
+      "elapsed_seconds": 0.0001696670001365419,
+      "group": 66060,
+      "initial_sample": {
+        "elapsed_seconds": 2.750000021478627e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2148.32865725,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.750000021478627e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.750000021478627e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2123.602834791,
+      "elapsed_seconds": 0.00017429199988328037,
+      "group": 66061,
+      "initial_sample": {
+        "elapsed_seconds": 2.5166999876091722e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2148.485585,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.5166999876091722e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.5166999876091722e-05,
+        "status": "absent"
+      }
+    }
+  ],
+  "passed": true,
+  "private_cache_removed": true,
+  "private_directory": "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-2_mjqhl_",
+  "scope": "Same-runner ordinary Alpha install plus package/compiler/spec/tutorial readiness; schema-3 native/Git/frozen-install and customer-device acceptance remain separate.",
+  "sdk_commit": "08c30535c60b9097a5da664dc7072e89ec02cad7",
+  "tutorial_binary_sha256": "07f1929638d9bd0d268ddf5f64384a855b1b2ce09fdd3f98c928e41e69ee516c",
+  "tutorial_normal_exit": 0,
+  "tutorial_regression_exit": 1,
+  "without_mt_examples": 39,
+  "writers_confirmed_retired": true
+}

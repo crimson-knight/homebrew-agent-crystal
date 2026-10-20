@@ -1,0 +1,45 @@
+{
+  "format": "atlas-grant-assignment-cost-source-receipt-v1",
+  "source_pins": {
+    "path": "SOURCE_PINS.json",
+    "bytes": 15483,
+    "sha256": "f4409b266f9a346f054afddd58c78bde51d5a9c6d75319d833abdd5c0825f0a6"
+  },
+  "source_tests": {
+    "path": "SOURCE_TESTS.json",
+    "bytes": 1317,
+    "sha256": "439a98a0d878ddcbda6cf7027612cdc8e31ffd750f68adc151efb2ad2309ceaa"
+  },
+  "retained_census": {
+    "path": "actual_metadata_v104/RETAINED_SYMBOL_CENSUS.json",
+    "bytes": 7109527,
+    "sha256": "fb1487a854c070403359db35a21b5c9e74171294272a75ee1483d5094a7b7820"
+  },
+  "simple_proposal": {
+    "path": "proposal_v100/candidate.patch.txt",
+    "bytes": 1400,
+    "sha256": "0b4355486fd293dd553d269b77bcfe78c71fd33e93153001d41c7e90acf66b07"
+  },
+  "compatible_proposal": {
+    "path": "compatible_proposal_v102/candidate.patch.txt",
+    "bytes": 3549,
+    "sha256": "f1473199772d64e7bfd68c487cd975abd0631032eb12382dd019d040b5e7d0f4"
+  },
+  "host_source": {
+    "path": "run_hosted_contrast.py",
+    "bytes": 15677,
+    "sha256": "e8b48c5ed4d1c6a4db853aeabde7411aa479e0a20ac670a695e34f036670dad9"
+  },
+  "source_files": 88,
+  "ordinary_tests": 20,
+  "optimized_tests": 20,
+  "compiler_native_container_ssh_jobs": 0,
+  "target_cells_accepted": 0,
+  "hosted_execution_admitted": false,
+  "pending": [
+    "self-contained hosted inputs",
+    "reviewed same-job profile admission successor",
+    "actual lookup/compiler/format/compatibility and runtime measurements",
+    "all144 target cells"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "format": "atlas-grant-installed-mac-diagnostic-successor-receipt-v101",
+  "source_pins": {
+    "path": "SOURCE_PINS.json",
+    "bytes": 23829,
+    "sha256": "3c31a47ab3429c251428de44ce6192cd86524bb6ea979281dd0e3fe995686ec8"
+  },
+  "source_tests": {
+    "path": "SOURCE_TESTS.json",
+    "bytes": 20165,
+    "sha256": "e736f629f13a10d9b66f82d7c96a93ee9337578235bfc4c70ae6f1b825d80f28"
+  },
+  "workflow": {
+    "path": "grant-installed-mac.proposed.yml",
+    "bytes": 6178,
+    "sha256": "9265cc59580c9ae927c5e78f5149217b355d98284f704ae8daf78523902c8e9a"
+  },
+  "readme": {
+    "path": "README.md",
+    "bytes": 6831,
+    "sha256": "35717b3c436db470ac872e799008c62ec249da6ecbc37f1f96f286b463a1fed7"
+  },
+  "source_rows": 136,
+  "predecessor_rows_unchanged": 88,
+  "ordinary_tests": 34,
+  "optimized_tests": 34,
+  "hosted_execution_admitted": false,
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "target_cells_accepted": 0,
+  "required_target_cells": 144,
+  "scope": "Source-only portable ordinary-installed Mac diagnostic; one unchanged300 baseline then one rich10 original/candidate/restored triplet",
+  "policy": "Fresh compiler backend alone under exact revision1 formula/source/version/wrapper/stdlib/SDK and fixed remaining profile fields; nonce-bound exact same SDK call/run/attempt/job/runner, complete raw roster and final revalidation",
+  "execution_limits": {
+    "serial_seconds": 6600,
+    "baseline_seconds": 1500,
+    "triplet_seconds": 4800,
+    "each_arm_seconds": 1500,
+    "build_seconds": 900,
+    "each_runtime_seconds": 120
+  },
+  "pending": [
+    "Independent source/workflow readback",
+    "Parent public integration and hosted dispatch",
+    "Actual successful complete300 build/runtime diagnostic",
+    "Actual causal memory/owner/behavior evidence",
+    "Compatible error semantics and direct constructor/assignment allocation/time/copy evidence",
+    "Independent retained-binary replay",
+    "Qualified native loader/whole-build providers and all144 final target cells"
+  ]
+}
