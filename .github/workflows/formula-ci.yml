@@ -32,7 +32,33 @@ jobs:
 
       - name: Test SDK source and result validation
         timeout-minutes: 2
-        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p 'test_sdk_install_qualification.py' -v
+        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
+
+      - name: Exercise actual SDK original-group controls
+        timeout-minutes: 1
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+          import hashlib
+          import os
+          import pathlib
+          import platform
+          import runpy
+          import sys
+
+          source = pathlib.Path("test/sdk_owned_group_controls.py").resolve()
+          expected_source = "9e9bfb8ac805c76c58bde41ce407e36154c7726f24126c9d002f54f9b31cedcc"
+          if hashlib.sha256(source.read_bytes()).hexdigest() != expected_source:
+              raise SystemExit("Hosted control source SHA-256 mismatch")
+          provider = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(source),
+              "--driver", "test/sdk_install_qualification.py",
+              "--driver-sha256", "89ed2148b3e6fa6089a8dbec1ed498ffa393f583b8ff1f27e132846d365eb09d",
+              "--source-sha256", expected_source,
+              "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
+              "--python-version", platform.python_version(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "sdk-owned-group-controls")]
+          runpy.run_path(str(source), run_name="__main__")
+          PY
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
@@ -74,5 +100,14 @@ jobs:
         with:
           name: sdk-readiness-${{ matrix.os }}
           path: ${{ runner.temp }}/sdk-readiness
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Preserve actual original-group controls
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: sdk-owned-group-controls-${{ matrix.os }}
+          path: ${{ runner.temp }}/sdk-owned-group-controls
           if-no-files-found: warn
           retention-days: 30

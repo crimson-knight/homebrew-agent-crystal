@@ -5,6 +5,7 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-1"
   sha256 "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05"
   license "Apache-2.0"
+  revision 1
 
   head "https://github.com/crimson-knight/crystal.git", branch: "incremental-compilation"
 
@@ -85,6 +86,8 @@ class AgentCrystal < Formula
 
     crystal_install_dir.install ".build/crystal" => "agent-crystal-bin"
     stdlib_install_dir.install "src"
+    # Match the upstream install target: this object belongs to the compiler build.
+    rm stdlib_install_dir/"src/llvm/ext/llvm_ext.o"
     (lib/"crystal").mkpath
 
     install_wrapper("acrystal")

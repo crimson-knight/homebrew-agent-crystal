@@ -10,9 +10,16 @@ blobs and modes, the accepted Alpha formula, its exact source archive and versio
 and the complete source-derived standard-library digest. The 22 standard-library
 directory aliases carry their own exact target roster.
 
+Formula revision 1 excludes the generated `llvm/ext/llvm_ext.o` compiler-build
+object, matching the pinned upstream install target. Source version and installed
+package revision are checked separately. The source-derived standard-library
+digest remains exact, and the actual file roster is saved before comparison so a
+failed check retains the difference for review.
+
 The run-local compiler profile derives from a reviewed policy: the installed
 formula matches that source and version, its receipt identifies a source build,
-the compiler wrapper names the installed backend, the complete installed standard
+the compiler wrapper matches the literal Homebrew Bash template, including its
+interpreter, environment assignments, quoted backend and argument forwarding, the complete installed standard
 library matches the separately pinned release source, and the actual compiler and
 Ruby executable hashes remain fixed throughout execution. This schema-1 profile
 qualifies compiler/spec/tutorial readiness. Native and Git provider admission,
@@ -34,7 +41,23 @@ The actual behavior gate requires:
 The step reserves 15 minutes within the 75-minute formula job, admits a 3-GiB disk
 projection above a 10-GiB free-space floor, and retains raw command output and a
 machine-readable result even when a check fails. Each command has a finite timeout
-and output bound. The installed SDK and its fixtures supply compiler/runtime proof;
+and output bound. After its direct child returns, the runner observes the original
+POSIX process group. Confirmed absence admits its output hashes. A present or
+unverifiable group refuses the command and preserves its private source and cache.
+Cleanup failures retain both the original error and the cleanup error in the
+result. This group observation covers the original group; process recovery and
+detached sessions retain separate qualification gates.
+
+Before the installation, a separate hosted control exercises a real normal exit
+and a same-group descendant that remains after its leader exits. The latter must
+earn a refused command with null output hashes. Its cooperative self-exit and a
+subsequent group-absence observation produce separate receipts before private-cache
+removal. The control pins its script and the complete reviewed driver, records the
+observed Python version and executable hash before and after execution, and retains
+its own artifact. It admits at most two concurrent fixture processes, 45 seconds,
+and 1 MiB of evidence. Group recovery and detached sessions remain separate gates.
+
+The installed SDK and its fixtures supply compiler/runtime proof;
 the Python tests challenge archive handling, source damage, directory aliases,
 formula provenance and result acceptance independently.
 

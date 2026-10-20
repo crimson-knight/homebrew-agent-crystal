@@ -8,7 +8,6 @@ import os
 import pathlib
 import platform
 import re
-import shlex
 import shutil
 import signal
 import subprocess
@@ -63,19 +62,26 @@ def verify_stdlib(identity, expected):
 
 
 def verify_formula_receipt(receipt, expected):
-    require(len(receipt) == 1 and receipt[0]["versions"]["stable"] == expected["version"], "Alpha formula version differs")
+    require(len(receipt) == 1 and receipt[0]["versions"]["stable"] == expected["source_version"], "Alpha formula source version differs")
+    require(receipt[0].get("revision") == expected["formula_revision"], "Alpha formula revision differs")
     require(receipt[0]["urls"]["stable"]["checksum"] == expected["source_archive_sha256"], "Alpha formula source checksum differs")
     installed = receipt[0]["installed"]
-    require(len(installed) == 1 and installed[0]["version"] == expected["version"], "Exact pinned Alpha installation is required")
+    require(len(installed) == 1 and installed[0]["version"] == expected["installed_package_version"], "Exact pinned Alpha package installation is required")
     require(installed[0].get("poured_from_bottle") is False, "This source-build qualification requires the actual same-job build")
 
 
 def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system):
-    commands = [shlex.split(line) for line in wrapper.splitlines() if line.strip() and not line.lstrip().startswith("#")]
-    assignments = ["CRYSTAL_PATH=lib:" + str(stdlib)]
+    require(system in ("Linux", "Darwin"), "Wrapper platform requires a reviewed template")
+    for path in (compiler, stdlib, homebrew_prefix):
+        require(path.is_absolute() and not any(character in str(path) for character in ('"', "\\", "$", "`", "\n", "\r")),
+                "Wrapper source requires literal absolute Homebrew paths")
+    parts = [re.escape('CRYSTAL_PATH="lib:' + str(stdlib) + '"')]
     if system == "Linux":
-        assignments.append("LD_RUN_PATH=${LD_RUN_PATH:+${LD_RUN_PATH}:}" + str(homebrew_prefix / "lib"))
-    require(commands == [assignments + ["exec", str(compiler), "$@"]], "Alpha wrapper/backend or declared environment binding differs")
+        parts.append(re.escape('LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + str(homebrew_prefix / "lib") + '"'))
+    parts.extend(["exec", re.escape('"' + str(compiler) + '"'), re.escape('"$@"')])
+    pattern = r"\A#!/bin/bash\n" + r"[ \t]+".join(parts) + r"[ \t]*\n\Z"
+    require(re.fullmatch(pattern, wrapper) is not None,
+            "Alpha wrapper must match the exact static Homebrew Bash environment and argv template")
 
 
 def extract_sdk(archive_path, destination, expected):
@@ -139,6 +145,8 @@ class Runner:
     def __init__(self, output):
         self.output = output
         self.records = []
+        self.group_observations = []
+        self.writers_confirmed_retired = True
         self.deadline = time.monotonic() + 840
 
     def run(self, label, arguments, *, cwd, environment=None, expected_exit=0, seconds=300):
@@ -150,8 +158,11 @@ class Runner:
         process = None
         reason = None
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+            self.writers_confirmed_retired = False
             process = subprocess.Popen([str(arg) for arg in arguments], cwd=cwd, env=environment,
                                        stdout=stdout, stderr=stderr, start_new_session=True)
+            group_observation = {"group": process.pid, "status": "unverifiable", "phase": "started"}
+            self.group_observations.append(group_observation)
             while process.poll() is None:
                 if time.monotonic() - started > seconds:
                     reason = "Command exceeded its time budget"
@@ -162,12 +173,28 @@ class Runner:
                     break
                 time.sleep(0.1)
             code = process.wait(timeout=10)
+            group_observation["phase"] = "direct_child_returned"
+            try:
+                os.killpg(process.pid, 0)
+                group_observation["status"] = "present"
+            except ProcessLookupError:
+                group_observation["status"] = "absent"
+            except OSError as group_error:
+                group_observation["status"] = "unverifiable"
+                group_observation["error"] = f"{type(group_error).__name__}: {group_error}"
+            self.writers_confirmed_retired = group_observation["status"] == "absent"
+            if not self.writers_confirmed_retired:
+                group_reason = "Original owned process group is " + group_observation["status"]
+                reason = reason + "; " + group_reason if reason else group_reason
         if stdout_path.stat().st_size + stderr_path.stat().st_size > 4 * 1024 * 1024:
             reason = "Command exceeded its raw-output budget"
         record = {"label": label, "arguments": [str(arg) for arg in arguments],
                   "pid": process.pid, "exit_code": code, "expected_exit": expected_exit,
                   "elapsed_seconds": time.monotonic() - started, "refusal": reason,
-                  "stdout_sha256": sha256(stdout_path), "stderr_sha256": sha256(stderr_path)}
+                  "original_group": process.pid, "terminal_group_observation": dict(group_observation),
+                  "writers_confirmed_retired": self.writers_confirmed_retired,
+                  "stdout_sha256": sha256(stdout_path) if self.writers_confirmed_retired else None,
+                  "stderr_sha256": sha256(stderr_path) if self.writers_confirmed_retired else None}
         self.records.append(record)
         write_json(self.output / "COMMANDS.json", self.records)
         require(reason is None, reason)
@@ -180,7 +207,9 @@ def qualify(output, lock):
     runner = Runner(output)
     result = {"passed": False, "scope": lock["scope"], "sdk_commit": lock["sdk"]["commit"],
               "full_native_provider_acceptance": False, "frozen_dependency_installation_accepted": False,
-              "customer_device_accepted": False, "compiler_color": "UNEXECUTED"}
+              "customer_device_accepted": False, "compiler_color": "UNEXECUTED",
+              "owned_group_observation_scope": "original POSIX process group",
+              "actual_group_recovery_qualified": False, "detached_session_coverage_qualified": False}
     private = None
     try:
         require(platform.system() in lock["alpha"]["full_versions"], "Runner platform requires a reviewed expectation")
@@ -224,8 +253,8 @@ def qualify(output, lock):
         stdlib = prefix / "share/agent-crystal/src"
         verify_wrapper(wrapper, compiler, stdlib, brew_root, platform.system())
         stdlib_identity = tree_identity(stdlib)
-        verify_stdlib(stdlib_identity, lock["alpha"])
         write_json(output / "STDLIB_BEFORE.json", stdlib_identity)
+        verify_stdlib(stdlib_identity, lock["alpha"])
         compiler_version, compiler_errors = runner.run("alpha-version", [entrypoint, "--version"], cwd=source, seconds=30)
         require(compiler_version == lock["alpha"]["full_versions"][platform.system()] and not compiler_errors, "Actual Alpha full version differs")
         ruby_launcher = pathlib.Path(shutil.which("ruby") or "").resolve()
@@ -291,22 +320,37 @@ def qualify(output, lock):
         verify_source(source, lock["sdk"]["files"])
         require(verify_bundle(bundle) == installed, "SDK bundle changed during execution")
         after = tree_identity(stdlib)
+        write_json(output / "STDLIB_AFTER.json", after)
         verify_stdlib(after, lock["alpha"])
         require(after == stdlib_identity, "Alpha standard library changed during execution")
-        write_json(output / "STDLIB_AFTER.json", after)
         result.update({"passed": True, "compiler_color": "GREEN", "default_examples": 39,
                        "without_mt_examples": 39, "tutorial_normal_exit": 0, "tutorial_regression_exit": 1,
                        "tutorial_binary_sha256": binary_digest, "installed_bundle_files": 68})
     except Exception as error:
         result["error"] = f"{type(error).__name__}: {error}"
     finally:
-        if private is not None:
-            shutil.rmtree(private)
-            result["private_cache_removed"] = not private.exists()
-        else:
-            result["private_cache_removed"] = True
-        result["command_count"] = len(runner.records)
-        write_json(output / "READINESS_RESULT.json", result)
+        result["private_directory"] = str(private) if private is not None else None
+        result["owned_group_observations"] = runner.group_observations
+        result["writers_confirmed_retired"] = runner.writers_confirmed_retired
+        try:
+            if private is not None and not runner.writers_confirmed_retired:
+                result["private_cache_removed"] = False
+                result["private_cache_preserved"] = True
+                result["cleanup_error"] = "Private source and cache remain preserved for an alive or unverifiable command group"
+            elif private is not None:
+                shutil.rmtree(private)
+                result["private_cache_removed"] = not private.exists()
+            else:
+                result["private_cache_removed"] = True
+        except Exception as cleanup_error:
+            result["private_cache_removed"] = False
+            result["cleanup_error"] = f"{type(cleanup_error).__name__}: {cleanup_error}"
+        finally:
+            if result.get("private_cache_removed") is not True:
+                result["passed"] = False
+                result.setdefault("cleanup_error", "Private source and cache removal remains incomplete")
+            result["command_count"] = len(runner.records)
+            write_json(output / "READINESS_RESULT.json", result)
     print(json.dumps(result, indent=2))
     return 0 if result["passed"] else 1
 
