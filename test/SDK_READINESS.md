@@ -4,13 +4,13 @@ The formula workflow keeps its ordinary source build, command aliases, formula
 tests, and installer-script round trip. The added step uses that same installation
 to exercise the exact public Memory Budget source candidate on macOS and Linux.
 
-`sdk_source_lock.json` binds SDK commit
-`08c30535c60b9097a5da664dc7072e89ec02cad7`, its codeload archive, all 93 Git
-blobs and modes, the accepted Alpha formula, its exact source archive and version,
+`sdk_source_lock.json` binds public SDK commit
+`58c20acfed71e27cbcf207014f29d7c7b53dab18`, its codeload archive,
+all 140 Git blobs and modes, the accepted Alpha formula, its exact source archive and version,
 and the complete source-derived standard-library digest. The 22 standard-library
 directory aliases carry their own exact target roster.
 
-Formula revision 1 excludes the generated `llvm/ext/llvm_ext.o` compiler-build
+The formula excludes the generated `llvm/ext/llvm_ext.o` compiler-build
 object, matching the pinned upstream install target. Source version and installed
 package revision are checked separately. The source-derived standard-library
 digest remains exact, and the actual file roster is saved before comparison so a
@@ -28,8 +28,15 @@ devices, and a supported SDK release retain separate acceptance checks.
 
 The actual behavior gate requires:
 
-1. An ordinary hash-verified 67-member bundle installation, including the docs and
-   skill, in a consumer path containing spaces; the manifest is the 68th file.
+1. An ordinary hash-verified 68-member payload bundle installation, including the docs and
+   skill, in a consumer path containing spaces; the source-locked manifest is the 69th file.
+   Its exact digest is admitted before reading its payload roster. Missing, extra,
+   aliased, changed, duplicated or self-listed payloads refuse the bundle check;
+   changing and resealing an installed manifest still differs from the source lock.
+   Its bundle-specific walk requires ordinary directories and regular files;
+   aliases, special nodes and unreadable directories refuse before manifest reads
+   or payload hashing. The shared standard-library identity reader retains its
+   separately qualified behavior.
 2. Exactly 39 passing examples with the default runtime and 39 with `-Dwithout_mt`,
    each through the installed SDK runner and one compiler code-generation thread.
 3. One build of the installed documentation tutorial. That same identified binary
@@ -68,6 +75,14 @@ formula provenance and result acceptance independently.
 
 `passed: true` applies to this readiness scope. The result explicitly retains false
 values for full native-provider, frozen-dependency and customer-device acceptance.
+
+The SDK product preserves an admitted Homebrew wrapper's static Linux `LD_RUN_PATH`
+when its bootstrap intentionally delegates to the hash-admitted compiler backend.
+The prepared allocation-counter `CRYSTAL_PATH` overlay stays authoritative. The
+SDK helper verifies the complete supported static shell form and wrapper/backend
+identities; explicit native-environment removals merge afterward. Ordinary wrapper
+crypto success and both direct-backend SDK spec modes are required independently.
+The installed bundle and complete source rosters are rechecked after execution.
 
 ## Linux native projection candidate
 

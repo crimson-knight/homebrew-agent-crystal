@@ -339,11 +339,31 @@ def verify_source(root, rows):
     require(actual["files"] == expected and actual["directory_aliases"] == {}, "SDK source changed during qualification")
 
 
-def verify_bundle(root):
-    manifest = json.loads((root / "PACKAGE_PINS.json").read_text())
+def verify_bundle(root, expected_manifest_sha256):
+    require(root.is_dir() and not root.is_symlink(), "Installed SDK bundle identity differs: ordinary root directory required")
+
+    def unreadable_directory(error):
+        raise QualificationError("Installed SDK bundle identity differs: unreadable directory: " + str(error))
+
+    for directory, list_of_directories, list_of_files in os.walk(root, followlinks=False, onerror=unreadable_directory):
+        for name in list_of_directories:
+            path = pathlib.Path(directory) / name
+            require(path.is_dir() and not path.is_symlink(), "Installed SDK bundle identity differs: ordinary directories required")
+        for name in list_of_files:
+            path = pathlib.Path(directory) / name
+            require(path.is_file() and not path.is_symlink(), "Installed SDK bundle identity differs: ordinary regular files required")
+    require(isinstance(expected_manifest_sha256, str) and re.fullmatch(r"[0-9a-f]{64}", expected_manifest_sha256) is not None,
+            "SDK bundle requires its source-locked manifest SHA-256")
+    manifest_path = root / "PACKAGE_PINS.json"
+    manifest_bytes = manifest_path.read_bytes()
+    require(hashlib.sha256(manifest_bytes).hexdigest() == expected_manifest_sha256, "Installed manifest differs from the pinned public source")
+    manifest = json.loads(manifest_bytes)
+    require(manifest["schema_version"] == 1 and manifest["package_name"] == "memory_budget" and manifest["package_version"] == "0.1.1",
+            "SDK bundle requires its reviewed package identity")
     expected = {row["file"]: row["sha256"] for row in manifest["files"]}
-    require(len(expected) == len(manifest["files"]) == 67, "SDK bundle requires its exact 67-member manifest")
-    expected["PACKAGE_PINS.json"] = sha256(root / "PACKAGE_PINS.json")
+    require(len(expected) == len(manifest["files"]) == 68 and "PACKAGE_PINS.json" not in expected,
+            "SDK bundle requires its exact 68-member payload manifest")
+    expected["PACKAGE_PINS.json"] = expected_manifest_sha256
     actual = tree_identity(root)
     require(actual["files"] == expected and actual["directory_aliases"] == {}, "Installed SDK bundle identity differs")
     return actual
@@ -555,6 +575,9 @@ def qualify(output, lock):
         source = private / "public SDK source"
         extract_sdk(archive_path, source, lock["sdk"])
         verify_source(source, lock["sdk"]["files"])
+        manifest_rows = [row for row in lock["sdk"]["files"] if row["file"] == "PACKAGE_PINS.json"]
+        require(len(manifest_rows) == 1, "SDK source lock requires its unique bundle manifest")
+        bundle_manifest_sha256 = manifest_rows[0]["sha256"]
         repository = pathlib.Path(__file__).resolve().parent.parent
         require(sha256(repository / "Formula/agent-crystal.rb") == lock["alpha"]["formula_sha256"], "Alpha formula differs from its accepted source")
         brew = shutil.which("brew")
@@ -627,8 +650,7 @@ def qualify(output, lock):
         consumer = private / "ordinary consumer with spaces"
         runner.run("install-bundle", [ruby_launcher, source / "scripts/install_bundle.rb", consumer], cwd=source, environment=environment, seconds=30)
         bundle = consumer / "performance/vendor/memory_budget"
-        installed = verify_bundle(bundle)
-        require(sha256(bundle / "PACKAGE_PINS.json") == sha256(source / "PACKAGE_PINS.json"), "Installed manifest differs from the pinned public source")
+        installed = verify_bundle(bundle, bundle_manifest_sha256)
         write_json(output / "INSTALLED_BUNDLE_BEFORE.json", installed)
         if platform.system() == "Linux":
             exercise_crypto_consumer(runner, entrypoint, private, output, environment)
@@ -661,7 +683,7 @@ def qualify(output, lock):
             require(sha256(path) == expected, "Installed package/formula/qualifier/source-lock inputs changed")
         write_json(output / "PACKAGE_INPUTS_AFTER.json", {path: sha256(path) for path in package_inputs})
         verify_source(source, lock["sdk"]["files"])
-        require(verify_bundle(bundle) == installed, "SDK bundle changed during execution")
+        require(verify_bundle(bundle, bundle_manifest_sha256) == installed, "SDK bundle changed during execution")
         if runtime_identity is not None:
             verify_runtime_dependency_identity(runtime_identity)
             for alias in linux_aliases.values():
@@ -672,7 +694,8 @@ def qualify(output, lock):
         require(after == stdlib_identity, "Alpha standard library changed during execution")
         result.update({"passed": True, "compiler_color": "GREEN", "default_examples": 39,
                        "without_mt_examples": 39, "tutorial_normal_exit": 0, "tutorial_regression_exit": 1,
-                       "tutorial_binary_sha256": binary_digest, "installed_bundle_files": 68})
+                       "tutorial_binary_sha256": binary_digest, "installed_bundle_payload_files": 68,
+                       "installed_bundle_files": 69, "installed_manifest_sha256": bundle_manifest_sha256})
     except Exception as error:
         result["error"] = f"{type(error).__name__}: {error}"
     finally:

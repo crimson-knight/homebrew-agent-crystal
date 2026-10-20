@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "sdk": {
-    "commit": "08c30535c60b9097a5da664dc7072e89ec02cad7",
-    "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/08c30535c60b9097a5da664dc7072e89ec02cad7",
-    "archive_sha256": "a9a23059379a3c9799cff3504ac888f886abeb3cb8eac8f6fc44728d2ff7d1ff",
-    "archive_bytes": 113490,
+    "commit": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
+    "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/58c20acfed71e27cbcf207014f29d7c7b53dab18",
+    "archive_sha256": "3a6d9c982ece74ef3b72eea0e2569bbfe31cd1767b3c4c7e8723d8f5f6d4b9bf",
+    "archive_bytes": 8369770,
     "files": [
       {
         "file": ".github/workflows/docs.yml",
@@ -14,11 +14,25 @@
         "sha256": "fcb841cc03404435571a02b838e3f08056a3bdc353afe7f970724f4b259a6b34"
       },
       {
+        "file": ".github/workflows/grant-source-package-controls.yml",
+        "mode": "100644",
+        "git_blob": "589a747db8b5e8831a65567fe3af98b04af25a4e",
+        "bytes": 21359,
+        "sha256": "931b3d091d806c12b6ca17fee86073ad6173e6431a8ca7c98967cb749e0f4713"
+      },
+      {
+        "file": ".github/workflows/linux-kernel-budget-controls.yml",
+        "mode": "100644",
+        "git_blob": "b328087f67d2c30af7f5ddca12d20ce51cdef336",
+        "bytes": 2841,
+        "sha256": "1bbaf18eb53e8f338dbc0ea7b37b97f1cdb5ed23945b4d905038dca91e68e952"
+      },
+      {
         "file": ".github/workflows/memory-budgets.yml",
         "mode": "100644",
-        "git_blob": "471753cf1121da0366dee19f2bae357a9e12f3e2",
+        "git_blob": "c6fe28c567ac3eb99c2a785d6de0af9b2db46e75",
         "bytes": 3094,
-        "sha256": "a7f7a29570870d7fd6af57f1a54284124f4732b2a7ff86c5d72ffc3c5725f776"
+        "sha256": "f3b5c1d47debff2e9dd184eb53531e33e2a25a08747ee54df5906cf3585ea1d4"
       },
       {
         "file": ".github/workflows/native-memory-budgets.yml",
@@ -44,9 +58,9 @@
       {
         "file": "PACKAGE_PINS.json",
         "mode": "100644",
-        "git_blob": "3c326d826c47ff81bfe253fa3afb70857dab48d2",
-        "bytes": 9990,
-        "sha256": "5221f0184ebb206f175b2ea6516ea8d56d0d3d71ad1cc38a3bc43feadbe97a5f"
+        "git_blob": "b3dfbe89b6b1c470be6c8463323f69e3509974a3",
+        "bytes": 10171,
+        "sha256": "7cde7c36e16a241153f6e12d88da2830c10cacec0ece46c5ff5e9712e15a19bd"
       },
       {
         "file": "README.md",
@@ -100,9 +114,9 @@
       {
         "file": "docs/0.1.1/native-toolchain.md",
         "mode": "100644",
-        "git_blob": "4ea128ab070183313a53d94f9cc21717150b3bb6",
-        "bytes": 9041,
-        "sha256": "5a0fc398e7cac3cc2beb4e71677383bc722342105cb0268faeaae2d6a7550d33"
+        "git_blob": "2a23ce3cf692d725644ec749750ebe75ebd7e949",
+        "bytes": 12013,
+        "sha256": "6c96c085bf5bb7cadeb45c6d1c37862e076f872e068e195b829c738877f6a987"
       },
       {
         "file": "docs/0.1.1/prepare-toolchain.md",
@@ -114,16 +128,16 @@
       {
         "file": "docs/corpus-manifest.json",
         "mode": "100644",
-        "git_blob": "39cfa6133ac034e6585002867efc2a4cba8f162f",
-        "bytes": 4636,
-        "sha256": "837e7c571b25af6e6aceb987268527f02d850f42f982f2e8d4911051cd03a5c8"
+        "git_blob": "36f8631d0a2dfc9b627c4d47036bd127a71da6c5",
+        "bytes": 4802,
+        "sha256": "d4e6a7e23d6b9795b736a6645c102fb3aa6cdd6785e9a6facc7ed1f33c758000"
       },
       {
         "file": "docs/corpus.json",
         "mode": "100644",
-        "git_blob": "aa726933e818d434f92680786c1cbec050ff9d55",
-        "bytes": 3175,
-        "sha256": "b515d90dfe74db78ad0ae6184f12092c82bd599f6c3f2186a6f0c7ddb4ece4db"
+        "git_blob": "d938b8e0c80575eaa32e52d1ebfd72ffd9785b82",
+        "bytes": 3160,
+        "sha256": "d1f368d6d5bb917f9989308f3cbba4369a7408605f9f0b4e0fb6a60e08cba4d1"
       },
       {
         "file": "examples/c_allocation_owner.cr",
@@ -296,9 +310,9 @@
       {
         "file": "scripts/toolchain_profile.rb",
         "mode": "100644",
-        "git_blob": "41b628bf39a91c07b1ee3ca32d672782fae3a0ae",
-        "bytes": 15167,
-        "sha256": "3bf554c7bca8606bf24b3f4b01e41c552b2d454da8b253a164bf73622e117091"
+        "git_blob": "bec08b79084efb1da7192b0216177f27462f8f3a",
+        "bytes": 21579,
+        "sha256": "03d437ba7ce3d44bf6ae92b3298afa0db676fc2667b87c34d72686002b1f445f"
       },
       {
         "file": "shard.lock",
@@ -317,9 +331,9 @@
       {
         "file": "skills/crystal-memory-budgets/SKILL.md",
         "mode": "100644",
-        "git_blob": "54d20e4a1a55b79bc14d9809ef5a6c9176a2bf35",
-        "bytes": 2932,
-        "sha256": "dd8fda6c5e0faa6cd85f5ac2cd2c187955697f041ce98c09999df2a08b5b44ce"
+        "git_blob": "78199ad890c8ea790032f324d2b66c89bee1fe46",
+        "bytes": 3581,
+        "sha256": "8d5acc89dd11b4dbe54cf85e61f2a4b7b31f7431821c271f773e1a0d0aacd1e1"
       },
       {
         "file": "skills/crystal-memory-budgets/agents/openai.yaml",
@@ -327,6 +341,13 @@
         "git_blob": "b26ace49ea9e42b28bf3142deb95bab5234bac21",
         "bytes": 250,
         "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
+      },
+      {
+        "file": "skills/crystal-memory-budgets/references/installation-validation.md",
+        "mode": "100644",
+        "git_blob": "afcc214b6acdbf67ec93509ff943e91e6e0b4ca9",
+        "bytes": 3805,
+        "sha256": "7ec59d18241d7dc4e19b3777f54d8999bced1826f967fe5a509983f68eee5eca"
       },
       {
         "file": "spec/allocation_spec.cr",
@@ -651,11 +672,319 @@
         "sha256": "b06a6de967eafc259197cef09a8bd1d864faa31f9b6de84bed6d6fad42901428"
       },
       {
+        "file": "test/wrapper_runtime_environment_test.rb",
+        "mode": "100644",
+        "git_blob": "b32e318b06ffe520741cee2eeb1e6e7cda93ec8c",
+        "bytes": 17040,
+        "sha256": "72b4af953f1e36347de60fadb6e192f22a59ff3f999b7f1975fc99c6f05eae5d"
+      },
+      {
         "file": "toolchain.darwin-arm64.json",
         "mode": "100644",
         "git_blob": "d67edb63afebb3a2bd97c6338d5f13738c460fff",
         "bytes": 866,
         "sha256": "c93be62cedcbbbfd143c887cbc1071486584e921d2fb5eaeef2c54f7d9e72dca"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/PUBLICATION_PINS.json",
+        "mode": "100644",
+        "git_blob": "476bdbef4175d14ee05c3b974d0ba454137711a5",
+        "bytes": 1624,
+        "sha256": "39d323740f131262a267144ad66989b6eac777c1f7048e0c3c0590edee95cb50"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/PUBLICATION_PINS.v101.json",
+        "mode": "100644",
+        "git_blob": "3003f8ef921352e2f959f147ab03e7cebda42822",
+        "bytes": 2090,
+        "sha256": "b4510c07cfc5078e12ed24a0f1aaa50a80b861b420c9716d94dfae2beeb71164"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/README.md",
+        "mode": "100644",
+        "git_blob": "1774be355e28f615178c96f9e63efaccb153507a",
+        "bytes": 3895,
+        "sha256": "ec5de572875c4133a91ebb5b12f9a490f28c0109f5be507afaed3159fd55bd6f"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/grant-linux-first-build-publication-v100.tar.gz",
+        "mode": "100644",
+        "git_blob": "d6e1272d1e72a942e0e528f358e710f582214aea",
+        "bytes": 2908563,
+        "sha256": "aebd690e5978aa6373e2177aa7ee2d5bcb8b7e064cc50aee18ae9c4d53fc5601"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/grant-linux-first-build-publication-v101.tar.gz",
+        "mode": "100644",
+        "git_blob": "d1c8dc37b283e72c7afb8aa57216f114e512868b",
+        "bytes": 5511524,
+        "sha256": "39ae53df3f72668f63101e0f65606cc41b2787c71292bff0f163031bb4bb309e"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/verify_publication.py",
+        "mode": "100644",
+        "git_blob": "1e2cdd93cc68af71119069c91b85c57a35ae09f9",
+        "bytes": 13407,
+        "sha256": "c7bb0b45e7df41fd45ba28f498b109fce797772bfe4707898c92401bd1bb3041"
+      },
+      {
+        "file": "tools/grant_compile_acceptance/verify_publication_v101.py",
+        "mode": "100644",
+        "git_blob": "efe7c60e7bc9953dbed645923006b7137fac5e2f",
+        "bytes": 16623,
+        "sha256": "728f7df0eb6b36c127bc9ea81e8356834cb2272acfd6ae357f8ec27cfe219695"
+      },
+      {
+        "file": "tools/installation_provenance/README.md",
+        "mode": "100644",
+        "git_blob": "a6bf2f3c823e3933173e8f3d889d033a2d5dacdc",
+        "bytes": 3434,
+        "sha256": "816aa21d469dfc6eff94c32e99d423681add2bae57a150c6f94eef670b5e1f41"
+      },
+      {
+        "file": "tools/installation_provenance/SOURCE_PINS.json",
+        "mode": "100644",
+        "git_blob": "51b37196b48f233317f986f096bcdd6870148d7c",
+        "bytes": 1291,
+        "sha256": "15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae"
+      },
+      {
+        "file": "tools/installation_provenance/cgroup_budget.py",
+        "mode": "100644",
+        "git_blob": "106682cd807b789982a66576b9c39478d4f8369f",
+        "bytes": 7977,
+        "sha256": "c7d84f2916401b3d977246b69f94769fdf3c368511af45fb795607cfc199347f"
+      },
+      {
+        "file": "tools/installation_provenance/evidence/README.md",
+        "mode": "100644",
+        "git_blob": "0c2e1a32e52ecd8fa2fadf26e8866399118807b3",
+        "bytes": 2176,
+        "sha256": "8527a028cabe366379911ea7c76263ff9a757111d13fa5e7d9b5ee1ced3bab31"
+      },
+      {
+        "file": "tools/installation_provenance/evidence/linux-controls-20261020-98ce154.json",
+        "mode": "100644",
+        "git_blob": "85d547e5058f8c6d9e4e645353bbf3036699d440",
+        "bytes": 2669,
+        "sha256": "101bb7bcbf968e2403e8cc79b27b4fb41349c7caa4501ecb82c6a9709c90e467"
+      },
+      {
+        "file": "tools/installation_provenance/evidence/linux-controls-20261020-98ce154.zip",
+        "mode": "100644",
+        "git_blob": "bf0fe8d288b50d6943b929ca45f0bb18d7b729ad",
+        "bytes": 50197,
+        "sha256": "4562b5d0e1398f63a725bde4b180ce148101ed3846cf8b1ccecb04346389a0a3"
+      },
+      {
+        "file": "tools/installation_provenance/native_image_protocol.py",
+        "mode": "100644",
+        "git_blob": "80419d331a395de17a29d1b48747b52accaa3a75",
+        "bytes": 8642,
+        "sha256": "b7705b1b85f24ba296d5565e3981451b58f7a3a9c9f6d79a7bc9b824877eddf5"
+      },
+      {
+        "file": "tools/installation_provenance/record_linux_runner.py",
+        "mode": "100644",
+        "git_blob": "ebd826923f0b8e09e767319264a63e926bbbd388",
+        "bytes": 9053,
+        "sha256": "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb"
+      },
+      {
+        "file": "tools/installation_provenance/run_ci.sh",
+        "mode": "100644",
+        "git_blob": "7f9659da1b4b09a6f4f0c76b1141b8b2ffd54568",
+        "bytes": 5296,
+        "sha256": "2177c969114ad070329c3689e98501ea18f99e610189e97c19b98417a79106ee"
+      },
+      {
+        "file": "tools/installation_provenance/run_controls.py",
+        "mode": "100644",
+        "git_blob": "468b6a2a047f9b0ed3b897f2004660b918ae2e9a",
+        "bytes": 6538,
+        "sha256": "0a0ab3361b9714dcb67a7a2dde7b6e4507c4b2dd09b8131492c5cc2e1d2c3cee"
+      },
+      {
+        "file": "tools/installation_provenance/runner_profile.json",
+        "mode": "100644",
+        "git_blob": "ebde098be63b9650b881f1b62c00d2de1a98813c",
+        "bytes": 4703,
+        "sha256": "c4ad29890e5531c958f2b10e1462dcdfd6491eb29f440d312b6edaff6214ee90"
+      },
+      {
+        "file": "tools/installation_provenance/test_cgroup_budget.py",
+        "mode": "100644",
+        "git_blob": "4ca6e3fdd504b6c6eb1b31dcb8052c4a00e9e4ec",
+        "bytes": 7788,
+        "sha256": "e0a85d445d8cf45508802e692ab85c62e2cbee5c815c5555e89bdca337c59ba2"
+      },
+      {
+        "file": "tools/installation_provenance/test_native_image_protocol.py",
+        "mode": "100644",
+        "git_blob": "3759e0f0e8cc67bb07e541eb1947407df3a0162d",
+        "bytes": 10227,
+        "sha256": "22f6762ad3ebb0e1d689dab8357a9571b591cc25420bf3293654cd7117a201ad"
+      },
+      {
+        "file": "tools/installation_provenance/test_runner_profiles.py",
+        "mode": "100644",
+        "git_blob": "52eab295871aad07f869b6d5346ba420e6eca4a9",
+        "bytes": 2493,
+        "sha256": "fedd56aed996663c7d2408eac3e8fb05f2be94f1628f2afac163ce5f83e3a143"
+      },
+      {
+        "file": "tools/installation_provenance/test_verify_terminal.py",
+        "mode": "100644",
+        "git_blob": "f2e4a0e0ea0ec3fd181749c93ac4b7c67e245ee5",
+        "bytes": 9116,
+        "sha256": "6b8166acba4ec1813095f302366429a47decee37daa97eb1484b538a22f44ff1"
+      },
+      {
+        "file": "tools/installation_provenance/verify_terminal.py",
+        "mode": "100644",
+        "git_blob": "b85e8570596e8d981c85a905b92bfd32e41c31e0",
+        "bytes": 8763,
+        "sha256": "f35e2a9804afadf514beced484b02777f4ece92a1a33436afb0f10d82bfcdca9"
+      },
+      {
+        "file": "tools/whole_build_memory/README.md",
+        "mode": "100644",
+        "git_blob": "a888e515ebcebc0d3aa882c94a7de07c64f97389",
+        "bytes": 3704,
+        "sha256": "23942795052aaf00219af8e90236d83939aa97d26837acfa585999c2c0eaf7a9"
+      },
+      {
+        "file": "tools/whole_build_memory/SOURCE_PINS.json",
+        "mode": "100644",
+        "git_blob": "4ccf3cde8ba0081137bfccaed3efea0030ca7bd4",
+        "bytes": 571,
+        "sha256": "233f9658ccd015e2c9e7c268723963ed3713dbb2fc4a552f65d2b52a13288cfd"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/README.md",
+        "mode": "100644",
+        "git_blob": "2f3e60fe63302d9930bb49591f3c9deaf0389ef6",
+        "bytes": 9146,
+        "sha256": "24264d5fe0b0cd35fe294d7ea0ce06b2b5dc1803a209a87fa1685d7d1dd201d9"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/initial-membership-reader-gap.json",
+        "mode": "100644",
+        "git_blob": "635bb29d095ef26dd0fc1624d5e4bdb669f934bd",
+        "bytes": 713,
+        "sha256": "2ce22c4bfee61bf30551967e45a74ad168bc7f720591af084d545226031dd611"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-descendants-39447337794-initial.zip",
+        "mode": "100644",
+        "git_blob": "6bd5e6703132462e0ea1712fb96aadb881644fa6",
+        "bytes": 146576,
+        "sha256": "0cf4bd1a5db3c72ed5fee971e8c5734efa0504500aa5ce8abe90de67d696a5c9"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-descendants-39447776437.acceptance.json",
+        "mode": "100644",
+        "git_blob": "bf3d9b86b7f7798e4e413589e99055b1a678e5f0",
+        "bytes": 49409,
+        "sha256": "3814b7b442a681be60ccd56fdc8bcbe42c781cc15f84ae7b42ce111e01868c9b"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-descendants-39447776437.github-artifact.json",
+        "mode": "100644",
+        "git_blob": "dd78538e02390fec0f5628df10daaa0dbef00a4f",
+        "bytes": 781,
+        "sha256": "56f057bbba9c1a25afe9fe8b9150054db67b4281f2714913d2ae4d876fc8412d"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-descendants-39447776437.zip",
+        "mode": "100644",
+        "git_blob": "0cd537c4ddb9c7f6ea746ca56828fe080c5dde0f",
+        "bytes": 146765,
+        "sha256": "5bbdcbb53413e7f95fb67f310802a925cb767d2b06ea451dc409704fae059b4d"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-rss-39449551836-attempt-1-oom-marker-refusal.zip",
+        "mode": "100644",
+        "git_blob": "532a128a93124edf6e26530102aa953c37789cdb",
+        "bytes": 49299,
+        "sha256": "e3600ec03e73ffb8eaeec868628fd70b85ec38e610bf9420b36e0fc5b850843f"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-rss-39449551836-attempt-1.refusal.json",
+        "mode": "100644",
+        "git_blob": "b7bba90c8928f538da810f531fc93bce74539e48",
+        "bytes": 15290,
+        "sha256": "2875eb4369bc0b0f47bb8cfdf7a037ab76d225d2407881072e47169932ca2ffd"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-rss-39449551836-attempt-2.acceptance.json",
+        "mode": "100644",
+        "git_blob": "aa90db22b0ad5e87f5aff2aa960b8153a7713b98",
+        "bytes": 61277,
+        "sha256": "b0c31e89694a8337efc27aba628b959b122520abf22708515100209ca5acde13"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-rss-39449551836-attempt-2.zip",
+        "mode": "100644",
+        "git_blob": "7972934331f37219ea4c079b93e44c0f8012f536",
+        "bytes": 169372,
+        "sha256": "4ff7637e68a81fa5ed218733a14238219b9b9908a23cdddc4a836136da7999cf"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-rss-39449551836.github-artifacts.json",
+        "mode": "100644",
+        "git_blob": "f7a539d3d594a8b2029ce03146e9c90360e72bc3",
+        "bytes": 1530,
+        "sha256": "62980cb59290322db493b0f2c43c9f8ac30e20da1e65801838cdee5d23fb4169"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-rss-controlled-repeat.json",
+        "mode": "100644",
+        "git_blob": "21d986898ea2e567f1223b804c55ade632429a43",
+        "bytes": 535,
+        "sha256": "193b0c62e3236ada9b80646cb2b5121df886bb5e24f3c5456c985fc39a6a9920"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-shared-39451872353.acceptance.json",
+        "mode": "100644",
+        "git_blob": "389526c5b08ad1eecf434e14bdc50e5e6d8ec1e0",
+        "bytes": 81461,
+        "sha256": "9ca79c544c760145bef1a82f7675dd17719fd95ef89f1a27a13c840cf5e796cf"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-shared-39451872353.github-artifact.json",
+        "mode": "100644",
+        "git_blob": "19f017733cf645751983b34916e7f51662e09181",
+        "bytes": 781,
+        "sha256": "d0128807f6e251c16d459be5e357665f30030e8e3224002c7d7cb97b57a7c0d2"
+      },
+      {
+        "file": "tools/whole_build_memory/evidence/linux-shared-39451872353.zip",
+        "mode": "100644",
+        "git_blob": "33817b9187d05f0c656728cdd190e64531ef6b76",
+        "bytes": 214487,
+        "sha256": "19c4b36d2d60f3c988226f58597e7f1aa8f91a4e6cf09807a725051bc9903bdc"
+      },
+      {
+        "file": "tools/whole_build_memory/probe.py",
+        "mode": "100644",
+        "git_blob": "6a93ad4e89f9469e75e82a3c500241d84bc475df",
+        "bytes": 22408,
+        "sha256": "2f1955f43f394949952454b40098b227adb022c20a49c67946d7af02315f5b87"
+      },
+      {
+        "file": "tools/whole_build_memory/run_host.py",
+        "mode": "100644",
+        "git_blob": "b600cac668275d82394e048d3f1417ecef6b7520",
+        "bytes": 11827,
+        "sha256": "253d9b49d74580e5efd1c1d1b168055033c4cda10137cd839d504cf3b5d0d1cb"
+      },
+      {
+        "file": "tools/whole_build_memory/verify_results.py",
+        "mode": "100644",
+        "git_blob": "002bcf0e86b3fdc336c8f6d2fcf2d36720fa6e38",
+        "bytes": 25919,
+        "sha256": "f7ccf48f2168a865448760c6f6986df009378f7d3a16b1ab6f10d145d04ed2b8"
       }
     ]
   },
