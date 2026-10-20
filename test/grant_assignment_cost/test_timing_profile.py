@@ -1,5 +1,6 @@
 """Physical retained-footer and mocked calibration/return controls; workload creation is intercepted."""
 from contextlib import contextmanager
+import argparse
 import copy
 import hashlib
 import json
@@ -26,6 +27,14 @@ HISTORICAL = (ROOT / 'fixtures/timing/historical18.stderr.txt').read_text()
 JOB = dict(run_id='synthetic-source-only-job', run_attempt='1', source_commit='synthetic-reviewed-source', job='grant-installed-mac')
 TIME_SHA = timing.digest('/usr/bin/time')
 TRUE_SHA = timing.digest('/usr/bin/true')
+WORKFLOW_FIXTURE = None
+
+
+def workflow_bytes(packet_root, proposal_fixture=None):
+    path = Path(proposal_fixture) if proposal_fixture is not None else packet_root.parents[1] / '.github/workflows/grant-installed-mac.yml'
+    if path.is_symlink() or not path.is_file() or path.stat().st_size > 64 * 2**10:
+        raise RuntimeError('Bounded regular workflow source required: ' + str(path))
+    return path.read_text()
 
 
 def profile(raw=ACTUAL):
@@ -448,7 +457,7 @@ class CausalCalibrationControls(unittest.TestCase):
             self.assertEqual(json.loads((output.parent / 'artifact/timing-calibration/CALIBRATION_RESULT.json').read_bytes())['error'], result['error'])
 
     def test_active_workflow_opt_in_and_exact_original_deadlines_remain_explicit(self):
-        raw = (ROOT / 'grant-causal-mac.proposed.yml').read_text()
+        raw = workflow_bytes(ROOT, WORKFLOW_FIXTURE)
         self.assertIn('"--timing-true-sha256", hashlib.sha256(pathlib.Path("/usr/bin/true").read_bytes()).hexdigest()', raw)
         self.assertIn('timeout-minutes: 82', raw)
         self.assertIn('python3 -O -I -S -B test/grant_assignment_cost/test_timing_profile.py', raw)
@@ -456,6 +465,11 @@ class CausalCalibrationControls(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--workflow-fixture', type=Path)
+    options, remaining = parser.parse_known_args()
+    WORKFLOW_FIXTURE = options.workflow_fixture
+    sys.argv = [sys.argv[0], *remaining]
     with mock.patch.object(subprocess, 'Popen', side_effect=AssertionError('Source-only tests intercept workload creation')), \
          mock.patch.object(os, 'kill', side_effect=AssertionError('Source-only tests intercept process signals')), \
          mock.patch.object(os, 'killpg', side_effect=AssertionError('Source-only tests intercept group signals')):

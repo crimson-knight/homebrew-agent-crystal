@@ -1,0 +1,15 @@
+{
+  "actual_local_workload_jobs": 0,
+  "format": "atlas-v105-actual-review-run-binding",
+  "job_id": 118917087585,
+  "job_name": "One rich10 causal triplet",
+  "repository": "crimson-knight/homebrew-agent-crystal",
+  "run_attempt": 1,
+  "run_id": 39506636743,
+  "run_url": "https://github.com/crimson-knight/homebrew-agent-crystal/actions/runs/39506636743",
+  "runner_name": "GitHub Actions 1000019238",
+  "source_commit": "fdaa43cc1db51cbe0f0f89add4abe894827c0d26",
+  "source_manifest_sha256": "1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49",
+  "status": "bound",
+  "workflow_sha256": "651885061ed34e3345ceb220cbc8115faf57a5513f087ab7e690cdad2f1b374d"
+}

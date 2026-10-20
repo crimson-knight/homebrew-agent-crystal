@@ -1,0 +1,36 @@
+{
+  "actual_local_workload_jobs": 0,
+  "gh_path": "/opt/homebrew/Cellar/gh/2.69.0/bin/gh",
+  "gh_sha256": "b4769c679fc7270a699cfb7a900ac65aa43a259c1da8d33708cae053ca1746a6",
+  "observed_utc": "2026-10-20T22:15:57.030204+00:00",
+  "reads": [
+    {
+      "bytes": 14043,
+      "endpoint": "repos/crimson-knight/homebrew-agent-crystal/actions/runs/39506636743",
+      "exit_code": 0,
+      "path": "RUN_TERMINAL.json",
+      "sha256": "f3ee80762966df2c8ef80233b5f2e8f4e0ca627f5a239f2831f43a8341fda5e0"
+    },
+    {
+      "bytes": 3386,
+      "endpoint": "repos/crimson-knight/homebrew-agent-crystal/actions/runs/39506636743/jobs",
+      "exit_code": 0,
+      "path": "JOBS_TERMINAL.json",
+      "sha256": "7ca3cea766ee6c9fb36f9b3edae582f30edee5695c84f080af4101fb0622a5fc"
+    },
+    {
+      "bytes": 32,
+      "endpoint": "repos/crimson-knight/homebrew-agent-crystal/actions/runs/39506636743/artifacts",
+      "exit_code": 0,
+      "path": "ARTIFACTS_TERMINAL.json",
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "bytes": 100511,
+      "endpoint": "repos/crimson-knight/homebrew-agent-crystal/actions/jobs/118917087585/logs",
+      "exit_code": 0,
+      "path": "ACTUAL_JOB_LOG.txt",
+      "sha256": "6caab7b6546d81d71cecc28773981d38c9c7bbe55ffa98ec154ab825f0dd85b0"
+    }
+  ]
+}

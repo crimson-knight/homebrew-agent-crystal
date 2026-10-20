@@ -1,0 +1,46 @@
+{
+  "format": "atlas-v105-physical-installed-layout-reproduction",
+  "modes": [
+    {
+      "exit_code": 0,
+      "mode": "ordinary",
+      "result": {
+        "accepted_target_cells": 0,
+        "actual_installed_workflow_present": true,
+        "error_class": "FileNotFoundError",
+        "exact_missing_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_timing_actual_review_v105/exact public source/test/grant_assignment_cost/grant-causal-mac.proposed.yml",
+        "format": "atlas-v105-installed-layout-failure-reproduction",
+        "local_compiler_native_container_ssh_jobs": 0,
+        "python_optimization": 0,
+        "reproduced": true,
+        "run_id": 39506636743,
+        "source_commit": "fdaa43cc1db51cbe0f0f89add4abe894827c0d26",
+        "source_test_sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7",
+        "unshipped_proposal_present": false
+      },
+      "stderr_sha256": "5f265795fcd63958febea1b9a78b0d8ee061b9fae1dfc6af96fff7be32491831",
+      "stdout_sha256": "4bc94030a0be5d8ecc65282fad3ca41b0c265c185642d1b1d902e39671b52cdb"
+    },
+    {
+      "exit_code": 0,
+      "mode": "optimized",
+      "result": {
+        "accepted_target_cells": 0,
+        "actual_installed_workflow_present": true,
+        "error_class": "FileNotFoundError",
+        "exact_missing_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_timing_actual_review_v105/exact public source/test/grant_assignment_cost/grant-causal-mac.proposed.yml",
+        "format": "atlas-v105-installed-layout-failure-reproduction",
+        "local_compiler_native_container_ssh_jobs": 0,
+        "python_optimization": 1,
+        "reproduced": true,
+        "run_id": 39506636743,
+        "source_commit": "fdaa43cc1db51cbe0f0f89add4abe894827c0d26",
+        "source_test_sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7",
+        "unshipped_proposal_present": false
+      },
+      "stderr_sha256": "5f265795fcd63958febea1b9a78b0d8ee061b9fae1dfc6af96fff7be32491831",
+      "stdout_sha256": "09ae21d5b0aa029283adac3bbe9955d04bf5d71f33b8544335695eb2568d0a5f"
+    }
+  ],
+  "scope": "One expected failing source test in each mode against all215 exact public-tree files; actual local workloads remain0"
+}

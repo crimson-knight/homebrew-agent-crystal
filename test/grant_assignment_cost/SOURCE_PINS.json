@@ -1,5 +1,5 @@
 {
-  "format": "atlas-grant-installed-mac-source-pins-v105",
+  "format": "atlas-grant-installed-mac-source-pins-v106",
   "files": [
     {
       "path": "ACTUAL_FOOTER_FAILURE.json",
@@ -27,6 +27,11 @@
       "sha256": "76f81c3161f42d3313269eedcf309a895e0469c8acb62e1693be9d84dca5ce77"
     },
     {
+      "path": "PRESERVATION_V106.json",
+      "bytes": 34792,
+      "sha256": "0bb3f9419cc30ca4eb9bad9d0dcd00b281a004f0893b129b80175d3e48a37e30"
+    },
+    {
       "path": "README.md",
       "bytes": 7379,
       "sha256": "62d93158339e8196ab3152d3c2e61ff33ae13e953d3af5e869150a3ae9060dd3"
@@ -37,9 +42,19 @@
       "sha256": "15af90f31506592174683898afce90dfc136e0cb5d72e6959e2ccfcc33384dde"
     },
     {
+      "path": "START_HERE_V106.md",
+      "bytes": 787,
+      "sha256": "47893cdf36cd1f2e9f5de7241cee255cd377da4ab4a68cf8f5b2dac3a4886549"
+    },
+    {
       "path": "TIMING_PROFILE_V105.md",
       "bytes": 3738,
       "sha256": "30156a5d5ba920a86133628b3d4d203cee8cc68ad1592994c7efaa05caa34be3"
+    },
+    {
+      "path": "WORKFLOW_LAYOUT_V106.md",
+      "bytes": 3122,
+      "sha256": "2b9a66f6fadce0a63ab3d40cb50233c05f19f73b0443a106279354c61491edd2"
     },
     {
       "path": "analyze_retained.py",
@@ -255,6 +270,36 @@
       "path": "inputs/PREDECESSOR_V104_test_causal_only.py",
       "bytes": 14409,
       "sha256": "eab787e69b7ccf10c3b4131086bbf12e6fa96de1e8c18d586ed7fa9b51f48c1a"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V105_INTEGRATION_PROPOSAL.json",
+      "bytes": 3621,
+      "sha256": "745bd28ca284c0453f9441c265bf7437128190fb05f8b356f5e429f1c971d5c3"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V105_RECEIPT.json",
+      "bytes": 5356,
+      "sha256": "d33602b5d0fefd987ae2e9b96a4cab81132dae07be5e43ce7566e07d4c2b457b"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V105_SOURCE_PINS.json",
+      "bytes": 34009,
+      "sha256": "1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V105_SOURCE_TESTS.json",
+      "bytes": 3903,
+      "sha256": "83d56e02bf636de7f942671a513028d6b93582e04aa26dc485386c34b978e9b9"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V105_grant-causal-mac.proposed.yml",
+      "bytes": 6775,
+      "sha256": "651885061ed34e3345ceb220cbc8115faf57a5513f087ab7e690cdad2f1b374d"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V105_test_timing_profile.py",
+      "bytes": 29154,
+      "sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7"
     },
     {
       "path": "inputs/SOURCE_INPUTS.json",
@@ -692,6 +737,61 @@
       "sha256": "bdbc2837e22ee8a9cc6b1120314ae5c80c4065080640de15faa750dd5995c5ef"
     },
     {
+      "path": "inputs/actual_run_39506636743/ACTUAL_FAILURE_RECEIPT.json",
+      "bytes": 7523,
+      "sha256": "2248f87da49b8d7d81a8af59d5cfbeff2cda91ef6cca6aa0b8271500a044e255"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/ACTUAL_JOB_LOG_IDENTITY.json",
+      "bytes": 729,
+      "sha256": "2188f41223d41c255a452b36b1d83f8c6a105b972a5b2258a4ed28d8f5f8de7a"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/ARTIFACTS_TERMINAL.json",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/AUTHORITATIVE_READBACK.json",
+      "bytes": 1332,
+      "sha256": "39b99d4092faebe14cd12f337cd6dc0e22a04eab5a7a084936a1f1017998fa47"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/EXACT_PUBLIC_SOURCE.json",
+      "bytes": 62521,
+      "sha256": "3962ce86e94259ab4c6a73e0da803b3424422e42e07986b9fd72955c8cc5390b"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/JOBS_TERMINAL.json",
+      "bytes": 3386,
+      "sha256": "7ca3cea766ee6c9fb36f9b3edae582f30edee5695c84f080af4101fb0622a5fc"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/LAYOUT_FAILURE.optimized.stderr.txt",
+      "bytes": 1770,
+      "sha256": "5f265795fcd63958febea1b9a78b0d8ee061b9fae1dfc6af96fff7be32491831"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/LAYOUT_FAILURE.ordinary.stderr.txt",
+      "bytes": 1770,
+      "sha256": "5f265795fcd63958febea1b9a78b0d8ee061b9fae1dfc6af96fff7be32491831"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/LAYOUT_FAILURE_REPRODUCTION.json",
+      "bytes": 2285,
+      "sha256": "581c5e443262794f58ff02e208ad75c846e638b1ea0b00fc6b4962e5515eb25b"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/RUN_BINDING.json",
+      "bytes": 674,
+      "sha256": "c4425fc3076bfa4884b86880edfd53bcbc0cff79eaa11ef48d7650037cb759e4"
+    },
+    {
+      "path": "inputs/actual_run_39506636743/RUN_TERMINAL.json",
+      "bytes": 14043,
+      "sha256": "f3ee80762966df2c8ef80233b5f2e8f4e0ca627f5a239f2831f43a8341fda5e0"
+    },
+    {
       "path": "inputs/grant-source-and-frozen-dependencies.tar.gz",
       "bytes": 1626007,
       "sha256": "d2c90cc3110109337c92f567fdf533dadf475b3f468602b8fcb5e2ed21426ff5"
@@ -903,8 +1003,13 @@
     },
     {
       "path": "test_timing_profile.py",
-      "bytes": 29154,
-      "sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7"
+      "bytes": 29825,
+      "sha256": "2bf827d3b1ecaf923a251713cedbd04c05be29a0903731fab74698a745a57ad6"
+    },
+    {
+      "path": "test_workflow_layout.py",
+      "bytes": 4748,
+      "sha256": "95b7a10509e848696409c6d624b8648b995609cdcf07d10422ad4c4653ae7689"
     },
     {
       "path": "timing_profile.py",

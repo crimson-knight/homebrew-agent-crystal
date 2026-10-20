@@ -1,0 +1,106 @@
+{
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "actual_same_job_calibration_executed": false,
+  "command_journal": {
+    "bytes": 5140,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105_validation/COMMANDS.json",
+    "sha256": "db7b0fc841861a189d6ab5a6fba22eddeb37443b0843533f29767b2499553586"
+  },
+  "format": "atlas-grant-timing-profile-source-tests-v105",
+  "guarded_test_runner": {
+    "bytes": 2213,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105_validation/run_guarded_tests.py",
+    "sha256": "558773f4ee477ab727c84283f91da4c06f781b2dc391c50d7d71e26222e941ed"
+  },
+  "manifest_sha256": "1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49",
+  "modes": [
+    {
+      "cohorts": [
+        {
+          "module": "test_assignment_cost",
+          "source_sha256": "0ff5c0d8332e6496db2af4c02ba81328596b6d0bdbb1af7d6274ddff3b0c9e71",
+          "tests": 23
+        },
+        {
+          "module": "test_same_job_policy",
+          "source_sha256": "79aba3e9f0047ade5820841e4bdf4eb91187f143571f038445cc301b2257a97d",
+          "tests": 14
+        },
+        {
+          "module": "test_causal_only",
+          "source_sha256": "eab787e69b7ccf10c3b4131086bbf12e6fa96de1e8c18d586ed7fa9b51f48c1a",
+          "tests": 23
+        },
+        {
+          "module": "test_timing_profile",
+          "source_sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7",
+          "tests": 38
+        }
+      ],
+      "elapsed_seconds": 4.769346958,
+      "exit_code": 0,
+      "mode": "ordinary",
+      "stderr": {
+        "bytes": 11379,
+        "path": "ordinary.stderr.txt",
+        "sha256": "c505e0903affad4377348cf7c631d21270d8f3f0d9f8b6b408f9dc9701f09640"
+      },
+      "stdout": {
+        "bytes": 1199,
+        "path": "ordinary.stdout.txt",
+        "sha256": "b4e37723b71f716499057140acebf2162fe92740093bf9c1d5c967fc1d65886f"
+      },
+      "tests": 98
+    },
+    {
+      "cohorts": [
+        {
+          "module": "test_assignment_cost",
+          "source_sha256": "0ff5c0d8332e6496db2af4c02ba81328596b6d0bdbb1af7d6274ddff3b0c9e71",
+          "tests": 23
+        },
+        {
+          "module": "test_same_job_policy",
+          "source_sha256": "79aba3e9f0047ade5820841e4bdf4eb91187f143571f038445cc301b2257a97d",
+          "tests": 14
+        },
+        {
+          "module": "test_causal_only",
+          "source_sha256": "eab787e69b7ccf10c3b4131086bbf12e6fa96de1e8c18d586ed7fa9b51f48c1a",
+          "tests": 23
+        },
+        {
+          "module": "test_timing_profile",
+          "source_sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7",
+          "tests": 38
+        }
+      ],
+      "elapsed_seconds": 4.619341749999999,
+      "exit_code": 0,
+      "mode": "optimized",
+      "stderr": {
+        "bytes": 11379,
+        "path": "optimized.stderr.txt",
+        "sha256": "871d494a57976b643883d5f8adab2c6e6727cf3b2448724afbf89ac05c96cb53"
+      },
+      "stdout": {
+        "bytes": 1200,
+        "path": "optimized.stdout.txt",
+        "sha256": "20bace22deb91c127b909cd9d6134c271c86c543aff6a48dbda78b14043ab3d8"
+      },
+      "tests": 98
+    }
+  ],
+  "new_cases_per_mode": 38,
+  "original_test_files_byte_identical": true,
+  "predecessor_cases_per_mode": 60,
+  "raw_evidence_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105_validation",
+  "source_and_mocked_acceptance": true,
+  "source_readback": {
+    "bytes": 2473,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105_validation/SOURCE_READBACK.json",
+    "sha256": "302b128c420b1888c960a352622ae8587c25cbf5cf536a122502993ed64942a8"
+  },
+  "target_cells_accepted": 0,
+  "workflow_sha256": "651885061ed34e3345ceb220cbc8115faf57a5513f087ab7e690cdad2f1b374d"
+}
