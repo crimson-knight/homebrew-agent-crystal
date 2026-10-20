@@ -1,0 +1,109 @@
+{
+  "accepted_target_cells": 0,
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "actual_qualifier_entry_gap_controls_each_mode": 2,
+  "author": "grant_linux_first_build",
+  "component_evidence": [
+    {
+      "bytes": 27957,
+      "path": "grant_assignment_cost_peer_v103/PHYSICAL_PRESERVATION.json",
+      "sha256": "fd1addc39cee3776c17f029b24c59b13763b5cea578b41c59b181fdcd0faad43"
+    },
+    {
+      "bytes": 1244,
+      "path": "grant_assignment_cost_peer_v103/HISTORICAL_ARTIFACT_READBACK.json",
+      "sha256": "b86db86dd91d149188fe32389b5ad95841aee2be995f9731fb0aafcfe93e12ac"
+    },
+    {
+      "bytes": 2274,
+      "path": "grant_assignment_cost_peer_v103/ordinary.json",
+      "sha256": "b1cf43afc568ba25bd2fbbd11d3f7d58800d47e742fe9ce2ba15dbe1a560e472"
+    },
+    {
+      "bytes": 2276,
+      "path": "grant_assignment_cost_peer_v103/optimized.json",
+      "sha256": "4df9521469f22205638995c4ba46b1dcd932e61a7fa28c972493d9cea28b9e2a"
+    },
+    {
+      "bytes": 6181,
+      "path": "grant_assignment_cost_peer_v103/ordinary.tests.stderr.txt",
+      "sha256": "5e2f38d9766eab61f2ca4514f5c9c4f5ad76d10369dcd32efe67a476aeb932e7"
+    },
+    {
+      "bytes": 6181,
+      "path": "grant_assignment_cost_peer_v103/optimized.tests.stderr.txt",
+      "sha256": "e55222df44aba318dec9d4d2a5edab2d3715c43c36780f208f84470ecf93188a"
+    },
+    {
+      "bytes": 5910,
+      "path": "grant_assignment_cost_peer_v103/guarded_review.py",
+      "sha256": "5319bd6f048c22223cded583523b70c115ba3830d36ec3d4b951087c2cb3a87a"
+    },
+    {
+      "bytes": 5910,
+      "path": "grant_assignment_cost_peer_v103/guarded_review.initial.py",
+      "sha256": "4ae356778b075ab1574add858d48e79eb33c0e9892d18713405421a9482d361a"
+    }
+  ],
+  "concrete_defects": [
+    {
+      "observed_deadline_extension_seconds": 99,
+      "priority": 1,
+      "reproduction": "Enter triplet_budget with outer absolute deadline4800 at monotonic1; current global becomes4799. The actual unchanged qualify starts at monotonic100 and computes deadline4899. Guarded unchanged qualifier executes all15 synthetic command calls and returns0; context restores4800. No-gap control starts qualifier at1 and computes4800. Both ordinary/optimized reproductions use actual qualifier code and a synthetic Runner.",
+      "required_correction": "Fresh successor explicit optional absolute monotonic deadline in qualify; effective deadline=min(started+original maximum,supplied deadline). Preserve frozen v102 and v103. Parent superseded140 identical inherited rows with139 unchanged plus one explicit helper successor.",
+      "source_locations": [
+        {
+          "lines": [
+            25,
+            28,
+            34,
+            93,
+            96,
+            97
+          ],
+          "path": "run_causal_only.py",
+          "sha256": "588b8e862e7c3df42fc9028348281f20563421cad72d1d10d7d87b2c380da267"
+        },
+        {
+          "lines": [
+            91,
+            140,
+            141,
+            160
+          ],
+          "path": "run_hosted_contrast.py",
+          "sha256": "fb1d869ac14705baa3a1a6dc5e6b41e422adcf3c41d64441b5b12580d2059d33"
+        }
+      ],
+      "terminal_elapsed_guard": "Preserves non-acceptance after an eventual outer overrun; actual Runner deadline still exceeds the supplied absolute horizon.",
+      "title": "Relative global cap permits the actual qualifier deadline to extend past the outer absolute horizon"
+    }
+  ],
+  "frozen_implementation_receipt_sha256": "9a7a4d23996ab86ba1a819d57669d23b490a7b156470148481c1c3873c70a32c",
+  "frozen_source_manifest_sha256": "261bd182b5a0ce76f783a07c30136c92f4ef144477a19b6f00cba8599ef955a5",
+  "harness_readback": "Initial trace observation at the multi-line dict constructor line142 yielded repeated line events; preserved initial harness. Final observation at line149 records the same computed deadline once. Both full ordinary/optimized suites and the actual qualifier replays then passed without source edits.",
+  "mission": "memory-budget-experiment",
+  "pending": "Fresh explicit-deadline successor source review; public integration and actual hosted qualification remain parent-owned.",
+  "proposed_workflow_sha256": "a2a1e66701402e4569fecbe9ada40b7f1d4260b37652fd670e88230a8b95712a",
+  "publication_followup": "Parent derives the known credential-free checkout, staging-success upload gate, explicit hidden-file settings and verifies exact public workflow before dispatch.",
+  "required_target_cells": 144,
+  "reviewer": "grant_generation_peer_v106",
+  "source_acceptance": false,
+  "source_cases_each_Python_mode": 54,
+  "subprocess_signal_guard_calls": 0,
+  "verified_preserved": {
+    "all_v102_rows_byte_identical": 140,
+    "full_triplet_admission_seconds": 4500,
+    "historical300": "Exact5 actual ZIP members plus original extraction receipt bound directly to original artifact11271250; failed900-second build, -9, unverifiable/EPERM, empty streams and unexecuted rich10 preserved",
+    "original_arm_build_control_limits": [
+      1500,
+      900,
+      120
+    ],
+    "same_job_policy_and_prepare_stage_qualify_sources": "unchanged v102 bytes",
+    "scoped_GLOBAL_SECONDS_restoration": "verified normal and exceptional control paths",
+    "staging": "Additive positive roster uses unchanged physical regular-file and credential-shaped-content refusal; roster restores on success/failure",
+    "supplied_and_observed_Python_timing_hashes": "retained and joined before launch; protected through finalization",
+    "v103_source_rows": 155
+  }
+}

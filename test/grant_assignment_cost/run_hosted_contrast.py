@@ -3,6 +3,7 @@ import argparse
 from contextlib import contextmanager
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -87,8 +88,16 @@ def behavior(stdout, count):
     return value
 
 
-def qualify(args):
+def execution_deadline(started, maximum_seconds, absolute_deadline=None):
+    if absolute_deadline is not None:
+        need(type(absolute_deadline) in (int, float) and math.isfinite(absolute_deadline) and absolute_deadline > 0,
+             'Finite positive numeric absolute monotonic deadline required')
+    return started + maximum_seconds if absolute_deadline is None else min(started + maximum_seconds, absolute_deadline)
+
+
+def qualify(args, absolute_deadline=None):
     started = time.monotonic()
+    execution_deadline(started, GLOBAL_SECONDS, absolute_deadline)
     need(platform.system() == 'Darwin' and platform.machine() == 'arm64' and os.environ.get('GITHUB_ACTIONS') == 'true', 'Actual comparison belongs to GitHub-hosted Darwin ARM64')
     need(digest(__file__) == args.source_sha256 and digest(Path(sys.executable).resolve()) == args.python_sha256, 'Exact comparison source and Python provider required')
     need(digest(args.driver) == DRIVER_SHA256 and digest(args.plan) == args.plan_sha256, 'Exact reviewed Runner and comparison plan required')
@@ -138,10 +147,17 @@ def qualify(args):
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     maximum_seconds = ARM_SECONDS if baseline else GLOBAL_SECONDS
-    deadline = started + maximum_seconds
+    deadline = execution_deadline(started, maximum_seconds, absolute_deadline)
+    original_maximum_seconds = maximum_seconds
+    if absolute_deadline is not None:
+        maximum_seconds = min(original_maximum_seconds, deadline - started)
+    if absolute_deadline is not None and not baseline:
+        need(deadline - time.monotonic() >= 3 * ARM_SECONDS, 'All three complete original1500-second arm horizons required at absolute-deadline admission')
     result = dict(format='atlas-grant-hosted-assignment-triplet-diagnostic-v1', diagnostic_complete=False, samples=[],
                   variant=plan['variant'], shipping_compatibility_accepted=False,
                   experiment_kind=plan.get('experiment_kind', 'rich2-10-causal-triplet'), maximum_seconds=maximum_seconds,
+                  original_maximum_seconds=original_maximum_seconds, supplied_absolute_deadline=absolute_deadline,
+                  effective_absolute_deadline=deadline,
                   ordinary_compiler_profile_sha256=admitted['observed_profile_sha256'], admitted_same_job=admitted, driver_sha256=DRIVER_SHA256,
                   whole_build_provider_qualified=False, native_loader_closure_qualified=False,
                   candidate_feature_compatibility_accepted=False, memory_savings_accepted=False,
@@ -272,7 +288,9 @@ def main():
         parser.add_argument('--' + name, required=True)
     parser.add_argument('--models', type=int, choices=(2, 10, 300), required=True)
     parser.add_argument('--repetition', type=int, choices=(1, 2, 3), required=True)
-    return qualify(parser.parse_args())
+    parser.add_argument('--absolute-deadline', type=float)
+    arguments = parser.parse_args()
+    return qualify(arguments, absolute_deadline=arguments.absolute_deadline)
 
 
 if __name__ == '__main__':

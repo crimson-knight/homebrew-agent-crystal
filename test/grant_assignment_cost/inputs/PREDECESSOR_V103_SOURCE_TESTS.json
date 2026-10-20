@@ -1,0 +1,27 @@
+{
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "all_predecessor_rows_exact": 140,
+  "command_journal_sha256": "aaa4c83b2b13e7ab9090c129f384a776da198c7d4510472e2d55f26b14592d3c",
+  "format": "atlas-grant-causal-source-tests-v103",
+  "manifest_sha256": "261bd182b5a0ce76f783a07c30136c92f4ef144477a19b6f00cba8599ef955a5",
+  "modes": [
+    {
+      "exit_code": 0,
+      "mode": "ordinary",
+      "stderr_sha256": "615ae5739887bcca091ba761d7ca8925b198975e0e0837ed664c1ba5d0af35c6",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 54
+    },
+    {
+      "exit_code": 0,
+      "mode": "optimized",
+      "stderr_sha256": "32a5e069fea596bbf2388ccc78ab077fa8b9283fb6be5d5df89e4e36a3419b4b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 54
+    }
+  ],
+  "new_cases_per_mode": 17,
+  "original_cases_per_mode": 37,
+  "raw_evidence_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v103_validation",
+  "target_cells_accepted": 0
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+      "tool",
+      "format",
+      "--check",
+      "--no-color",
+      "/Users/runner/work/_temp/grant-serial/private-source/grant/src/grant/columns.cr",
+      "/Users/runner/work/_temp/grant-serial/private-source/unchanged300-fixture/fixture.cr"
+    ],
+    "elapsed_seconds": 0.24714833400003045,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "format",
+    "maximum_seconds": 30,
+    "original_group": 28964,
+    "pid": 28964,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1006.556382541,
+      "elapsed_seconds": 0.00012545900005989097,
+      "group": 28964,
+      "initial_sample": {
+        "elapsed_seconds": 2.083399999719404e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1031.309433166,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.083399999719404e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.083399999719404e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/usr/bin/time",
+      "-l",
+      "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+      "build",
+      "--no-color",
+      "--error-on-warnings",
+      "-Dwithout_mt",
+      "--threads",
+      "1",
+      "/Users/runner/work/_temp/grant-serial/private-source/unchanged300-fixture/fixture.cr",
+      "-o",
+      "/Users/runner/work/_temp/grant-serial/private-source/unchanged300-fixture/fixture"
+    ],
+    "elapsed_seconds": 900.1589905,
+    "exit_code": -9,
+    "expected_exit": 0,
+    "label": "build",
+    "maximum_seconds": 900,
+    "original_group": 28965,
+    "pid": 28965,
+    "refusal": "Command exceeded its time budget; Original owned process group is unverifiable",
+    "stderr_sha256": null,
+    "stdout_sha256": null,
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "diagnostics": {
+        "direct_child_exit_code": -9,
+        "direct_child_pid": 28965,
+        "group": 28965,
+        "last_group_status": "unverifiable",
+        "maximum_member_rows": 64,
+        "maximum_scanned_entries": 4096,
+        "member_observation": "Linux proc metadata applies to the Ubuntu case; aggregate group state is retained on this platform",
+        "member_rows": [],
+        "scope": "non-secret original-group metadata; original-group absence is a separate gate"
+      },
+      "drain_deadline": 1901.557231875,
+      "elapsed_seconds": 0.035165292000101545,
+      "error": "PermissionError: [Errno 1] Operation not permitted",
+      "group": 28965,
+      "initial_sample": {
+        "elapsed_seconds": 0.0009795830001166905,
+        "error": "PermissionError: [Errno 1] Operation not permitted",
+        "status": "unverifiable"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1901.557231875,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 0.0009795830001166905,
+          "error": "PermissionError: [Errno 1] Operation not permitted",
+          "status": "unverifiable"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "unverifiable",
+      "terminal_sample": {
+        "elapsed_seconds": 0.0009795830001166905,
+        "error": "PermissionError: [Errno 1] Operation not permitted",
+        "status": "unverifiable"
+      }
+    },
+    "writers_confirmed_retired": false
+  }
+]

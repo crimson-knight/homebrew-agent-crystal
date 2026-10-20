@@ -1,4 +1,4 @@
-name: Grant installed Mac diagnostic
+name: Grant installed Mac causal diagnostic
 
 on:
   push:
@@ -10,13 +10,13 @@ permissions: {}
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
-  ATLAS_GRANT_PACKET_SHA256: cc8502505b38ca78ca7346246d612512d3d7c25b1ced1a3e1344f2be6f4e11e4
+  ATLAS_GRANT_PACKET_SHA256: e12d2f20a6433d81ced0c920f1ff09c9b9c9424278172d923f3b7d1f913670b8
 
 jobs:
   grant-installed-mac:
-    name: Original300 and rich10 causal triplet
+    name: One rich10 causal triplet
     runs-on: macos-26
-    timeout-minutes: 190
+    timeout-minutes: 160
     steps:
       - name: Check out reviewed tap source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -33,6 +33,7 @@ jobs:
           python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
           python3 -I -S -B test/grant_assignment_cost/test_assignment_cost.py
           python3 -I -S -B test/grant_assignment_cost/test_same_job_policy.py
+          python3 -I -S -B test/grant_assignment_cost/test_causal_only.py
 
       - name: Install the ordinary formula through the installer
         id: ordinary_install
@@ -64,9 +65,9 @@ jobs:
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Run unchanged300 then one rich10 original candidate restored triplet
+      - name: Run one rich10 original candidate restored causal triplet
         id: grant
-        timeout-minutes: 112
+        timeout-minutes: 82
         run: |
           python3 - <<'PYTHON'
           import hashlib, json, os, pathlib, runpy, sys
@@ -79,12 +80,12 @@ jobs:
               path = root / row["path"]
               if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
                   raise SystemExit("Grant packet source differs: " + row["path"])
-          source = root / "run_serial.py"
+          source = root / "run_causal_only.py"
           sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
               "--sdk-evidence", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
               "--time-sha256", hashlib.sha256(pathlib.Path("/usr/bin/time").read_bytes()).hexdigest(),
-              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-serial")]
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal")]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
@@ -104,8 +105,8 @@ jobs:
               path = root / row["path"]
               if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
                   raise SystemExit("Grant packet source differs: " + row["path"])
-          source = root / "stage_result_artifact.py"
-          sys.argv = [str(source), "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-serial"),
+          source = root / "stage_causal_result_artifact.py"
+          sys.argv = [str(source), "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal"),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-result-artifact")]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
@@ -124,7 +125,7 @@ jobs:
         if: ${{ always() && steps.grant.outcome != 'skipped' && steps.result_stage.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
         with:
-          name: grant-mac-original300-rich10-diagnostic
+          name: grant-mac-rich10-causal-only-diagnostic
           path: ${{ runner.temp }}/grant-result-artifact
           if-no-files-found: error
           retention-days: 30

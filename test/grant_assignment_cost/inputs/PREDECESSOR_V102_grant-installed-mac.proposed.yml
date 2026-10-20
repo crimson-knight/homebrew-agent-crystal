@@ -1,0 +1,126 @@
+name: Grant installed Mac diagnostic
+
+on:
+  push:
+    branches: [feature/grant-installed-memory-diagnostic]
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  PYTHONDONTWRITEBYTECODE: 1
+  ATLAS_GRANT_PACKET_SHA256: cc8502505b38ca78ca7346246d612512d3d7c25b1ced1a3e1344f2be6f4e11e4
+
+jobs:
+  grant-installed-mac:
+    name: Original300 and rich10 causal triplet
+    runs-on: macos-26
+    timeout-minutes: 190
+    steps:
+      - name: Check out reviewed tap source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      - name: Check source-only installer and SDK controls
+        timeout-minutes: 3
+        run: |
+          ruby test/install_test.rb
+          python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
+          python3 -I -S -B test/grant_assignment_cost/test_assignment_cost.py
+          python3 -I -S -B test/grant_assignment_cost/test_same_job_policy.py
+
+      - name: Install the ordinary formula through the installer
+        id: ordinary_install
+        timeout-minutes: 45
+        run: |
+          AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
+          test "$(crystal-alpha eval 'puts 6 * 7')" = "42"
+          brew test agent-crystal
+
+      - name: Qualify the exact SDK in this job and seal its observed compiler
+        id: sdk
+        timeout-minutes: 15
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_assignment_cost").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+          if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Grant packet manifest differs")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Grant packet source differs: " + row["path"])
+          source = root / "qualify_same_job_sdk.py"
+          sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Run unchanged300 then one rich10 original candidate restored triplet
+        id: grant
+        timeout-minutes: 112
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_assignment_cost").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+          if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Grant packet manifest differs")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Grant packet source differs: " + row["path"])
+          source = root / "run_serial.py"
+          sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
+              "--sdk-evidence", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
+              "--time-sha256", hashlib.sha256(pathlib.Path("/usr/bin/time").read_bytes()).hexdigest(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-serial")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Snapshot the explicit result artifact roster
+        if: ${{ always() && steps.grant.outcome != 'skipped' }}
+        timeout-minutes: 2
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_assignment_cost").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+          if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Grant packet manifest differs")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Grant packet source differs: " + row["path"])
+          source = root / "stage_result_artifact.py"
+          sys.argv = [str(source), "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-serial"),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-result-artifact")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Preserve original SDK and same-job readiness evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: grant-ordinary-mac-sdk-readiness
+          path: ${{ runner.temp }}/grant-sdk-readiness
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Preserve diagnostic results and complete raw command output
+        if: ${{ always() && steps.grant.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: grant-mac-original300-rich10-diagnostic
+          path: ${{ runner.temp }}/grant-result-artifact
+          if-no-files-found: error
+          retention-days: 30

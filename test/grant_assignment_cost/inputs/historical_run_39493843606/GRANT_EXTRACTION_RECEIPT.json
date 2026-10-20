@@ -1,0 +1,125 @@
+{
+  "zip": "grant-mac-original300-rich10-diagnostic.zip",
+  "bytes": 358223,
+  "sha256": "112712503c40b1447f7759d7d0ab360bc37d2d5eaea158aa4084050bf92b8bb3",
+  "expanded_bytes": 3212911,
+  "files": [
+    {
+      "path": "ARTIFACT_SNAPSHOT.json",
+      "bytes": 6607,
+      "sha256": "450e226270fe12776834268aa0533824db00f3472984e7a3f8d06dddba9dd105"
+    },
+    {
+      "path": "SERIAL_RESULT.json",
+      "bytes": 1116,
+      "sha256": "7438aaedb2ca785665c207417883e83a4637599216c24453729458e7bfea44d7"
+    },
+    {
+      "path": "baseline-plan/COMPARISON_PLAN.json",
+      "bytes": 4286,
+      "sha256": "26448d832b630ecf17adbcb91cadfc2a64e41c3e333080bc0de4067e0a4e948d"
+    },
+    {
+      "path": "baseline-plan/FIXTURE_300.cr.txt",
+      "bytes": 2029652,
+      "sha256": "a3634fb654e1e1b6c4ab6ef6220022aac370295a4126eac9f0255043ed519585"
+    },
+    {
+      "path": "baseline-plan/FIXTURE_300.json",
+      "bytes": 286973,
+      "sha256": "2d822fdf6a21d14e8965d8b4d720065c7b0dcf6f05e884b008bc2ca5480ad8ea"
+    },
+    {
+      "path": "baseline-plan/original.columns.cr.txt",
+      "bytes": 40220,
+      "sha256": "eebf80691fb9caf87755697c0758ded0ab1e99c5fbcb1750034bed4b86d6c2bb"
+    },
+    {
+      "path": "baseline-plan/candidate.columns.cr.txt",
+      "bytes": 40669,
+      "sha256": "988ef625b76588443b51f7881d6812eaf69bdfa27071ba02f8c8b5b9dfd88f23"
+    },
+    {
+      "path": "baseline-plan/restored.columns.cr.txt",
+      "bytes": 40220,
+      "sha256": "eebf80691fb9caf87755697c0758ded0ab1e99c5fbcb1750034bed4b86d6c2bb"
+    },
+    {
+      "path": "packet/INPUT_PINS.json",
+      "bytes": 16057,
+      "sha256": "a41210fedea7074a2c17008586315cd5cf105e3b689d080cb3460f2f3753de36"
+    },
+    {
+      "path": "packet/SOURCE_PINS.json",
+      "bytes": 24664,
+      "sha256": "cc8502505b38ca78ca7346246d612512d3d7c25b1ced1a3e1344f2be6f4e11e4"
+    },
+    {
+      "path": "packet/inputs/SOURCE_INPUTS.json",
+      "bytes": 274754,
+      "sha256": "08beb028d471b200f5ae7580c4d07db17cb9eb4f46981d903f0d0e11bf9262d5"
+    },
+    {
+      "path": "results/baseline300/COMPARISON_RESULT.json",
+      "bytes": 201776,
+      "sha256": "443bfac24d2c27233aa62e1d0b5e5a053f06ccd6a579ff1a54973102460e6e9e"
+    },
+    {
+      "path": "results/baseline300/original/COMMANDS.json",
+      "bytes": 3935,
+      "sha256": "abfc8c5264128d8bcd13938f84aa96b5da2faa4839b481213aaecb4be36fa071"
+    },
+    {
+      "path": "results/baseline300/original/build.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/baseline300/original/build.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/baseline300/original/format.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/baseline300/original/format.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "triplet-plan/COMPARISON_PLAN.json",
+      "bytes": 40019,
+      "sha256": "b657b52deb32db04f91961e9519617b7212fcbeb6c834cb868a35e83d78e9bf8"
+    },
+    {
+      "path": "triplet-plan/FIXTURE_10.cr.txt",
+      "bytes": 69957,
+      "sha256": "40390d65591532feb37d622367f8968d6a8f585f851604828bbce6bcdd6bfcf4"
+    },
+    {
+      "path": "triplet-plan/FIXTURE_10.json",
+      "bytes": 10897,
+      "sha256": "00c5b13a5e1fe1076490f479df690a828cc14b527172cfb352ca5c4591a83ae0"
+    },
+    {
+      "path": "triplet-plan/candidate.columns.cr.txt",
+      "bytes": 40669,
+      "sha256": "988ef625b76588443b51f7881d6812eaf69bdfa27071ba02f8c8b5b9dfd88f23"
+    },
+    {
+      "path": "triplet-plan/original.columns.cr.txt",
+      "bytes": 40220,
+      "sha256": "eebf80691fb9caf87755697c0758ded0ab1e99c5fbcb1750034bed4b86d6c2bb"
+    },
+    {
+      "path": "triplet-plan/restored.columns.cr.txt",
+      "bytes": 40220,
+      "sha256": "eebf80691fb9caf87755697c0758ded0ab1e99c5fbcb1750034bed4b86d6c2bb"
+    }
+  ],
+  "extractor_sha256": "c092e14d5a1bcd623b718cc7120d282e95e98643accfd2e4e33ae23e41185efe",
+  "local_compiler_container_native_SSH_jobs": 0
+}
