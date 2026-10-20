@@ -1,0 +1,69 @@
+{
+  "accepted_target_cells": 0,
+  "actual_lines": 16,
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "actual_missing_fields": [
+    "instructions retired",
+    "cycles elapsed"
+  ],
+  "actual_present_fields": {
+    "average shared memory size": 0,
+    "average unshared data size": 0,
+    "average unshared stack size": 0,
+    "block input operations": 0,
+    "block output operations": 0,
+    "involuntary context switches": 20119,
+    "maximum resident set size": 2257960960,
+    "messages received": 0,
+    "messages sent": 0,
+    "page faults": 3180,
+    "page reclaims": 194623,
+    "peak memory footprint": 2222036352,
+    "signals received": 23,
+    "swaps": 0,
+    "voluntary context switches": 400
+  },
+  "actual_stderr_bytes": 697,
+  "actual_stderr_sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0",
+  "actual_timing_profile_accepted": false,
+  "exact_refusal": "Only the complete original Darwin timing footer may accompany GREEN compilation",
+  "missing_values_supplied": false,
+  "mission": "memory-budget-experiment",
+  "mode": "ordinary",
+  "original_required_fields": [
+    "maximum resident set size",
+    "average shared memory size",
+    "average unshared data size",
+    "average unshared stack size",
+    "page reclaims",
+    "page faults",
+    "swaps",
+    "block input operations",
+    "block output operations",
+    "messages sent",
+    "messages received",
+    "signals received",
+    "voluntary context switches",
+    "involuntary context switches",
+    "instructions retired",
+    "cycles elapsed",
+    "peak memory footprint"
+  ],
+  "original_required_lines": 18,
+  "raw_duration_seconds": {
+    "real": 32.43,
+    "system": 3.47,
+    "user": 29.33
+  },
+  "required_target_cells": 144,
+  "run_id": 39501577847,
+  "scope": "Complete available raw16-line footer metadata after successful original command. The original18-line parser remains unchanged and refuses; isolated compiler, whole-build, causal triplet, memory-savings and full144 acceptance remain separate.",
+  "source_commit": "126cd1601bcb8e4d5230454cd8548eedf2f7fc93",
+  "source_parser_sha256": "80a9dfd86944d8dade2b7975f0d252ffcda25fc40badbdff9f94cf973cd4f27d",
+  "strict_original_parser_refused": true,
+  "timing_provider": {
+    "observed_sha256": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a",
+    "path": "/usr/bin/time",
+    "supplied_sha256": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a"
+  }
+}

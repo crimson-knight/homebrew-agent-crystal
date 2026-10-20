@@ -1,0 +1,26 @@
+{
+  "fixtures": [
+    {
+      "bytes": 697,
+      "lines": 16,
+      "path": "actual16.stderr.txt",
+      "selection": "complete actual stderr",
+      "sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0",
+      "source": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/inputs/actual_run_39501577847/GRANT_EVIDENCE/results/triplet10/original/build.stderr.txt",
+      "source_bytes": 697,
+      "source_sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0"
+    },
+    {
+      "bytes": 777,
+      "lines": 18,
+      "path": "historical18.stderr.txt",
+      "selection": "complete last 18 timing lines",
+      "sha256": "728d3da0bd8625cc58dad7016c4f8459947fa0bb885b9d4871f3eaf66041080a",
+      "source": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_headless_pilot_carrier_1645_v101/transport-v100/collected-v100/gc-default-before-10-build.stderr.txt",
+      "source_bytes": 104983,
+      "source_sha256": "71d60c601bb9bdb1877fac2c078909288e64975a1245a26f50eb3bd201605730"
+    }
+  ],
+  "format": "atlas-timing-roster-fixtures-v105",
+  "scope": "Retained actual footer bytes; no compiler execution in this source proposal"
+}

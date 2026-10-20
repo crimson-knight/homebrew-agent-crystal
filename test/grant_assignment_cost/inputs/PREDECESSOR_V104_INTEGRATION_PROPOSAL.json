@@ -1,0 +1,27 @@
+{
+  "actual_dispatch_admitted": false,
+  "actual_local_workload_jobs": 0,
+  "explicit_changed_inherited_source": {
+    "change": "Optional absolute monotonic deadline, min clamp, retained bounds and4500-second post-preparation admission; default callers preserve original horizons",
+    "path": "run_hosted_contrast.py",
+    "predecessor_sha256": "fb1d869ac14705baa3a1a6dc5e6b41e422adcf3c41d64441b5b12580d2059d33",
+    "successor_sha256": "80a9dfd86944d8dade2b7975f0d252ffcda25fc40badbdff9f94cf973cd4f27d"
+  },
+  "format": "atlas-grant-causal-integration-v104",
+  "integration": "Copy all165 manifest rows and SOURCE_PINS.json into the packet destination; replace the existing workflow with this proposal. Keep the revision1 tap formula/installer/SDK driver/lock exact. Parent reviews, commits and dispatches the owned Grant branch.",
+  "ordinary_formula_revision": 1,
+  "ordinary_formula_sha256": "dfb16338b328960bd0e822c2d98eac8b7774d1303e972a5dba09ba1ddf9ab7df",
+  "preserved_v102_rows": 139,
+  "public_packet_destination": "test/grant_assignment_cost",
+  "replace_workflow_destination": ".github/workflows/grant-installed-mac.yml",
+  "required_matrix_size": 144,
+  "required_sdk_driver_sha256": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797",
+  "required_sdk_lock_sha256": "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4",
+  "source_manifest_sha256": "e12d2f20a6433d81ced0c920f1ff09c9b9c9424278172d923f3b7d1f913670b8",
+  "source_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v104",
+  "source_rows": 165,
+  "source_tests_sha256": "3d71ffa3fef9d3b50bf56246ce1bebc02f34ff175ae866c6858c416c1f5622c9",
+  "whole_build_target_cells_accepted": 0,
+  "workflow_sha256": "155cd68a34b8ba9fa7737640babd8dfebe696716a1c78ea32163a45633d80189",
+  "workflow_source": "grant-causal-mac.proposed.yml"
+}

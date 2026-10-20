@@ -1,6 +1,11 @@
 {
-  "format": "atlas-grant-installed-mac-source-pins-v104",
+  "format": "atlas-grant-installed-mac-source-pins-v105",
   "files": [
+    {
+      "path": "ACTUAL_FOOTER_FAILURE.json",
+      "bytes": 2349,
+      "sha256": "8875027f5a84eeac5af4fa4e3902b46bbe8478a53c8e5b6f5bcc4cdbed0699ff"
+    },
     {
       "path": "CAUSAL_ONLY_V104.md",
       "bytes": 5507,
@@ -17,9 +22,24 @@
       "sha256": "a41210fedea7074a2c17008586315cd5cf105e3b689d080cb3460f2f3753de36"
     },
     {
+      "path": "PRESERVATION_RECEIPT.json",
+      "bytes": 30071,
+      "sha256": "76f81c3161f42d3313269eedcf309a895e0469c8acb62e1693be9d84dca5ce77"
+    },
+    {
       "path": "README.md",
       "bytes": 7379,
       "sha256": "62d93158339e8196ab3152d3c2e61ff33ae13e953d3af5e869150a3ae9060dd3"
+    },
+    {
+      "path": "START_HERE_V105.md",
+      "bytes": 1316,
+      "sha256": "15af90f31506592174683898afce90dfc136e0cb5d72e6959e2ccfcc33384dde"
+    },
+    {
+      "path": "TIMING_PROFILE_V105.md",
+      "bytes": 3738,
+      "sha256": "30156a5d5ba920a86133628b3d4d203cee8cc68ad1592994c7efaa05caa34be3"
     },
     {
       "path": "analyze_retained.py",
@@ -35,6 +55,21 @@
       "path": "compatible_proposal_v102/candidate.patch.txt",
       "bytes": 3549,
       "sha256": "f1473199772d64e7bfd68c487cd975abd0631032eb12382dd019d040b5e7d0f4"
+    },
+    {
+      "path": "fixtures/timing/PROVENANCE.json",
+      "bytes": 1233,
+      "sha256": "f61d74d550cd4d5aa8b56f4c203e2f1b18c6a1098ee8fa76d175580fba93895a"
+    },
+    {
+      "path": "fixtures/timing/actual16.stderr.txt",
+      "bytes": 697,
+      "sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0"
+    },
+    {
+      "path": "fixtures/timing/historical18.stderr.txt",
+      "bytes": 777,
+      "sha256": "728d3da0bd8625cc58dad7016c4f8459947fa0bb885b9d4871f3eaf66041080a"
     },
     {
       "path": "inputs/FIXTURE_10.cr.txt",
@@ -175,6 +210,51 @@
       "path": "inputs/PREDECESSOR_V103_test_causal_only.py",
       "bytes": 12076,
       "sha256": "c21536c97a8f16b292b98f05f25bfaf60e6c476519aa594b8c4495bfe0098750"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_INTEGRATION_PROPOSAL.json",
+      "bytes": 1872,
+      "sha256": "bc078021b8ad2d7ee7269e478c77c8b5287c1f1d183957f381f0c19e54a151d0"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_RECEIPT.json",
+      "bytes": 2029,
+      "sha256": "598e6b69f58b90cf1decd63f9e2ff691b007cfbf4a0401e0139d87d3eba5a070"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_SOURCE_PINS.json",
+      "bytes": 28710,
+      "sha256": "e12d2f20a6433d81ced0c920f1ff09c9b9c9424278172d923f3b7d1f913670b8"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_SOURCE_TESTS.json",
+      "bytes": 1204,
+      "sha256": "3d71ffa3fef9d3b50bf56246ce1bebc02f34ff175ae866c6858c416c1f5622c9"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_grant-causal-mac.proposed.yml",
+      "bytes": 6508,
+      "sha256": "155cd68a34b8ba9fa7737640babd8dfebe696716a1c78ea32163a45633d80189"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_run_causal_only.py",
+      "bytes": 7987,
+      "sha256": "b16172041c075fb57dd34af012a7a1483242f130e3f267dacbb9d8582fc8ee52"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_run_hosted_contrast.py",
+      "bytes": 20397,
+      "sha256": "80a9dfd86944d8dade2b7975f0d252ffcda25fc40badbdff9f94cf973cd4f27d"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_stage_causal_result_artifact.py",
+      "bytes": 1729,
+      "sha256": "6201ace1c9569b7155fc32fd75ea96fcb1b316231bb7dde897c98c1315b66150"
+    },
+    {
+      "path": "inputs/PREDECESSOR_V104_test_causal_only.py",
+      "bytes": 14409,
+      "sha256": "eab787e69b7ccf10c3b4131086bbf12e6fa96de1e8c18d586ed7fa9b51f48c1a"
     },
     {
       "path": "inputs/SOURCE_INPUTS.json",
@@ -557,6 +637,61 @@
       "sha256": "d55d881313f7e82c79e0ecdb6901a3baba101acc849960326fb9d5680c6e1029"
     },
     {
+      "path": "inputs/actual_run_39501577847/ARTIFACTS_TERMINAL.json",
+      "bytes": 1921,
+      "sha256": "23b8bd71da7b8f62373b99dbb2bc9997953f4e99048a8dc0243edb3167a0ca88"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/FOOTER_REFUSAL.optimized.json",
+      "bytes": 2471,
+      "sha256": "fdb9f8893800c3e495756073cb03fd5ef9d48897943a2f4d26bd46e271a3e296"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/FOOTER_REFUSAL.ordinary.json",
+      "bytes": 2470,
+      "sha256": "4abbe9e484665b2c5d2e20ed93f4ba515ec60808a68150f35bd82a9d2d1a0c70"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/GRANT_EVIDENCE/CAUSAL_ONLY_RESULT.json",
+      "bytes": 195492,
+      "sha256": "33ff07fbcd857e95921d34f0d629de02f97eb611b2e82fbf5a94d94d32669241"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/GRANT_EVIDENCE/results/triplet10/COMPARISON_RESULT.json",
+      "bytes": 199292,
+      "sha256": "b11cf070877deae1a44fe58ebccc39e0a1eea1ff3aafb428d3ff7144a24f7243"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/GRANT_EVIDENCE/results/triplet10/original/COMMANDS.json",
+      "bytes": 3337,
+      "sha256": "9aea1d42842a31f29bb99c870f47765310dc70b394b07687357ad21d3a24158f"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/GRANT_EVIDENCE/results/triplet10/original/build.stderr.txt",
+      "bytes": 697,
+      "sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/GRANT_EVIDENCE/results/triplet10/original/build.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/GRANT_EXTRACTION_RECEIPT.json",
+      "bytes": 9209,
+      "sha256": "d66e3e507d0834f37f677044dd0a69018c74b32e2dc98bbe547b260642a917f6"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/JOBS_TERMINAL.json",
+      "bytes": 4786,
+      "sha256": "3fe183c64ed52eb4c62ab1a6b5628e22eabc1a85509a02c71554252eae81f376"
+    },
+    {
+      "path": "inputs/actual_run_39501577847/RUN_TERMINAL.json",
+      "bytes": 15384,
+      "sha256": "bdbc2837e22ee8a9cc6b1120314ae5c80c4065080640de15faa750dd5995c5ef"
+    },
+    {
       "path": "inputs/grant-source-and-frozen-dependencies.tar.gz",
       "bytes": 1626007,
       "sha256": "d2c90cc3110109337c92f567fdf533dadf475b3f468602b8fcb5e2ed21426ff5"
@@ -648,13 +783,13 @@
     },
     {
       "path": "run_causal_only.py",
-      "bytes": 7987,
-      "sha256": "b16172041c075fb57dd34af012a7a1483242f130e3f267dacbb9d8582fc8ee52"
+      "bytes": 10116,
+      "sha256": "c81839b1a02ae9a9c5ac813cc8f11db4fa5f44301b6706cfef6028376c4ffc8a"
     },
     {
       "path": "run_hosted_contrast.py",
-      "bytes": 20397,
-      "sha256": "80a9dfd86944d8dade2b7975f0d252ffcda25fc40badbdff9f94cf973cd4f27d"
+      "bytes": 21816,
+      "sha256": "177c6951612f517036b1d1fcf9e88c1901b8e7157d6c43d1d3736fc6094ead6a"
     },
     {
       "path": "run_serial.py",
@@ -738,8 +873,8 @@
     },
     {
       "path": "stage_causal_result_artifact.py",
-      "bytes": 1729,
-      "sha256": "6201ace1c9569b7155fc32fd75ea96fcb1b316231bb7dde897c98c1315b66150"
+      "bytes": 2200,
+      "sha256": "2ef67c25dec13605df345ea74f0241512ccaddb132d6d262477f8d84ac5bf704"
     },
     {
       "path": "stage_grant_sources.py",
@@ -765,6 +900,16 @@
       "path": "test_same_job_policy.py",
       "bytes": 16370,
       "sha256": "79aba3e9f0047ade5820841e4bdf4eb91187f143571f038445cc301b2257a97d"
+    },
+    {
+      "path": "test_timing_profile.py",
+      "bytes": 29154,
+      "sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7"
+    },
+    {
+      "path": "timing_profile.py",
+      "bytes": 15914,
+      "sha256": "2b649a2a7fc7b47d7b44a3a021dca3f004ac064055a6f14f777dce5d5efb517e"
     },
     {
       "path": "vendor/artifact_archive.py",

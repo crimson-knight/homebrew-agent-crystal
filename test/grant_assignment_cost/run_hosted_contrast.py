@@ -23,6 +23,7 @@ from gc_contract import TIME_FIELDS
 from same_job_policy import metadata as admit_sdk_metadata, protect_packet
 from prepare_comparison import prepare
 from prepare_baseline import prepare_baseline
+from timing_profile import calibrated_footer, validate_profile, canonical_sha
 
 DRIVER_SHA256 = 'dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797'
 PREDECESSOR_PROFILE_SHA256 = 'd40f7514f2a98d406482ddc24ec29729158f61ca2cf0da9be46b094ccc9d3def'
@@ -63,7 +64,9 @@ def overlay(path, original, requested):
         need(path.read_bytes() == original, 'Exact source restoration required')
 
 
-def timed_footer(raw):
+def timed_footer(raw, timing_profile=None):
+    if timing_profile is not None:
+        return calibrated_footer(raw, timing_profile)
     lines = raw.splitlines()
     need(len(lines) == 18, 'Only the complete original Darwin timing footer may accompany GREEN compilation')
     duration = re.fullmatch(r' *(\d+\.\d{2}) real +(\d+\.\d{2}) user +(\d+\.\d{2}) sys', lines[0])
@@ -95,7 +98,7 @@ def execution_deadline(started, maximum_seconds, absolute_deadline=None):
     return started + maximum_seconds if absolute_deadline is None else min(started + maximum_seconds, absolute_deadline)
 
 
-def qualify(args, absolute_deadline=None):
+def qualify(args, absolute_deadline=None, timing_profile=None):
     started = time.monotonic()
     execution_deadline(started, GLOBAL_SECONDS, absolute_deadline)
     need(platform.system() == 'Darwin' and platform.machine() == 'arm64' and os.environ.get('GITHUB_ACTIONS') == 'true', 'Actual comparison belongs to GitHub-hosted Darwin ARM64')
@@ -107,6 +110,12 @@ def qualify(args, absolute_deadline=None):
     need(plan['execution_admitted'] is False and plan['required_target_matrix_size'] == 144, 'Original source-plan boundaries required')
     protected = protect_packet(args.packet_sha256)
     admitted = admit_sdk_metadata(args.sdk_evidence, os.environ)
+    selected_timing_profile = None
+    if timing_profile is not None:
+        validate_profile(timing_profile, args.time_sha256, args.timing_true_sha256, admitted['job_identity'])
+        selected_timing_profile = json.loads(json.dumps(timing_profile))
+        selected_timing_profile_sha256 = canonical_sha(selected_timing_profile)
+        protected[Path('/usr/bin/true')] = args.timing_true_sha256
     profile, providers, job = admitted['profile'], admitted['providers'], admitted['runner']
     need(job['python_sha256'] == args.python_sha256 and Path(job['python_path']).resolve() == Path(sys.executable).resolve(), 'Same exact Python provider as the actual SDK call required')
     protected.update({Path(row['path']): row['sha256'] for row in providers.values()})
@@ -162,6 +171,9 @@ def qualify(args, absolute_deadline=None):
                   whole_build_provider_qualified=False, native_loader_closure_qualified=False,
                   candidate_feature_compatibility_accepted=False, memory_savings_accepted=False,
                   required_target_cells=144, target_cells_accepted=0)
+    if selected_timing_profile is not None:
+        result['timing_profile'] = selected_timing_profile
+        result['timing_profile_sha256'] = selected_timing_profile_sha256
     try:
         for arm in (('original',) if baseline else ('original', 'candidate', 'restored')):
             if not baseline:
@@ -198,7 +210,8 @@ def qualify(args, absolute_deadline=None):
                         if path.is_file() and not path.is_symlink() and path.stat().st_size <= 4 * 2**20:
                             lines = path.read_text().splitlines()
                             try:
-                                value = timed_footer('\n'.join(lines[-18:]) + '\n')
+                                footer_lines = 18 if selected_timing_profile is None else 1 + len(selected_timing_profile['ordered_fields'])
+                                value = timed_footer('\n'.join(lines[-footer_lines:]) + '\n', selected_timing_profile)
                                 value['scope'] = 'Failed or refused build waited-command timing; incomplete workload, zero target acceptance'
                                 value['command_record'] = dict(runner.records[-1]) if runner.records else None
                                 arm_result['failed_build_time'] = value
@@ -206,7 +219,7 @@ def qualify(args, absolute_deadline=None):
                                 arm_result['failed_build_timing_refusal'] = '%s: %s' % (type(timing_error).__name__, timing_error)
                         raise
                     need(not stdout, 'GREEN ordinary build stdout required')
-                    arm_result['time'] = timed_footer(stderr)
+                    arm_result['time'] = timed_footer(stderr, selected_timing_profile)
                     binary = directory / 'fixture'
                     need(binary.is_file() and not binary.is_symlink() and binary.stat().st_size <= (512 if baseline else 64) * 2**20, 'Finite ordinary generated binary required')
                     binary_sha = digest(binary)
@@ -253,6 +266,12 @@ def qualify(args, absolute_deadline=None):
             previous = previous.__context__
     finally:
         finalization_errors = []
+        if selected_timing_profile is not None:
+            try:
+                need(canonical_sha(timing_profile) == selected_timing_profile_sha256 and canonical_sha(selected_timing_profile) == selected_timing_profile_sha256,
+                     'Exact calibrated timing profile required at final return')
+            except Exception as error:
+                finalization_errors.append('%s: %s' % (type(error).__name__, error))
         for label, observation in [('source', lambda: source_input_inventory(grant) == (original_rows, original_fingerprint)),
                                    ('stdlib', lambda: driver.tree_identity(stdlib) == before_stdlib)]:
             try:

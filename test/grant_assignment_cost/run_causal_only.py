@@ -15,6 +15,7 @@ from stage_grant_sources import stage
 from prepare_comparison import prepare
 from run_hosted_contrast import qualify, save
 from run_serial import complete_return
+from timing_profile import calibrate, complete_return as calibration_return, canonical_sha
 
 TOTAL_SECONDS = 4800
 
@@ -24,7 +25,7 @@ def run(args):
     absolute_deadline = started + TOTAL_SECONDS
     need(args.output.is_absolute() and not args.output.exists() and not args.output.is_symlink(), 'Fresh absolute owned causal output required')
     args.output.mkdir(parents=True)
-    result = dict(format='atlas-grant-causal-only-diagnostic-v104', passed=False, diagnostic_complete=False,
+    result = dict(format='atlas-grant-causal-only-diagnostic-v105', passed=False, diagnostic_complete=False,
                   maximum_seconds=TOTAL_SECONDS, absolute_deadline=absolute_deadline, model_count=10, repetition=1,
                   ordered_arms=['original', 'candidate', 'restored'],
                   full_arm_seconds=1500, build_limit_seconds=900, same_binary_control_limit_seconds=120,
@@ -41,6 +42,9 @@ def run(args):
     protected = {}
     admission = None
     observation = None
+    calibration = None
+    timing_profile = None
+    calibration_output = args.output / 'timing-calibration'
     output = args.output / 'results/triplet10'
     save(args.output / 'CAUSAL_ONLY_RESULT.json', result)
     try:
@@ -49,6 +53,11 @@ def run(args):
             need(isinstance(value, str) and re.fullmatch('[0-9a-f]{64}', value) is not None, 'Exact supplied Python/timing SHA-256 required')
         providers = {'python': dict(path=str(Path(sys.executable).resolve()), supplied_sha256=args.python_sha256),
                      'timing': dict(path='/usr/bin/time', supplied_sha256=args.time_sha256)}
+        if getattr(args, 'timing_true_sha256', None) is not None:
+            need(isinstance(args.timing_true_sha256, str) and re.fullmatch('[0-9a-f]{64}', args.timing_true_sha256) is not None,
+                 'Exact supplied positive timing probe provider SHA-256 required')
+            providers['timing_probe'] = dict(path='/usr/bin/true', supplied_sha256=args.timing_true_sha256)
+            result['supplied_provider_hashes']['timing_true_sha256'] = args.timing_true_sha256
         result['provider_identities'] = providers
         for row in providers.values():
             row['observed_sha256'] = digest(Path(row['path']))
@@ -71,10 +80,21 @@ def run(args):
                                    output=output, source_sha256=digest(ROOT / 'run_hosted_contrast.py'),
                                    plan_sha256=digest(plan / 'COMPARISON_PLAN.json'), python_sha256=args.python_sha256,
                                    time_sha256=args.time_sha256, packet_sha256=args.packet_sha256, models=10, repetition=1)
+        if getattr(args, 'timing_true_sha256', None) is not None:
+            settings.timing_true_sha256 = args.timing_true_sha256
+            calibration = calibrate(calibration_output, args.driver, args.time_sha256, args.timing_true_sha256,
+                                    admission['job_identity'], absolute_deadline)
+            result['timing_calibration'] = calibration
+            calibration_return(calibration, calibration_output)
+            timing_profile = calibration['profile']
+            result['timing_profile_sha256'] = canonical_sha(timing_profile)
+            for name in ('CALIBRATION_RESULT.json', 'TIMING_PROFILE.json', 'COMMANDS.json', 'probe.stdout.txt', 'probe.stderr.txt'):
+                protected[calibration_output / name] = digest(calibration_output / name)
         need(absolute_deadline - time.monotonic() >= 3 * 1500, 'Three complete original1500-second arm horizons required before launch')
         result['causal_launch_admitted'] = True
         save(args.output / 'CAUSAL_ONLY_RESULT.json', result)
-        code = qualify(settings, absolute_deadline=absolute_deadline)
+        code = qualify(settings, absolute_deadline=absolute_deadline) if timing_profile is None else qualify(
+            settings, absolute_deadline=absolute_deadline, timing_profile=timing_profile)
         observation = json.loads((output / 'COMPARISON_RESULT.json').read_bytes())
         result['outcomes'].append(dict(experiment='cost-isolation-rich10-original-candidate-restored', exit_code=code,
                                        diagnostic_complete=observation['diagnostic_complete']))
@@ -95,6 +115,12 @@ def run(args):
                 result['exceptional_comparison_return_error'] = '%s: %s' % (type(return_error).__name__, return_error)
     finally:
         errors = []
+        if calibration is not None:
+            try:
+                calibration_return(calibration, calibration_output)
+                need(canonical_sha(timing_profile) == result.get('timing_profile_sha256'), 'Exact causal timing profile required at return')
+            except Exception as error:
+                errors.append('%s: %s' % (type(error).__name__, error))
         if admission is not None:
             try:
                 need(metadata(args.sdk_evidence, os.environ) == admission, 'Exact initial same-job SDK admission required at causal return')
@@ -125,6 +151,7 @@ def main():
         parser.add_argument('--' + name, type=Path, required=True)
     for name in ('packet-sha256', 'python-sha256', 'time-sha256'):
         parser.add_argument('--' + name, required=True)
+    parser.add_argument('--timing-true-sha256', help='Opt into an exact same-job positive timing-format calibration with this /usr/bin/true SHA-256')
     return run(parser.parse_args())
 
 

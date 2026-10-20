@@ -10,7 +10,7 @@ permissions: {}
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
-  ATLAS_GRANT_PACKET_SHA256: e12d2f20a6433d81ced0c920f1ff09c9b9c9424278172d923f3b7d1f913670b8
+  ATLAS_GRANT_PACKET_SHA256: 1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49
 
 jobs:
   grant-installed-mac:
@@ -34,6 +34,8 @@ jobs:
           python3 -I -S -B test/grant_assignment_cost/test_assignment_cost.py
           python3 -I -S -B test/grant_assignment_cost/test_same_job_policy.py
           python3 -I -S -B test/grant_assignment_cost/test_causal_only.py
+          python3 -I -S -B test/grant_assignment_cost/test_timing_profile.py
+          python3 -O -I -S -B test/grant_assignment_cost/test_timing_profile.py
 
       - name: Install the ordinary formula through the installer
         id: ordinary_install
@@ -85,6 +87,7 @@ jobs:
               "--sdk-evidence", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
               "--time-sha256", hashlib.sha256(pathlib.Path("/usr/bin/time").read_bytes()).hexdigest(),
+              "--timing-true-sha256", hashlib.sha256(pathlib.Path("/usr/bin/true").read_bytes()).hexdigest(),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal")]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON

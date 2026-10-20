@@ -12,11 +12,16 @@ ORIGINAL_ROSTER = original.expected_roster
 
 def expected_roster(source):
     rows = [(source, 'CAUSAL_ONLY_RESULT.json'), (source, 'HISTORICAL_300_FAILURE.json')]
+    rows.extend((source, 'timing-calibration/' + name) for name in (
+        'CALIBRATION_RESULT.json', 'TIMING_PROFILE.json', 'COMMANDS.json', 'probe.stdout.txt', 'probe.stderr.txt'))
     for root, name in ORIGINAL_ROSTER(source):
         if name.startswith('results/triplet10/') or name.startswith('triplet-plan/') or root == ROOT:
             rows.append((root, name))
     rows.extend((ROOT, name) for name in ('HISTORICAL_300_FAILURE.json', 'run_causal_only.py',
-                'stage_causal_result_artifact.py', 'inputs/PREDECESSOR_V102_SOURCE_PINS.json'))
+                'stage_causal_result_artifact.py', 'timing_profile.py', 'TIMING_PROFILE_V105.md',
+                'ACTUAL_FOOTER_FAILURE.json', 'inputs/PREDECESSOR_V102_SOURCE_PINS.json',
+                'inputs/PREDECESSOR_V104_SOURCE_PINS.json', 'fixtures/timing/actual16.stderr.txt',
+                'fixtures/timing/historical18.stderr.txt', 'fixtures/timing/PROVENANCE.json'))
     rows.extend((ROOT, 'inputs/historical_run_39493843606/' + name) for name in (
         'GRANT_EXTRACTION_RECEIPT.json', 'GRANT_EVIDENCE/SERIAL_RESULT.json',
         'GRANT_EVIDENCE/results/baseline300/COMPARISON_RESULT.json',
