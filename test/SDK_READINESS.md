@@ -68,3 +68,43 @@ formula provenance and result acceptance independently.
 
 `passed: true` applies to this readiness scope. The result explicitly retains false
 values for full native-provider, frozen-dependency and customer-device acceptance.
+
+## Linux native projection candidate
+
+After the ordinary formula source install succeeds, Ubuntu records a separate bounded
+native projection candidate even when later arithmetic smoke, installer round-trip,
+or SDK steps refuse. Those ordinary behavior gates retain their required results.
+A missing or altered final installation prefix earns the collector's own retained
+refusal. The collector reuses the exact
+reviewed command runner and stable identity reader. It checks the formula, full
+compiler version and complete installed standard library, then records toolchain,
+loader, GMP/SQLite, package origins, header candidates and lexical/physical aliases.
+The candidate identifies paths outside the proposed read-only mounts, including
+`/etc/alternatives`, and preserves unresolved ELF/header/link choices for review.
+
+Collection admits 150 seconds, 32 metadata commands, 8,192 entries, 2 GiB of
+unique hash inputs, 256 MiB per file and 32 MiB of raw command output. Every command
+retains its argv, complete raw streams and original-group observation. A separate
+artifact is retained on success or refusal. The candidate grants zero native-profile
+or build admission; independent exact-roster review and actual loader/link/GMP/SQLite
+controls are required before a representative Grant build.
+
+## Linux generated-code CPU diagnostic
+
+The observed Ubuntu source installation completes, and the arithmetic smoke command
+reports an invalid instruction while executing its generated program. A separate
+240-second diagnostic runs after successful formula installation, including when
+that ordinary smoke step fails. It compares default targeting with an explicit
+`--mcpu generic` using the same installed compiler, standard library, wrappers,
+arithmetic source, and isolated caches. Each build, generated-program execution,
+and eval retains its actual status. CPU advertisements, disassembly, and an
+available debugger's fault location support attribution to a particular instruction
+and feature. Protected source/provider identities are rechecked afterward.
+
+The diagnostic pins its source and reviewed command runner, preserves the ordinary
+smoke result, and writes its own artifact. It admits 32 MiB of aggregate raw output
+and generated binaries up to 16 MiB each. The final elapsed-time observation includes
+provider verification; finalization failures retain the original command and cleanup
+errors. Diagnostic completion supplies evidence for a compiler repair. Ordinary
+smoke, SDK readiness, and supported-installation acceptance each retain their own
+required behavior gates.
