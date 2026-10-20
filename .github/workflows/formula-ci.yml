@@ -15,7 +15,7 @@ jobs:
   brew-install:
     name: "${{ matrix.os }} formula install"
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 75
     strategy:
       fail-fast: false
       matrix:
@@ -28,7 +28,39 @@ jobs:
 
       - name: Test installer behavior with private commands
         timeout-minutes: 2
-        run: ruby test/install_test.rb
+        run: |
+          ruby test/install_test.rb
+          ruby test/runtime_library_paths_formula_test.rb
+
+      - name: Test SDK source and result validation
+        timeout-minutes: 2
+        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
+
+      - name: Exercise actual SDK original-group controls
+        timeout-minutes: 1
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+          import hashlib
+          import os
+          import pathlib
+          import platform
+          import runpy
+          import sys
+
+          source = pathlib.Path("test/sdk_owned_group_controls.py").resolve()
+          expected_source = "83bbb3a597462918e303be4b62e9bfbb6be4c8ac9b8d39734d0fdd0217a8c436"
+          if hashlib.sha256(source.read_bytes()).hexdigest() != expected_source:
+              raise SystemExit("Hosted control source SHA-256 mismatch")
+          provider = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(source),
+              "--driver", "test/sdk_install_qualification.py",
+              "--driver-sha256", "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227",
+              "--source-sha256", expected_source,
+              "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
+              "--python-version", platform.python_version(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "sdk-owned-group-controls")]
+          runpy.run_path(str(source), run_name="__main__")
+          PY
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
@@ -40,6 +72,7 @@ jobs:
         run: brew audit --strict --online crimson-knight/agent-crystal/agent-crystal
 
       - name: Install formula
+        id: formula_source_install
         run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
 
       - name: Smoke test commands
@@ -54,8 +87,105 @@ jobs:
         run: brew test crimson-knight/agent-crystal/agent-crystal
 
       - name: Smoke test installer script
+        id: ordinary_installer_round_trip
         run: |
           brew uninstall --force agent-crystal
           AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
           test "$(acrystal eval 'puts 6 * 7')" = "42"
           test "$(crystal-alpha eval 'puts 6 * 7')" = "42"
+
+      - name: Exercise public SDK with the ordinary installed compiler
+        timeout-minutes: 15
+        run: PYTHONDONTWRITEBYTECODE=1 python3 test/sdk_install_qualification.py --output "$RUNNER_TEMP/sdk-readiness"
+
+      - name: Diagnose installed Linux CPU target behavior
+        id: linux_cpu_diagnostic
+        if: ${{ always() && runner.os == 'Linux' && steps.formula_source_install.outcome == 'success' }}
+        timeout-minutes: 5
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 - <<'PYTHON'
+          import hashlib
+          import os
+          import pathlib
+          import runpy
+          import sys
+
+          source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
+          expected = "aa6626c9fdca4a3bc9c3276084a8015d2075fa3eb5bff4a1bebcbd0846ddb2e5"
+          if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+              raise SystemExit("CPU diagnostic source SHA-256 mismatch")
+          provider = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(source),
+              "--repository", str(pathlib.Path.cwd()),
+              "--source-sha256", expected,
+              "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-cpu-diagnostic")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Record unreviewed Linux native projection metadata
+        id: linux_native_projection
+        if: ${{ always() && runner.os == 'Linux' && steps.formula_source_install.outcome == 'success' }}
+        timeout-minutes: 3
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 - <<'PYTHON'
+          import hashlib
+          import pathlib
+          import runpy
+          import sys
+          import os
+
+          source = pathlib.Path("test/linux_native_projection.py").resolve()
+          expected = "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Native projection collector source SHA-256 mismatch")
+          provider = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(source),
+              "--source-sha256", expected,
+              "--driver", "test/sdk_install_qualification.py",
+              "--driver-sha256", "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227",
+              "--linux-reader", "test/linux_projection_identity.py",
+              "--linux-reader-sha256", "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb",
+              "--source-lock", "test/sdk_source_lock.json",
+              "--source-lock-sha256", "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f",
+              "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
+              "--repository", str(pathlib.Path.cwd()),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-native-projection")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Preserve unreviewed Linux native projection metadata
+        if: ${{ always() && runner.os == 'Linux' && steps.linux_native_projection.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: linux-native-projection-${{ matrix.os }}
+          path: ${{ runner.temp }}/linux-native-projection
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Preserve actual SDK results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: sdk-readiness-${{ matrix.os }}
+          path: ${{ runner.temp }}/sdk-readiness
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Preserve actual original-group controls
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: sdk-owned-group-controls-${{ matrix.os }}
+          path: ${{ runner.temp }}/sdk-owned-group-controls
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Preserve Linux CPU diagnostic evidence
+        if: ${{ always() && runner.os == 'Linux' && steps.linux_cpu_diagnostic.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: linux-cpu-diagnostic-${{ matrix.os }}
+          path: ${{ runner.temp }}/linux-cpu-diagnostic
+          if-no-files-found: error
+          retention-days: 30

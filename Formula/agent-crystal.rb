@@ -5,6 +5,7 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-1"
   sha256 "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05"
   license "Apache-2.0"
+  revision 2
 
   head "https://github.com/crimson-knight/crystal.git", branch: "incremental-compilation"
 
@@ -85,7 +86,14 @@ class AgentCrystal < Formula
 
     crystal_install_dir.install ".build/crystal" => "agent-crystal-bin"
     stdlib_install_dir.install "src"
+    # Match the upstream install target: this object belongs to the compiler build.
+    rm stdlib_install_dir/"src/llvm/ext/llvm_ext.o"
     (lib/"crystal").mkpath
+
+    if OS.linux?
+      list_of_library_paths = runtime_library_paths
+      (pkgshare/"runtime_library_paths.txt").write(list_of_library_paths.join("\n") + "\n")
+    end
 
     install_wrapper("acrystal")
     install_wrapper("agent-crystal")
@@ -102,10 +110,21 @@ class AgentCrystal < Formula
     install_completion("fish", "etc/completion.fish", "crystal-alpha")
   end
 
+  def runtime_library_paths
+    list_of_library_paths = runtime_dependencies(read_from_tab: false, undeclared: false)
+                            .map { |dependency| dependency.to_formula.opt_lib }
+                            .select(&:directory?)
+                            .map(&:to_s)
+    (list_of_library_paths + [(HOMEBREW_PREFIX/"lib").to_s]).uniq.sort
+  end
+
   def install_wrapper(command_name)
     wrapper_env = {}
     wrapper_env["CRYSTAL_PATH"] = "lib:#{pkgshare}/src"
-    wrapper_env["LD_RUN_PATH"] = "${LD_RUN_PATH:+${LD_RUN_PATH}:}#{HOMEBREW_PREFIX}/lib" if OS.linux?
+    if OS.linux?
+      list_of_library_paths = (pkgshare/"runtime_library_paths.txt").read.lines(chomp: true)
+      wrapper_env["LD_RUN_PATH"] = "${LD_RUN_PATH:+${LD_RUN_PATH}:}#{list_of_library_paths.join(":")}"
+    end
 
     (bin/command_name).write_env_script(libexec/"agent-crystal-bin", wrapper_env)
   end

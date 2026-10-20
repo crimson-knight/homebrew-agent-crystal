@@ -1,0 +1,183 @@
+# Public SDK compiler readiness
+
+The formula workflow keeps its ordinary source build, command aliases, formula
+tests, and installer-script round trip. The added step uses that same installation
+to exercise the exact public Memory Budget source candidate on macOS and Linux.
+
+`sdk_source_lock.json` binds public SDK commit
+`58c20acfed71e27cbcf207014f29d7c7b53dab18`, its codeload archive,
+all 140 Git blobs and modes, the accepted Alpha formula, its exact source archive and version,
+and the complete source-derived standard-library digest. The 22 standard-library
+directory aliases carry their own exact target roster.
+
+The formula excludes the generated `llvm/ext/llvm_ext.o` compiler-build
+object, matching the pinned upstream install target. Source version and installed
+package revision are checked separately. The source-derived standard-library
+digest remains exact, and the actual file roster is saved before comparison so a
+failed check retains the difference for review.
+
+The run-local compiler profile derives from a reviewed policy: the installed
+formula matches that source and version, its receipt identifies a source build,
+the compiler wrapper matches the literal Homebrew Bash template, including its
+interpreter, environment assignments, quoted backend and argument forwarding, the complete installed standard
+library matches the separately pinned release source, and the actual compiler and
+Ruby executable hashes remain fixed throughout execution. This schema-1 profile
+qualifies compiler/spec/tutorial readiness. Native and Git provider admission,
+schema-3 frozen dependency installation, full build memory, independent customer
+devices, and a supported SDK release retain separate acceptance checks.
+
+The actual behavior gate requires:
+
+1. An ordinary hash-verified 68-member payload bundle installation, including the docs and
+   skill, in a consumer path containing spaces; the source-locked manifest is the 69th file.
+   Its exact digest is admitted before reading its payload roster. Missing, extra,
+   aliased, changed, duplicated or self-listed payloads refuse the bundle check;
+   changing and resealing an installed manifest still differs from the source lock.
+   Its bundle-specific walk requires ordinary directories and regular files;
+   aliases, special nodes and unreadable directories refuse before manifest reads
+   or payload hashing. The shared standard-library identity reader retains its
+   separately qualified behavior.
+2. Exactly 39 passing examples with the default runtime and 39 with `-Dwithout_mt`,
+   each through the installed SDK runner and one compiler code-generation thread.
+3. One build of the installed documentation tutorial. That same identified binary
+   passes normally and exits 1 when its real extra-allocation regression is enabled.
+   Both controls execute the tutorial's functional record assertions.
+4. GREEN compiler output, exact source/provider identities after execution, and
+   removal of the private source, prepared standard libraries, binaries and caches.
+
+The step reserves 15 minutes within the 75-minute formula job, admits a 3-GiB disk
+projection above a 10-GiB free-space floor, and retains raw command output and a
+machine-readable result even when a check fails. Each command has a finite timeout
+and output bound. After its direct child returns, the runner observes the original
+POSIX process group for up to five seconds, capped by the original command and
+complete-step deadlines. Initial and terminal samples record the observed retirement
+interval. Confirmed absence admits its output hashes. A present or
+unverifiable group refuses the command and preserves its private source and cache.
+Cleanup failures retain both the original error and the cleanup error in the
+result. Unresolved Linux groups also retain bounded process identity/state metadata
+with names and arguments omitted. This group observation covers the original group; process recovery and
+detached sessions retain separate qualification gates.
+
+Before the installation, a separate hosted control exercises a real normal exit,
+a same-group child that naturally retires after 0.6 seconds, and a held same-group
+descendant that remains after its leader exits. Natural retirement must be observed
+inside the original command interval before its output is accepted. The held child must
+earn a refused command with null output hashes. Its cooperative self-exit and a
+subsequent group-absence observation produce separate receipts before private-cache
+removal. The control pins its script and the complete reviewed driver, records the
+observed Python version and executable hash before and after execution, and retains
+its own artifact. It admits at most two concurrent fixture processes, 45 seconds,
+and 1 MiB of evidence. Group recovery and detached sessions remain separate gates.
+
+The installed SDK and its fixtures supply compiler/runtime proof;
+the Python tests challenge archive handling, source damage, directory aliases,
+formula provenance and result acceptance independently.
+
+`passed: true` applies to this readiness scope. The result explicitly retains false
+values for full native-provider, frozen-dependency and customer-device acceptance.
+
+The SDK product preserves an admitted Homebrew wrapper's static Linux `LD_RUN_PATH`
+when its bootstrap intentionally delegates to the hash-admitted compiler backend.
+The prepared allocation-counter `CRYSTAL_PATH` overlay stays authoritative. The
+SDK helper verifies the complete supported static shell form and wrapper/backend
+identities; explicit native-environment removals merge afterward. Ordinary wrapper
+crypto success and both direct-backend SDK spec modes are required independently.
+The installed bundle and complete source rosters are rechecked after execution.
+
+## Linux native projection candidate
+
+After the ordinary formula source install succeeds, Ubuntu records a separate bounded
+native projection candidate even when later arithmetic smoke, installer round-trip,
+or SDK steps refuse. Those ordinary behavior gates retain their required results.
+A missing or altered final installation prefix earns the collector's own retained
+refusal. The collector reuses the exact
+reviewed command runner and stable identity reader. It checks the formula, full
+compiler version and complete installed standard library, then records toolchain,
+loader, GMP/SQLite, package origins, header candidates and lexical/physical aliases.
+The candidate identifies paths outside the proposed read-only mounts, including
+`/etc/alternatives`, and preserves unresolved ELF/header/link choices for review.
+
+Collection admits 150 seconds, 32 metadata commands, 8,192 entries, 2 GiB of
+unique hash inputs, 256 MiB per file and 32 MiB of raw command output. Every command
+retains its argv, complete raw streams and original-group observation. A separate
+artifact is retained on success or refusal. The candidate grants zero native-profile
+or build admission; independent exact-roster review and actual loader/link/GMP/SQLite
+controls are required before a representative Grant build.
+
+## Linux generated-code CPU diagnostic
+
+The observed Ubuntu source installation completes, and the arithmetic smoke command
+reports an invalid instruction while executing its generated program. A separate
+240-second diagnostic runs after successful formula installation, including when
+that ordinary smoke step fails. It compares default targeting with an explicit
+`--mcpu generic` using the same installed compiler, standard library, wrappers,
+arithmetic source, and isolated caches. Each build, generated-program execution,
+and eval retains its actual status. CPU advertisements, disassembly, and an
+available debugger's fault location support attribution to a particular instruction
+and feature. Protected source/provider identities are rechecked afterward.
+
+The diagnostic pins its source and reviewed command runner, preserves the ordinary
+smoke result, and writes its own artifact. It admits 32 MiB of aggregate raw output
+and generated binaries up to 16 MiB each. The final elapsed-time observation includes
+provider verification; finalization failures retain the original command and cleanup
+errors. Diagnostic completion supplies evidence for a compiler repair. Ordinary
+smoke, SDK readiness, and supported-installation acceptance each retain their own
+required behavior gates.
+
+### Preserved Homebrew context and distro SQLite successor
+
+At exact source `1320d494717f7cd70ea83ff2f1c88f4f6f73a138`, Ubuntu run
+`39483326475` passes the ordinary default arithmetic smoke. Its diagnostic then
+refuses a Homebrew receipt query as an untrusted-tap request before compiling
+either diagnostic target. The native collector separately reaches Homebrew GMP
+metadata and refuses its Homebrew pkgconf SQLite query, even though the retained
+Ubuntu package receipt records SQLite and its development package as installed.
+Those original failures remain exact; an offending instruction remains unobserved.
+
+The successor retains an explicit safe Homebrew metadata environment with the
+ordinary USER/LOGNAME, XDG configuration, Homebrew identity/update settings, and
+non-secret CI identity. Tap trust enforcement stays active. Both metadata controls
+use the same lexical Homebrew entrypoint and argv, fixed no-auto-update/no-analytics
+settings, and separate preserved versus compiler-filtered user/config context.
+An observed filtered-environment refusal keeps its actual status and retired raw
+hashes. Default and generic compilation continue through the same filtered
+environment with explicit target flags and isolated caches; `CRYSTAL_OPTS` stays
+outside both contrasts. Formula, wrapper, source, provider, standard-library, group,
+and final elapsed-time checks remain required.
+
+Native metadata retains the original Homebrew SQLite query as an explicitly
+observed control. It separately identifies `/usr/bin/pkg-config`, its lexical
+aliases and physical provider, and its version/default search metadata. SQLite
+queries use that distro provider with explicit `/usr/lib/x86_64-linux-gnu/pkgconfig`,
+`/usr/lib/pkgconfig`, and `/usr/share/pkgconfig` roots and an empty additional path
+and sysroot. The selected SQLite PC source must belong to those roots. Homebrew
+GMP retains its own observed provider. Required metadata queries still require
+zero exit, exact argv and provider identities, confirmed original-group absence,
+and complete raw hashes. The additional controls stay inside the existing
+32-command, 150-second, entry/hash-input/file/output limits.
+
+The CPU diagnostic now runs after ordinary SDK execution, with the same
+always-after-successful-source-install condition. Each ordinary behavior gate
+retains its own result when a later diagnostic refuses. The original 84 source
+cases and 14 added context/provider controls pass in ordinary and optimized local
+Python with actual process creation guarded. Actual successor hosted behavior,
+complete headers/link/loader choices, native-profile admission, SDK readiness on
+each new installation, and the full Grant build remain separate pending gates.
+
+## Bounded Linux diagnostic discovery
+
+The CPU diagnostic retains default and explicit generic arithmetic as separate observations inside its original 240-second and 32-MiB raw-output contracts. Disassembly uses a selected ELF entry-point address window of at most 256 bytes. For an actual generated-program SIGILL with GDB available, the same bounded debugger command first preserves registers, runtime entry point, instruction text, raw instruction bytes and symbol identity. A valid x86-64 executable/PIE mapping selects a window around that actual fault address. An unavailable or unqualified address mapping keeps an explicitly unqualified `_start` symbol selection and the original raw fault evidence. The existing per-command output gate remains active. Partial contrast rows survive an original command refusal. Diagnostic collection and fault-address qualification remain separate from ordinary smoke, SDK and Grant acceptance.
+
+Native metadata discovery classifies each identified candidate by its retained regular-file or directory kind before opening an ELF header. Directories keep kind/mode provenance; regular non-ELF inputs keep byte/hash accounting. Lexical aliases remain in the roster. Only unique identified ELF files enter each wave's existing 96-file bound. The report distinguishes actual executed ELF waves from candidate waves considered. Original 150-second, 32-command, 8,192-entry, 2-GiB-input, 256-MiB-file and 32-MiB-output contracts remain in force. A complete candidate roster still awaits independent provider review and actual loader/link/header/GMP/SQLite canaries.
+
+## Revision2 Linux runtime-library manifest proposal
+
+The formula serializes every existing declared recursive runtime dependency opt/lib directory and the Homebrew prefix/lib directory in sorted, unique order. Each Linux alias reads that same installed manifest at installation and embeds its exact static LD_RUN_PATH roster. The SDK independently resolves the installed Homebrew JSON dependency graph, including Linux uses_from_macos dependencies and selected optional/recommended dependencies while excluding build/test-only edges. Every selected dependency binds its installed version, opt alias, contained physical library target, receipt and formula hashes. The emitted manifest must equal that derived path roster byte for byte. The freshly queried Alpha root version must match the actual installed package prefix.
+
+Qualified revision2 Linux wrappers require that runtime identity. The source-compatible legacy syntax matcher remains available for retained unrevisioned wrapper controls; every actual revision2 entrypoint passes the independently derived identity. All three ordinary public aliases bind their lexical target, physical resolution and wrapper bytes. Package, manifest, dependency library/alias and wrapper identities are revalidated on success and failure, with finalization errors retained alongside the original command error. CPU/native diagnostics reuse the same admitted driver helper and retain their separate installation/native acceptance boundaries.
+
+The SDK retains its original840-second complete horizon and original Runner class/process-group behavior. Its SDK-specific command proxy allows at most16Linux commands (the original11 plus dependency metadata, crypto formatter/build/ELF/runtime) or11Darwin commands. Each original per-command maximum remains unchanged; the four crypto maxima are15/120/10/10seconds and dependency metadata45seconds. The reviewed Runner caps each command by the remaining absolute horizon and refuses exhausted work. No successful completion is claimed until every required command and final identity/cleanup/terminal check passes. Worst-case sum of per-command maxima is intentionally not a reservation; actual completion within the original horizon remains a hosted gate.
+
+The Linux cryptographic consumer uses the ordinary crystal-alpha wrapper, a cold cache and a filtered SDK environment, hashes the constant atlas-runtime with OpenSSL SHA256 and checks the exact digest. It requires GREEN format/build, retains bounded ELF dynamic/interpreter metadata, and runs the generated executable. Its20-MiB binary snapshot requires confirmed original writer retirement and stable before/after hashes. Original and retention failures remain separate. Failed SDK spec binaries are similarly retained at most20MiB each after confirmed original-group return before the private cache is removed. Full native-loader closure, API-lookup admission, whole-build memory and customer installation acceptance remain separate.
+
+The exact digest/IO source signatures join the pinned Alpha source archive and the accepted installed standard-library roster in test/RUNTIME_CRYPTO_API_SOURCE.json. Actual-project Amber LSP provider/lookup and actual formatter/compiler/consumer execution are pending hosted validation. The formatter/build/runtime commands are explicit in the qualifier. The separate Grant Mac diagnostic remains on its e48/revision1 branch.
