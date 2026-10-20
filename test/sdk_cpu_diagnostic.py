@@ -18,6 +18,11 @@ LOCK_SHA256 = "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4"
 MAXIMUM_SECONDS = 240
 MAXIMUM_RAW_BYTES = 32 * 1024**2
 MAXIMUM_BINARY_BYTES = 16 * 1024**2
+HOMEBREW_CONTEXT_KEYS = ("USER", "LOGNAME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "XDG_DATA_HOME",
+    "HOMEBREW_XDG_CONFIG_HOME", "HOMEBREW_USER_CONFIG_HOME", "HOMEBREW_USER_CACHE_HOME",
+    "HOMEBREW_CACHE", "HOMEBREW_PREFIX", "HOMEBREW_CELLAR", "HOMEBREW_REPOSITORY",
+    "HOMEBREW_NO_INSTALL_FROM_API", "HOMEBREW_NO_ENV_HINTS", "HOMEBREW_REQUIRE_TAP_TRUST",
+    "CI", "GITHUB_ACTIONS", "GITHUB_REPOSITORY", "ImageOS", "ImageVersion")
 
 
 def require(condition, message):
@@ -108,6 +113,29 @@ def environment_for(cache):
     return environment
 
 
+def homebrew_environment_for(cache):
+    """Preserve the ordinary user's trust/config context for metadata queries."""
+    require(os.environ.get("HOMEBREW_NO_REQUIRE_TAP_TRUST") in (None, ""),
+            "Homebrew metadata requires ordinary tap trust enforcement")
+    environment = environment_for(cache)
+    environment.update({key: os.environ[key] for key in HOMEBREW_CONTEXT_KEYS if key in os.environ})
+    environment.update(HOMEBREW_NO_AUTO_UPDATE="1", HOMEBREW_NO_ANALYTICS="1")
+    return environment
+
+
+def receipt_control(record, output, driver, lock):
+    """A filtered metadata refusal stays observable without changing the contrast."""
+    value = {"record": record, "receipt_valid": False}
+    if record["exit_code"] == 0:
+        try:
+            raw = (output / (record["label"] + ".stdout.txt")).read_text()
+            driver.verify_formula_receipt(json.loads(raw)["formulae"], lock)
+            value["receipt_valid"] = True
+        except Exception as error:
+            value["receipt_error"] = f"{type(error).__name__}: {error}"
+    return value
+
+
 def cpu_metadata(output):
     with pathlib.Path("/proc/cpuinfo").open("rb") as stream:
         data = stream.read(512 * 1024 + 1)
@@ -155,8 +183,20 @@ def qualify(arguments):
     before = None
     try:
         write_json(output / "CPU_METADATA.json", cpu_metadata(output))
-        environment = environment_for(output / "metadata-cache")
-        brew = pathlib.Path(shutil.which("brew") or "").resolve()
+        filtered_environment = dict(environment_for(output / "metadata-cache"),
+                                    HOMEBREW_NO_AUTO_UPDATE="1", HOMEBREW_NO_ANALYTICS="1")
+        environment = homebrew_environment_for(output / "metadata-cache")
+        result["homebrew_metadata_context"] = {key: environment[key] for key in HOMEBREW_CONTEXT_KEYS
+                                               if key in environment}
+        result["homebrew_metadata_context"].update(HOMEBREW_NO_AUTO_UPDATE="1", HOMEBREW_NO_ANALYTICS="1")
+        result["filtered_homebrew_metadata_context"] = {key: filtered_environment[key]
+            for key in HOMEBREW_CONTEXT_KEYS if key in filtered_environment}
+        result["filtered_homebrew_metadata_context"].update(HOMEBREW_NO_AUTO_UPDATE="1", HOMEBREW_NO_ANALYTICS="1")
+        result["homebrew_tap_trust_enforced"] = True
+        brew = pathlib.Path(shutil.which("brew") or "").absolute()
+        require(brew.is_file(), "Ordinary Homebrew entrypoint required")
+        brew_physical = brew.resolve(strict=True)
+        result["brew_entrypoint"] = str(brew)
         result["providers"]["brew"] = provider(brew)
         protected[str(brew)] = digest(brew)
         def command(label, argv, seconds=20, env=environment):
@@ -168,6 +208,10 @@ def qualify(arguments):
         prefix = pathlib.Path((output / "brew-prefix.stdout.txt").read_text().strip()).resolve(strict=True)
         brew_root = pathlib.Path((output / "brew-root.stdout.txt").read_text().strip()).resolve(strict=True)
         driver.verify_formula_receipt(json.loads((output / "brew-receipt.stdout.txt").read_text())["formulae"], lock)
+        filtered = command("brew-receipt-filtered-control", [brew, "info", "--json=v2", "agent-crystal"],
+                           env=filtered_environment)
+        result["filtered_homebrew_metadata_control"] = receipt_control(filtered, output, driver, lock)
+        result["homebrew_context_control_scope"] = "Same lexical brew entrypoint and argv; ordinary versus compiler-filtered metadata environment"
         for formula in (prefix / ".brew/agent-crystal.rb", repository / "Formula/agent-crystal.rb"):
             require(digest(formula) == lock["formula_sha256"], "Exact installed and checkout formula source required")
             protected[str(formula)] = digest(formula)
@@ -242,6 +286,9 @@ def qualify(arguments):
             require(runner.writers_confirmed_retired is True, "Private caches retained for unresolved writers")
             for path, expected in protected.items():
                 require(digest(path) == expected, "Protected provider or fixture changed: " + path)
+            if "brew_entrypoint" in result:
+                require(brew.resolve(strict=True) == brew_physical,
+                        "Ordinary Homebrew entrypoint changed its physical provider")
             if stdlib is not None:
                 after = driver.tree_identity(stdlib)
                 write_json(output / "STDLIB_AFTER.json", after)

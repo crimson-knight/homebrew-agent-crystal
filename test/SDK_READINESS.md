@@ -108,3 +108,43 @@ provider verification; finalization failures retain the original command and cle
 errors. Diagnostic completion supplies evidence for a compiler repair. Ordinary
 smoke, SDK readiness, and supported-installation acceptance each retain their own
 required behavior gates.
+
+### Preserved Homebrew context and distro SQLite successor
+
+At exact source `1320d494717f7cd70ea83ff2f1c88f4f6f73a138`, Ubuntu run
+`39483326475` passes the ordinary default arithmetic smoke. Its diagnostic then
+refuses a Homebrew receipt query as an untrusted-tap request before compiling
+either diagnostic target. The native collector separately reaches Homebrew GMP
+metadata and refuses its Homebrew pkgconf SQLite query, even though the retained
+Ubuntu package receipt records SQLite and its development package as installed.
+Those original failures remain exact; an offending instruction remains unobserved.
+
+The successor retains an explicit safe Homebrew metadata environment with the
+ordinary USER/LOGNAME, XDG configuration, Homebrew identity/update settings, and
+non-secret CI identity. Tap trust enforcement stays active. Both metadata controls
+use the same lexical Homebrew entrypoint and argv, fixed no-auto-update/no-analytics
+settings, and separate preserved versus compiler-filtered user/config context.
+An observed filtered-environment refusal keeps its actual status and retired raw
+hashes. Default and generic compilation continue through the same filtered
+environment with explicit target flags and isolated caches; `CRYSTAL_OPTS` stays
+outside both contrasts. Formula, wrapper, source, provider, standard-library, group,
+and final elapsed-time checks remain required.
+
+Native metadata retains the original Homebrew SQLite query as an explicitly
+observed control. It separately identifies `/usr/bin/pkg-config`, its lexical
+aliases and physical provider, and its version/default search metadata. SQLite
+queries use that distro provider with explicit `/usr/lib/x86_64-linux-gnu/pkgconfig`,
+`/usr/lib/pkgconfig`, and `/usr/share/pkgconfig` roots and an empty additional path
+and sysroot. The selected SQLite PC source must belong to those roots. Homebrew
+GMP retains its own observed provider. Required metadata queries still require
+zero exit, exact argv and provider identities, confirmed original-group absence,
+and complete raw hashes. The additional controls stay inside the existing
+32-command, 150-second, entry/hash-input/file/output limits.
+
+The CPU diagnostic now runs after ordinary SDK execution, with the same
+always-after-successful-source-install condition. Each ordinary behavior gate
+retains its own result when a later diagnostic refuses. The original 84 source
+cases and 14 added context/provider controls pass in ordinary and optimized local
+Python with actual process creation guarded. Actual successor hosted behavior,
+complete headers/link/loader choices, native-profile admission, SDK readiness on
+each new installation, and the full Grant build remain separate pending gates.

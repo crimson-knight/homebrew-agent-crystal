@@ -21,6 +21,8 @@ MAX_COMMANDS = 32
 MAX_SECONDS = 150
 ORIGINAL_MOUNTS = ('/usr', '/home/linuxbrew/.linuxbrew', '/etc/ld.so.cache', '/etc/ld.so.conf', '/etc/ld.so.conf.d')
 LOADER_ENV = ('CRYSTAL_LIBRARY_PATH', 'LD_LIBRARY_PATH', 'LD_RUN_PATH', 'LD_PRELOAD', 'LD_AUDIT', 'PKG_CONFIG_PATH', 'PKG_CONFIG_LIBDIR', 'CC', 'CXX', 'LIBRARY_PATH', 'CPATH')
+SYSTEM_PKG_CONFIG = '/usr/bin/pkg-config'
+SYSTEM_PKG_CONFIG_DIRECTORIES = ('/usr/lib/x86_64-linux-gnu/pkgconfig', '/usr/lib/pkgconfig', '/usr/share/pkgconfig')
 
 
 def need(value, message):
@@ -183,8 +185,8 @@ def stdlib_identity(root, roster):
     return {'sha256': hashlib.sha256(data).hexdigest(), 'files': files, 'directory_aliases': aliases}
 
 
-def validate_command(record):
-    need(type(record) is dict and type(record.get('exit_code')) is int and record['exit_code'] == 0, 'Metadata command must return zero')
+def validate_command(record, require_success=True):
+    need(type(record) is dict and type(record.get('exit_code')) is int and (not require_success or record['exit_code'] == 0), 'Metadata command must return zero or be an explicit diagnostic observation')
     need(type(record.get('pid')) is int and record['pid'] > 0 and type(record.get('original_group')) is int and record['original_group'] == record['pid'], 'Metadata command requires its exact original process group')
     observation = record.get('terminal_group_observation', {})
     need(observation.get('status') == 'absent' and type(observation.get('group')) is int and observation['group'] == record['pid'] and record.get('writers_confirmed_retired') is True and record.get('refusal') is None, 'Metadata command original group must be observed absent')
@@ -199,7 +201,7 @@ class Commands:
         self.identities = {}
         self.count = 0
 
-    def run(self, label, arguments, seconds=30):
+    def run(self, label, arguments, seconds=30, *, environment=None, observe_nonzero=False):
         self.roster.check()
         need(self.count < MAX_COMMANDS and type(seconds) is int and 1 <= seconds <= 45, 'Metadata command roster/deadline exceeded')
         executable = self.roster.add(arguments[0], required=True)
@@ -207,9 +209,22 @@ class Commands:
         expected_identity = {key: self.roster.entries[executable][key] for key in ('path', 'bytes', 'sha256')}
         need(self.roster.read_file(executable) == expected_identity, 'Metadata executable changed before command')
         self.count += 1
-        stdout, stderr = self.runner.run(label, arguments, cwd=self.output, environment=dict(os.environ, HOMEBREW_NO_AUTO_UPDATE='1', HOMEBREW_NO_ANALYTICS='1'), seconds=seconds)
+        previous = len(self.runner.records)
+        try:
+            self.runner.run(label, arguments, cwd=self.output,
+                environment=environment if environment is not None else dict(os.environ, HOMEBREW_NO_AUTO_UPDATE='1', HOMEBREW_NO_ANALYTICS='1'), seconds=seconds)
+        except Exception as error:
+            if not observe_nonzero or len(self.runner.records) != previous + 1:
+                raise
+            observed = self.runner.records[-1]
+            if (type(error).__name__ != 'QualificationError'
+                    or str(error) != f"{label} exited {observed['exit_code']}; expected 0"
+                    or type(observed['exit_code']) is not int or observed['exit_code'] == 0
+                    or observed.get('refusal') is not None or observed.get('writers_confirmed_retired') is not True):
+                raise
+        need(len(self.runner.records) == previous + 1, 'Exactly one metadata command observation required')
         record = self.runner.records[-1]
-        validate_command(record)
+        validate_command(record, require_success=not observe_nonzero)
         need(record.get('label') == label and record.get('arguments') == [str(value) for value in arguments], 'Actual metadata command label/argv differs')
         need(self.roster.read_file(executable) == expected_identity, 'Metadata executable changed during command')
         combined = sum((self.output / (label + '.' + suffix)).stat().st_size for suffix in ('stdout.txt', 'stderr.txt'))
@@ -219,7 +234,29 @@ class Commands:
         raw_bytes = sum(p.stat().st_size for p in self.output.glob('*.txt'))
         need(raw_bytes <= MAX_METADATA_BYTES, 'Aggregate raw metadata output budget exceeded')
         self.roster.check()
-        return stdout, stderr
+        return ((self.output / (label + '.stdout.txt')).read_text(),
+                (self.output / (label + '.stderr.txt')).read_text())
+
+
+def sqlite_metadata_environment():
+    """Query the installed distro SQLite through its explicit reviewed PC roots."""
+    return dict(os.environ, PKG_CONFIG_LIBDIR=':'.join(SYSTEM_PKG_CONFIG_DIRECTORIES),
+                PKG_CONFIG_PATH='', PKG_CONFIG_SYSROOT_DIR='')
+
+
+def sqlite_metadata_provider(commands, roster, homebrew_pkgconfig):
+    """Retain the original Homebrew search result and identify the distro provider."""
+    commands.run('sqlite3-homebrew-libdir-control', [homebrew_pkgconfig, '--variable=libdir', 'sqlite3'],
+                 observe_nonzero=True)
+    control = dict(commands.runner.records[-1])
+    physical = roster.add(SYSTEM_PKG_CONFIG, required=True)
+    need(roster.entries[physical]['kind'] == 'file', 'Distro pkg-config needs an identified regular provider')
+    environment = sqlite_metadata_environment()
+    commands.run('system-pkg-config-version', [physical, '--version'], environment=environment)
+    commands.run('system-pkg-config-search-path', [physical, '--variable=pc_path', 'pkg-config'], environment=environment)
+    for directory in SYSTEM_PKG_CONFIG_DIRECTORIES:
+        roster.add(directory)
+    return physical, environment, control
 
 
 def cache_paths(raw):
@@ -322,14 +359,26 @@ def collect(args):
         for header in ('/usr/include/stdio.h', '/usr/include/stdlib.h', '/usr/include/string.h', '/usr/include/limits.h', '/usr/include/stdint.h', '/usr/include/x86_64-linux-gnu/bits/libc-header-start.h', '/usr/include/x86_64-linux-gnu/sys/types.h'):
             roster.add(header, required=True)
         native = {}
+        result['required_native_packages'] = native
         for name in ('gmp', 'sqlite3'):
             native[name] = {}
+            package_tool, package_environment = tools['pkg-config'], None
+            if name == 'sqlite3':
+                package_tool, package_environment, control = sqlite_metadata_provider(commands, roster, tools['pkg-config'])
+                result['sqlite3_homebrew_metadata_control'] = control
+                result['sqlite3_distro_metadata_context'] = {key: package_environment[key]
+                    for key in ('PKG_CONFIG_LIBDIR', 'PKG_CONFIG_PATH', 'PKG_CONFIG_SYSROOT_DIR')}
+                tools['system-pkg-config'] = package_tool
+            native[name]['metadata_provider'] = package_tool
             for kind in ('libdir', 'includedir', 'pcfiledir'):
-                value = commands.run(name + '-' + kind, [tools['pkg-config'], '--variable=' + kind, name])[0].strip()
+                value = commands.run(name + '-' + kind, [package_tool, '--variable=' + kind, name], environment=package_environment)[0].strip()
                 need(value.startswith('/'), 'Required package search directory is absent: ' + name + '/' + kind)
+                if name == 'sqlite3' and kind == 'pcfiledir':
+                    need(os.path.normpath(value) in SYSTEM_PKG_CONFIG_DIRECTORIES,
+                         'SQLite PC source must come from the explicit distro search roots')
                 native[name][kind] = value
                 roster.add(value, required=True)
-            commands.run(name + '-version', [tools['pkg-config'], '--modversion', name])
+            commands.run(name + '-version', [package_tool, '--modversion', name], environment=package_environment)
             for header in (('gmp.h', 'gmpxx.h') if name == 'gmp' else ('sqlite3.h', 'sqlite3ext.h')):
                 roster.add(Path(native[name]['includedir']) / header, required=header in ('gmp.h', 'sqlite3.h'))
             for member in sorted(Path(native[name]['libdir']).glob('lib' + ('gmp' if name == 'gmp' else 'sqlite3') + '*')):
