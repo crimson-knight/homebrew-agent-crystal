@@ -2,8 +2,6 @@ name: Grant fixed carrier dirty transition diagnostic
 
 on:
   workflow_dispatch:
-  push:
-    branches: [feature/grant-dirty-transition]
 
 permissions: {}
 
