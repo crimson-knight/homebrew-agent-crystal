@@ -1,0 +1,3201 @@
+{
+  "passed": true,
+  "commands": [
+    {
+      "label": "perimeter-ordinary",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+        "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "perimeter-ordinary"
+      ],
+      "final_argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/test_stage_contract.py"
+      ],
+      "process_result": {
+        "passed": true,
+        "primary_failure": null,
+        "cleanup_errors": [],
+        "journal_errors": [],
+        "initial_identity": {
+          "pid": 67214,
+          "birth": "Mon Oct 19 03:39:19 2026",
+          "group": 67214,
+          "uid": 501
+        },
+        "owned_pid_births": {
+          "67214": "Mon Oct 19 03:39:19 2026"
+        },
+        "owned_identities": [
+          {
+            "pid": 67214,
+            "birth": "Mon Oct 19 03:39:19 2026"
+          }
+        ],
+        "diagnostic_group_peak_bytes": 245760,
+        "elapsed_seconds": 0.7306854159999999,
+        "exit_status": 0,
+        "terminal_qualified": true,
+        "terminal_owned": [],
+        "terminal_group_members": []
+      },
+      "terminal_qualified": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3ba839d8cd94926fc1b5bf9ff1b4fbe307ddb2f62e634ebe013da4b1a4d94a04",
+      "stdout_bytes": 0,
+      "stderr_bytes": 819,
+      "unittest": {
+        "passed": true,
+        "example_count": 8,
+        "list_of_titles": [
+          "test_coherent_admission_and_identity_damage_restoration",
+          "test_complete_unittest_roster_then_damage_restoration",
+          "test_exact_products_then_repinned_source_refusal_restoration",
+          "test_missing_extra_duplicate_and_reordered_product_rows_restoration",
+          "test_numeric_clock_and_array_damage_restoration",
+          "test_product_kind_mode_and_manifest_damage_restoration",
+          "test_projection_and_exact_execution_plan_boundaries",
+          "test_regular_source_binding_then_byte_kind_and_mode_damage_restoration"
+        ],
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "3ba839d8cd94926fc1b5bf9ff1b4fbe307ddb2f62e634ebe013da4b1a4d94a04"
+      }
+    },
+    {
+      "label": "perimeter-optimized",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+        "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "perimeter-optimized"
+      ],
+      "final_argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-O",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/test_stage_contract.py"
+      ],
+      "process_result": {
+        "passed": true,
+        "primary_failure": null,
+        "cleanup_errors": [],
+        "journal_errors": [],
+        "initial_identity": {
+          "pid": 67225,
+          "birth": "Mon Oct 19 03:39:20 2026",
+          "group": 67225,
+          "uid": 501
+        },
+        "owned_pid_births": {
+          "67225": "Mon Oct 19 03:39:20 2026"
+        },
+        "owned_identities": [
+          {
+            "pid": 67225,
+            "birth": "Mon Oct 19 03:39:20 2026"
+          }
+        ],
+        "diagnostic_group_peak_bytes": 1671168,
+        "elapsed_seconds": 0.44592187500000013,
+        "exit_status": 0,
+        "terminal_qualified": true,
+        "terminal_owned": [],
+        "terminal_group_members": []
+      },
+      "terminal_qualified": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "94d76f454f0ca6c122787a540aba80d3ebfb729d9daca1b6e21c1b67a6f1961f",
+      "stdout_bytes": 0,
+      "stderr_bytes": 819,
+      "unittest": {
+        "passed": true,
+        "example_count": 8,
+        "list_of_titles": [
+          "test_coherent_admission_and_identity_damage_restoration",
+          "test_complete_unittest_roster_then_damage_restoration",
+          "test_exact_products_then_repinned_source_refusal_restoration",
+          "test_missing_extra_duplicate_and_reordered_product_rows_restoration",
+          "test_numeric_clock_and_array_damage_restoration",
+          "test_product_kind_mode_and_manifest_damage_restoration",
+          "test_projection_and_exact_execution_plan_boundaries",
+          "test_regular_source_binding_then_byte_kind_and_mode_damage_restoration"
+        ],
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "94d76f454f0ca6c122787a540aba80d3ebfb729d9daca1b6e21c1b67a6f1961f"
+      }
+    },
+    {
+      "label": "produce",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+        "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "produce"
+      ],
+      "final_argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py",
+        "--output",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced"
+      ],
+      "process_result": {
+        "passed": true,
+        "primary_failure": null,
+        "cleanup_errors": [],
+        "journal_errors": [],
+        "initial_identity": {
+          "pid": 67233,
+          "birth": "Mon Oct 19 03:39:20 2026",
+          "group": 67233,
+          "uid": 501
+        },
+        "owned_pid_births": {
+          "67233": "Mon Oct 19 03:39:20 2026"
+        },
+        "owned_identities": [
+          {
+            "pid": 67233,
+            "birth": "Mon Oct 19 03:39:20 2026"
+          }
+        ],
+        "diagnostic_group_peak_bytes": 1753088,
+        "elapsed_seconds": 0.45006304100000016,
+        "exit_status": 0,
+        "terminal_qualified": true,
+        "terminal_owned": [],
+        "terminal_group_members": []
+      },
+      "terminal_qualified": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "label": "producer-ordinary",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+        "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "producer-ordinary"
+      ],
+      "final_argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py"
+      ],
+      "process_result": {
+        "passed": true,
+        "primary_failure": null,
+        "cleanup_errors": [],
+        "journal_errors": [],
+        "initial_identity": {
+          "pid": 67254,
+          "birth": "Mon Oct 19 03:39:21 2026",
+          "group": 67254,
+          "uid": 501
+        },
+        "owned_pid_births": {
+          "67254": "Mon Oct 19 03:39:21 2026"
+        },
+        "owned_identities": [
+          {
+            "pid": 67254,
+            "birth": "Mon Oct 19 03:39:21 2026"
+          }
+        ],
+        "diagnostic_group_peak_bytes": 1753088,
+        "elapsed_seconds": 0.44956633299999993,
+        "exit_status": 0,
+        "terminal_qualified": true,
+        "terminal_owned": [],
+        "terminal_group_members": []
+      },
+      "terminal_qualified": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "96b673e1c59ab9583e43b348bdbda3b87427d7a0107ab6d94ff2c719ab72d00b",
+      "stdout_bytes": 0,
+      "stderr_bytes": 1129,
+      "unittest": {
+        "passed": true,
+        "example_count": 12,
+        "list_of_titles": [
+          "test_actual_complete_build_semantic_prefix_grammar_only",
+          "test_changed_or_missing_model_source_and_field_manifest_refuse",
+          "test_deterministic_six_profiles_and_unchanged_canonical",
+          "test_distinct_reachable_constructor_profiles",
+          "test_exact_declaration_header_and_model_grid",
+          "test_exact_disk_projection_boundary",
+          "test_exact_keyword_values_and_broad_hash_type",
+          "test_missing_duplicate_reordered_and_codegen_stats_refuse",
+          "test_missing_or_reordered_profile_refuses_and_restores",
+          "test_oracles_and_separate_same_binary_wrong_expectation",
+          "test_repinned_changed_oracle_and_count_refuse_and_restore",
+          "test_stats_bounds_invalid_heap_padding_and_raw_types_refuse"
+        ],
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "96b673e1c59ab9583e43b348bdbda3b87427d7a0107ab6d94ff2c719ab72d00b"
+      }
+    },
+    {
+      "label": "producer-optimized",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+        "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "producer-optimized"
+      ],
+      "final_argv": [
+        "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-O",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py"
+      ],
+      "process_result": {
+        "passed": true,
+        "primary_failure": null,
+        "cleanup_errors": [],
+        "journal_errors": [],
+        "initial_identity": {
+          "pid": 67268,
+          "birth": "Mon Oct 19 03:39:21 2026",
+          "group": 67268,
+          "uid": 501
+        },
+        "owned_pid_births": {
+          "67268": "Mon Oct 19 03:39:21 2026"
+        },
+        "owned_identities": [
+          {
+            "pid": 67268,
+            "birth": "Mon Oct 19 03:39:21 2026"
+          }
+        ],
+        "diagnostic_group_peak_bytes": 1245184,
+        "elapsed_seconds": 0.4476584159999999,
+        "exit_status": 0,
+        "terminal_qualified": true,
+        "terminal_owned": [],
+        "terminal_group_members": []
+      },
+      "terminal_qualified": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "97b3ea9f858aef9251919e655a3847a25353678ef8ef68cd6d2ed42f47a4ce4d",
+      "stdout_bytes": 0,
+      "stderr_bytes": 1129,
+      "unittest": {
+        "passed": true,
+        "example_count": 12,
+        "list_of_titles": [
+          "test_actual_complete_build_semantic_prefix_grammar_only",
+          "test_changed_or_missing_model_source_and_field_manifest_refuse",
+          "test_deterministic_six_profiles_and_unchanged_canonical",
+          "test_distinct_reachable_constructor_profiles",
+          "test_exact_declaration_header_and_model_grid",
+          "test_exact_disk_projection_boundary",
+          "test_exact_keyword_values_and_broad_hash_type",
+          "test_missing_duplicate_reordered_and_codegen_stats_refuse",
+          "test_missing_or_reordered_profile_refuses_and_restores",
+          "test_oracles_and_separate_same_binary_wrong_expectation",
+          "test_repinned_changed_oracle_and_count_refuse_and_restore",
+          "test_stats_bounds_invalid_heap_padding_and_raw_types_refuse"
+        ],
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "97b3ea9f858aef9251919e655a3847a25353678ef8ef68cd6d2ed42f47a4ce4d"
+      }
+    }
+  ],
+  "actual_new_compiler_jobs": 0,
+  "actual_new_native_jobs": 0,
+  "actual_new_runtime_fixture_jobs": 0,
+  "qualified_complete_build_cells": 0,
+  "target_cells_required": 144,
+  "all_attempted_processes_terminal": true,
+  "budget_evidence": {
+    "observed_limit_bytes": 62914560,
+    "receipt_reserve_bytes": 4194304,
+    "complete_projection_bytes": 67108864,
+    "samples": [
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 135445,
+        "observed_entries": 24,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 48,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.011852000000000001,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "38e4f0c099ca9412aae7a375b2efce35f68108d5a3eef2d2cbeec2483965dc8e"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 148124,
+        "observed_entries": 33,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 66,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.01165158299999991,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "5a130532f1b81f4d6ec5796408b125ec1e3707678f4023fc8bb78993b08c8426"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 169756,
+        "observed_entries": 44,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 88,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.004644917000000026,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "130bfa714b61c1baa66c59ae13def9e1e892b9ddae8e07ebdfb59c912c645ff7"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 181286,
+        "observed_entries": 44,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 88,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.005265041000000026,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "fee76e077dae2f6968b07b2212ebe91d630ab7c529c80519efc929043839671e"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 193933,
+        "observed_entries": 51,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 102,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.006298499999999985,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "511c366f32f780d7237ea835a7135a7b3b55863ed36baecf51637588c393115a"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 215575,
+        "observed_entries": 62,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 124,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.006490375000000048,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "8d1688cbf502ed91008bc82461ca1a24f9ae870ed6ed4ffad5320d844f4af021"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 227112,
+        "observed_entries": 62,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 124,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.006672207999999902,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "f5f5ec6be0055e540410930b2108d80ef9d3474777639fa29a8c4bfd06bd3b12"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 239908,
+        "observed_entries": 69,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 138,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.005844167000000011,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "09d6764906694084bdd63369af5fc3cd73de512ae3c3d300a6ed752044184e1d"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 304215,
+        "observed_entries": 83,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 166,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.007165417000000174,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "55265a081798370862a7da5a0811401feff74e0251ac75f8f5c6c874acbdc55f"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 319245,
+        "observed_entries": 84,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 168,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.008623999999999965,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "4aff226582e7a3dd4037d480f9c7e8ed1002dd63f4fae1e425087490ba9e4c43"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 331847,
+        "observed_entries": 91,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 182,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.007885582999999752,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "ff53067608ae78d129f49b7588fea0fb4235b365db506cbccd324465ebe0787d"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 337978,
+        "observed_entries": 91,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 182,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.007508708000000031,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "7fbdf8db584292cc62cdfa90e372e935d273a11e1d8afa06ceeee735497adc66"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 349730,
+        "observed_entries": 91,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 182,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.00713141699999964,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "1f9e2ee5432bf6151eb642b2fe0f0e9fa19d4d1dbdc29cba19880aca105bddc0"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 362359,
+        "observed_entries": 98,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 196,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.007885083000000126,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "48078d5b4c63f52f84b4247578675508b216bc9f1f72e626dc42f80575237d36"
+      },
+      {
+        "format": "atlas-observed-mutable-tree-budget-v1",
+        "observed_bytes": 368490,
+        "observed_entries": 98,
+        "mutable_enoent_events": 0,
+        "entries": null,
+        "entry_operations": 196,
+        "content_read_bytes": 813216,
+        "elapsed_seconds": 0.008421333000000253,
+        "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+        "final_stable_rows": null,
+        "caller_declared_terminal_qualified": null,
+        "coverage": {
+          "kind": "observed_mutable_tree_sampling",
+          "complete_transient_coverage": false,
+          "disk_peak_qualified": false,
+          "directory_metadata_included": true,
+          "symlink_traversal": false,
+          "protected_content_checked_before_after": true
+        },
+        "receipt_sha256": "9e462ad7ccc89c21a33e6011c668841cb523cb718e36740049f09526dc855869"
+      }
+    ],
+    "stable_inventory_after_terminal": {
+      "format": "atlas-terminal-stable-tree-inventory-v1",
+      "observed_bytes": 394959,
+      "observed_entries": 99,
+      "mutable_enoent_events": 0,
+      "entries": [
+        {
+          "identity": [
+            16777231,
+            641441446,
+            "directory",
+            "1792371895.5412722"
+          ],
+          "maximum_observed_bytes": 480,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641441447,
+            "file",
+            "1792371895.5413826"
+          ],
+          "maximum_observed_bytes": 10580,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641441448,
+            "file",
+            "1792371895.5416677"
+          ],
+          "maximum_observed_bytes": 2615,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/parse_semantic_stats.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641459509,
+            "file",
+            "1792372094.6435192"
+          ],
+          "maximum_observed_bytes": 8067,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465369,
+            "file",
+            "1792372212.0936718"
+          ],
+          "maximum_observed_bytes": 6008,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/SEED_BINDINGS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465370,
+            "file",
+            "1792372212.094079"
+          ],
+          "maximum_observed_bytes": 2778,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/API_AUTHORITY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465371,
+            "file",
+            "1792372212.0943391"
+          ],
+          "maximum_observed_bytes": 3727,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/EXECUTION_PROPOSAL.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465372,
+            "file",
+            "1792372212.0944464"
+          ],
+          "maximum_observed_bytes": 1491,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/README.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465373,
+            "file",
+            "1792372212.0945492"
+          ],
+          "maximum_observed_bytes": 3302,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/METHOD_AND_ORACLES.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465374,
+            "file",
+            "1792372212.0946333"
+          ],
+          "maximum_observed_bytes": 2052,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/CONTROL_PLAN.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465375,
+            "file",
+            "1792372212.0947242"
+          ],
+          "maximum_observed_bytes": 1331,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/RUBRIC.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465376,
+            "file",
+            "1792372212.0948682"
+          ],
+          "maximum_observed_bytes": 438,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/STATUS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465377,
+            "file",
+            "1792372212.0962505"
+          ],
+          "maximum_observed_bytes": 2054,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/MANIFEST.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917123,
+            "directory",
+            "1792381120.5740712"
+          ],
+          "maximum_observed_bytes": 320,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917124,
+            "file",
+            "1792381120.5742538"
+          ],
+          "maximum_observed_bytes": 12083,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/stage_contract.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917125,
+            "file",
+            "1792381120.5746074"
+          ],
+          "maximum_observed_bytes": 2374,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917126,
+            "file",
+            "1792381120.5749269"
+          ],
+          "maximum_observed_bytes": 15060,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_controls.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917127,
+            "file",
+            "1792381120.5752504"
+          ],
+          "maximum_observed_bytes": 14459,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/test_stage_contract.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917128,
+            "file",
+            "1792381120.575534"
+          ],
+          "maximum_observed_bytes": 3637,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/README.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917129,
+            "file",
+            "1792381120.5855334"
+          ],
+          "maximum_observed_bytes": 1446,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/FAILURE_DIAGNOSIS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641917130,
+            "file",
+            "1792381120.6120148"
+          ],
+          "maximum_observed_bytes": 25049,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/SOURCE_EXECUTION_REQUEST.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918247,
+            "directory",
+            "1792381159.553351"
+          ],
+          "maximum_observed_bytes": 416,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918249,
+            "file",
+            "1792381159.5966246"
+          ],
+          "maximum_observed_bytes": 1310,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/CONTROLLER_IDENTITY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918250,
+            "file",
+            "1792381159.5971463"
+          ],
+          "maximum_observed_bytes": 14688,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/SOURCE_INPUTS_BEFORE.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918251,
+            "file",
+            "1792381159.651485"
+          ],
+          "maximum_observed_bytes": 75024,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/OBSERVATIONS.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918252,
+            "directory",
+            "1792381159.6517088"
+          ],
+          "maximum_observed_bytes": 288,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918253,
+            "directory",
+            "1792381159.651758"
+          ],
+          "maximum_observed_bytes": 64,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/private-tmp"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918255,
+            "file",
+            "1792381159.6525762"
+          ],
+          "maximum_observed_bytes": 6169,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/OWNERSHIP.events.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918257,
+            "file",
+            "1792381159.6533191"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/stdout.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918258,
+            "file",
+            "1792381159.653385"
+          ],
+          "maximum_observed_bytes": 819,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918268,
+            "file",
+            "1792381159.9293976"
+          ],
+          "maximum_observed_bytes": 1071,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/CHILD_ENTRY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918269,
+            "directory",
+            "1792381160.1347575"
+          ],
+          "maximum_observed_bytes": 384,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918270,
+            "file",
+            "1792381160.1348364"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/valid.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918271,
+            "file",
+            "1792381160.1349561"
+          ],
+          "maximum_observed_bytes": 1040,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/missing-title.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918272,
+            "file",
+            "1792381160.135206"
+          ],
+          "maximum_observed_bytes": 5237,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/FRAME_CONTROLS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918273,
+            "file",
+            "1792381160.1359937"
+          ],
+          "maximum_observed_bytes": 1122,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/duplicate-inside-roster.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918274,
+            "file",
+            "1792381160.1363494"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/reversed-titles.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918275,
+            "file",
+            "1792381160.1366096"
+          ],
+          "maximum_observed_bytes": 1134,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/skipped-title.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918276,
+            "file",
+            "1792381160.1368687"
+          ],
+          "maximum_observed_bytes": 1218,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/extra-duplicate-after-roster.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918277,
+            "file",
+            "1792381160.1372335"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/wrong-footer-count.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918278,
+            "file",
+            "1792381160.1374843"
+          ],
+          "maximum_observed_bytes": 1126,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/truncated-footer.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918279,
+            "file",
+            "1792381160.1377442"
+          ],
+          "maximum_observed_bytes": 1133,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/failure-footer.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918343,
+            "file",
+            "1792381160.3832438"
+          ],
+          "maximum_observed_bytes": 3977,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/OWNERSHIP.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918346,
+            "directory",
+            "1792381160.4227762"
+          ],
+          "maximum_observed_bytes": 288,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918347,
+            "directory",
+            "1792381160.4228296"
+          ],
+          "maximum_observed_bytes": 64,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/private-tmp"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918349,
+            "file",
+            "1792381160.42359"
+          ],
+          "maximum_observed_bytes": 6175,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/OWNERSHIP.events.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918351,
+            "file",
+            "1792381160.4243107"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/stdout.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918352,
+            "file",
+            "1792381160.4243815"
+          ],
+          "maximum_observed_bytes": 819,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918359,
+            "file",
+            "1792381160.4833055"
+          ],
+          "maximum_observed_bytes": 1082,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/CHILD_ENTRY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918362,
+            "directory",
+            "1792381160.588529"
+          ],
+          "maximum_observed_bytes": 384,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918363,
+            "file",
+            "1792381160.5885942"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/valid.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918364,
+            "file",
+            "1792381160.5887053"
+          ],
+          "maximum_observed_bytes": 1040,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/missing-title.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918365,
+            "file",
+            "1792381160.588926"
+          ],
+          "maximum_observed_bytes": 5245,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/FRAME_CONTROLS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918366,
+            "file",
+            "1792381160.5890212"
+          ],
+          "maximum_observed_bytes": 1122,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/duplicate-inside-roster.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918367,
+            "file",
+            "1792381160.5892432"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/reversed-titles.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918368,
+            "file",
+            "1792381160.5894465"
+          ],
+          "maximum_observed_bytes": 1134,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/skipped-title.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918369,
+            "file",
+            "1792381160.589652"
+          ],
+          "maximum_observed_bytes": 1218,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/extra-duplicate-after-roster.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918370,
+            "file",
+            "1792381160.5899293"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/wrong-footer-count.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918371,
+            "file",
+            "1792381160.5901418"
+          ],
+          "maximum_observed_bytes": 1126,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/truncated-footer.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918372,
+            "file",
+            "1792381160.59037"
+          ],
+          "maximum_observed_bytes": 1133,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/failure-footer.stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918435,
+            "file",
+            "1792381160.8696144"
+          ],
+          "maximum_observed_bytes": 3985,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/OWNERSHIP.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918438,
+            "directory",
+            "1792381160.9093046"
+          ],
+          "maximum_observed_bytes": 256,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918439,
+            "directory",
+            "1792381160.9093633"
+          ],
+          "maximum_observed_bytes": 64,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/private-tmp"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918441,
+            "file",
+            "1792381160.9101715"
+          ],
+          "maximum_observed_bytes": 6163,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/OWNERSHIP.events.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918443,
+            "file",
+            "1792381160.9107141"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/stdout.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918444,
+            "file",
+            "1792381160.910783"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918451,
+            "file",
+            "1792381160.9711995"
+          ],
+          "maximum_observed_bytes": 1179,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/CHILD_ENTRY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918452,
+            "directory",
+            "1792381161.0384536"
+          ],
+          "maximum_observed_bytes": 480,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918453,
+            "file",
+            "1792381161.0385764"
+          ],
+          "maximum_observed_bytes": 208,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918454,
+            "file",
+            "1792381161.0387917"
+          ],
+          "maximum_observed_bytes": 1164,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918455,
+            "file",
+            "1792381161.0389526"
+          ],
+          "maximum_observed_bytes": 1682,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918456,
+            "file",
+            "1792381161.039112"
+          ],
+          "maximum_observed_bytes": 1549,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918457,
+            "file",
+            "1792381161.039289"
+          ],
+          "maximum_observed_bytes": 3297,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918458,
+            "file",
+            "1792381161.039395"
+          ],
+          "maximum_observed_bytes": 1862,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918459,
+            "file",
+            "1792381161.039543"
+          ],
+          "maximum_observed_bytes": 9397,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918460,
+            "file",
+            "1792381161.039703"
+          ],
+          "maximum_observed_bytes": 2925,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918461,
+            "file",
+            "1792381161.0398602"
+          ],
+          "maximum_observed_bytes": 9781,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918462,
+            "file",
+            "1792381161.04008"
+          ],
+          "maximum_observed_bytes": 2929,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918463,
+            "file",
+            "1792381161.040295"
+          ],
+          "maximum_observed_bytes": 16044,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918464,
+            "file",
+            "1792381161.0404904"
+          ],
+          "maximum_observed_bytes": 4935,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918465,
+            "file",
+            "1792381161.0407555"
+          ],
+          "maximum_observed_bytes": 3020,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/PRODUCTION.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918490,
+            "file",
+            "1792381161.3603482"
+          ],
+          "maximum_observed_bytes": 3961,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/OWNERSHIP.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918501,
+            "directory",
+            "1792381161.4419048"
+          ],
+          "maximum_observed_bytes": 256,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918502,
+            "directory",
+            "1792381161.4419842"
+          ],
+          "maximum_observed_bytes": 64,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/private-tmp"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918504,
+            "file",
+            "1792381161.4427805"
+          ],
+          "maximum_observed_bytes": 6173,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/OWNERSHIP.events.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918508,
+            "file",
+            "1792381161.4433212"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/stdout.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918509,
+            "file",
+            "1792381161.4434314"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918516,
+            "file",
+            "1792381161.5026243"
+          ],
+          "maximum_observed_bytes": 1064,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/CHILD_ENTRY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918534,
+            "file",
+            "1792381161.8924668"
+          ],
+          "maximum_observed_bytes": 3981,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/OWNERSHIP.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918542,
+            "directory",
+            "1792381161.9692638"
+          ],
+          "maximum_observed_bytes": 256,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918543,
+            "directory",
+            "1792381161.9693282"
+          ],
+          "maximum_observed_bytes": 64,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/private-tmp"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918546,
+            "file",
+            "1792381161.9707677"
+          ],
+          "maximum_observed_bytes": 6173,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/OWNERSHIP.events.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918548,
+            "file",
+            "1792381161.9713304"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/stdout.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918549,
+            "file",
+            "1792381161.97138"
+          ],
+          "maximum_observed_bytes": 1129,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918556,
+            "file",
+            "1792381162.0308585"
+          ],
+          "maximum_observed_bytes": 1075,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/CHILD_ENTRY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918584,
+            "file",
+            "1792381162.4185705"
+          ],
+          "maximum_observed_bytes": 3982,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/OWNERSHIP.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918589,
+            "file",
+            "1792381162.4578419"
+          ],
+          "maximum_observed_bytes": 4364,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/PRODUCT_VERIFICATION.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918590,
+            "file",
+            "1792381162.4585335"
+          ],
+          "maximum_observed_bytes": 12505,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/ATTEMPTS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918591,
+            "file",
+            "1792381162.4770703"
+          ],
+          "maximum_observed_bytes": 14688,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/SOURCE_INPUTS_AFTER.json"
+          ]
+        }
+      ],
+      "sample_rosters": [
+        {
+          "entries": 99,
+          "sha256": "38d558f4c1b392297c092708daf813c1cf90532ed631b69144097b48b1dbe611"
+        },
+        {
+          "entries": 99,
+          "sha256": "38d558f4c1b392297c092708daf813c1cf90532ed631b69144097b48b1dbe611"
+        }
+      ],
+      "churn": {
+        "not_reobserved_paths": [],
+        "new_second_pass_paths": [],
+        "events": []
+      },
+      "protected_files": [
+        {
+          "path": "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "sha256": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb",
+          "mode": 493,
+          "bytes": 102352,
+          "device": 16777231,
+          "inode": 208413403
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/atlas_commit_supervision_v105/process_supervision.py",
+          "sha256": "c964944bcf03faddf6b848f710bec31f18421b25719673ea6b26aca15f453b0f",
+          "mode": 420,
+          "bytes": 15100,
+          "device": 16777231,
+          "inode": 638855511
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/MANIFEST.json",
+          "sha256": "d4a41b146ff8b63e2c41c6d825fa4b471762041c98ce91af88cce81e46430b82",
+          "mode": 420,
+          "bytes": 2054,
+          "device": 16777231,
+          "inode": 641465377
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/SEED_BINDINGS.json",
+          "sha256": "891dc27c03c7c901c4c72f90dacc21b3aecadcf4a289e217a0bafbe2da77cd83",
+          "mode": 420,
+          "bytes": 6008,
+          "device": 16777231,
+          "inode": 641465369
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/parse_semantic_stats.py",
+          "sha256": "211d62ab745312da1fb894d95955e628ddda01565f702f7af90885c5333873be",
+          "mode": 420,
+          "bytes": 2615,
+          "device": 16777231,
+          "inode": 641441448
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py",
+          "sha256": "3e89dd566b7c246a8194cb5709d6957139df0cb2abe82210368ab3b6663b8d8c",
+          "mode": 420,
+          "bytes": 10580,
+          "device": 16777231,
+          "inode": 641441447
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py",
+          "sha256": "b6bf5ca5199046c1d516a413bfeaa754ff71fb76030d3faa81eea90f3eb9311a",
+          "mode": 420,
+          "bytes": 8067,
+          "device": 16777231,
+          "inode": 641459509
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/SOURCE_EXECUTION_REQUEST.json",
+          "sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+          "mode": 420,
+          "bytes": 25049,
+          "device": 16777231,
+          "inode": 641917130
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+          "sha256": "b6eb0a7fc6545f5474564c8704791ffb4b605463d4e5bed846472d87280dc8a4",
+          "mode": 420,
+          "bytes": 2374,
+          "device": 16777231,
+          "inode": 641917125
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_controls.py",
+          "sha256": "d3564b5c082ed8fd2745b4e562c312187a77f62eccd84d30283b263d763e55b5",
+          "mode": 420,
+          "bytes": 15060,
+          "device": 16777231,
+          "inode": 641917126
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/stage_contract.py",
+          "sha256": "abba2e8de7028e7477052317899d2732a28d8444c82d0f57e6c6d7183bf5ab9e",
+          "mode": 420,
+          "bytes": 12083,
+          "device": 16777231,
+          "inode": 641917124
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/test_stage_contract.py",
+          "sha256": "08762b6d906ea336ccbd531c1dc04906eadf0bdd76ce8c101b2b02b2f90c97e7",
+          "mode": 420,
+          "bytes": 14459,
+          "device": 16777231,
+          "inode": 641917127
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/observed_mutable_tree_budget_v100/observed_mutable_tree_budget.py",
+          "sha256": "9a741a6d6c49b30c30a21541cce524986e33014fdebaf96b35a7719d9b310294",
+          "mode": 420,
+          "bytes": 19991,
+          "device": 16777231,
+          "inode": 641529578
+        },
+        {
+          "path": "/bin/ps",
+          "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02",
+          "mode": 2541,
+          "bytes": 170816,
+          "device": 16777231,
+          "inode": 1152921500312571422
+        }
+      ],
+      "entry_operations": 198,
+      "content_read_bytes": 1594878,
+      "elapsed_seconds": 0.014408292000000156,
+      "limits": {
+        "tree_bytes": 62914560,
+        "per_file_bytes": 16777216,
+        "entry_operations": 4096,
+        "content_read_bytes": 167772160,
+        "cooperative_seconds": 3.0,
+        "protected_file_bytes": 4194304
+      },
+      "coverage": {
+        "kind": "terminal_two_pass_content_inventory",
+        "complete_transient_coverage": false,
+        "disk_peak_qualified": false,
+        "directory_metadata_included": true,
+        "symlink_traversal": false,
+        "protected_content_checked_before_after": true
+      },
+      "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+      "final_stable_rows": [
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100",
+          "kind": "directory",
+          "mode": 493,
+          "bytes": 480,
+          "device": 16777231,
+          "inode": 641441446,
+          "birth_time": "1792371895.5412722",
+          "ctime_ns": 1792381161038467069,
+          "mtime_ns": 1792381161038467069
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/API_AUTHORITY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2778,
+          "device": 16777231,
+          "inode": 641465370,
+          "birth_time": "1792372212.094079",
+          "ctime_ns": 1792372212094188979,
+          "mtime_ns": 1792372212094188979,
+          "sha256": "520cc4b25884216317b52c519f9daa097933f4138f10165068ace898ec4ea5f3"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/CONTROL_PLAN.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2052,
+          "device": 16777231,
+          "inode": 641465374,
+          "birth_time": "1792372212.0946333",
+          "ctime_ns": 1792372212094678023,
+          "mtime_ns": 1792372212094678023,
+          "sha256": "53bb3d497efef95f2f4162e3b6d227a5925e92364f8748221455df26fefdaa10"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/EXECUTION_PROPOSAL.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3727,
+          "device": 16777231,
+          "inode": 641465371,
+          "birth_time": "1792372212.0943391",
+          "ctime_ns": 1792372212094400022,
+          "mtime_ns": 1792372212094400022,
+          "sha256": "2643b9cb09b450ae93cc53a91f3882b0f697100e54205f5e9239bbb4d056fcb5"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/MANIFEST.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2054,
+          "device": 16777231,
+          "inode": 641465377,
+          "birth_time": "1792372212.0962505",
+          "ctime_ns": 1792372212096322075,
+          "mtime_ns": 1792372212096322075,
+          "sha256": "d4a41b146ff8b63e2c41c6d825fa4b471762041c98ce91af88cce81e46430b82"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/METHOD_AND_ORACLES.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3302,
+          "device": 16777231,
+          "inode": 641465373,
+          "birth_time": "1792372212.0945492",
+          "ctime_ns": 1792372212094592773,
+          "mtime_ns": 1792372212094592773,
+          "sha256": "0a6f8a72bef70e80d8fddaee78c9ab79c50d4ae2f80b97abad68417e5629a913"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/README.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1491,
+          "device": 16777231,
+          "inode": 641465372,
+          "birth_time": "1792372212.0944464",
+          "ctime_ns": 1792372212094496022,
+          "mtime_ns": 1792372212094496022,
+          "sha256": "8e29e3fad69ed07085be2a8e80f16c444b8be15b266265ea4da0139a78cf629f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/RUBRIC.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1331,
+          "device": 16777231,
+          "inode": 641465375,
+          "birth_time": "1792372212.0947242",
+          "ctime_ns": 1792372212094765191,
+          "mtime_ns": 1792372212094765191,
+          "sha256": "a0517d0c9fb283f4abfef434cd40134fe997fe091bba4a6418a3f412f8f77d2d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/SEED_BINDINGS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6008,
+          "device": 16777231,
+          "inode": 641465369,
+          "birth_time": "1792372212.0936718",
+          "ctime_ns": 1792372212093859768,
+          "mtime_ns": 1792372212093859768,
+          "sha256": "891dc27c03c7c901c4c72f90dacc21b3aecadcf4a289e217a0bafbe2da77cd83"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/STATUS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 438,
+          "device": 16777231,
+          "inode": 641465376,
+          "birth_time": "1792372212.0948682",
+          "ctime_ns": 1792372212094974609,
+          "mtime_ns": 1792372212094974609,
+          "sha256": "76f600865371854b043f8184a9499567cee9322cf4a18a042bd820db67a59ce6"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/parse_semantic_stats.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2615,
+          "device": 16777231,
+          "inode": 641441448,
+          "birth_time": "1792371895.5416677",
+          "ctime_ns": 1792371895541763761,
+          "mtime_ns": 1792371895541763761,
+          "sha256": "211d62ab745312da1fb894d95955e628ddda01565f702f7af90885c5333873be"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 10580,
+          "device": 16777231,
+          "inode": 641441447,
+          "birth_time": "1792371895.5413826",
+          "ctime_ns": 1792372094643286923,
+          "mtime_ns": 1792372094643286923,
+          "sha256": "3e89dd566b7c246a8194cb5709d6957139df0cb2abe82210368ab3b6663b8d8c"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 480,
+          "device": 16777231,
+          "inode": 641918452,
+          "birth_time": "1792381161.0384536",
+          "ctime_ns": 1792381161040757687,
+          "mtime_ns": 1792381161040757687
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/PRODUCTION.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3020,
+          "device": 16777231,
+          "inode": 641918465,
+          "birth_time": "1792381161.0407555",
+          "ctime_ns": 1792381161040810604,
+          "mtime_ns": 1792381161040810604,
+          "sha256": "4e3e5504cf906efc3db6cdba9b3cce4dd1f812f1b236215b19d5846abdc8b98f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 16044,
+          "device": 16777231,
+          "inode": 641918463,
+          "birth_time": "1792381161.040295",
+          "ctime_ns": 1792381161040383730,
+          "mtime_ns": 1792381161040346522,
+          "sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 4935,
+          "device": 16777231,
+          "inode": 641918464,
+          "birth_time": "1792381161.0404904",
+          "ctime_ns": 1792381161040633355,
+          "mtime_ns": 1792381161040574396,
+          "sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1682,
+          "device": 16777231,
+          "inode": 641918455,
+          "birth_time": "1792381161.0389526",
+          "ctime_ns": 1792381161039023943,
+          "mtime_ns": 1792381161038992318,
+          "sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1549,
+          "device": 16777231,
+          "inode": 641918456,
+          "birth_time": "1792381161.039112",
+          "ctime_ns": 1792381161039215900,
+          "mtime_ns": 1792381161039178442,
+          "sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 208,
+          "device": 16777231,
+          "inode": 641918453,
+          "birth_time": "1792381161.0385764",
+          "ctime_ns": 1792381161038743610,
+          "mtime_ns": 1792381161038681402,
+          "sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1164,
+          "device": 16777231,
+          "inode": 641918454,
+          "birth_time": "1792381161.0387917",
+          "ctime_ns": 1792381161038874026,
+          "mtime_ns": 1792381161038839068,
+          "sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 9781,
+          "device": 16777231,
+          "inode": 641918461,
+          "birth_time": "1792381161.0398602",
+          "ctime_ns": 1792381161040031023,
+          "mtime_ns": 1792381161039950732,
+          "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2929,
+          "device": 16777231,
+          "inode": 641918462,
+          "birth_time": "1792381161.04008",
+          "ctime_ns": 1792381161040177898,
+          "mtime_ns": 1792381161040134689,
+          "sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3297,
+          "device": 16777231,
+          "inode": 641918457,
+          "birth_time": "1792381161.039289",
+          "ctime_ns": 1792381161039361733,
+          "mtime_ns": 1792381161039332150,
+          "sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1862,
+          "device": 16777231,
+          "inode": 641918458,
+          "birth_time": "1792381161.039395",
+          "ctime_ns": 1792381161039465733,
+          "mtime_ns": 1792381161039435441,
+          "sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 9397,
+          "device": 16777231,
+          "inode": 641918459,
+          "birth_time": "1792381161.039543",
+          "ctime_ns": 1792381161039667899,
+          "mtime_ns": 1792381161039617316,
+          "sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2925,
+          "device": 16777231,
+          "inode": 641918460,
+          "birth_time": "1792381161.039703",
+          "ctime_ns": 1792381161039775690,
+          "mtime_ns": 1792381161039745941,
+          "sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 8067,
+          "device": 16777231,
+          "inode": 641459509,
+          "birth_time": "1792372094.6435192",
+          "ctime_ns": 1792372115155446760,
+          "mtime_ns": 1792372115155446760,
+          "sha256": "b6bf5ca5199046c1d516a413bfeaa754ff71fb76030d3faa81eea90f3eb9311a"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102",
+          "kind": "directory",
+          "mode": 493,
+          "bytes": 320,
+          "device": 16777231,
+          "inode": 641917123,
+          "birth_time": "1792381120.5740712",
+          "ctime_ns": 1792381159553357558,
+          "mtime_ns": 1792381159553357558
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/FAILURE_DIAGNOSIS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1446,
+          "device": 16777231,
+          "inode": 641917129,
+          "birth_time": "1792381120.5855334",
+          "ctime_ns": 1792381120585618667,
+          "mtime_ns": 1792381120585618667,
+          "sha256": "1c6cd5ef0e20614d8c2afa0dd1a051177cdad2c52bb50d403214ce57d86e9389"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/README.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3637,
+          "device": 16777231,
+          "inode": 641917128,
+          "birth_time": "1792381120.575534",
+          "ctime_ns": 1792381120585885166,
+          "mtime_ns": 1792381120585885166,
+          "sha256": "7fb95df3e515021d68aae2789e3c0db8fe030b319af159f73ac21ed89b058c15"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/SOURCE_EXECUTION_REQUEST.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 25049,
+          "device": 16777231,
+          "inode": 641917130,
+          "birth_time": "1792381120.6120148",
+          "ctime_ns": 1792381120612110340,
+          "mtime_ns": 1792381120612110340,
+          "sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 416,
+          "device": 16777231,
+          "inode": 641918247,
+          "birth_time": "1792381159.553351",
+          "ctime_ns": 1792381162477684046,
+          "mtime_ns": 1792381162477684046
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/ATTEMPTS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 12505,
+          "device": 16777231,
+          "inode": 641918590,
+          "birth_time": "1792381162.4585335",
+          "ctime_ns": 1792381162459098058,
+          "mtime_ns": 1792381162458873017,
+          "sha256": "ca99312fe1f1e17ff6c1d3c6cd0b3ef145fa9da1daec087f6eec5766be42ce5b"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/CONTROLLER_IDENTITY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1310,
+          "device": 16777231,
+          "inode": 641918249,
+          "birth_time": "1792381159.5966246",
+          "ctime_ns": 1792381159597023265,
+          "mtime_ns": 1792381159596841766,
+          "sha256": "b54ab2ac0db62879f88d32cef87cf5f8eeadb3804470e31895c6ed545f62947f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/OBSERVATIONS.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 75024,
+          "device": 16777231,
+          "inode": 641918251,
+          "birth_time": "1792381159.651485",
+          "ctime_ns": 1792381162366121576,
+          "mtime_ns": 1792381162366121576,
+          "sha256": "633167b4a7eca655a81dbbb494ae6685ca8fdb1d789357cad74c219acb445810"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/PRODUCT_VERIFICATION.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 4364,
+          "device": 16777231,
+          "inode": 641918589,
+          "birth_time": "1792381162.4578419",
+          "ctime_ns": 1792381162458352352,
+          "mtime_ns": 1792381162458042519,
+          "sha256": "0dbb7461b8536ac5d18506e290fc7ac52b75e56698d8f751cf4f2ccdc803581b"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/SOURCE_INPUTS_AFTER.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 14688,
+          "device": 16777231,
+          "inode": 641918591,
+          "birth_time": "1792381162.4770703",
+          "ctime_ns": 1792381162477684046,
+          "mtime_ns": 1792381162477416713,
+          "sha256": "f257abd2edef7351784fc0e04c5fa593cde41efe733c65a8c5835cdc534412d4"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/SOURCE_INPUTS_BEFORE.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 14688,
+          "device": 16777231,
+          "inode": 641918250,
+          "birth_time": "1792381159.5971463",
+          "ctime_ns": 1792381159597710680,
+          "mtime_ns": 1792381159597538431,
+          "sha256": "f257abd2edef7351784fc0e04c5fa593cde41efe733c65a8c5835cdc534412d4"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 288,
+          "device": 16777231,
+          "inode": 641918346,
+          "birth_time": "1792381160.4227762",
+          "ctime_ns": 1792381160869975430,
+          "mtime_ns": 1792381160869975430
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/CHILD_ENTRY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1082,
+          "device": 16777231,
+          "inode": 641918359,
+          "birth_time": "1792381160.4833055",
+          "ctime_ns": 1792381160483388836,
+          "mtime_ns": 1792381160483388836,
+          "sha256": "e0841ea216e25647f4ba1fe2a0b1b53127ff5ce7bc843f32bf4125ad8f627da0"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/OWNERSHIP.events.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6175,
+          "device": 16777231,
+          "inode": 641918349,
+          "birth_time": "1792381160.42359",
+          "ctime_ns": 1792381160869487556,
+          "mtime_ns": 1792381160869487556,
+          "sha256": "ec578fbd9e1659ded839ecda98defb3b4b8ef452d208f3b9e62566fced531dcd"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/OWNERSHIP.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3985,
+          "device": 16777231,
+          "inode": 641918435,
+          "birth_time": "1792381160.8696144",
+          "ctime_ns": 1792381160869975388,
+          "mtime_ns": 1792381160869787847,
+          "sha256": "22518c7c5feffbb5ac56c5643414ee6e40f08ed87e2e0024bebf89014f7a6d73"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/private-tmp",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 64,
+          "device": 16777231,
+          "inode": 641918347,
+          "birth_time": "1792381160.4228296",
+          "ctime_ns": 1792381160618480738,
+          "mtime_ns": 1792381160618480738
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 819,
+          "device": 16777231,
+          "inode": 641918352,
+          "birth_time": "1792381160.4243815",
+          "ctime_ns": 1792381160618569738,
+          "mtime_ns": 1792381160618569738,
+          "sha256": "94d76f454f0ca6c122787a540aba80d3ebfb729d9daca1b6e21c1b67a6f1961f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/stdout.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918351,
+          "birth_time": "1792381160.4243107",
+          "ctime_ns": 1792381160424310673,
+          "mtime_ns": 1792381160424310673,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 384,
+          "device": 16777231,
+          "inode": 641918362,
+          "birth_time": "1792381160.588529",
+          "ctime_ns": 1792381160590375527,
+          "mtime_ns": 1792381160590375527
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/FRAME_CONTROLS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 5245,
+          "device": 16777231,
+          "inode": 641918365,
+          "birth_time": "1792381160.588926",
+          "ctime_ns": 1792381160590607443,
+          "mtime_ns": 1792381160590607443,
+          "sha256": "0067480a9cde3a36d7730cc6c27f8a7252840cf4942879991fc110e359b49ce7"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/duplicate-inside-roster.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1122,
+          "device": 16777231,
+          "inode": 641918366,
+          "birth_time": "1792381160.5890212",
+          "ctime_ns": 1792381160589056531,
+          "mtime_ns": 1792381160589056531,
+          "sha256": "cede19d0c35c15d56acd22ad11a6ac25c77dd06432deee881c16724d8b7b2c09"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/extra-duplicate-after-roster.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1218,
+          "device": 16777231,
+          "inode": 641918369,
+          "birth_time": "1792381160.589652",
+          "ctime_ns": 1792381160589683988,
+          "mtime_ns": 1792381160589683988,
+          "sha256": "25ac7fd4651f74162bc6e511659c2ea4f45e442722bb562ce723cfa359bb2038"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/failure-footer.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1133,
+          "device": 16777231,
+          "inode": 641918372,
+          "birth_time": "1792381160.59037",
+          "ctime_ns": 1792381160590413111,
+          "mtime_ns": 1792381160590413111,
+          "sha256": "1c4f25e483b15e29f838632fa370df6a4decf29d2e592e57ff7cf2b502c2e95d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/missing-title.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1040,
+          "device": 16777231,
+          "inode": 641918364,
+          "birth_time": "1792381160.5887053",
+          "ctime_ns": 1792381160588743199,
+          "mtime_ns": 1792381160588743199,
+          "sha256": "c053d95c5d922436e03dadb0167959e04d3a42f45c538d2764d26702f85acabb"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/reversed-titles.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918367,
+          "birth_time": "1792381160.5892432",
+          "ctime_ns": 1792381160589277781,
+          "mtime_ns": 1792381160589277781,
+          "sha256": "16c0d773410994b9ac43bf8279d5da1714faf7fdff93a3de06dac68eba40ca46"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/skipped-title.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1134,
+          "device": 16777231,
+          "inode": 641918368,
+          "birth_time": "1792381160.5894465",
+          "ctime_ns": 1792381160589479905,
+          "mtime_ns": 1792381160589479905,
+          "sha256": "6dc83ecfac70eea5f11a7cd7d8d3ebf6174903020d53d36ec0dbfc1e8a3f3227"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/truncated-footer.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1126,
+          "device": 16777231,
+          "inode": 641918371,
+          "birth_time": "1792381160.5901418",
+          "ctime_ns": 1792381160590174486,
+          "mtime_ns": 1792381160590174486,
+          "sha256": "baf6ec64def03f3ec352a28a12ca1ed7b03cfdd12fabbe04616eafee8c7071ad"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/valid.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918363,
+          "birth_time": "1792381160.5885942",
+          "ctime_ns": 1792381160588638824,
+          "mtime_ns": 1792381160588638824,
+          "sha256": "8294b5dfba784239e5b12ee24a212bcfe123b7de3e25e08db0f6255438a04e13"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-optimized/unittest-frame-controls/wrong-footer-count.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918370,
+          "birth_time": "1792381160.5899293",
+          "ctime_ns": 1792381160589961612,
+          "mtime_ns": 1792381160589961612,
+          "sha256": "9c0f45b697e9f7c37783fa1941490f12d4dad063daa8eef541eb36670f55a82b"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 288,
+          "device": 16777231,
+          "inode": 641918252,
+          "birth_time": "1792381159.6517088",
+          "ctime_ns": 1792381160383639415,
+          "mtime_ns": 1792381160383639415
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/CHILD_ENTRY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1071,
+          "device": 16777231,
+          "inode": 641918268,
+          "birth_time": "1792381159.9293976",
+          "ctime_ns": 1792381159929501265,
+          "mtime_ns": 1792381159929501265,
+          "sha256": "ed9e5cbe8c5c2051f9e9347d61910eefeb84007df758fc72b47537c7eb2464f0"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/OWNERSHIP.events.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6169,
+          "device": 16777231,
+          "inode": 641918255,
+          "birth_time": "1792381159.6525762",
+          "ctime_ns": 1792381160383094541,
+          "mtime_ns": 1792381160383094541,
+          "sha256": "97e6dac9b1b0e0e91e2a6ffa9a7d4aedc37215da4ed29a3a94ec6361c243fe52"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/OWNERSHIP.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3977,
+          "device": 16777231,
+          "inode": 641918343,
+          "birth_time": "1792381160.3832438",
+          "ctime_ns": 1792381160383639373,
+          "mtime_ns": 1792381160383475082,
+          "sha256": "cc38e92286cc9eb7cbca188f13854cf5e7e7eb5215051139663dbb1fcbbab040"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/private-tmp",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 64,
+          "device": 16777231,
+          "inode": 641918253,
+          "birth_time": "1792381159.651758",
+          "ctime_ns": 1792381160179197087,
+          "mtime_ns": 1792381160179197087
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 819,
+          "device": 16777231,
+          "inode": 641918258,
+          "birth_time": "1792381159.653385",
+          "ctime_ns": 1792381160179309379,
+          "mtime_ns": 1792381160179309379,
+          "sha256": "3ba839d8cd94926fc1b5bf9ff1b4fbe307ddb2f62e634ebe013da4b1a4d94a04"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/stdout.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918257,
+          "birth_time": "1792381159.6533191",
+          "ctime_ns": 1792381159653319145,
+          "mtime_ns": 1792381159653319145,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 384,
+          "device": 16777231,
+          "inode": 641918269,
+          "birth_time": "1792381160.1347575",
+          "ctime_ns": 1792381160137745957,
+          "mtime_ns": 1792381160137745957
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/FRAME_CONTROLS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 5237,
+          "device": 16777231,
+          "inode": 641918272,
+          "birth_time": "1792381160.135206",
+          "ctime_ns": 1792381160138014831,
+          "mtime_ns": 1792381160138014831,
+          "sha256": "6178e7c39d68b9cee8f625a3149d44c7eb190bf4dd12d4bd872e2e4e81dbeaa0"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/duplicate-inside-roster.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1122,
+          "device": 16777231,
+          "inode": 641918273,
+          "birth_time": "1792381160.1359937",
+          "ctime_ns": 1792381160136063545,
+          "mtime_ns": 1792381160136063545,
+          "sha256": "cede19d0c35c15d56acd22ad11a6ac25c77dd06432deee881c16724d8b7b2c09"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/extra-duplicate-after-roster.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1218,
+          "device": 16777231,
+          "inode": 641918276,
+          "birth_time": "1792381160.1368687",
+          "ctime_ns": 1792381160136914084,
+          "mtime_ns": 1792381160136914084,
+          "sha256": "25ac7fd4651f74162bc6e511659c2ea4f45e442722bb562ce723cfa359bb2038"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/failure-footer.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1133,
+          "device": 16777231,
+          "inode": 641918279,
+          "birth_time": "1792381160.1377442",
+          "ctime_ns": 1792381160137780707,
+          "mtime_ns": 1792381160137780707,
+          "sha256": "1c4f25e483b15e29f838632fa370df6a4decf29d2e592e57ff7cf2b502c2e95d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/missing-title.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1040,
+          "device": 16777231,
+          "inode": 641918271,
+          "birth_time": "1792381160.1349561",
+          "ctime_ns": 1792381160134995632,
+          "mtime_ns": 1792381160134995632,
+          "sha256": "c053d95c5d922436e03dadb0167959e04d3a42f45c538d2764d26702f85acabb"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/reversed-titles.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918274,
+          "birth_time": "1792381160.1363494",
+          "ctime_ns": 1792381160136397086,
+          "mtime_ns": 1792381160136397086,
+          "sha256": "16c0d773410994b9ac43bf8279d5da1714faf7fdff93a3de06dac68eba40ca46"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/skipped-title.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1134,
+          "device": 16777231,
+          "inode": 641918275,
+          "birth_time": "1792381160.1366096",
+          "ctime_ns": 1792381160136656668,
+          "mtime_ns": 1792381160136656668,
+          "sha256": "6dc83ecfac70eea5f11a7cd7d8d3ebf6174903020d53d36ec0dbfc1e8a3f3227"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/truncated-footer.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1126,
+          "device": 16777231,
+          "inode": 641918278,
+          "birth_time": "1792381160.1374843",
+          "ctime_ns": 1792381160137520874,
+          "mtime_ns": 1792381160137520874,
+          "sha256": "baf6ec64def03f3ec352a28a12ca1ed7b03cfdd12fabbe04616eafee8c7071ad"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/valid.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918270,
+          "birth_time": "1792381160.1348364",
+          "ctime_ns": 1792381160134897548,
+          "mtime_ns": 1792381160134897548,
+          "sha256": "8294b5dfba784239e5b12ee24a212bcfe123b7de3e25e08db0f6255438a04e13"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/perimeter-ordinary/unittest-frame-controls/wrong-footer-count.stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918277,
+          "birth_time": "1792381160.1372335",
+          "ctime_ns": 1792381160137275500,
+          "mtime_ns": 1792381160137275500,
+          "sha256": "9c0f45b697e9f7c37783fa1941490f12d4dad063daa8eef541eb36670f55a82b"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 256,
+          "device": 16777231,
+          "inode": 641918438,
+          "birth_time": "1792381160.9093046",
+          "ctime_ns": 1792381161360678974,
+          "mtime_ns": 1792381161360678974
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/CHILD_ENTRY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1179,
+          "device": 16777231,
+          "inode": 641918451,
+          "birth_time": "1792381160.9711995",
+          "ctime_ns": 1792381160971280013,
+          "mtime_ns": 1792381160971280013,
+          "sha256": "0cf71706d0a0023393277b916a35aa21752b044784265e7cae1c0477eb5d0590"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/OWNERSHIP.events.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6163,
+          "device": 16777231,
+          "inode": 641918441,
+          "birth_time": "1792381160.9101715",
+          "ctime_ns": 1792381161360242558,
+          "mtime_ns": 1792381161360242558,
+          "sha256": "94684b1bd2751d36f02fffdb2629a795266f0d52412e23e854296068e9d2da1f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/OWNERSHIP.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3961,
+          "device": 16777231,
+          "inode": 641918490,
+          "birth_time": "1792381161.3603482",
+          "ctime_ns": 1792381161360678932,
+          "mtime_ns": 1792381161360520516,
+          "sha256": "d6d87bae9fc6273b13f858df3f0752a3eb8ffb16bea93025f5a272469e25f0a5"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/private-tmp",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 64,
+          "device": 16777231,
+          "inode": 641918439,
+          "birth_time": "1792381160.9093633",
+          "ctime_ns": 1792381160909363191,
+          "mtime_ns": 1792381160909363191
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918444,
+          "birth_time": "1792381160.910783",
+          "ctime_ns": 1792381160910783104,
+          "mtime_ns": 1792381160910783104,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/produce/stdout.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918443,
+          "birth_time": "1792381160.9107141",
+          "ctime_ns": 1792381160910714146,
+          "mtime_ns": 1792381160910714146,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 256,
+          "device": 16777231,
+          "inode": 641918542,
+          "birth_time": "1792381161.9692638",
+          "ctime_ns": 1792381162418934548,
+          "mtime_ns": 1792381162418934548
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/CHILD_ENTRY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1075,
+          "device": 16777231,
+          "inode": 641918556,
+          "birth_time": "1792381162.0308585",
+          "ctime_ns": 1792381162030941875,
+          "mtime_ns": 1792381162030941875,
+          "sha256": "fa4bae6618aa98e848e8b2b7735b3d188aa30eebe5f44efb401ed9d54f0a6b92"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/OWNERSHIP.events.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6173,
+          "device": 16777231,
+          "inode": 641918546,
+          "birth_time": "1792381161.9707677",
+          "ctime_ns": 1792381162418453800,
+          "mtime_ns": 1792381162418453800,
+          "sha256": "1481dfb11a9c344a3f49f054be9bd975419fb4e0c0841c42d9403680c1c1e40a"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/OWNERSHIP.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3982,
+          "device": 16777231,
+          "inode": 641918584,
+          "birth_time": "1792381162.4185705",
+          "ctime_ns": 1792381162418934548,
+          "mtime_ns": 1792381162418765799,
+          "sha256": "d5d8d3af04d1860886d490335b115547ff12b75d023838c96e5cd8b46d8d1551"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/private-tmp",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 64,
+          "device": 16777231,
+          "inode": 641918543,
+          "birth_time": "1792381161.9693282",
+          "ctime_ns": 1792381161969328220,
+          "mtime_ns": 1792381161969328220
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918549,
+          "birth_time": "1792381161.97138",
+          "ctime_ns": 1792381162267861859,
+          "mtime_ns": 1792381162267861859,
+          "sha256": "97b3ea9f858aef9251919e655a3847a25353678ef8ef68cd6d2ed42f47a4ce4d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-optimized/stdout.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918548,
+          "birth_time": "1792381161.9713304",
+          "ctime_ns": 1792381161971330297,
+          "mtime_ns": 1792381161971330297,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 256,
+          "device": 16777231,
+          "inode": 641918501,
+          "birth_time": "1792381161.4419048",
+          "ctime_ns": 1792381161892782857,
+          "mtime_ns": 1792381161892782857
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/CHILD_ENTRY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1064,
+          "device": 16777231,
+          "inode": 641918516,
+          "birth_time": "1792381161.5026243",
+          "ctime_ns": 1792381161502709856,
+          "mtime_ns": 1792381161502709856,
+          "sha256": "8286e5a6f753037c574cb52b435cd5ac6dd7648bd529e74870124a85e63553c7"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/OWNERSHIP.events.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6173,
+          "device": 16777231,
+          "inode": 641918504,
+          "birth_time": "1792381161.4427805",
+          "ctime_ns": 1792381161892321525,
+          "mtime_ns": 1792381161892321525,
+          "sha256": "0fee16babafb6365b99b8ead9287451f112e8d72597429323814df8846bee6b1"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/OWNERSHIP.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3981,
+          "device": 16777231,
+          "inode": 641918534,
+          "birth_time": "1792381161.8924668",
+          "ctime_ns": 1792381161892782815,
+          "mtime_ns": 1792381161892644107,
+          "sha256": "399ce72fed18f7390fc81a3880b4cfadfbf225e4c66601831c21650875b8f77f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/private-tmp",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 64,
+          "device": 16777231,
+          "inode": 641918502,
+          "birth_time": "1792381161.4419842",
+          "ctime_ns": 1792381161441984073,
+          "mtime_ns": 1792381161441984073
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1129,
+          "device": 16777231,
+          "inode": 641918509,
+          "birth_time": "1792381161.4434314",
+          "ctime_ns": 1792381161742466207,
+          "mtime_ns": 1792381161742466207,
+          "sha256": "96b673e1c59ab9583e43b348bdbda3b87427d7a0107ab6d94ff2c719ab72d00b"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100/producer-ordinary/stdout.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918508,
+          "birth_time": "1792381161.4433212",
+          "ctime_ns": 1792381161443321152,
+          "mtime_ns": 1792381161443321152,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2374,
+          "device": 16777231,
+          "inode": 641917125,
+          "birth_time": "1792381120.5746074",
+          "ctime_ns": 1792381120574694698,
+          "mtime_ns": 1792381120574658198,
+          "sha256": "b6eb0a7fc6545f5474564c8704791ffb4b605463d4e5bed846472d87280dc8a4"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_controls.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 15060,
+          "device": 16777231,
+          "inode": 641917126,
+          "birth_time": "1792381120.5749269",
+          "ctime_ns": 1792381120575019031,
+          "mtime_ns": 1792381120574983614,
+          "sha256": "d3564b5c082ed8fd2745b4e562c312187a77f62eccd84d30283b263d763e55b5"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/stage_contract.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 12083,
+          "device": 16777231,
+          "inode": 641917124,
+          "birth_time": "1792381120.5742538",
+          "ctime_ns": 1792381120574398699,
+          "mtime_ns": 1792381120574332283,
+          "sha256": "abba2e8de7028e7477052317899d2732a28d8444c82d0f57e6c6d7183bf5ab9e"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/test_stage_contract.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 14459,
+          "device": 16777231,
+          "inode": 641917127,
+          "birth_time": "1792381120.5752504",
+          "ctime_ns": 1792381120575731612,
+          "mtime_ns": 1792381120575731612,
+          "sha256": "08762b6d906ea336ccbd531c1dc04906eadf0bdd76ce8c101b2b02b2f90c97e7"
+        }
+      ],
+      "caller_declared_terminal_qualified": true
+    },
+    "sample_read_headroom_bytes": 8388608,
+    "final_read_headroom_bytes": 167772160,
+    "exact_aggregate_read_limit_equality_qualified": false,
+    "peak_or_between_sample_transient_bytes_qualified": false
+  },
+  "elapsed_seconds": 2.995281625,
+  "source_inputs_unchanged": true,
+  "resources_automatically_released": false,
+  "release_owner": "root after independent known PID/birth/group terminal readback",
+  "produced_source_accepted_only": true,
+  "complete_compile_or_behavior_accepted": false
+}

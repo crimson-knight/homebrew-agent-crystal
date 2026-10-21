@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "EXPECTED_SOURCE.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/EXPECTED_SOURCE.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 274840,
+      "sha256": "8fc2358de610b7b26bb8293129365fc2f88d2462e3ac7bf315e7c3bd6007e2a1"
+    },
+    {
+      "path": "FRONTEND_MATERIALIZATION.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/FRONTEND_MATERIALIZATION.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 3797,
+      "sha256": "b9bcbb0d20b8463133298471bf46f2e72ba16fea512216996c31c6533f823eba"
+    },
+    {
+      "path": "GIT_PROVIDER.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/GIT_PROVIDER.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 40053,
+      "sha256": "e356a4561e9b0e10ba2d5f954183d2577303c90243cd15dab21e0f77dd07d531"
+    },
+    {
+      "path": "HOST_CONTEXT.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/HOST_CONTEXT.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 7919930,
+      "sha256": "c4598fbf97b5ee17bb04d592e8b84576cb9df9d41566dc350c692e4cfc34a8cd"
+    },
+    {
+      "path": "NATIVE_COMPONENT.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/NATIVE_COMPONENT.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 15828,
+      "sha256": "ec68eb431dbb86efb55edf48feb9865d8d83c6efaa96af089ee3d49dc922cae7"
+    },
+    {
+      "path": "NATIVE_RECIPE.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/NATIVE_RECIPE.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 13793,
+      "sha256": "5d08fe9c33345db9f74e36c586a601b643ca70bbe7b673c22053c5e9c02d6459"
+    },
+    {
+      "path": "PRODUCER_PRODUCT_VERIFICATION.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/PRODUCER_PRODUCT_VERIFICATION.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 4364,
+      "sha256": "0dbb7461b8536ac5d18506e290fc7ac52b75e56698d8f751cf4f2ccdc803581b"
+    },
+    {
+      "path": "PRODUCER_QUALIFICATION.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/PRODUCER_QUALIFICATION.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 128970,
+      "sha256": "87df0ca893aeed1fbb7cd1e465463351fae320a3dcc6ecadcd1d143a305945ac"
+    },
+    {
+      "path": "PRODUCER_ROOT_RELEASE.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/PRODUCER_ROOT_RELEASE.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 44952,
+      "sha256": "9170219b790163a4520b9ff1f6ffebada3de63d0f7c42bd7550fda1f653eeb21"
+    },
+    {
+      "path": "PRODUCER_SOURCE_REQUEST.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/PRODUCER_SOURCE_REQUEST.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 25049,
+      "sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97"
+    },
+    {
+      "path": "PRODUCTION.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/PRODUCTION.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 3020,
+      "sha256": "4e3e5504cf906efc3db6cdba9b3cce4dd1f812f1b236215b19d5846abdc8b98f"
+    },
+    {
+      "path": "canonical_create.cr.txt",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/canonical_create.cr.txt",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 16044,
+      "sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+    },
+    {
+      "path": "canonical_create.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/canonical_create.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 4935,
+      "sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797"
+    },
+    {
+      "path": "declarations.cr.txt",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/declarations.cr.txt",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 1682,
+      "sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+    },
+    {
+      "path": "declarations.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/declarations.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 1549,
+      "sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0"
+    },
+    {
+      "path": "dependencies.tar",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/dependencies.tar",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 2170880,
+      "sha256": "e59920e5d634e53a63e7ced9f2da93a568bddcdec505a72ec2639844b10a36e7"
+    },
+    {
+      "path": "frontend_boundary.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/frontend_boundary.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 12785,
+      "sha256": "ea2e11ba4404909183a90cf806b7f19f0f3e0a8bfb29db9adc74e67a0c9672fd"
+    },
+    {
+      "path": "grant.bundle",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/grant.bundle",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 4669605,
+      "sha256": "b8a10af30cd710789cc14c4aa79c6d9a6c1281f45837fc98d010b07cb5deb7a6"
+    },
+    {
+      "path": "library_floor.cr.txt",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/library_floor.cr.txt",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 208,
+      "sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+    },
+    {
+      "path": "library_floor.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/library_floor.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 1164,
+      "sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07"
+    },
+    {
+      "path": "new_broad_hash.cr.txt",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/new_broad_hash.cr.txt",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 9781,
+      "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+    },
+    {
+      "path": "new_broad_hash.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/new_broad_hash.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 2929,
+      "sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8"
+    },
+    {
+      "path": "new_empty.cr.txt",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/new_empty.cr.txt",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 3297,
+      "sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+    },
+    {
+      "path": "new_empty.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/new_empty.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 1862,
+      "sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb"
+    },
+    {
+      "path": "new_keywords.cr.txt",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/new_keywords.cr.txt",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 9397,
+      "sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+    },
+    {
+      "path": "new_keywords.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/new_keywords.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 2925,
+      "sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d"
+    },
+    {
+      "path": "parse_semantic_stats.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/parse_semantic_stats.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 2615,
+      "sha256": "211d62ab745312da1fb894d95955e628ddda01565f702f7af90885c5333873be"
+    },
+    {
+      "path": "parse_stage_stats.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/parse_stage_stats.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 4951,
+      "sha256": "6ea6abc4758108df964933185383e2007282f593d55c0d5b65a33308428faa5e"
+    },
+    {
+      "path": "prepared_stdlib.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/prepared_stdlib.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 4398,
+      "sha256": "20a7db71f9e26bdd97b6d54f274701a955bfb6db6efa41a9a5d4bad6f7b52355"
+    },
+    {
+      "path": "process_supervision.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/process_supervision.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 15100,
+      "sha256": "c964944bcf03faddf6b848f710bec31f18421b25719673ea6b26aca15f453b0f"
+    },
+    {
+      "path": "qualified_helpers.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/qualified_helpers.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 11839,
+      "sha256": "9fb2e73f21b25de6baf50f29a032ff8265049b2881a4257cac4dfc222b60ed8b"
+    },
+    {
+      "path": "test_frontend_boundaries.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/test_frontend_boundaries.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 12215,
+      "sha256": "f8a822470f3e56ac3b67dcad42f330570760164f06932c04543e0738b9373d63"
+    },
+    {
+      "path": "toolchain.mini-ci.json",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/decoded-payload/toolchain.mini-ci.json",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 661,
+      "sha256": "4d2acc5fa95190379a838b5c9dd5ab6f666656daa8861df766de37266ecde629"
+    },
+    {
+      "path": "worker.py",
+      "source_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_transport_v102/worker.py",
+      "kind": "file",
+      "mode": 420,
+      "bytes": 21070,
+      "sha256": "f2138b95f5b0af05caaeb250dc4ddcc0eefa54887e1f35c729abc0453ff026df"
+    }
+  ],
+  "original_manifest": {
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/ARCHIVE_MANIFEST.json",
+    "kind": "file",
+    "mode": 420,
+    "bytes": 7541,
+    "sha256": "b913865431a2ea8f443fd6b28a9e6470d0c58679e98bb5f1193b2c89c0df1564"
+  },
+  "changed_payload_source_paths": [
+    "worker.py"
+  ],
+  "actual_production": 0
+}

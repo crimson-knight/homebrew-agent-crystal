@@ -1,0 +1,161 @@
+require "../../../../src/grant"
+require "../../../../src/adapter/sqlite"
+require "json"
+
+class AcceptancePerson0000 < Grant::Base
+  connection acceptance
+  table acceptance_person_0000
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 0_i64) }
+  belongs_to parent : AcceptancePerson0001, optional: true
+  has_many children : AcceptancePerson0001, foreign_key: parent_id
+end
+
+class AcceptancePerson0001 < Grant::Base
+  connection acceptance
+  table acceptance_person_0001
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 1_i64) }
+  belongs_to parent : AcceptancePerson0000, optional: true
+  has_many children : AcceptancePerson0000, foreign_key: parent_id
+end
+
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_PROFILE=new_broad_hash"
+has_wrong_expectation = ENV["GRANT_FRONTEND_INJECT_WRONG_EXPECTATION"]? == "1"
+attributes_0000 : Grant::ModelArgs = {
+  "first_name" => "Person0000",
+  "email" => "person0000@example.test",
+  "age" => 37,
+  "is_active" => true,
+  "score" => 1.5,
+  "country_code" => "US",
+  "notes" => nil,
+  "rating" => nil,
+  "balance" => nil,
+  "group_number" => 9000000000_i64,
+  "settings_text" => nil,
+  "created_at" => Time.utc(2026, 1, 1),
+  "updated_at" => Time.utc(2026, 1, 1),
+  "sequence_number" => 0_i64
+} of String | Symbol => Grant::Columns::Type
+record_0000 = AcceptancePerson0000.new(attributes_0000)
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/new_record") unless record_0000.new_record? == !has_wrong_expectation
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/new_record"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/persisted") unless record_0000.persisted? == false
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/persisted"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/id") unless record_0000.id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/id"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/parent_id") unless record_0000.parent_id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/parent_id"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/first_name") unless record_0000.first_name == "Person0000"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/first_name"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/email") unless record_0000.email == "person0000@example.test"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/email"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/age") unless record_0000.age == 37
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/age"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/is_active") unless record_0000.is_active == true
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/is_active"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/score") unless record_0000.score == 1.5
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/score"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/country_code") unless record_0000.country_code == "US"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/country_code"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/notes") unless record_0000.notes == nil
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/notes"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/rating") unless record_0000.rating == nil
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/rating"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/balance") unless record_0000.balance == nil
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/balance"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/group_number") unless record_0000.group_number == 9000000000_i64
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/group_number"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/settings_text") unless record_0000.settings_text == nil
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/settings_text"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/created_at") unless record_0000.created_at == Time.utc(2026, 1, 1)
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/created_at"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/updated_at") unless record_0000.updated_at == Time.utc(2026, 1, 1)
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/updated_at"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0000/sequence_number") unless record_0000.sequence_number == 0_i64
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/sequence_number"
+attributes_0001 : Grant::ModelArgs = {
+  "first_name" => "Person0001",
+  "email" => "person0001@example.test",
+  "age" => 37,
+  "is_active" => false,
+  "score" => 1.5,
+  "country_code" => "US",
+  "notes" => "fixture",
+  "rating" => 7,
+  "balance" => 12.5,
+  "group_number" => 9000000001_i64,
+  "settings_text" => "{}",
+  "created_at" => Time.utc(2026, 1, 1),
+  "updated_at" => Time.utc(2026, 1, 1),
+  "sequence_number" => 1_i64
+} of String | Symbol => Grant::Columns::Type
+record_0001 = AcceptancePerson0001.new(attributes_0001)
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/new_record") unless record_0001.new_record? == true
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/new_record"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/persisted") unless record_0001.persisted? == false
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/persisted"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/id") unless record_0001.id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/id"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/parent_id") unless record_0001.parent_id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/parent_id"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/first_name") unless record_0001.first_name == "Person0001"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/first_name"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/email") unless record_0001.email == "person0001@example.test"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/email"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/age") unless record_0001.age == 37
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/age"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/is_active") unless record_0001.is_active == false
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/is_active"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/score") unless record_0001.score == 1.5
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/score"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/country_code") unless record_0001.country_code == "US"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/country_code"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/notes") unless record_0001.notes == "fixture"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/notes"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/rating") unless record_0001.rating == 7
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/rating"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/balance") unless record_0001.balance == 12.5
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/balance"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/group_number") unless record_0001.group_number == 9000000001_i64
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/group_number"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/settings_text") unless record_0001.settings_text == "{}"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/settings_text"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/created_at") unless record_0001.created_at == Time.utc(2026, 1, 1)
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/created_at"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/updated_at") unless record_0001.updated_at == Time.utc(2026, 1, 1)
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/updated_at"
+raise Grant::ErrorBase.new("new_broad_hash: AcceptancePerson0001/sequence_number") unless record_0001.sequence_number == 1_i64
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/sequence_number"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_OK=new_broad_hash"

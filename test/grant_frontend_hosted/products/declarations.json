@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "profile": "declarations",
+  "state": "authored source; API/format/typecheck/runtime acceptance pending",
+  "source_sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218",
+  "seed_sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3",
+  "model_count": 2,
+  "list_of_models": [
+    "AcceptancePerson0000",
+    "AcceptancePerson0001"
+  ],
+  "column_count_per_model": 16,
+  "list_of_field_names": [
+    "id",
+    "first_name",
+    "email",
+    "age",
+    "is_active",
+    "score",
+    "country_code",
+    "notes",
+    "rating",
+    "balance",
+    "group_number",
+    "settings_text",
+    "created_at",
+    "updated_at",
+    "parent_id",
+    "sequence_number"
+  ],
+  "declared_counts": {
+    "model_classes": 2,
+    "columns": 32,
+    "named_scope_macros": 2,
+    "association_macros": 4,
+    "source_lines": 54,
+    "source_bytes": 1682
+  },
+  "count_scope": "Literal generated declarations/source only; not expanded AST, inferred definitions, reached methods or native objects",
+  "model_declaration_prefix_sha256": "01d450b3af82d31f748fd10549b6ac206bfa2d4762dd66efe4de4f896d8bdc59",
+  "direct_constructor_calls": 0,
+  "unchanged_canonical": false,
+  "future_runtime_check_roster": [],
+  "future_runtime_marker": "GRANT_FRONTEND_DIAGNOSTIC_OK=declarations",
+  "future_same_binary_control": "Reader/source sensitivity; functional control is not applicable",
+  "semantic_only": true,
+  "actual_new_compiler_jobs": 0,
+  "actual_new_runtime_jobs": 0,
+  "canonical_cells_accepted": 0
+}

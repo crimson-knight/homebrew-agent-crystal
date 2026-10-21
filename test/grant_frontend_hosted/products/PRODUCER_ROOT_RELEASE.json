@@ -1,0 +1,1175 @@
+{
+  "passed": true,
+  "controller_exit": 0,
+  "known_pid_births": [
+    {
+      "pid": 67194,
+      "birth": "Mon Oct 19 03:39:19 2026"
+    },
+    {
+      "pid": 67214,
+      "birth": "Mon Oct 19 03:39:19 2026"
+    },
+    {
+      "pid": 67225,
+      "birth": "Mon Oct 19 03:39:20 2026"
+    },
+    {
+      "pid": 67233,
+      "birth": "Mon Oct 19 03:39:20 2026"
+    },
+    {
+      "pid": 67254,
+      "birth": "Mon Oct 19 03:39:21 2026"
+    },
+    {
+      "pid": 67265,
+      "birth": "Mon Oct 19 03:39:21 2026"
+    },
+    {
+      "pid": 67268,
+      "birth": "Mon Oct 19 03:39:21 2026"
+    }
+  ],
+  "known_groups": [
+    67194,
+    67214,
+    67225,
+    67233,
+    67254,
+    67268
+  ],
+  "terminal_owned_identities": [],
+  "terminal_owned_groups": [],
+  "source_request_sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+  "root_execution_plan_sha256": "95b7005877a67b34169a6f0fa5054986273975f74cbb7dd59a8ce100ac9db4f9",
+  "root_runner_sha256": "4cf21fe6f116b23d7ff9569c7bc387fd335e2b7723e8a1ffdac56a30ffab6d2a",
+  "elapsed_seconds": 3.37406725,
+  "stdout_sha256": "87df0ca893aeed1fbb7cd1e465463351fae320a3dcc6ecadcd1d143a305945ac",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "release": {
+    "rows": {
+      "leases": {
+        "id": "atlas-grant-frontend-source-controls-20261019-v102",
+        "owner": "01a14c4d-0a78-7f00-a873-13c75caaa1b9",
+        "host": "attended-laptop",
+        "mission": "memory-budget-experiment",
+        "job_id": "memory-budget-experiment-grant-frontend-source-controls-20261019-v102",
+        "queue_id": "memory-budget-experiment",
+        "status": "completed",
+        "actual_running": false,
+        "resources_held": 0,
+        "requested_profile": {
+          "memory_gib": 0.25,
+          "cpu_units": 1
+        },
+        "runtime_resources": {
+          "memory_gib": 0,
+          "cpu_units": 0
+        },
+        "source_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100",
+        "evidence_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100",
+        "source_packet_sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "root_execution_plan_sha256": "95b7005877a67b34169a6f0fa5054986273975f74cbb7dd59a8ce100ac9db4f9",
+        "claimed_at": "2026-10-19T03:39:19.177044+00:00",
+        "observed_at": "2026-10-19T03:39:22.820824+00:00",
+        "expires_at": "2026-10-19T03:43:19.177044+00:00",
+        "current_step": "Root independently verified all observed PID/birth identities and groups absent"
+      },
+      "active_leases": {
+        "id": "atlas-grant-frontend-source-controls-20261019-v102",
+        "owner": "01a14c4d-0a78-7f00-a873-13c75caaa1b9",
+        "host": "attended-laptop",
+        "mission": "memory-budget-experiment",
+        "job_id": "memory-budget-experiment-grant-frontend-source-controls-20261019-v102",
+        "queue_id": "memory-budget-experiment",
+        "status": "completed",
+        "actual_running": false,
+        "resources_held": 0,
+        "requested_profile": {
+          "memory_gib": 0.25,
+          "cpu_units": 1
+        },
+        "runtime_resources": {
+          "memory_gib": 0,
+          "cpu_units": 0
+        },
+        "source_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100",
+        "evidence_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100",
+        "source_packet_sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "root_execution_plan_sha256": "95b7005877a67b34169a6f0fa5054986273975f74cbb7dd59a8ce100ac9db4f9",
+        "claimed_at": "2026-10-19T03:39:19.177044+00:00",
+        "observed_at": "2026-10-19T03:39:22.820824+00:00",
+        "expires_at": "2026-10-19T03:43:19.177044+00:00",
+        "current_step": "Root independently verified all observed PID/birth identities and groups absent"
+      },
+      "active_ownership": {
+        "id": "atlas-grant-frontend-source-controls-20261019-v102",
+        "owner": "01a14c4d-0a78-7f00-a873-13c75caaa1b9",
+        "host": "attended-laptop",
+        "mission": "memory-budget-experiment",
+        "job_id": "memory-budget-experiment-grant-frontend-source-controls-20261019-v102",
+        "queue_id": "memory-budget-experiment",
+        "status": "completed",
+        "actual_running": false,
+        "resources_held": 0,
+        "requested_profile": {
+          "memory_gib": 0.25,
+          "cpu_units": 1
+        },
+        "runtime_resources": {
+          "memory_gib": 0,
+          "cpu_units": 0
+        },
+        "source_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100",
+        "evidence_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/actual-v100",
+        "source_packet_sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+        "root_execution_plan_sha256": "95b7005877a67b34169a6f0fa5054986273975f74cbb7dd59a8ce100ac9db4f9",
+        "claimed_at": "2026-10-19T03:39:19.177044+00:00",
+        "observed_at": "2026-10-19T03:39:22.820824+00:00",
+        "expires_at": "2026-10-19T03:43:19.177044+00:00",
+        "current_step": "Root independently verified all observed PID/birth identities and groups absent"
+      }
+    },
+    "before_state_sha256": "b812eb8a92a0bd49606ad879975b5cfd618276679d9492bc63145f4136676382",
+    "after_state_sha256": "bb868df15da6a7f9e1517733ca87b673ff2cd18e0424666583158b936f3cecf9",
+    "foreign_rows_preserved": true
+  },
+  "scope": "Grant producer original12controls and8perimeter tests per Python mode, exact8 damaged/restored frame controls,13products/sixroutes; compiler/native/runtime0; finaltarget0/144",
+  "root_budget_evidence": {
+    "samples": 12,
+    "maximum_observed_bytes": 136947,
+    "peak_or_unsampled_transients_qualified": false,
+    "last_sample_coverage": {
+      "kind": "observed_mutable_tree_sampling",
+      "complete_transient_coverage": false,
+      "disk_peak_qualified": false,
+      "directory_metadata_included": true,
+      "symlink_traversal": false,
+      "protected_content_checked_before_after": true
+    },
+    "final_stable_inventory": {
+      "format": "atlas-terminal-stable-tree-inventory-v1",
+      "observed_bytes": 272199,
+      "observed_entries": 35,
+      "mutable_enoent_events": 0,
+      "entries": [
+        {
+          "identity": [
+            16777231,
+            641441446,
+            "directory",
+            "1792371895.5412722"
+          ],
+          "maximum_observed_bytes": 480,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641441447,
+            "file",
+            "1792371895.5413826"
+          ],
+          "maximum_observed_bytes": 10580,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641441448,
+            "file",
+            "1792371895.5416677"
+          ],
+          "maximum_observed_bytes": 2615,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/parse_semantic_stats.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641459509,
+            "file",
+            "1792372094.6435192"
+          ],
+          "maximum_observed_bytes": 8067,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465369,
+            "file",
+            "1792372212.0936718"
+          ],
+          "maximum_observed_bytes": 6008,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/SEED_BINDINGS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465370,
+            "file",
+            "1792372212.094079"
+          ],
+          "maximum_observed_bytes": 2778,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/API_AUTHORITY.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465371,
+            "file",
+            "1792372212.0943391"
+          ],
+          "maximum_observed_bytes": 3727,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/EXECUTION_PROPOSAL.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465372,
+            "file",
+            "1792372212.0944464"
+          ],
+          "maximum_observed_bytes": 1491,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/README.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465373,
+            "file",
+            "1792372212.0945492"
+          ],
+          "maximum_observed_bytes": 3302,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/METHOD_AND_ORACLES.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465374,
+            "file",
+            "1792372212.0946333"
+          ],
+          "maximum_observed_bytes": 2052,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/CONTROL_PLAN.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465375,
+            "file",
+            "1792372212.0947242"
+          ],
+          "maximum_observed_bytes": 1331,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/RUBRIC.md"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465376,
+            "file",
+            "1792372212.0948682"
+          ],
+          "maximum_observed_bytes": 438,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/STATUS.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641465377,
+            "file",
+            "1792372212.0962505"
+          ],
+          "maximum_observed_bytes": 2054,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/MANIFEST.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918232,
+            "directory",
+            "1792381159.129912"
+          ],
+          "maximum_observed_bytes": 288,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918233,
+            "file",
+            "1792381159.129998"
+          ],
+          "maximum_observed_bytes": 1816,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/ROOT_EXECUTION_PLAN.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918235,
+            "file",
+            "1792381159.3733335"
+          ],
+          "maximum_observed_bytes": 4608,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/ROOT_ADMISSION.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918236,
+            "file",
+            "1792381159.4125152"
+          ],
+          "maximum_observed_bytes": 23566,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/OWNERSHIP.events.jsonl"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918238,
+            "file",
+            "1792381159.4133396"
+          ],
+          "maximum_observed_bytes": 128970,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/stdout.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918239,
+            "file",
+            "1792381159.4134326"
+          ],
+          "maximum_observed_bytes": 0,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/stderr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918452,
+            "directory",
+            "1792381161.0384536"
+          ],
+          "maximum_observed_bytes": 480,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918453,
+            "file",
+            "1792381161.0385764"
+          ],
+          "maximum_observed_bytes": 208,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918454,
+            "file",
+            "1792381161.0387917"
+          ],
+          "maximum_observed_bytes": 1164,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918455,
+            "file",
+            "1792381161.0389526"
+          ],
+          "maximum_observed_bytes": 1682,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918456,
+            "file",
+            "1792381161.039112"
+          ],
+          "maximum_observed_bytes": 1549,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918457,
+            "file",
+            "1792381161.039289"
+          ],
+          "maximum_observed_bytes": 3297,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918458,
+            "file",
+            "1792381161.039395"
+          ],
+          "maximum_observed_bytes": 1862,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918459,
+            "file",
+            "1792381161.039543"
+          ],
+          "maximum_observed_bytes": 9397,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918460,
+            "file",
+            "1792381161.039703"
+          ],
+          "maximum_observed_bytes": 2925,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918461,
+            "file",
+            "1792381161.0398602"
+          ],
+          "maximum_observed_bytes": 9781,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918462,
+            "file",
+            "1792381161.04008"
+          ],
+          "maximum_observed_bytes": 2929,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918463,
+            "file",
+            "1792381161.040295"
+          ],
+          "maximum_observed_bytes": 16044,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.cr.txt"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918464,
+            "file",
+            "1792381161.0404904"
+          ],
+          "maximum_observed_bytes": 4935,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918465,
+            "file",
+            "1792381161.0407555"
+          ],
+          "maximum_observed_bytes": 3020,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/PRODUCTION.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918622,
+            "file",
+            "1792381162.7212338"
+          ],
+          "maximum_observed_bytes": 7487,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/OWNERSHIP.json"
+          ]
+        },
+        {
+          "identity": [
+            16777231,
+            641918623,
+            "file",
+            "1792381162.7217636"
+          ],
+          "maximum_observed_bytes": 1268,
+          "paths": [
+            "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/PROCESS_RESULT.json"
+          ]
+        }
+      ],
+      "sample_rosters": [
+        {
+          "entries": 35,
+          "sha256": "092adba9bb792ac9c87d3e30671a95f455af3fce685ba9c6902fd025d41c57f4"
+        },
+        {
+          "entries": 35,
+          "sha256": "092adba9bb792ac9c87d3e30671a95f455af3fce685ba9c6902fd025d41c57f4"
+        }
+      ],
+      "churn": {
+        "not_reobserved_paths": [],
+        "new_second_pass_paths": [],
+        "events": []
+      },
+      "protected_files": [
+        {
+          "path": "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "sha256": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb",
+          "mode": 493,
+          "bytes": 102352,
+          "device": 16777231,
+          "inode": 208413403
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/atlas_commit_supervision_v105/process_supervision.py",
+          "sha256": "c964944bcf03faddf6b848f710bec31f18421b25719673ea6b26aca15f453b0f",
+          "mode": 420,
+          "bytes": 15100,
+          "device": 16777231,
+          "inode": 638855511
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/atlas_commit_supervision_v106/process_supervision.py",
+          "sha256": "c964944bcf03faddf6b848f710bec31f18421b25719673ea6b26aca15f453b0f",
+          "mode": 420,
+          "bytes": 15100,
+          "device": 16777231,
+          "inode": 639027400
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/MANIFEST.json",
+          "sha256": "d4a41b146ff8b63e2c41c6d825fa4b471762041c98ce91af88cce81e46430b82",
+          "mode": 420,
+          "bytes": 2054,
+          "device": 16777231,
+          "inode": 641465377
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/SEED_BINDINGS.json",
+          "sha256": "891dc27c03c7c901c4c72f90dacc21b3aecadcf4a289e217a0bafbe2da77cd83",
+          "mode": 420,
+          "bytes": 6008,
+          "device": 16777231,
+          "inode": 641465369
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/parse_semantic_stats.py",
+          "sha256": "211d62ab745312da1fb894d95955e628ddda01565f702f7af90885c5333873be",
+          "mode": 420,
+          "bytes": 2615,
+          "device": 16777231,
+          "inode": 641441448
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py",
+          "sha256": "3e89dd566b7c246a8194cb5709d6957139df0cb2abe82210368ab3b6663b8d8c",
+          "mode": 420,
+          "bytes": 10580,
+          "device": 16777231,
+          "inode": 641441447
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py",
+          "sha256": "b6bf5ca5199046c1d516a413bfeaa754ff71fb76030d3faa81eea90f3eb9311a",
+          "mode": 420,
+          "bytes": 8067,
+          "device": 16777231,
+          "inode": 641459509
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/SOURCE_EXECUTION_REQUEST.json",
+          "sha256": "4fb5f7c2d65c4de6a5fddec8a3f021ee9065032a59cffa33fdf690c5c527bf97",
+          "mode": 420,
+          "bytes": 25049,
+          "device": 16777231,
+          "inode": 641917130
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_child.py",
+          "sha256": "b6eb0a7fc6545f5474564c8704791ffb4b605463d4e5bed846472d87280dc8a4",
+          "mode": 420,
+          "bytes": 2374,
+          "device": 16777231,
+          "inode": 641917125
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/run_source_controls.py",
+          "sha256": "d3564b5c082ed8fd2745b4e562c312187a77f62eccd84d30283b263d763e55b5",
+          "mode": 420,
+          "bytes": 15060,
+          "device": 16777231,
+          "inode": 641917126
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/stage_contract.py",
+          "sha256": "abba2e8de7028e7477052317899d2732a28d8444c82d0f57e6c6d7183bf5ab9e",
+          "mode": 420,
+          "bytes": 12083,
+          "device": 16777231,
+          "inode": 641917124
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102/test_stage_contract.py",
+          "sha256": "08762b6d906ea336ccbd531c1dc04906eadf0bdd76ce8c101b2b02b2f90c97e7",
+          "mode": 420,
+          "bytes": 14459,
+          "device": 16777231,
+          "inode": 641917127
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/observed_mutable_tree_budget_v100/observed_mutable_tree_budget.py",
+          "sha256": "9a741a6d6c49b30c30a21541cce524986e33014fdebaf96b35a7719d9b310294",
+          "mode": 420,
+          "bytes": 19991,
+          "device": 16777231,
+          "inode": 641529578
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/root_bounded_actual_v102/grant_frontend_source_v102_plan.json",
+          "sha256": "95b7005877a67b34169a6f0fa5054986273975f74cbb7dd59a8ce100ac9db4f9",
+          "mode": 420,
+          "bytes": 1816,
+          "device": 16777231,
+          "inode": 641918136
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/root_bounded_actual_v102/run_actual.py",
+          "sha256": "4cf21fe6f116b23d7ff9569c7bc387fd335e2b7723e8a1ffdac56a30ffab6d2a",
+          "mode": 420,
+          "bytes": 19137,
+          "device": 16777231,
+          "inode": 641768496
+        },
+        {
+          "path": "/bin/ps",
+          "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02",
+          "mode": 2541,
+          "bytes": 170816,
+          "device": 16777231,
+          "inode": 1152921500312571422
+        }
+      ],
+      "entry_operations": 70,
+      "content_read_bytes": 1427224,
+      "elapsed_seconds": 0.007222957999999835,
+      "limits": {
+        "tree_bytes": 79691776,
+        "per_file_bytes": 16777216,
+        "entry_operations": 8192,
+        "content_read_bytes": 360710144,
+        "cooperative_seconds": 3.0,
+        "protected_file_bytes": 16777216
+      },
+      "coverage": {
+        "kind": "terminal_two_pass_content_inventory",
+        "complete_transient_coverage": false,
+        "disk_peak_qualified": false,
+        "directory_metadata_included": true,
+        "symlink_traversal": false,
+        "protected_content_checked_before_after": true
+      },
+      "scope": "Two finite observed passes; union keyed by device/inode/kind/native birth value when available; maximum sampled entry size per identity, including directory metadata sizes. Logical sizes, not allocated APFS blocks. Unobserved transients and inode reuse remain outside qualified coverage. Cooperative local-file clock checks operate inside the separately admitted outer deadline.",
+      "final_stable_rows": [
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100",
+          "kind": "directory",
+          "mode": 493,
+          "bytes": 480,
+          "device": 16777231,
+          "inode": 641441446,
+          "birth_time": "1792371895.5412722",
+          "ctime_ns": 1792381161038467069,
+          "mtime_ns": 1792381161038467069
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/API_AUTHORITY.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2778,
+          "device": 16777231,
+          "inode": 641465370,
+          "birth_time": "1792372212.094079",
+          "ctime_ns": 1792372212094188979,
+          "mtime_ns": 1792372212094188979,
+          "sha256": "520cc4b25884216317b52c519f9daa097933f4138f10165068ace898ec4ea5f3"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/CONTROL_PLAN.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2052,
+          "device": 16777231,
+          "inode": 641465374,
+          "birth_time": "1792372212.0946333",
+          "ctime_ns": 1792372212094678023,
+          "mtime_ns": 1792372212094678023,
+          "sha256": "53bb3d497efef95f2f4162e3b6d227a5925e92364f8748221455df26fefdaa10"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/EXECUTION_PROPOSAL.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3727,
+          "device": 16777231,
+          "inode": 641465371,
+          "birth_time": "1792372212.0943391",
+          "ctime_ns": 1792372212094400022,
+          "mtime_ns": 1792372212094400022,
+          "sha256": "2643b9cb09b450ae93cc53a91f3882b0f697100e54205f5e9239bbb4d056fcb5"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/MANIFEST.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2054,
+          "device": 16777231,
+          "inode": 641465377,
+          "birth_time": "1792372212.0962505",
+          "ctime_ns": 1792372212096322075,
+          "mtime_ns": 1792372212096322075,
+          "sha256": "d4a41b146ff8b63e2c41c6d825fa4b471762041c98ce91af88cce81e46430b82"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/METHOD_AND_ORACLES.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3302,
+          "device": 16777231,
+          "inode": 641465373,
+          "birth_time": "1792372212.0945492",
+          "ctime_ns": 1792372212094592773,
+          "mtime_ns": 1792372212094592773,
+          "sha256": "0a6f8a72bef70e80d8fddaee78c9ab79c50d4ae2f80b97abad68417e5629a913"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/README.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1491,
+          "device": 16777231,
+          "inode": 641465372,
+          "birth_time": "1792372212.0944464",
+          "ctime_ns": 1792372212094496022,
+          "mtime_ns": 1792372212094496022,
+          "sha256": "8e29e3fad69ed07085be2a8e80f16c444b8be15b266265ea4da0139a78cf629f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/RUBRIC.md",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1331,
+          "device": 16777231,
+          "inode": 641465375,
+          "birth_time": "1792372212.0947242",
+          "ctime_ns": 1792372212094765191,
+          "mtime_ns": 1792372212094765191,
+          "sha256": "a0517d0c9fb283f4abfef434cd40134fe997fe091bba4a6418a3f412f8f77d2d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/SEED_BINDINGS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 6008,
+          "device": 16777231,
+          "inode": 641465369,
+          "birth_time": "1792372212.0936718",
+          "ctime_ns": 1792372212093859768,
+          "mtime_ns": 1792372212093859768,
+          "sha256": "891dc27c03c7c901c4c72f90dacc21b3aecadcf4a289e217a0bafbe2da77cd83"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/STATUS.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 438,
+          "device": 16777231,
+          "inode": 641465376,
+          "birth_time": "1792372212.0948682",
+          "ctime_ns": 1792372212094974609,
+          "mtime_ns": 1792372212094974609,
+          "sha256": "76f600865371854b043f8184a9499567cee9322cf4a18a042bd820db67a59ce6"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/parse_semantic_stats.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2615,
+          "device": 16777231,
+          "inode": 641441448,
+          "birth_time": "1792371895.5416677",
+          "ctime_ns": 1792371895541763761,
+          "mtime_ns": 1792371895541763761,
+          "sha256": "211d62ab745312da1fb894d95955e628ddda01565f702f7af90885c5333873be"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produce.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 10580,
+          "device": 16777231,
+          "inode": 641441447,
+          "birth_time": "1792371895.5413826",
+          "ctime_ns": 1792372094643286923,
+          "mtime_ns": 1792372094643286923,
+          "sha256": "3e89dd566b7c246a8194cb5709d6957139df0cb2abe82210368ab3b6663b8d8c"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 480,
+          "device": 16777231,
+          "inode": 641918452,
+          "birth_time": "1792381161.0384536",
+          "ctime_ns": 1792381161040757687,
+          "mtime_ns": 1792381161040757687
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/PRODUCTION.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3020,
+          "device": 16777231,
+          "inode": 641918465,
+          "birth_time": "1792381161.0407555",
+          "ctime_ns": 1792381161040810604,
+          "mtime_ns": 1792381161040810604,
+          "sha256": "4e3e5504cf906efc3db6cdba9b3cce4dd1f812f1b236215b19d5846abdc8b98f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 16044,
+          "device": 16777231,
+          "inode": 641918463,
+          "birth_time": "1792381161.040295",
+          "ctime_ns": 1792381161040383730,
+          "mtime_ns": 1792381161040346522,
+          "sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/canonical_create.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 4935,
+          "device": 16777231,
+          "inode": 641918464,
+          "birth_time": "1792381161.0404904",
+          "ctime_ns": 1792381161040633355,
+          "mtime_ns": 1792381161040574396,
+          "sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1682,
+          "device": 16777231,
+          "inode": 641918455,
+          "birth_time": "1792381161.0389526",
+          "ctime_ns": 1792381161039023943,
+          "mtime_ns": 1792381161038992318,
+          "sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/declarations.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1549,
+          "device": 16777231,
+          "inode": 641918456,
+          "birth_time": "1792381161.039112",
+          "ctime_ns": 1792381161039215900,
+          "mtime_ns": 1792381161039178442,
+          "sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 208,
+          "device": 16777231,
+          "inode": 641918453,
+          "birth_time": "1792381161.0385764",
+          "ctime_ns": 1792381161038743610,
+          "mtime_ns": 1792381161038681402,
+          "sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/library_floor.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1164,
+          "device": 16777231,
+          "inode": 641918454,
+          "birth_time": "1792381161.0387917",
+          "ctime_ns": 1792381161038874026,
+          "mtime_ns": 1792381161038839068,
+          "sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 9781,
+          "device": 16777231,
+          "inode": 641918461,
+          "birth_time": "1792381161.0398602",
+          "ctime_ns": 1792381161040031023,
+          "mtime_ns": 1792381161039950732,
+          "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_broad_hash.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2929,
+          "device": 16777231,
+          "inode": 641918462,
+          "birth_time": "1792381161.04008",
+          "ctime_ns": 1792381161040177898,
+          "mtime_ns": 1792381161040134689,
+          "sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 3297,
+          "device": 16777231,
+          "inode": 641918457,
+          "birth_time": "1792381161.039289",
+          "ctime_ns": 1792381161039361733,
+          "mtime_ns": 1792381161039332150,
+          "sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_empty.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1862,
+          "device": 16777231,
+          "inode": 641918458,
+          "birth_time": "1792381161.039395",
+          "ctime_ns": 1792381161039465733,
+          "mtime_ns": 1792381161039435441,
+          "sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.cr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 9397,
+          "device": 16777231,
+          "inode": 641918459,
+          "birth_time": "1792381161.039543",
+          "ctime_ns": 1792381161039667899,
+          "mtime_ns": 1792381161039617316,
+          "sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/produced/new_keywords.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 2925,
+          "device": 16777231,
+          "inode": 641918460,
+          "birth_time": "1792381161.039703",
+          "ctime_ns": 1792381161039775690,
+          "mtime_ns": 1792381161039745941,
+          "sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_reduced_fixture_v100/test_producer.py",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 8067,
+          "device": 16777231,
+          "inode": 641459509,
+          "birth_time": "1792372094.6435192",
+          "ctime_ns": 1792372115155446760,
+          "mtime_ns": 1792372115155446760,
+          "sha256": "b6bf5ca5199046c1d516a413bfeaa754ff71fb76030d3faa81eea90f3eb9311a"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100",
+          "kind": "directory",
+          "mode": 448,
+          "bytes": 288,
+          "device": 16777231,
+          "inode": 641918232,
+          "birth_time": "1792381159.129912",
+          "ctime_ns": 1792381162722005758,
+          "mtime_ns": 1792381162722005758
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/OWNERSHIP.events.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 23566,
+          "device": 16777231,
+          "inode": 641918236,
+          "birth_time": "1792381159.4125152",
+          "ctime_ns": 1792381162721131053,
+          "mtime_ns": 1792381162721131053,
+          "sha256": "f89a556669a8d948235a458596e7251693851419b5f8d9d79a52d4af3fcf5b05"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/OWNERSHIP.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 7487,
+          "device": 16777231,
+          "inode": 641918622,
+          "birth_time": "1792381162.7212338",
+          "ctime_ns": 1792381162721608718,
+          "mtime_ns": 1792381162721492718,
+          "sha256": "4754591fd46f6c35622f665c2f025d7eff9f5d68af652396b3cb08b11811ca77"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/PROCESS_RESULT.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1268,
+          "device": 16777231,
+          "inode": 641918623,
+          "birth_time": "1792381162.7217636",
+          "ctime_ns": 1792381162722005758,
+          "mtime_ns": 1792381162721862300,
+          "sha256": "5d7403c94b846032dc982d4516d3a2f2c91594620df1caac5a7a1692ffb19f7d"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/ROOT_ADMISSION.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 4608,
+          "device": 16777231,
+          "inode": 641918235,
+          "birth_time": "1792381159.3733335",
+          "ctime_ns": 1792381159373762951,
+          "mtime_ns": 1792381159373543285,
+          "sha256": "26b6173b682664a9a3fba668e741848cbc82534445521c2718ff33a60aae36ff"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/ROOT_EXECUTION_PLAN.json",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 1816,
+          "device": 16777231,
+          "inode": 641918233,
+          "birth_time": "1792381159.129998",
+          "ctime_ns": 1792381159130333194,
+          "mtime_ns": 1792381159130124403,
+          "sha256": "95b7005877a67b34169a6f0fa5054986273975f74cbb7dd59a8ce100ac9db4f9"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/stderr.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 0,
+          "device": 16777231,
+          "inode": 641918239,
+          "birth_time": "1792381159.4134326",
+          "ctime_ns": 1792381159413432670,
+          "mtime_ns": 1792381159413432670,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_source_controls_v102_root_actual_v100/stdout.txt",
+          "kind": "file",
+          "mode": 420,
+          "bytes": 128970,
+          "device": 16777231,
+          "inode": 641918238,
+          "birth_time": "1792381159.4133396",
+          "ctime_ns": 1792381162498649277,
+          "mtime_ns": 1792381162498649277,
+          "sha256": "87df0ca893aeed1fbb7cd1e465463351fae320a3dcc6ecadcd1d143a305945ac"
+        }
+      ],
+      "caller_declared_terminal_qualified": true
+    }
+  },
+  "terminal_qualified": true,
+  "source_after_failure": null
+}

@@ -1,0 +1,6 @@
+require "../../../../src/grant"
+require "../../../../src/adapter/sqlite"
+require "json"
+
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_PROFILE=library_floor"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_OK=library_floor"

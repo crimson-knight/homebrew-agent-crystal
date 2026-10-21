@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "profile": "library_floor",
+  "state": "authored source; API/format/typecheck/runtime acceptance pending",
+  "source_sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98",
+  "seed_sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3",
+  "model_count": 0,
+  "list_of_models": [],
+  "column_count_per_model": 0,
+  "list_of_field_names": [],
+  "declared_counts": {
+    "model_classes": 0,
+    "columns": 0,
+    "named_scope_macros": 0,
+    "association_macros": 0,
+    "source_lines": 6,
+    "source_bytes": 208
+  },
+  "count_scope": "Literal generated declarations/source only; not expanded AST, inferred definitions, reached methods or native objects",
+  "model_declaration_prefix_sha256": null,
+  "direct_constructor_calls": 0,
+  "unchanged_canonical": false,
+  "future_runtime_check_roster": [],
+  "future_runtime_marker": "GRANT_FRONTEND_DIAGNOSTIC_OK=library_floor",
+  "future_same_binary_control": "Reader/source sensitivity; functional control is not applicable",
+  "semantic_only": true,
+  "actual_new_compiler_jobs": 0,
+  "actual_new_runtime_jobs": 0,
+  "canonical_cells_accepted": 0
+}
