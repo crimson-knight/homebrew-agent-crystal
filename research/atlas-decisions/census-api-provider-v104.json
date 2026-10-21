@@ -1,0 +1,1236 @@
+{
+  "Apple_platform_code_loading_reviewed": true,
+  "LLVM_config_code_loading_reviewed": true,
+  "actual_API_queries_accepted": 0,
+  "actual_receiver_probes_accepted": 0,
+  "actual_retained_owner_results_accepted": 0,
+  "execution_admitted": true,
+  "format": "atlas-compiler-census-api-review-decision-v1",
+  "independent_review_sha256": "5d9b0745a199760450a7cb8b2196cad9898c3ab9ceb323c1995564793b01f903",
+  "protocol": {
+    "accepted_analysis_stable_sha256": "41e88da63e122233426ff376cb048f36f1df319e59f841fba335fa1f59923805",
+    "api_roster_sha256": "05b52120e7a8bfa72da8a66ff002aa4415af70f1f92c124096df4269b06b350b",
+    "canonical_gc_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+    "command_roster": [
+      [
+        "llvm-config-version",
+        10
+      ],
+      [
+        "amber-lsp-version",
+        10
+      ],
+      [
+        "ameba-version",
+        10
+      ],
+      [
+        "format-gc_stats",
+        15
+      ],
+      [
+        "format-initialized_graph",
+        15
+      ],
+      [
+        "format-source_origins",
+        15
+      ],
+      [
+        "format-gc_stats_wrong_type",
+        15
+      ],
+      [
+        "compatibility-gc_stats",
+        300
+      ],
+      [
+        "compatibility-initialized_graph",
+        300
+      ],
+      [
+        "compatibility-source_origins",
+        300
+      ],
+      [
+        "compatibility-gc_stats_wrong_type",
+        60
+      ],
+      [
+        "api-0",
+        120
+      ],
+      [
+        "api-verify-0",
+        10
+      ],
+      [
+        "api-1",
+        10
+      ],
+      [
+        "api-verify-1",
+        10
+      ],
+      [
+        "api-2",
+        10
+      ],
+      [
+        "api-verify-2",
+        10
+      ],
+      [
+        "api-3",
+        10
+      ],
+      [
+        "api-verify-3",
+        10
+      ],
+      [
+        "api-4",
+        10
+      ],
+      [
+        "api-verify-4",
+        10
+      ],
+      [
+        "api-5",
+        10
+      ],
+      [
+        "api-verify-5",
+        10
+      ],
+      [
+        "api-6",
+        10
+      ],
+      [
+        "api-verify-6",
+        10
+      ],
+      [
+        "api-7",
+        10
+      ],
+      [
+        "api-verify-7",
+        10
+      ],
+      [
+        "api-8",
+        10
+      ],
+      [
+        "api-verify-8",
+        10
+      ],
+      [
+        "api-9",
+        10
+      ],
+      [
+        "api-verify-9",
+        10
+      ],
+      [
+        "api-10",
+        10
+      ],
+      [
+        "api-verify-10",
+        10
+      ],
+      [
+        "api-11",
+        10
+      ],
+      [
+        "api-verify-11",
+        10
+      ],
+      [
+        "api-12",
+        10
+      ],
+      [
+        "api-verify-12",
+        10
+      ],
+      [
+        "api-13",
+        10
+      ],
+      [
+        "api-verify-13",
+        10
+      ],
+      [
+        "api-14",
+        10
+      ],
+      [
+        "api-verify-14",
+        10
+      ],
+      [
+        "api-15",
+        10
+      ],
+      [
+        "api-verify-15",
+        10
+      ],
+      [
+        "api-16",
+        10
+      ],
+      [
+        "api-verify-16",
+        10
+      ],
+      [
+        "api-17",
+        10
+      ],
+      [
+        "api-verify-17",
+        10
+      ],
+      [
+        "api-18",
+        10
+      ],
+      [
+        "api-verify-18",
+        10
+      ],
+      [
+        "api-19",
+        10
+      ],
+      [
+        "api-verify-19",
+        10
+      ],
+      [
+        "api-20",
+        10
+      ],
+      [
+        "api-verify-20",
+        10
+      ],
+      [
+        "api-21",
+        10
+      ],
+      [
+        "api-verify-21",
+        10
+      ],
+      [
+        "api-22",
+        10
+      ],
+      [
+        "api-verify-22",
+        10
+      ],
+      [
+        "api-23",
+        10
+      ],
+      [
+        "api-verify-23",
+        10
+      ],
+      [
+        "api-24",
+        10
+      ],
+      [
+        "api-verify-24",
+        10
+      ],
+      [
+        "api-25",
+        10
+      ],
+      [
+        "api-verify-25",
+        10
+      ],
+      [
+        "api-26",
+        10
+      ],
+      [
+        "api-verify-26",
+        10
+      ],
+      [
+        "api-27",
+        10
+      ],
+      [
+        "api-verify-27",
+        10
+      ],
+      [
+        "api-28",
+        10
+      ],
+      [
+        "api-verify-28",
+        10
+      ],
+      [
+        "api-29",
+        10
+      ],
+      [
+        "api-verify-29",
+        10
+      ],
+      [
+        "api-30",
+        10
+      ],
+      [
+        "api-verify-30",
+        10
+      ],
+      [
+        "api-31",
+        10
+      ],
+      [
+        "api-verify-31",
+        10
+      ],
+      [
+        "api-32",
+        10
+      ],
+      [
+        "api-verify-32",
+        10
+      ],
+      [
+        "api-33",
+        10
+      ],
+      [
+        "api-verify-33",
+        10
+      ],
+      [
+        "api-34",
+        10
+      ],
+      [
+        "api-verify-34",
+        10
+      ],
+      [
+        "api-35",
+        10
+      ],
+      [
+        "api-verify-35",
+        10
+      ],
+      [
+        "api-36",
+        10
+      ],
+      [
+        "api-verify-36",
+        10
+      ],
+      [
+        "api-37",
+        10
+      ],
+      [
+        "api-verify-37",
+        10
+      ],
+      [
+        "api-38",
+        10
+      ],
+      [
+        "api-verify-38",
+        10
+      ],
+      [
+        "api-39",
+        10
+      ],
+      [
+        "api-verify-39",
+        10
+      ],
+      [
+        "api-40",
+        10
+      ],
+      [
+        "api-verify-40",
+        10
+      ],
+      [
+        "api-41",
+        10
+      ],
+      [
+        "api-verify-41",
+        10
+      ],
+      [
+        "api-42",
+        10
+      ],
+      [
+        "api-verify-42",
+        10
+      ],
+      [
+        "api-43",
+        10
+      ],
+      [
+        "api-verify-43",
+        10
+      ],
+      [
+        "api-44",
+        10
+      ],
+      [
+        "api-verify-44",
+        10
+      ],
+      [
+        "api-45",
+        10
+      ],
+      [
+        "api-verify-45",
+        10
+      ],
+      [
+        "api-46",
+        10
+      ],
+      [
+        "api-verify-46",
+        10
+      ],
+      [
+        "api-47",
+        10
+      ],
+      [
+        "api-verify-47",
+        10
+      ],
+      [
+        "api-48",
+        10
+      ],
+      [
+        "api-verify-48",
+        10
+      ],
+      [
+        "api-49",
+        10
+      ],
+      [
+        "api-verify-49",
+        10
+      ],
+      [
+        "api-50",
+        10
+      ],
+      [
+        "api-verify-50",
+        10
+      ],
+      [
+        "api-51",
+        10
+      ],
+      [
+        "api-verify-51",
+        10
+      ],
+      [
+        "api-52",
+        10
+      ],
+      [
+        "api-verify-52",
+        10
+      ],
+      [
+        "api-53",
+        10
+      ],
+      [
+        "api-verify-53",
+        10
+      ],
+      [
+        "api-54",
+        10
+      ],
+      [
+        "api-verify-54",
+        10
+      ],
+      [
+        "api-55",
+        10
+      ],
+      [
+        "api-verify-55",
+        10
+      ]
+    ],
+    "compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+    "compiler_distribution_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+    "context": {
+      "LLVM_LDFLAGS": "selected-reviewed-shared-LLVM-image",
+      "LLVM_TARGETS": "AArch64",
+      "LLVM_VERSION": "21.1.8",
+      "compiler_flags": [
+        "without_mt",
+        "without_libxml2",
+        "without_openssl",
+        "without_zlib"
+      ],
+      "docs_selection": {
+        "card_sha256": "9741ffa44d3aaad6f3074529aefb86730f96adf129c333e38caa69eb8ac8ef98",
+        "docs_entry": "src/compiler/requires.cr",
+        "docs_entry_sha256": "6908270a8f88147052605b981c18113d13b76bc0b3b2ddb1bce8a6c22607c8eb",
+        "path": ".amber-lsp/api/compiler-census.yml"
+      },
+      "execution_order": "versions; formatter and concrete receiver probes; API lookups",
+      "interpreter": true,
+      "target_scope": "no-codegen compatibility only"
+    },
+    "maximum_seconds": 2700,
+    "source_manifest_sha256": "976f12db7c9ba930ec2da67d831c2461de3224e0f8fa353a888f124b1bf7ecd0"
+  },
+  "provider_derivation": {
+    "expected_view_only": true,
+    "fresh_job_reobservation_and_exact_equality_required": true,
+    "fresh_runtime_admission_granted": false,
+    "independent_derivation_sha256": "92f5883ff31665e66d8c578e06d5d765b29ce1b14bb73ea232ba097484a0ec2e",
+    "observed": false,
+    "source_actual_observation_review_sha256": "1d620f3d96fd628953ac83cab352fbe85970cc417877740db89c84fc29485dfa",
+    "source_actual_observation_run": 39551881711
+  },
+  "reviewed_api_only_static_view": {
+    "Apple_imports": [
+      "/usr/lib/libSystem.B.dylib",
+      "/usr/lib/libc++.1.dylib",
+      "/usr/lib/libedit.3.dylib",
+      "/usr/lib/libffi.dylib",
+      "/usr/lib/libxml2.2.dylib",
+      "/usr/lib/libz.1.dylib"
+    ],
+    "C_shim_and_headers_qualified": false,
+    "analysis_stable_sha256": "41e88da63e122233426ff376cb048f36f1df319e59f841fba335fa1f59923805",
+    "dyld_shared_cache_bytes_qualified": false,
+    "files": [
+      {
+        "bytes": 21608,
+        "kind": "package-formula",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/.brew/llvm@21.rb",
+        "sha256": "b49274eca1566ec33aeeac79b1f4de0940048027c0c24903daf68bec8f6bf53d"
+      },
+      {
+        "kind": "package-receipt",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/INSTALL_RECEIPT.json",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [
+            {
+              "bottle_rebuild": 3,
+              "declared_directly": false,
+              "full_name": "lz4",
+              "pkg_version": "1.10.0",
+              "revision": 0,
+              "version": "1.10.0"
+            },
+            {
+              "bottle_rebuild": 0,
+              "compatibility_version": 1,
+              "declared_directly": false,
+              "full_name": "xz",
+              "pkg_version": "5.8.4",
+              "revision": 0,
+              "version": "5.8.4"
+            },
+            {
+              "bottle_rebuild": 0,
+              "compatibility_version": 1,
+              "declared_directly": true,
+              "full_name": "zstd",
+              "pkg_version": "1.5.7_1",
+              "revision": 1,
+              "version": "1.5.7"
+            }
+          ],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "21.1.8",
+              "version_scheme": 0
+            }
+          }
+        }
+      },
+      {
+        "bytes": 618720,
+        "kind": "native-image",
+        "mode": 365,
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-config",
+        "sha256": "906a61efe0783dfecc800bf6e031ca3f702936ea1fa6952039ea4bf56968396f"
+      },
+      {
+        "bytes": 124473264,
+        "kind": "native-image",
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/lib/libLLVM.dylib",
+        "sha256": "30fccf7516bad7ff54db1b3279169f8461d8750326797db25a5b44800fd54ec7"
+      },
+      {
+        "bytes": 2573,
+        "kind": "package-formula",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/.brew/zstd.rb",
+        "sha256": "9a9b0183896886e82b915af4db576f27d34d1cee7757d6c5beb0e1eb74c68e0d"
+      },
+      {
+        "kind": "package-receipt",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/INSTALL_RECEIPT.json",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [
+            {
+              "bottle_rebuild": 3,
+              "declared_directly": true,
+              "full_name": "lz4",
+              "pkg_version": "1.10.0",
+              "revision": 0,
+              "version": "1.10.0"
+            },
+            {
+              "bottle_rebuild": 0,
+              "declared_directly": true,
+              "full_name": "xz",
+              "pkg_version": "5.8.4",
+              "revision": 0,
+              "version": "5.8.4"
+            }
+          ],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "1.5.7",
+              "version_scheme": 0
+            }
+          }
+        }
+      },
+      {
+        "bytes": 635328,
+        "kind": "native-image",
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib",
+        "sha256": "602d50cbe6fad0f0da6d1b73284ae3f75316015aea482ebd55614b6df2406b43"
+      }
+    ],
+    "format": "atlas-census-api-only-stable-inputs-v1",
+    "frontier": [],
+    "images": [
+      {
+        "bytes": 618720,
+        "imports": [
+          "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libc++.1.dylib",
+          "/usr/lib/libz.1.dylib"
+        ],
+        "mode": 365,
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-config",
+        "rpaths": [
+          "@loader_path/../lib"
+        ],
+        "sha256": "906a61efe0783dfecc800bf6e031ca3f702936ea1fa6952039ea4bf56968396f"
+      },
+      {
+        "bytes": 124473264,
+        "imports": [
+          "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libc++.1.dylib",
+          "/usr/lib/libedit.3.dylib",
+          "/usr/lib/libffi.dylib",
+          "/usr/lib/libxml2.2.dylib",
+          "/usr/lib/libz.1.dylib"
+        ],
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/lib/libLLVM.dylib",
+        "rpaths": [
+          "@loader_path/../lib"
+        ],
+        "sha256": "30fccf7516bad7ff54db1b3279169f8461d8750326797db25a5b44800fd54ec7"
+      },
+      {
+        "bytes": 635328,
+        "imports": [
+          "/usr/lib/libSystem.B.dylib"
+        ],
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib",
+        "rpaths": [
+          "@loader_path/../lib"
+        ],
+        "sha256": "602d50cbe6fad0f0da6d1b73284ae3f75316015aea482ebd55614b6df2406b43"
+      }
+    ],
+    "lexical": [
+      {
+        "declared_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/.brew/llvm@21.rb",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/.brew/llvm@21.rb"
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/INSTALL_RECEIPT.json",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/INSTALL_RECEIPT.json"
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/zstd/1.5.7_1/.brew/zstd.rb",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/zstd/1.5.7_1/.brew/zstd.rb"
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/zstd/1.5.7_1/INSTALL_RECEIPT.json",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/zstd/1.5.7_1/INSTALL_RECEIPT.json"
+      },
+      {
+        "declared_path": "/opt/homebrew/opt/llvm@21/INSTALL_RECEIPT.json",
+        "links": [
+          {
+            "path": "/opt/homebrew/opt/llvm@21",
+            "target": "../Cellar/llvm@21/21.1.8_1"
+          }
+        ],
+        "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/INSTALL_RECEIPT.json"
+      },
+      {
+        "declared_path": "/opt/homebrew/opt/llvm@21/bin/llvm-config",
+        "links": [
+          {
+            "path": "/opt/homebrew/opt/llvm@21",
+            "target": "../Cellar/llvm@21/21.1.8_1"
+          }
+        ],
+        "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-config"
+      },
+      {
+        "declared_path": "/opt/homebrew/opt/llvm@21/lib/libLLVM.dylib",
+        "links": [
+          {
+            "path": "/opt/homebrew/opt/llvm@21",
+            "target": "../Cellar/llvm@21/21.1.8_1"
+          }
+        ],
+        "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/lib/libLLVM.dylib"
+      },
+      {
+        "declared_path": "/opt/homebrew/opt/zstd/INSTALL_RECEIPT.json",
+        "links": [
+          {
+            "path": "/opt/homebrew/opt/zstd",
+            "target": "../Cellar/zstd/1.5.7_1"
+          }
+        ],
+        "resolved_path": "/opt/homebrew/Cellar/zstd/1.5.7_1/INSTALL_RECEIPT.json"
+      },
+      {
+        "declared_path": "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+        "links": [
+          {
+            "path": "/opt/homebrew/opt/zstd",
+            "target": "../Cellar/zstd/1.5.7_1"
+          },
+          {
+            "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.dylib",
+            "target": "libzstd.1.5.7.dylib"
+          }
+        ],
+        "resolved_path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib"
+      }
+    ],
+    "llvm_config": {
+      "bytes": 618720,
+      "declared_path": "/opt/homebrew/opt/llvm@21/bin/llvm-config",
+      "dependencies": [
+        {
+          "declared_path": "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+          "imported": "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+          "links": [
+            {
+              "path": "/opt/homebrew/opt/zstd",
+              "target": "../Cellar/zstd/1.5.7_1"
+            },
+            {
+              "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.dylib",
+              "target": "libzstd.1.5.7.dylib"
+            }
+          ],
+          "resolved": {
+            "bytes": 635328,
+            "mode": 292,
+            "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib",
+            "sha256": "602d50cbe6fad0f0da6d1b73284ae3f75316015aea482ebd55614b6df2406b43"
+          },
+          "scope": "admitted-native-file"
+        },
+        {
+          "imported": "/usr/lib/libSystem.B.dylib",
+          "scope": "Apple-platform",
+          "shared_cache_body_qualified": false
+        },
+        {
+          "imported": "/usr/lib/libc++.1.dylib",
+          "scope": "Apple-platform",
+          "shared_cache_body_qualified": false
+        },
+        {
+          "imported": "/usr/lib/libz.1.dylib",
+          "scope": "Apple-platform",
+          "shared_cache_body_qualified": false
+        }
+      ],
+      "dyld_shared_cache_bytes_qualified": false,
+      "format": "atlas-census-llvm-config-stable-v1",
+      "imports": [
+        "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+        "/usr/lib/libSystem.B.dylib",
+        "/usr/lib/libc++.1.dylib",
+        "/usr/lib/libz.1.dylib"
+      ],
+      "links": [
+        {
+          "path": "/opt/homebrew/opt/llvm@21",
+          "target": "../Cellar/llvm@21/21.1.8_1"
+        }
+      ],
+      "mode": 365,
+      "native_file_closure_covered": true,
+      "package_version": "21.1.8",
+      "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-config",
+      "rpaths": [
+        "@loader_path/../lib"
+      ],
+      "selected_llvm_library": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/lib/libLLVM.dylib",
+      "sha256": "906a61efe0783dfecc800bf6e031ca3f702936ea1fa6952039ea4bf56968396f",
+      "unresolved_imports": []
+    },
+    "packages": [
+      {
+        "formula_sha256": "b49274eca1566ec33aeeac79b1f4de0940048027c0c24903daf68bec8f6bf53d",
+        "name": "llvm@21",
+        "physical_prefix": "/opt/homebrew/Cellar/llvm@21/21.1.8_1",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [
+            {
+              "bottle_rebuild": 3,
+              "declared_directly": false,
+              "full_name": "lz4",
+              "pkg_version": "1.10.0",
+              "revision": 0,
+              "version": "1.10.0"
+            },
+            {
+              "bottle_rebuild": 0,
+              "compatibility_version": 1,
+              "declared_directly": false,
+              "full_name": "xz",
+              "pkg_version": "5.8.4",
+              "revision": 0,
+              "version": "5.8.4"
+            },
+            {
+              "bottle_rebuild": 0,
+              "compatibility_version": 1,
+              "declared_directly": true,
+              "full_name": "zstd",
+              "pkg_version": "1.5.7_1",
+              "revision": 1,
+              "version": "1.5.7"
+            }
+          ],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "21.1.8",
+              "version_scheme": 0
+            }
+          }
+        },
+        "version": "21.1.8_1"
+      },
+      {
+        "formula_sha256": "9a9b0183896886e82b915af4db576f27d34d1cee7757d6c5beb0e1eb74c68e0d",
+        "name": "zstd",
+        "physical_prefix": "/opt/homebrew/Cellar/zstd/1.5.7_1",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [
+            {
+              "bottle_rebuild": 3,
+              "declared_directly": true,
+              "full_name": "lz4",
+              "pkg_version": "1.10.0",
+              "revision": 0,
+              "version": "1.10.0"
+            },
+            {
+              "bottle_rebuild": 0,
+              "declared_directly": true,
+              "full_name": "xz",
+              "pkg_version": "5.8.4",
+              "revision": 0,
+              "version": "5.8.4"
+            }
+          ],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "1.5.7",
+              "version_scheme": 0
+            }
+          }
+        },
+        "version": "1.5.7_1"
+      }
+    ],
+    "selected": {
+      "llvm_config": "/opt/homebrew/opt/llvm@21/bin/llvm-config",
+      "llvm_library": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/lib/libLLVM.dylib"
+    },
+    "source_manifest_sha256": "976f12db7c9ba930ec2da67d831c2461de3224e0f8fa353a888f124b1bf7ecd0",
+    "tool_native": {
+      "Apple_imports": [
+        "/usr/lib/libSystem.B.dylib",
+        "/usr/lib/libiconv.2.dylib"
+      ],
+      "image_version": "20261013.0424.1",
+      "lexical_resolutions": [
+        {
+          "declared_path": "/opt/homebrew/opt/bdw-gc/lib/libgc.1.dylib",
+          "links": [
+            {
+              "path": "/opt/homebrew/opt/bdw-gc",
+              "target": "../Cellar/bdw-gc/8.2.12"
+            },
+            {
+              "path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.dylib",
+              "target": "libgc.1.5.6.dylib"
+            }
+          ],
+          "resolved_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.5.6.dylib"
+        },
+        {
+          "declared_path": "/opt/homebrew/opt/libyaml/lib/libyaml-0.2.dylib",
+          "links": [
+            {
+              "path": "/opt/homebrew/opt/libyaml",
+              "target": "../Cellar/libyaml/0.2.5"
+            }
+          ],
+          "resolved_path": "/opt/homebrew/Cellar/libyaml/0.2.5/lib/libyaml-0.2.dylib"
+        },
+        {
+          "declared_path": "/opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib",
+          "links": [
+            {
+              "path": "/opt/homebrew/opt/openssl@3",
+              "target": "../Cellar/openssl@3/3.5.9"
+            }
+          ],
+          "resolved_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/lib/libcrypto.3.dylib"
+        },
+        {
+          "declared_path": "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib",
+          "links": [
+            {
+              "path": "/opt/homebrew/opt/pcre2",
+              "target": "../Cellar/pcre2/10.49"
+            }
+          ],
+          "resolved_path": "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib"
+        }
+      ],
+      "libraries": [
+        {
+          "bytes": 190848,
+          "declared_path": "/opt/homebrew/opt/bdw-gc/lib/libgc.1.dylib",
+          "imports": [
+            "/usr/lib/libSystem.B.dylib"
+          ],
+          "mode": 292,
+          "path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.5.6.dylib",
+          "sha256": "84ed86e53e8e595d7942ad31387d0faab9d04ecbf9ec27a1870fa096fa5aa95b"
+        },
+        {
+          "bytes": 128384,
+          "declared_path": "/opt/homebrew/opt/libyaml/lib/libyaml-0.2.dylib",
+          "imports": [
+            "/usr/lib/libSystem.B.dylib"
+          ],
+          "mode": 292,
+          "path": "/opt/homebrew/Cellar/libyaml/0.2.5/lib/libyaml-0.2.dylib",
+          "sha256": "346089bac9f11b5ee6e5ee64f04a181a17deb4e8df0183b5049d2d7a1c042a20"
+        },
+        {
+          "bytes": 4720224,
+          "declared_path": "/opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib",
+          "imports": [
+            "/usr/lib/libSystem.B.dylib"
+          ],
+          "mode": 292,
+          "path": "/opt/homebrew/Cellar/openssl@3/3.5.9/lib/libcrypto.3.dylib",
+          "sha256": "ddd632c9239b6ca56abfd5f142b806c6343902c510bad7b307b2c5de59952a72"
+        },
+        {
+          "bytes": 574096,
+          "declared_path": "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib",
+          "imports": [
+            "/usr/lib/libSystem.B.dylib"
+          ],
+          "mode": 292,
+          "path": "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib",
+          "sha256": "c3adcd954967b7e92812831fe12c614a9ca2d12221e897a87ee379df2ac004fd"
+        }
+      ],
+      "packages": [
+        {
+          "declared": {
+            "bottle_rebuild": 0,
+            "compatibility_version": 1,
+            "declared_directly": true,
+            "full_name": "openssl@3",
+            "pkg_version": "3.5.9",
+            "revision": 0,
+            "version": "3.5.9"
+          },
+          "formula_sha256": "3d26736b3b4882af226d2cfb0676bbe8ea6a39f7359308c70ddda983812267f5",
+          "name": "openssl@3",
+          "opt_path": "/opt/homebrew/opt/openssl@3",
+          "opt_target": "../Cellar/openssl@3/3.5.9",
+          "physical_prefix": "/opt/homebrew/Cellar/openssl@3/3.5.9"
+        },
+        {
+          "declared": {
+            "bottle_rebuild": 0,
+            "compatibility_version": 1,
+            "declared_directly": true,
+            "full_name": "libyaml",
+            "pkg_version": "0.2.5",
+            "revision": 0,
+            "version": "0.2.5"
+          },
+          "formula_sha256": "9d1b80fbde1233901d8e53e744661f55ca71d879108e2cead7e8cc90d82f7955",
+          "name": "libyaml",
+          "opt_path": "/opt/homebrew/opt/libyaml",
+          "opt_target": "../Cellar/libyaml/0.2.5",
+          "physical_prefix": "/opt/homebrew/Cellar/libyaml/0.2.5"
+        },
+        {
+          "declared": {
+            "bottle_rebuild": 0,
+            "compatibility_version": 1,
+            "declared_directly": true,
+            "full_name": "pcre2",
+            "pkg_version": "10.49",
+            "revision": 0,
+            "version": "10.49"
+          },
+          "formula_sha256": "94c19a0d869da4990a8f3f371e37c986ad72124d2d94032e061c4a9019f9e174",
+          "name": "pcre2",
+          "opt_path": "/opt/homebrew/opt/pcre2",
+          "opt_target": "../Cellar/pcre2/10.49",
+          "physical_prefix": "/opt/homebrew/Cellar/pcre2/10.49"
+        },
+        {
+          "declared": {
+            "bottle_rebuild": 0,
+            "compatibility_version": 1,
+            "declared_directly": true,
+            "full_name": "bdw-gc",
+            "pkg_version": "8.2.12",
+            "revision": 0,
+            "version": "8.2.12"
+          },
+          "formula_sha256": "29e18ec05f648ebc3693467f8008e640d777f1b1623db263f7ea932161357c9f",
+          "name": "bdw-gc",
+          "opt_path": "/opt/homebrew/opt/bdw-gc",
+          "opt_target": "../Cellar/bdw-gc/8.2.12",
+          "physical_prefix": "/opt/homebrew/Cellar/bdw-gc/8.2.12"
+        }
+      ],
+      "system_files": [
+        {
+          "bytes": 603,
+          "path": "/System/Library/CoreServices/SystemVersion.plist",
+          "sha256": "6151cb883e5b48d43a33d4d41956405a1cd502e0c8622319388d943e2cb804a1"
+        },
+        {
+          "bytes": 2562000,
+          "path": "/usr/lib/dyld",
+          "sha256": "373fce2b3689c2113d5341a6bba735e9f970401ba64896c0a6379680192f1cdf"
+        }
+      ],
+      "tool_native_roots": [
+        {
+          "bytes": 3590088,
+          "imports": [
+            "/opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib",
+            "/usr/lib/libSystem.B.dylib",
+            "/usr/lib/libiconv.2.dylib"
+          ],
+          "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a",
+          "tool": "amber-lsp"
+        },
+        {
+          "bytes": 4991560,
+          "imports": [
+            "/opt/homebrew/opt/bdw-gc/lib/libgc.1.dylib",
+            "/opt/homebrew/opt/libyaml/lib/libyaml-0.2.dylib",
+            "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib",
+            "/usr/lib/libSystem.B.dylib",
+            "/usr/lib/libiconv.2.dylib"
+          ],
+          "sha256": "107c91a841e5e8ddef95f4bc6b1bc40ff365741eb51b17828844f3a2864ffd3b",
+          "tool": "ameba"
+        }
+      ],
+      "unresolved_system": []
+    },
+    "unresolved": [],
+    "whole_build_memory_qualified": false
+  },
+  "reviewed_llvm_config": {
+    "bytes": 618720,
+    "declared_path": "/opt/homebrew/opt/llvm@21/bin/llvm-config",
+    "dependencies": [
+      {
+        "declared_path": "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+        "imported": "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+        "links": [
+          {
+            "path": "/opt/homebrew/opt/zstd",
+            "target": "../Cellar/zstd/1.5.7_1"
+          },
+          {
+            "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.dylib",
+            "target": "libzstd.1.5.7.dylib"
+          }
+        ],
+        "resolved": {
+          "bytes": 635328,
+          "mode": 292,
+          "path": "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib",
+          "sha256": "602d50cbe6fad0f0da6d1b73284ae3f75316015aea482ebd55614b6df2406b43"
+        },
+        "scope": "admitted-native-file"
+      },
+      {
+        "imported": "/usr/lib/libSystem.B.dylib",
+        "scope": "Apple-platform",
+        "shared_cache_body_qualified": false
+      },
+      {
+        "imported": "/usr/lib/libc++.1.dylib",
+        "scope": "Apple-platform",
+        "shared_cache_body_qualified": false
+      },
+      {
+        "imported": "/usr/lib/libz.1.dylib",
+        "scope": "Apple-platform",
+        "shared_cache_body_qualified": false
+      }
+    ],
+    "dyld_shared_cache_bytes_qualified": false,
+    "format": "atlas-census-llvm-config-stable-v1",
+    "imports": [
+      "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib",
+      "/usr/lib/libSystem.B.dylib",
+      "/usr/lib/libc++.1.dylib",
+      "/usr/lib/libz.1.dylib"
+    ],
+    "links": [
+      {
+        "path": "/opt/homebrew/opt/llvm@21",
+        "target": "../Cellar/llvm@21/21.1.8_1"
+      }
+    ],
+    "mode": 365,
+    "native_file_closure_covered": true,
+    "package_version": "21.1.8",
+    "resolved_path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-config",
+    "rpaths": [
+      "@loader_path/../lib"
+    ],
+    "selected_llvm_library": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/lib/libLLVM.dylib",
+    "sha256": "906a61efe0783dfecc800bf6e031ca3f702936ea1fa6952039ea4bf56968396f",
+    "unresolved_imports": []
+  },
+  "reviewed_native_stable_view_sha256": "30f5799996fda1bed2b996049ce0135bf7ff6ff1a35d1c57cac2946bc49338fc",
+  "scope": "compiler-census-api-and-concrete-receiver-only"
+}
