@@ -25,6 +25,10 @@ CANONICAL_GC_SHA = '526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7e
 STABLE_TOOLS_SHA = '41e88da63e122233426ff376cb048f36f1df319e59f841fba335fa1f59923805'
 CONTRACT_SHA = '33418b91a8ed01e0d3b442781fb5c7ebdbfbb32927e5caecb9747251d9dd52c9'
 CONTEXT = dict(compiler_flags=['without_mt','without_libxml2','without_openssl','without_zlib'], LLVM_VERSION='21.1.8', LLVM_TARGETS='AArch64', LLVM_LDFLAGS='selected-reviewed-shared-LLVM-image', interpreter=True, target_scope='no-codegen compatibility only')
+DOCS_ENTRY = 'src/compiler/requires.cr'
+DOCS_ENTRY_SHA = '6908270a8f88147052605b981c18113d13b76bc0b3b2ddb1bce8a6c22607c8eb'
+DOCS_CARD_PATH = '.amber-lsp/api/compiler-census.yml'
+CONTEXT.update(docs_selection=dict(path=DOCS_CARD_PATH,docs_entry=DOCS_ENTRY,docs_entry_sha256=DOCS_ENTRY_SHA,card_sha256='9741ffa44d3aaad6f3074529aefb86730f96adf129c333e38caa69eb8ac8ef98'),execution_order='versions; formatter and concrete receiver probes; API lookups')
 PROBES = ('gc_stats','initialized_graph','source_origins','gc_stats_wrong_type')
 MAX_RAW = 4 * 2**20
 MAX_PUBLIC = 128 * 2**20
@@ -154,6 +158,7 @@ def extract_project(project, deadline):
                     if hasattr(os,'lchmod'):os.lchmod(path,row['mode'])
     clock(deadline)
     need(sha(stable(project/'src/gc/boehm.cr')) == CANONICAL_GC_SHA, 'Canonical526f1819 GC source required')
+    need(sha(stable(project/DOCS_ENTRY)) == DOCS_ENTRY_SHA, 'Exact canonical full-compiler docs entry required')
     return physical_tree(project,expected,deadline)
 
 def physical_tree(root, expected, deadline):
@@ -184,11 +189,41 @@ def working_bound(private):
             need(total <= 512*2**20, 'Finite complete private source/cache byte bound required')
     return dict(files=count,bytes=total)
 
+def configure_docs(project, expected):
+    """Place exact configuration in the released tool's own APICard directory."""
+    raw = stable(ROOT/'inputs/CENSUS_DOCS_CARD.yml',4096)
+    need(sha(raw) == CONTEXT['docs_selection']['card_sha256'], 'Exact source-pinned full-compiler docs card required')
+    for name in ('.amber-lsp','.amber-lsp/api'):
+        path = project/name; need(not path.exists() and not path.is_symlink(), 'Fresh ordinary tool configuration directory required'); path.mkdir(mode=0o755); path.chmod(0o755)
+        expected[name] = dict(path=name,kind='directory',mode=stat.S_IMODE(path.lstat().st_mode))
+    path = project/DOCS_CARD_PATH; path.write_bytes(raw); path.chmod(0o644)
+    expected[DOCS_CARD_PATH] = dict(path=DOCS_CARD_PATH,kind='file',mode=0o644,bytes=len(raw),sha256=sha(raw))
+    return dict(format='atlas-full-compiler-docs-selection-v1',configuration_path=DOCS_CARD_PATH,configuration_sha256=sha(raw),docs_entry=DOCS_ENTRY,docs_entry_sha256=DOCS_ENTRY_SHA,CLI_source_commit='faed4b205063a84650b00e2dc02f01793f373527',selection_scope='one canonical full-compiler entrypoint',actual_hosted_completion_qualified=False)
+
+def validate_writer_return(contract, row, seconds, output, group, expected=0):
+    """Prove original writer/raw return independently of diagnostic command success."""
+    need(type(row['exit_code']) is int and type(row['expected_exit']) is int and row['expected_exit'] == expected and row['maximum_seconds'] == seconds, 'Original expected/actual status and horizon return required')
+    need(row['terminal_group_observation'] == group and row['writers_confirmed_retired'] is True and row['pid'] == row['original_group'] == group['group'] and type(row['pid']) is int and row['pid'] > 0, 'Exact original writer/group identity and absence required')
+    need(group['status'] == 'absent' and group['scope'] == 'original POSIX process group' and group['phase'] == 'direct_child_returned' and group['bounded_drain_exhausted'] is False and group['maximum_drain_seconds'] == 5 and finite(group['elapsed_seconds'],0,5), 'Complete bounded original-group return required')
+    samples = group['samples']; need(type(samples) is list and 1 <= len(samples) <= 128 and group['initial_sample'] == samples[0] and group['terminal_sample'] == samples[-1] and samples[-1]['status'] == 'absent', 'Exact complete original group samples required')
+    need(finite(group['original_command_deadline'],0,float('inf')) and finite(group['drain_deadline'],0,group['original_command_deadline']) and all(s['status'] in ('present','absent') and finite(s['elapsed_seconds'],0,group['elapsed_seconds']) for s in samples), 'Finite original capped group-return horizon required')
+    need(finite(row['elapsed_seconds'],0,OUTER_SECONDS), 'Complete finite command-return observation required')
+    return contract.raw_streams(row,output)
+
+def docs_selection_evidence(rows, project):
+    canonical_root = Path(project); workspace_root = canonical_root.parent/'home/.cache/amber-lsp/index/docs-workspaces'
+    for row in rows:
+        cwd = Path(row['cwd']); role = row['project_role']
+        need(cwd.is_absolute() and str(cwd) == row['cwd'] and '..' not in cwd.parts and ((cwd == canonical_root and role == 'canonical-project') or (cwd != canonical_root and role == 'released-library-docs-workspace' and cwd.is_relative_to(workspace_root))), 'Exact canonical versus released workspace cwd/role join required before docs selection')
+    selected = [row for row in rows if row['original_arguments'][0] == 'docs' and row['project_role'] == 'canonical-project']
+    matches = all([value for value in row['original_arguments'] if value.endswith('.cr')] == [DOCS_ENTRY] and row['source_resolutions'] == {DOCS_ENTRY:str(Path(project)/DOCS_ENTRY)} for row in selected)
+    return dict(format='atlas-configured-compiler-docs-pre-exec-selection-v1',configuration_sha256=CONTEXT['docs_selection']['card_sha256'],configured_docs_entry=DOCS_ENTRY,canonical_docs_pre_exec_count=len(selected),observed=bool(selected),matches=bool(matches),canonical_docs_pre_exec_record_sha256s=[sha(canonical(row)) for row in selected],scope='pre-exec admissions; individual command completion remains separately attested')
+
 def command_roster():
     rows = [('llvm-config-version',10),('amber-lsp-version',10),('ameba-version',10)]
-    for index in range(56):rows += [('api-'+str(index),120 if index == 0 else 10),('api-verify-'+str(index),10)]
     rows += [('format-'+name,15) for name in PROBES]
     rows += [('compatibility-'+name,60 if name == 'gc_stats_wrong_type' else 300) for name in PROBES]
+    for index in range(56):rows += [('api-'+str(index),120 if index == 0 else 10),('api-verify-'+str(index),10)]
     need(len(rows) == 123 and sum(seconds for _,seconds in rows) == 2280, 'Exact finite123-command2280-second worst-case roster required')
     need(PREPARATION_SECONDS + sum(s for _,s in rows) + RETURN_SECONDS <= OUTER_SECONDS, 'Composed API phase must fit the unchanged complete horizon')
     return rows
@@ -300,6 +335,8 @@ def validate_terminal(contract, row, seconds, output, group, lookup=False, expec
     # Research retains genuine absent/unavailable cards. Only this explicit status
     # projection relaxes exit equality; every original resource/stream/group field
     # stays exact and the unaltered Runner record is preserved in the JSONL.
+    need(row['refusal'] is None, 'Original command resource refusal: ' + str(row['refusal']))
+    need(finite(row['elapsed_seconds'],0,row['maximum_seconds']), 'Original command exceeded its finite body horizon')
     projection = copy.deepcopy(row)
     if lookup:
         need(expected == 0 and row['exit_code'] in (0,2,3,4,5), 'Known released lookup status required'); projection['expected_exit'] = row['exit_code']; expected = row['exit_code']
@@ -323,7 +360,7 @@ def execute(args, context, owned, started):
     contract = load(ROOT/'vendor/command_contract.py',CONTRACT_SHA,'census_original_terminal_reader')
     runner = context['driver'].Runner(output); runner.deadline = run_deadline
     allowed = dict(command_roster()); roster = decode(stable(ROOT/'API_ROSTER.json')); queries = roster['queries']; need(len(queries) == len({q['query'] for q in queries}) == 56, 'Complete56 API question roster required')
-    result = dict(format='atlas-compiler-census-api-result-v1',passed=False,diagnostic_collection_complete=False,compiler_color='UNEXECUTED',maximum_seconds=OUTER_SECONDS,return_seconds=RETURN_SECONDS,command_seconds_worst_case=2280,job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],source_manifest_sha256=args.packet_sha256,scope_decision_sha256=args.decision_sha256,actual_target_cells_accepted=0,whole_build_memory_qualified=False,retained_owner_attribution_implemented=False,source_provider_return_accepted=False,private_removed=False,finalization_errors=[])
+    result = dict(format='atlas-compiler-census-api-result-v1',passed=False,diagnostic_collection_complete=False,compiler_color='UNEXECUTED',maximum_seconds=OUTER_SECONDS,return_seconds=RETURN_SECONDS,command_seconds_worst_case=2280,job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],source_manifest_sha256=args.packet_sha256,scope_decision_sha256=args.decision_sha256,actual_target_cells_accepted=0,whole_build_memory_qualified=False,retained_owner_attribution_implemented=False,source_provider_return_accepted=False,private_removed=False,finalization_errors=[],command_failures=[],command_contracts_accepted=False,compatibility_collection_complete=False,docs_selection_matches=False,docs_selection_observed=False)
     private = None; original = None; expected = {}; cards = []; evidence = []; complete = False; admitted_commands = {}; proxy_config = None; working = None; private_identity = None
     def run(label, argv, env, *, expected_exit=0, lookup=False):
         seconds = allowed[label]; owned.check(); clock(run_deadline)
@@ -344,6 +381,7 @@ def execute(args, context, owned, started):
         (private/'home').mkdir(); (private/'cache').mkdir(); (private/'bin').mkdir(); (project/'census_probes').mkdir(); expected['census_probes'] = dict(path='census_probes',kind='directory',mode=stat.S_IMODE((project/'census_probes').lstat().st_mode))
         for name in PROBES:
             raw = stable(ROOT/'inputs'/(name+'.cr.txt')); rel = 'census_probes/'+name+'.cr'; path = project/rel; path.write_bytes(raw); expected[rel] = dict(path=rel,kind='file',mode=0o644,bytes=len(raw),sha256=sha(raw)); owned.write('probe_sources/'+name+'.cr.txt',raw)
+        docs_configuration = configure_docs(project,expected); owned.json('DOCS_CONFIGURATION.json',docs_configuration)
         original = physical_tree(project,expected,run_deadline)
         wrapper = context['paths']['compiler_wrapper']; backend = context['paths']['compiler_backend']; python = Path(sys.executable).resolve(); stdlib = Path((args.sdk_evidence/'brew-prefix.stdout.txt').read_text().strip())/'share/agent-crystal/src'
         env = {k:v for k,v in os.environ.items() if k in ('TMPDIR','SDKROOT','DEVELOPER_DIR')}
@@ -362,13 +400,6 @@ def execute(args, context, owned, started):
         row,stdout,stderr = run('llvm-config-version',[context['llvm_config']['declared_path'],'--version'],env); need(stdout == '21.1.8\n' and not stderr, 'Actual selected reviewed LLVM config version required')
         for label,key,version in [('amber-lsp-version','amber_lsp','2.0.7'),('ameba-version','ameba','1.7.0-dev')]:
             row,stdout,stderr = run(label,[context['tools']['tools'][key]['path'],'--version'],env); need(version in stdout and not stderr, 'Admitted released analysis-tool version required')
-        for index,query in enumerate(queries):
-            method = query['query']; argv = [context['tools']['tools']['amber_lsp']['path'],'lookup',method,'--root',str(project),'--json']
-            row,stdout,stderr = run('api-'+str(index),argv,env,lookup=True); answer = card(stdout,method,row['exit_code']); answer['stderr'] = stderr
-            entries = [answer]
-            if row['exit_code'] == 4 and answer['card'] is not None and answer['card']['status'] == 'unknown':
-                row,stdout,stderr = run('api-verify-'+str(index),argv+['--verify'],env,lookup=True); answer = card(stdout,method,row['exit_code'],True); answer['stderr'] = stderr; entries.append(answer)
-            cards.append(dict(query=method,required=query['required'],attempts=entries,accepted=answer['accepted']))
         for name in PROBES:
             row,stdout,stderr = run('format-'+name,[wrapper,'tool','format','--check',str(project/'census_probes'/(name+'.cr'))],env)
             need(not stdout and not stderr, 'Actual formatter acceptance remains required')
@@ -379,7 +410,15 @@ def execute(args, context, owned, started):
             if expected_exit == 1:
                 need('UInt64' in stderr and 'String' in stderr and 'Error' in stderr, 'Actual discriminating wrong-type compiler refusal required')
             else:colors.append('GREEN' if not stdout and not stderr else 'YELLOW')
-        result['compiler_color'] = 'GREEN' if colors == ['GREEN']*3 else 'YELLOW'; complete = True
+        result['compiler_color'] = 'GREEN' if colors == ['GREEN']*3 else 'YELLOW'; result['compatibility_collection_complete'] = True
+        for index,query in enumerate(queries):
+            method = query['query']; argv = [context['tools']['tools']['amber_lsp']['path'],'lookup',method,'--root',str(project),'--json']
+            row,stdout,stderr = run('api-'+str(index),argv,env,lookup=True); answer = card(stdout,method,row['exit_code']); answer['stderr'] = stderr
+            entries = [answer]
+            if row['exit_code'] == 4 and answer['card'] is not None and answer['card']['status'] == 'unknown':
+                row,stdout,stderr = run('api-verify-'+str(index),argv+['--verify'],env,lookup=True); answer = card(stdout,method,row['exit_code'],True); answer['stderr'] = stderr; entries.append(answer)
+            cards.append(dict(query=method,required=query['required'],attempts=entries,accepted=answer['accepted']))
+        complete = True
     except BaseException as error:
         result['error'] = type(error).__name__+': '+str(error)
         if runner.records and runner.records[-1]['label'].startswith('compatibility-') and runner.records[-1]['exit_code'] != runner.records[-1]['expected_exit']:result['compiler_color'] = 'RED'
@@ -392,8 +431,10 @@ def execute(args, context, owned, started):
         for row,group in zip(runner.records,runner.group_observations):
             def record_return():
                 need(row == admitted_commands.get(row['label']), 'Original command records must return unchanged')
-                validate_terminal(contract,row,allowed[row['label']],output,group,lookup=row['label'].startswith('api-'),expected=row['expected_exit'])
+                validate_writer_return(contract,row,allowed[row['label']],output,group,expected=1 if row['label']=='compatibility-gc_stats_wrong_type' else 0)
             returned(record_return)
+            try:validate_terminal(contract,row,allowed[row['label']],output,group,lookup=row['label'].startswith('api-'),expected=1 if row['label']=='compatibility-gc_stats_wrong_type' else 0)
+            except BaseException as failure:result['command_failures'].append(dict(label=row['label'],error=type(failure).__name__+': '+str(failure),original_record=copy.deepcopy(row)))
             def retain_record():
                 stdout = stable(output/(row['label']+'.stdout.txt'),MAX_RAW).decode('utf-8'); stderr = stable(output/(row['label']+'.stderr.txt'),MAX_RAW).decode('utf-8')
                 evidence.append(dict(record=row,stdout=stdout,stderr=stderr,status_projection='released-lookup-exit-only' if row['label'].startswith('api-') else 'original-terminal-contract'))
@@ -409,16 +450,18 @@ def execute(args, context, owned, started):
             if proxy_config is not None:
                 def proxy_return():
                     for path, expected_sha in proxy_before.items():need(sha(stable(path)) == expected_sha, 'Transparent compiler proxy/configuration return required')
-                    owned.write('PROXY_CONFIG.json',stable(proxy_config)); owned.write('PROXY_COMMANDS.jsonl',stable(journal,4*2**20))
+                    owned.write('PROXY_CONFIG.json',stable(proxy_config)); raw_journal = stable(journal,4*2**20); owned.write('PROXY_COMMANDS.jsonl',raw_journal)
+                    selection = docs_selection_evidence([decode(line) for line in raw_journal.splitlines()],str(project)); owned.json('DOCS_SELECTION.json',selection); result.update(docs_selection_matches=selection['matches'],docs_selection_observed=selection['observed'])
                 returned(proxy_return)
             if private is not None:
                 def cleanup():
                     nonlocal working
                     need(identity(private)[:3] == private_identity and stat.S_ISDIR(private.lstat().st_mode), 'Original private source/cache root required before cleanup'); working = working_bound(private); shutil.rmtree(private); need(not private.exists(), 'Owned canonical source/cache workspace must be removed'); result['private_removed'] = True
                 returned(cleanup)
+        result['command_contracts_accepted'] = not result['command_failures']
         result['source_provider_return_accepted'] = not result['finalization_errors']
         result.update(commands=len(runner.records),original_groups=runner.group_observations,writers_confirmed_retired=runner.writers_confirmed_retired,working_bound=working,elapsed_seconds=time.monotonic()-started,diagnostic_collection_complete=complete,required_API_cards_accepted=len(cards) == 56 and all(row['accepted'] or not row['required'] for row in cards))
-        result['passed'] = complete and result['required_API_cards_accepted'] and result['compiler_color'] == 'GREEN' and result['source_provider_return_accepted'] and result['private_removed'] and not result['finalization_errors'] and finite(result['elapsed_seconds'],0,OUTER_SECONDS)
+        result['passed'] = complete and result['docs_selection_matches'] and result['command_contracts_accepted'] and result['required_API_cards_accepted'] and result['compiler_color'] == 'GREEN' and result['source_provider_return_accepted'] and result['private_removed'] and not result['finalization_errors'] and finite(result['elapsed_seconds'],0,OUTER_SECONDS)
         owned.json('API_CARDS.json',cards); owned.write('COMMAND_EVIDENCE.jsonl',b''.join(canonical(row)+b'\n' for row in evidence)); owned.json('RESULT.json',result)
         result['elapsed_seconds'] = time.monotonic()-started
         if not finite(result['elapsed_seconds'],0,OUTER_SECONDS):result['passed'] = False; result['finalization_errors'].append('Complete API receipt write exceeded the original2700-second horizon')

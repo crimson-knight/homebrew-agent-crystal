@@ -1,0 +1,5 @@
+card_version: 1
+library: crystal
+applies_to: "1.21.0"
+docs_entries:
+  - src/compiler/requires.cr

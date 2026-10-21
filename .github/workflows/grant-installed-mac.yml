@@ -24,7 +24,7 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ATLAS_PROVIDER_PACKET_SHA256: 81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693
-  ATLAS_CENSUS_PACKET_SHA256: e15bc87f17bd03edb1d3ba6f1bd6db9cc2acaf94aca45f40d0c3f5c55fe1020e
+  ATLAS_CENSUS_PACKET_SHA256: 976f12db7c9ba930ec2da67d831c2461de3224e0f8fa353a888f124b1bf7ecd0
   ATLAS_CENSUS_MODE: ${{ inputs.census_mode }}
   ATLAS_CENSUS_DECISION_URL: ${{ inputs.census_decision_url }}
   ATLAS_CENSUS_DECISION_SHA256: ${{ inputs.census_decision_sha256 }}
@@ -147,7 +147,7 @@ jobs:
               path = root / row["path"]
               if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
                   raise SystemExit("Exact census control source required before import")
-          for filename in ("test_census.py", "test_api_only.py"):
+          for filename in ("test_census.py", "test_api_only.py", "test_v104.py"):
               sys.argv = [str(root / filename)]
               try:
                   runpy.run_path(sys.argv[0], run_name="__main__")
@@ -165,7 +165,7 @@ jobs:
               path = root / row["path"]
               if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
                   raise SystemExit("Exact census control source required before import")
-          for filename in ("test_census.py", "test_api_only.py"):
+          for filename in ("test_census.py", "test_api_only.py", "test_v104.py"):
               sys.argv = [str(root / filename)]
               try:
                   runpy.run_path(sys.argv[0], run_name="__main__")

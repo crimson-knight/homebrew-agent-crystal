@@ -1,0 +1,23 @@
+{
+  "CLI_archive_sha256": "6e90f3cdba3ed87cefbf7443ab93da627af314fac5960a4b9288ae80e31f591f",
+  "CLI_commit": "faed4b205063a84650b00e2dc02f01793f373527",
+  "compiler_docs_entry": "src/compiler/requires.cr",
+  "compiler_docs_entry_sha256": "6908270a8f88147052605b981c18113d13b76bc0b3b2ddb1bce8a6c22607c8eb",
+  "configuration_path": ".amber-lsp/api/compiler-census.yml",
+  "format": "atlas-full-compiler-docs-selection-primary-authority-v1",
+  "hypothesis": "The supported tool-owned docs_entries selector chooses one canonical full-compiler entrypoint; actual hosted completion remains pending",
+  "members": [
+    {
+      "archive_member": "amber_cli-2.0.7/src/amber_lsp/lookup/api_cards.cr",
+      "bytes": 15644,
+      "path": "src/amber_lsp/lookup/api_cards.cr",
+      "sha256": "3e8ce4becbc6021bef3af9c7742932242d755b6832ba77b98de8cc1ef26fdb90"
+    },
+    {
+      "archive_member": "amber_cli-2.0.7/src/amber_lsp/lookup/resolve_api_index_docs_entries.cr",
+      "bytes": 2245,
+      "path": "src/amber_lsp/lookup/resolve_api_index_docs_entries.cr",
+      "sha256": "6189352acca8406baac819905b09192ecb157a8cbe86809006d4145a25b2de67"
+    }
+  ]
+}

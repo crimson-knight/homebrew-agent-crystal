@@ -9,7 +9,7 @@ import stat
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC_HELPER_SHA = 'eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed'
-FIXED = ('TRANSFER_CLEANUP.json','LLVM_STATIC_PARTIAL.json','LLVM_STATIC_INPUTS.json','METADATA_ADMISSION.json','SCOPE_DECISION.json','NATIVE_POLICY.json','POLICY_RESULT.json','TOOL_POLICY.json','PROOF_TOOLS.json','API_ROSTER.json','ADMISSION_REFUSAL.json','CENSUS_PROVIDER_CANDIDATE.json','ADMISSION.json','API_CARDS.json','COMMAND_EVIDENCE.jsonl','SOURCE_RETURN.json','PROXY_CONFIG.json','PROXY_COMMANDS.jsonl','RESULT.json')
+FIXED = ('DOCS_SELECTION.json','DOCS_CONFIGURATION.json','TRANSFER_CLEANUP.json','LLVM_STATIC_PARTIAL.json','LLVM_STATIC_INPUTS.json','METADATA_ADMISSION.json','SCOPE_DECISION.json','NATIVE_POLICY.json','POLICY_RESULT.json','TOOL_POLICY.json','PROOF_TOOLS.json','API_ROSTER.json','ADMISSION_REFUSAL.json','CENSUS_PROVIDER_CANDIDATE.json','ADMISSION.json','API_CARDS.json','COMMAND_EVIDENCE.jsonl','SOURCE_RETURN.json','PROXY_CONFIG.json','PROXY_COMMANDS.jsonl','RESULT.json')
 
 def need(value, message):
     if not value:raise RuntimeError(message)
@@ -158,12 +158,6 @@ def replay(root, expected):
     row,stdout,stderr = take('llvm-config-version',[admission['proxy']['environment']['LLVM_CONFIG'],'--version']); need(stdout == '21.1.8\n' and not stderr, 'Exact actual reviewed LLVM version required')
     row,stdout,stderr = take('amber-lsp-version',[tools['amber_lsp']['path'],'--version']); need('2.0.7' in stdout and not stderr, 'Exact actual Amber LSP version behavior required')
     row,stdout,stderr = take('ameba-version',[tools['ameba']['path'],'--version']); need('1.7.0-dev' in stdout and not stderr, 'Exact actual Ameba version behavior required')
-    for index,(question,kept) in enumerate(zip(query_rows,cards)):
-        method = question['query']; argv = [tools['amber_lsp']['path'],'lookup',method,'--root',project,'--json']; row,stdout,stderr = take('api-'+str(index),argv,True); answer = model.card(stdout,method,row['exit_code']); answer['stderr'] = stderr; attempts = [answer]
-        if row['exit_code'] == 4 and answer['card'] is not None and answer['card']['status'] == 'unknown':
-            row,stdout,stderr = take('api-verify-'+str(index),argv+['--verify'],True); answer = model.card(stdout,method,row['exit_code'],True); answer['stderr'] = stderr; attempts.append(answer)
-        need(kept == dict(query=method,required=question['required'],attempts=attempts,accepted=answer['accepted']), 'Exact raw API card/unknown/verification replay required')
-        need(answer['accepted'] or not question['required'], 'Every required API card must be actually resolved')
     for name in model.PROBES:
         raw = model.stable(root/'probe_sources'/(name+'.cr.txt')); need(raw == model.stable(ROOT/'inputs'/(name+'.cr.txt')), 'Exact concrete receiver fixture source required')
         row,stdout,stderr = take('format-'+name,[wrapper,'tool','format','--check',str(Path(project)/'census_probes'/(name+'.cr'))]); need(not stdout and not stderr, 'Actual formatter GREEN required')
@@ -172,18 +166,34 @@ def replay(root, expected):
         row,stdout,stderr = take('compatibility-'+name,[executable,'build','--no-codegen',str(Path(project)/'census_probes'/(name+'.cr'))],expected_exit=expected_exit)
         if expected_exit:need('UInt64' in stderr and 'String' in stderr and 'Error' in stderr, 'Actual discriminating wrong-type refusal required')
         else:need(not stdout and not stderr, 'Actual concrete receiver compiler GREEN required')
+    for index,(question,kept) in enumerate(zip(query_rows,cards)):
+        method = question['query']; argv = [tools['amber_lsp']['path'],'lookup',method,'--root',project,'--json']; row,stdout,stderr = take('api-'+str(index),argv,True); answer = model.card(stdout,method,row['exit_code']); answer['stderr'] = stderr; attempts = [answer]
+        if row['exit_code'] == 4 and answer['card'] is not None and answer['card']['status'] == 'unknown':
+            row,stdout,stderr = take('api-verify-'+str(index),argv+['--verify'],True); answer = model.card(stdout,method,row['exit_code'],True); answer['stderr'] = stderr; attempts.append(answer)
+        need(kept == dict(query=method,required=question['required'],attempts=attempts,accepted=answer['accepted']), 'Exact raw API card/unknown/verification replay required')
+        need(answer['accepted'] or not question['required'], 'Every required API card must be actually resolved')
     need(position == len(commands), 'Exact complete123-ceiling command sequence required')
-    returned = model.decode(model.stable(root/'SOURCE_RETURN.json',4*2**20)); original = model.archive_rows()['files']; need(set(returned['files']) == {row['path'] for row in original}|{'census_probes'}|{'census_probes/'+name+'.cr' for name in model.PROBES}, 'Complete canonical3190-source return with exact four probes required')
+    returned = model.decode(model.stable(root/'SOURCE_RETURN.json',4*2**20)); original = model.archive_rows()['files']; need(set(returned['files']) == {row['path'] for row in original}|{'census_probes'}|{'census_probes/'+name+'.cr' for name in model.PROBES}|{'.amber-lsp','.amber-lsp/api',model.DOCS_CARD_PATH}, 'Complete canonical3190-source return with exact four probes required')
+    docs = model.decode(model.stable(root/'DOCS_CONFIGURATION.json',4096)); expected_docs = dict(format='atlas-full-compiler-docs-selection-v1',configuration_path=model.DOCS_CARD_PATH,configuration_sha256=model.CONTEXT['docs_selection']['card_sha256'],docs_entry=model.DOCS_ENTRY,docs_entry_sha256=model.DOCS_ENTRY_SHA,CLI_source_commit='faed4b205063a84650b00e2dc02f01793f373527',selection_scope='one canonical full-compiler entrypoint',actual_hosted_completion_qualified=False)
+    need(docs == expected_docs and returned['files'][model.DOCS_CARD_PATH]['sha256'] == docs['configuration_sha256'] and returned['files'][model.DOCS_CARD_PATH]['bytes'] == len(model.stable(ROOT/'inputs/CENSUS_DOCS_CARD.yml',4096)), 'Exact full-compiler docs configuration source and final return required')
+    for path,kind in [('.amber-lsp','directory'),('.amber-lsp/api','directory'),(model.DOCS_CARD_PATH,'file')]:
+        row = returned['files'][path]; mode = 0o644 if kind == 'file' else 0o755; state = row['physical_identity']
+        need(row['path'] == path and row['kind'] == kind and row['mode'] == mode and type(state) is list and len(state) == 6 and stat.S_IMODE(state[2]) == mode and (stat.S_ISREG(state[2]) if kind == 'file' else stat.S_ISDIR(state[2])), 'Exact ordinary generated docs configuration node kind/mode/physical return required')
+        if kind == 'file':need(row['bytes'] == state[3] == len(model.stable(ROOT/'inputs/CENSUS_DOCS_CARD.yml',4096)), 'Exact generated docs configuration physical length required')
+    need(result['command_contracts_accepted'] is True and result['command_failures'] == [] and result['compatibility_collection_complete'] is True, 'Complete successful diagnostic and independently returned resources required')
     for row in original:need(all(returned['files'][row['path']][key] == value for key,value in row.items()), 'Exact canonical source mode/hash/alias return required')
     need(sha(model.stable(root/'PROXY_CONFIG.json')) == sha(model.canonical(admission['proxy'])), 'Exact executed compiler proxy source/context required')
     proxy = model.load(ROOT/'compiler_proxy.py',model.sha(model.stable(ROOT/'compiler_proxy.py')),'census_source_argv_derivation_reader')
     journal = [model.decode(line) for line in model.stable(root/'PROXY_COMMANDS.jsonl',4*2**20).splitlines()]
     need(4 <= len(journal) <= proxy.MAX_CALLS, 'Complete bounded actual compiler invocation journal required')
+    observed_selection = model.decode(model.stable(root/'DOCS_SELECTION.json',2**20)); expected_selection = model.docs_selection_evidence(journal,project)
+    need(observed_selection == expected_selection and observed_selection['matches'] is True and result['docs_selection_matches'] is observed_selection['matches'] and result['docs_selection_observed'] is observed_selection['observed'], 'Every observed canonical docs pre-exec invocation must use the configured full-compiler entry and exact source resolution')
+
     groups = {row['record']['original_group'] for row in commands}; config_sha = sha(model.stable(root/'PROXY_CONFIG.json')); concrete = []
     for item in journal:
         need(type(item['pid']) is int and item['pid'] > 0 and type(item['process_group']) is int and item['process_group'] in groups and item['configuration_sha256'] == config_sha, 'Actual proxy PID/original group/configuration join required')
         cwd = Path(item['cwd']); original_arguments = item['original_arguments']
-        need(cwd == Path(project) or (item['project_role'] == 'released-library-docs-workspace' and cwd.is_relative_to(Path(admission['proxy']['private'])/'home/.cache/amber-lsp/index/docs-workspaces')), 'Exact canonical project or released docs-workspace role required')
+        need((cwd == Path(project) and item['project_role'] == 'canonical-project') or (cwd != Path(project) and item['project_role'] == 'released-library-docs-workspace' and cwd.is_relative_to(Path(admission['proxy']['private'])/'home/.cache/amber-lsp/index/docs-workspaces')), 'Exact canonical project or released docs-workspace role required')
         expected_environment = dict(admission['proxy']['environment']); expected_environment['CRYSTAL_CACHE_DIR'] = item['environment']['CRYSTAL_CACHE_DIR']
         need(item['environment'] == expected_environment and Path(expected_environment['CRYSTAL_CACHE_DIR']).is_relative_to(Path(admission['proxy']['private'])), 'Exact actual compiler source/feature/native environment required')
         for source,resolved in item['source_resolutions'].items():need(source in original_arguments and (Path(resolved).is_relative_to(Path(project)) or Path(resolved).is_relative_to(Path(admission['proxy']['stdlib']))), 'Original contained actual compiler source resolution required')

@@ -7,16 +7,34 @@
       "sha256": "05b52120e7a8bfa72da8a66ff002aa4415af70f1f92c124096df4269b06b350b"
     },
     {
+      "bytes": 29194,
+      "mode": 420,
+      "path": "COUNTER_PHASE_MAP.json",
+      "sha256": "e47fb6b32a44bc2504962ec4aa67b9687d5bc7074e236bde37d51383d13e1dee"
+    },
+    {
+      "bytes": 4081,
+      "mode": 420,
+      "path": "COUNTER_PHASE_MAP.md",
+      "sha256": "cd6b425de0d53edf73dc01e6103f897a778c08092293d3e87360a55269cd86db"
+    },
+    {
+      "bytes": 4676,
+      "mode": 420,
+      "path": "README.md",
+      "sha256": "27dc0acc596c83712f18b909ca3ec3f6ef4487a5a2e849934b5f3ee488ce2f58"
+    },
+    {
       "bytes": 27367,
       "mode": 420,
       "path": "api_provider.py",
       "sha256": "07d99e57b5eb64498386d0f33a9edcc8e359a92f3ad10fb0d69236af9f33f1e7"
     },
     {
-      "bytes": 29460,
+      "bytes": 31899,
       "mode": 420,
       "path": "artifact.py",
-      "sha256": "c8d81a729a1f03f2a2d867e788112e99a6f4c71926847b544101872f1bdcd7df"
+      "sha256": "b66c9a6da09a29dfaaaa3dd00b04f139f3604c486f0d7d0cd5eb09083081365c"
     },
     {
       "bytes": 7464,
@@ -529,6 +547,12 @@
       "sha256": "387944db110badca9d2c1ad0ab44ea104ff49b47b226f4559d7074c141d7b401"
     },
     {
+      "bytes": 97,
+      "mode": 420,
+      "path": "inputs/CENSUS_DOCS_CARD.yml",
+      "sha256": "9741ffa44d3aaad6f3074529aefb86730f96adf129c333e38caa69eb8ac8ef98"
+    },
+    {
       "bytes": 1311,
       "mode": 420,
       "path": "inputs/CLI_API_SOURCE_READBACK.json",
@@ -539,6 +563,12 @@
       "mode": 420,
       "path": "inputs/COMPILER_ARCHIVE_ROSTER.json",
       "sha256": "f9ff90467a547ae7380900e72622d0e47a09c3fa4f7e737b318aa280ccd4986b"
+    },
+    {
+      "bytes": 1148,
+      "mode": 420,
+      "path": "inputs/DOCS_CONFIGURATION_AUTHORITY.json",
+      "sha256": "4d3b3cb746bd8159de4a8181fd81078b451847819f0fe747390894ef89941323"
     },
     {
       "bytes": 24225,
@@ -589,6 +619,18 @@
       "sha256": "6e90f3cdba3ed87cefbf7443ab93da627af314fac5960a4b9288ae80e31f591f"
     },
     {
+      "bytes": 15644,
+      "mode": 420,
+      "path": "inputs/cli-primary-source/src/amber_lsp/lookup/api_cards.cr",
+      "sha256": "3e8ce4becbc6021bef3af9c7742932242d755b6832ba77b98de8cc1ef26fdb90"
+    },
+    {
+      "bytes": 2245,
+      "mode": 420,
+      "path": "inputs/cli-primary-source/src/amber_lsp/lookup/resolve_api_index_docs_entries.cr",
+      "sha256": "6189352acca8406baac819905b09192ecb157a8cbe86809006d4145a25b2de67"
+    },
+    {
       "bytes": 4435186,
       "mode": 420,
       "path": "inputs/compiler-source.tar.gz",
@@ -631,10 +673,10 @@
       "sha256": "144f606bb23057e9512d6983999ab3e73658518d243fedca768b6be81a71c23e"
     },
     {
-      "bytes": 43623,
+      "bytes": 49781,
       "mode": 420,
       "path": "run_census.py",
-      "sha256": "bc7146020cce99e3aa4b22e39a388f4498fee714657e39f7593046ba9986bf6e"
+      "sha256": "705b139db5a2184ecc2e212db4e63e6f5b2d6999b763c97176bc9eb2dadc4f1d"
     },
     {
       "bytes": 20009,
@@ -647,6 +689,12 @@
       "mode": 420,
       "path": "test_census.py",
       "sha256": "51ada1e68769af7a3ec0f3032e4b7af9ce2128240c1f745f844ab3092b9b45b9"
+    },
+    {
+      "bytes": 15825,
+      "mode": 420,
+      "path": "test_v104.py",
+      "sha256": "c3cd25aa3f7be7f4c6ceda02ccf38d2d2c40b1612f90ede404f5ff9efb753df4"
     },
     {
       "bytes": 4295,
