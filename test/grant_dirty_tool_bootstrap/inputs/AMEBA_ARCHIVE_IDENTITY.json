@@ -1,0 +1,26 @@
+{
+  "source_commit": "cdd58b34b0d8a9c785d67183a7a8f07541549e55",
+  "expected_git_tree": "5fe9fbff073fc9a41923f19d8a43b9b35a528ac8",
+  "archive_url": "https://codeload.github.com/crystal-ameba/ameba/tar.gz/cdd58b34b0d8a9c785d67183a7a8f07541549e55",
+  "archive_bytes": 200372,
+  "archive_sha256": "a0e91d582e0617b15c1bd3448c2d0db60c86454aa4d19887fcb6ee08d4ddf259",
+  "selected_source_rows": [
+    {
+      "path": "ameba-cdd58b34b0d8a9c785d67183a7a8f07541549e55/shard.yml",
+      "bytes": 258,
+      "sha256": "4470d068618d7f6eb94dc42da6e4b6ea4a1d6a3ce4bae409f2817261f6adcd2b"
+    },
+    {
+      "path": "ameba-cdd58b34b0d8a9c785d67183a7a8f07541549e55/src/ameba.cr",
+      "bytes": 792,
+      "sha256": "02535a1eb41e6c727808a16f5aa0ced51fa8e5d96816644f28e46b954cd02ac9"
+    },
+    {
+      "path": "ameba-cdd58b34b0d8a9c785d67183a7a8f07541549e55/src/cli.cr",
+      "bytes": 282,
+      "sha256": "597e9b3dd18404d0441fd9580b68813ed33bee286ba27b96a34a2b3ef3818bff"
+    }
+  ],
+  "actual_executable_jobs": 0,
+  "source_tree_crosscheck": "pending independent GitHub commit/tree metadata"
+}

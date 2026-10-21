@@ -1,8 +1,6 @@
-name: Grant installed Mac causal diagnostic
+name: Grant proof-tool preparation
 
 on:
-  push:
-    branches: [feature/grant-installed-memory-diagnostic]
   workflow_dispatch:
 
 permissions: {}
@@ -11,12 +9,13 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ATLAS_GRANT_PACKET_SHA256: 9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09
+  ATLAS_BOOTSTRAP_PACKET_SHA256: 239dfd520deb496fbfa12db558e83cebbf0dac7b2d59e6ed25709e274e606bef
 
 jobs:
   grant-installed-mac:
-    name: One rich10 causal triplet
+    name: Build returned tools for independent admission
     runs-on: macos-26
-    timeout-minutes: 160
+    timeout-minutes: 85
     steps:
       - name: Check out reviewed tap source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -26,18 +25,11 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
 
-      - name: Check source-only installer and SDK controls
+      - name: Check original installer and SDK source controls
         timeout-minutes: 3
         run: |
           ruby test/install_test.rb
           python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
-          python3 -I -S -B test/grant_assignment_cost/test_assignment_cost.py
-          python3 -I -S -B test/grant_assignment_cost/test_same_job_policy.py
-          python3 -I -S -B test/grant_assignment_cost/test_causal_only.py
-          python3 -I -S -B test/grant_assignment_cost/test_timing_profile.py
-          python3 -O -I -S -B test/grant_assignment_cost/test_timing_profile.py
-          python3 -I -S -B test/grant_assignment_cost/test_workflow_layout.py
-          python3 -O -I -S -B test/grant_assignment_cost/test_workflow_layout.py
 
       - name: Install the ordinary formula through the installer
         id: ordinary_install
@@ -69,50 +61,59 @@ jobs:
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Run one rich10 original candidate restored causal triplet
-        id: grant
-        timeout-minutes: 82
+      - name: Build pinned Ameba and return tool identities
+        id: bootstrap
+        timeout-minutes: 15
         run: |
           python3 - <<'PYTHON'
           import hashlib, json, os, pathlib, runpy, sys
-          root = pathlib.Path("test/grant_assignment_cost").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+          root = pathlib.Path("test/grant_dirty_tool_bootstrap").resolve()
+          pins = root / "BOOTSTRAP_SOURCE_PINS.json"
+          expected = os.environ["ATLAS_BOOTSTRAP_PACKET_SHA256"]
           if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Grant packet manifest differs")
+              raise SystemExit("Bootstrap source manifest differs")
           for row in json.loads(pins.read_bytes())["files"]:
               path = root / row["path"]
               if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Grant packet source differs: " + row["path"])
-          source = root / "run_causal_only.py"
-          sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
+                  raise SystemExit("Bootstrap source differs: " + row["path"])
+          candidates = []
+          if os.environ.get("DEVELOPER_DIR"):
+              candidates.append(pathlib.Path(os.environ["DEVELOPER_DIR"]) / "usr/bin/git")
+          candidates.extend([pathlib.Path("/Applications/Xcode.app/Contents/Developer/usr/bin/git"), pathlib.Path("/opt/homebrew/opt/git/bin/git")])
+          git = next((p.resolve(strict=True) for p in candidates if p.is_file()), None)
+          if git is None or git == pathlib.Path("/usr/bin/git"):
+              raise SystemExit("A resolved installed native Git backend is required")
+          curl = pathlib.Path("/usr/bin/curl").resolve(strict=True)
+          provider_sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          source = root / "bootstrap_tools.py"
+          sys.argv = [str(source), "--repository", str(pathlib.Path.cwd()),
               "--sdk-evidence", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
-              "--time-sha256", hashlib.sha256(pathlib.Path("/usr/bin/time").read_bytes()).hexdigest(),
-              "--timing-true-sha256", hashlib.sha256(pathlib.Path("/usr/bin/true").read_bytes()).hexdigest(),
-              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal")]
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-proof-tools"),
+              "--packet-sha256", expected, "--python-sha256", provider_sha(pathlib.Path(sys.executable).resolve()),
+              "--curl", str(curl), "--curl-sha256", provider_sha(curl), "--git", str(git), "--git-sha256", provider_sha(git)]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Snapshot the explicit result artifact roster
+      - name: Stage the positive returned-tool evidence roster
         id: result_stage
-        if: ${{ always() && steps.grant.outcome != 'skipped' }}
+        if: ${{ always() && steps.bootstrap.outcome != 'skipped' }}
         timeout-minutes: 2
         run: |
           python3 - <<'PYTHON'
           import hashlib, json, os, pathlib, runpy, sys
-          root = pathlib.Path("test/grant_assignment_cost").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+          root = pathlib.Path("test/grant_dirty_tool_bootstrap").resolve()
+          pins = root / "BOOTSTRAP_SOURCE_PINS.json"
+          expected = os.environ["ATLAS_BOOTSTRAP_PACKET_SHA256"]
           if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Grant packet manifest differs")
+              raise SystemExit("Bootstrap source manifest differs")
           for row in json.loads(pins.read_bytes())["files"]:
               path = root / row["path"]
               if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Grant packet source differs: " + row["path"])
-          source = root / "stage_causal_result_artifact.py"
-          sys.argv = [str(source), "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal"),
-              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-result-artifact")]
+                  raise SystemExit("Bootstrap source differs: " + row["path"])
+          source = root / "stage_tools.py"
+          sys.argv = [str(source), "--packet-sha256", expected,
+              "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-proof-tools"),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-proof-tools-public")]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
@@ -120,18 +121,18 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
         with:
-          name: grant-ordinary-mac-sdk-readiness
+          name: grant-proof-tool-sdk-readiness
           path: ${{ runner.temp }}/grant-sdk-readiness
           if-no-files-found: warn
           retention-days: 30
           include-hidden-files: false
 
-      - name: Preserve diagnostic results and complete raw command output
-        if: ${{ always() && steps.grant.outcome != 'skipped' && steps.result_stage.outcome == 'success' }}
+      - name: Preserve returned tools and positive preparation evidence
+        if: ${{ always() && steps.bootstrap.outcome != 'skipped' && steps.result_stage.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
         with:
-          name: grant-mac-rich10-causal-only-diagnostic
-          path: ${{ runner.temp }}/grant-result-artifact
+          name: grant-proof-tools-unadmitted
+          path: ${{ runner.temp }}/grant-proof-tools-public
           if-no-files-found: error
           retention-days: 30
           include-hidden-files: false
