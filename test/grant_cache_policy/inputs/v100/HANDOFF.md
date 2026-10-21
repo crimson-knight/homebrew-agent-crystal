@@ -1,0 +1,7 @@
+The cold compiler-cache source is frozen for independent review.
+
+Source manifest 0071ce45ef66d490db3954d47b53c6d1e5b7c6018c426afd837be2231afc1ea3 binds seven files including the exact predecessor workflow fixture. Accepted215-row base 9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09 remains byte-exact. Workflow f22137b22c51fa188d08f1bed6fb0390e0d509cf2b687e2d751c93683089927e is manual-only on the existing registered grant-installed-mac workflow and keeps same-job SDK admission, timing calibration, one thread, original Grant source/fixture and every behavior/corruption control. The explicit diagnostic formula override remains separate from ordinary-default installation.
+
+Actual new guarded source cases22+22 and four exact workflow bootstrap/import controls pass in an integrated repository path with spaces. Six original metadata command groups return absent. Positive public staging returns46 finite members. Raw evidence and providers are in /Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_cache_policy_v100_validation/final-strict-cache. SOURCE_TESTS.json SHA-256 367543cb14337f98ce79c4817f7eb11e822a5ae5ec2e0f33b85d6a10ece5c34c.
+
+This packet measures combined cold bitcode cache/serialization behavior; it does not attribute all potential savings to the disposal defect. Native owner bytes, isolated compiler and whole-build peaks remain separate. Actual compiler experiments0 and full target0/144. Independent source review precedes normal public commit/push and actual hosted execution.

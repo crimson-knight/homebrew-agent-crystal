@@ -1,0 +1,141 @@
+name: Grant cold compiler cache diagnostic
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  PYTHONDONTWRITEBYTECODE: 1
+  ATLAS_CACHE_PACKET_SHA256: 0071ce45ef66d490db3954d47b53c6d1e5b7c6018c426afd837be2231afc1ea3
+  ATLAS_GRANT_PACKET_SHA256: 9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09
+
+jobs:
+  grant-installed-mac:
+    name: One rich10 default disabled restored cache triplet
+    runs-on: macos-26
+    timeout-minutes: 160
+    steps:
+      - name: Check out reviewed tap source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      - name: Check source-only installer and SDK controls
+        timeout-minutes: 3
+        run: |
+          ruby test/install_test.rb
+          python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
+          python3 -I -S -B test/grant_assignment_cost/test_assignment_cost.py
+          python3 -I -S -B test/grant_assignment_cost/test_same_job_policy.py
+          python3 -I -S -B test/grant_assignment_cost/test_causal_only.py
+          python3 -I -S -B test/grant_assignment_cost/test_timing_profile.py --workflow-fixture test/grant_cache_policy/inputs/REFERENCE_WORKFLOW.yml
+          python3 -O -I -S -B test/grant_assignment_cost/test_timing_profile.py --workflow-fixture test/grant_cache_policy/inputs/REFERENCE_WORKFLOW.yml
+          python3 -I -S -B test/grant_assignment_cost/test_workflow_layout.py --workflow-fixture test/grant_cache_policy/inputs/REFERENCE_WORKFLOW.yml
+          python3 -O -I -S -B test/grant_assignment_cost/test_workflow_layout.py --workflow-fixture test/grant_cache_policy/inputs/REFERENCE_WORKFLOW.yml
+
+          python3 -I -S -B test/grant_cache_policy/test_cache_policy.py
+          python3 -O -I -S -B test/grant_cache_policy/test_cache_policy.py
+
+      - name: Install the exact diagnostic formula through the explicit source override
+        id: ordinary_install
+        timeout-minutes: 45
+        run: |
+          AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
+          test "$(crystal-alpha eval 'puts 6 * 7')" = "42"
+          brew test agent-crystal
+
+      - name: Qualify the exact SDK in this job and seal its observed compiler
+        id: sdk
+        timeout-minutes: 15
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_assignment_cost").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+          if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Grant packet manifest differs")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Grant packet source differs: " + row["path"])
+          source = root / "qualify_same_job_sdk.py"
+          sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Run one cold default disabled restored cache triplet
+        id: grant
+        timeout-minutes: 82
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_cache_policy").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_CACHE_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Cache packet manifest differs")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Cache packet source differs: " + row["path"])
+          source = root / "run_cache_policy.py"
+          sys.path.insert(0, str(root))
+          sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
+              "--sdk-evidence", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness"),
+              "--cache-packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
+              "--time-sha256", hashlib.sha256(pathlib.Path("/usr/bin/time").read_bytes()).hexdigest(),
+              "--timing-true-sha256", hashlib.sha256(pathlib.Path("/usr/bin/true").read_bytes()).hexdigest(),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-cache")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Snapshot the explicit returned cache result roster
+        id: result_stage
+        if: ${{ always() && steps.grant.outcome != 'skipped' }}
+        timeout-minutes: 2
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_cache_policy").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_CACHE_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Cache packet manifest differs")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Cache packet source differs: " + row["path"])
+          source = root / "stage_cache_results.py"
+          sys.path.insert(0, str(root))
+          sys.argv = [str(source), "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-cache"),
+              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-cache-result-artifact")]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Preserve original SDK and same-job readiness evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: grant-ordinary-mac-sdk-readiness
+          path: ${{ runner.temp }}/grant-sdk-readiness
+          if-no-files-found: warn
+          retention-days: 30
+          include-hidden-files: false
+
+      - name: Preserve diagnostic results and complete raw command output
+        if: ${{ always() && steps.grant.outcome != 'skipped' && steps.result_stage.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: grant-mac-rich10-cold-cache-diagnostic
+          path: ${{ runner.temp }}/grant-cache-result-artifact
+          if-no-files-found: error
+          retention-days: 30
+          include-hidden-files: false

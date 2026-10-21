@@ -1,0 +1,41 @@
+{
+  "base_packet_sha256": "9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09",
+  "files": [
+    {
+      "bytes": 22467,
+      "path": "cache_contrast.py",
+      "sha256": "396804fde3ba9634bba67a92513c680a4e4288103122de24dfb8d7670cbb9617"
+    },
+    {
+      "bytes": 5231,
+      "path": "cache_evidence.py",
+      "sha256": "d21442f74c504b5e7e7984a4d99d200928a287194973a77892d9e1c131994536"
+    },
+    {
+      "bytes": 6934,
+      "path": "inputs/REFERENCE_WORKFLOW.yml",
+      "sha256": "6ac777b761aa67f4a140a622d444905f52c5b4f74a32fec0193301c9aae2459b"
+    },
+    {
+      "bytes": 4532,
+      "path": "prepare_cache_comparison.py",
+      "sha256": "bc5da7bbc69b98b92f0458bf1201e3785bd0605d6be8aa8cd599fe5ef34d700a"
+    },
+    {
+      "bytes": 6224,
+      "path": "run_cache_policy.py",
+      "sha256": "ade0beb4010e104e17fd6b81bef7302007c8e3a3ce17e855b4e415f4a7dc5e4e"
+    },
+    {
+      "bytes": 5185,
+      "path": "stage_cache_results.py",
+      "sha256": "1cfcc2185ddf8264328c96b7530552da376aff8ed4217e6827d76392d007b137"
+    },
+    {
+      "bytes": 19246,
+      "path": "test_cache_policy.py",
+      "sha256": "3fe2ede9be2f87574b0f8c8a31b8e35f757b6698e643b094f46b58a939ee1354"
+    }
+  ],
+  "format": "atlas-grant-cache-policy-source-v1"
+}

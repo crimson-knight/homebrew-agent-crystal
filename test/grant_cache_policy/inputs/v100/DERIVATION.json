@@ -1,0 +1,19 @@
+{
+  "base_packet_sha256": "9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09",
+  "behavior_changed": false,
+  "compiler_flag_delta": [
+    "--no-cache"
+  ],
+  "format": "atlas-cache-policy-derivation-v1",
+  "full_target_cells_accepted": 0,
+  "inline_programs_parsed": 3,
+  "installation_scope": "Exact diagnostic formula source override; ordinary default installation is a separate qualification",
+  "new_manifest_sha256": "0071ce45ef66d490db3954d47b53c6d1e5b7c6018c426afd837be2231afc1ea3",
+  "new_source_rows": 7,
+  "runner_parent": {
+    "path": "run_hosted_contrast.py",
+    "sha256": "177c6951612f517036b1d1fcf9e88c1901b8e7157d6c43d1d3736fc6094ead6a"
+  },
+  "source_fixture_changed": false,
+  "workflow_sha256": "f22137b22c51fa188d08f1bed6fb0390e0d509cf2b687e2d751c93683089927e"
+}

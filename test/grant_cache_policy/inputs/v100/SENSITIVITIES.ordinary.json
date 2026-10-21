@@ -1,0 +1,37 @@
+{
+  "actual_local_compiler_native_container_ssh_workloads": 0,
+  "format": "atlas-grant-cache-policy-independent-sensitivities-v1",
+  "guard_calls": 0,
+  "optimization": 0,
+  "probe_sha256": "ae296b873aa4d9159c736efa3c29ca4860b106c1fcddb3ef11f579efe08abcdf",
+  "results": [
+    {
+      "accepted": true,
+      "case": "positive_missing_comparison",
+      "files": [
+        "CACHE_POLICY_RESULT.json"
+      ]
+    },
+    {
+      "accepted": true,
+      "case": "COMMANDS.json",
+      "file_count": 46
+    },
+    {
+      "accepted": true,
+      "case": "calibration_raw",
+      "file_count": 46
+    },
+    {
+      "accepted": true,
+      "case": "missing_calibration",
+      "file_count": 41
+    },
+    {
+      "case": "changed_core_import_before_admission",
+      "changed_core_code_executed": true,
+      "changed_helper_sha256": "219447736d327756f3bba3cdd7e96889326cc6b574a995c6a91c51de6b71c369",
+      "error": "PEER_CHANGED_CORE_IMPORTED_BEFORE_ADMISSION"
+    }
+  ]
+}

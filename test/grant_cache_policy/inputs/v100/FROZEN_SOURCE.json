@@ -1,0 +1,26 @@
+{
+  "actual_compiler_cache_experiment_runs": 0,
+  "base_source_rows": 215,
+  "changed_compiler_flag": [
+    "--no-cache"
+  ],
+  "core_manifest_sha256": "9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09",
+  "derivation_sha256": "a53e96c188f117bde0940798e76050c4a0d24a4681331445490e25013cc72055",
+  "design_sha256": "db0b94d532daa3e3eee8acd10aaa792dc3df4eb781b21b41896244c4b3b00cdd",
+  "exact_inline_import_controls": 4,
+  "format": "atlas-grant-cache-policy-frozen-source-v1",
+  "full_target_cells_accepted": 0,
+  "installation_scope": "explicit diagnostic formula override",
+  "local_compiler_native_browser_container_ssh_workload_jobs": 0,
+  "new_manifest_sha256": "0071ce45ef66d490db3954d47b53c6d1e5b7c6018c426afd837be2231afc1ea3",
+  "new_source_rows": 7,
+  "passed": true,
+  "private_object_metadata_and_bitcode_roster_required": true,
+  "required_target_cells": 144,
+  "same_grant_source_and_fixture": true,
+  "source_test_cases_per_mode": 22,
+  "source_tests_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_cache_policy_v100_validation/final-strict-cache/SOURCE_TESTS.json",
+  "source_tests_sha256": "367543cb14337f98ce79c4817f7eb11e822a5ae5ec2e0f33b85d6a10ece5c34c",
+  "typed_assignment_identity_parity_required": true,
+  "workflow_sha256": "f22137b22c51fa188d08f1bed6fb0390e0d509cf2b687e2d751c93683089927e"
+}
