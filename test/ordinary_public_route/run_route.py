@@ -8,6 +8,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import stat
 import sys
 import time
 
@@ -25,6 +26,10 @@ CONSUMER=1800
 RETURN_RESERVE=120
 ALIAS=('acrystal','agent-crystal','crystal-alpha')
 CLOCK_PROTOCOL='POSIX_CLOCK_MONOTONIC'
+TAP_METADATA_SECONDS=20
+TAP_METADATA_FILES=512
+TAP_METADATA_MEMBER=8*2**20
+TAP_METADATA_BYTES=64*2**20
 
 def retained_now():
     return time.clock_gettime(time.CLOCK_MONOTONIC)
@@ -60,7 +65,42 @@ def run_command(runner,providers,label,tool,args,cwd,environment,seconds=30,expe
     return value
 
 
-def tap_readback(runner,providers,output,environment,phase):
+def tap_source_observation(tap,output,phase):
+    """Retain bounded source metadata before the unchanged dependency predicate."""
+    need(phase in ('installed','returned','before-bottle','after-bottle','ci-public'),'Fixed tap observation phase required')
+    started=time.monotonic();expected=read(ROOT/'inputs/ALPHA_FILES.json')['files']
+    need(1<=len(expected)<=TAP_METADATA_FILES and len({r['file'] for r in expected})==len(expected),'Finite exact expected tap roster required')
+    result={'format':'ordinary-tap-working-tree-observation-v108','tap':str(tap),'phase':phase,'source_admitted':False,'complete':False,'maximum_seconds':TAP_METADATA_SECONDS,'maximum_entries':TAP_METADATA_FILES,'maximum_member_bytes':TAP_METADATA_MEMBER,'maximum_input_bytes':TAP_METADATA_BYTES,'files':[],'error':None}
+    total=0
+    try:
+        for index,row in enumerate(expected):
+            need(time.monotonic()-started<=TAP_METADATA_SECONDS,'Finite tap source capacity required before each observation')
+            from pathlib import PurePosixPath
+            relative=PurePosixPath(row['file']);need(str(relative)==row['file'] and not relative.is_absolute() and '..' not in relative.parts,'Contained pinned tap source required')
+            path=tap/relative;want={'kind':'regular','bytes':row['bytes'],'sha256':row['sha256'],'mode':0o755 if row['mode']=='100755' else 0o644}
+            entry={'ordinal':index,'file':row['file'],'expected':want,'observed':None,'differences':[],'error':None};result['files'].append(entry)
+            try:
+                need(path.parent.resolve(strict=True)==path.parent,'Physical tap member parent required')
+                info=path.lstat();kind='regular' if stat.S_ISREG(info.st_mode) else 'symlink' if stat.S_ISLNK(info.st_mode) else 'directory' if stat.S_ISDIR(info.st_mode) else 'special'
+                observed={'kind':kind,'mode':stat.S_IMODE(info.st_mode),'bytes':info.st_size,'sha256':None};entry['observed']=observed
+                if kind=='regular':
+                    need(0<=info.st_size<=TAP_METADATA_MEMBER and total+info.st_size<=TAP_METADATA_BYTES,'Finite tap source input capacity required before reading')
+                    item,_=stable(path,TAP_METADATA_MEMBER);total+=item['bytes'];need(total<=TAP_METADATA_BYTES,'Finite complete tap source bytes required');observed.update({k:item[k] for k in ('bytes','sha256','mode')})
+                elif kind=='symlink':observed['target']=os.readlink(path)
+                entry['differences']=[key for key in want if observed.get(key)!=want[key]]
+            except FileNotFoundError as error:entry.update(observed={'kind':'missing'},differences=list(want),error=type(error).__name__+': '+str(error))
+            except Exception as error:entry.update(differences=list(want),error=type(error).__name__+': '+str(error))
+            need(time.monotonic()-started<=TAP_METADATA_SECONDS,'Finite complete tap source observation horizon required')
+        result['complete']=True;result['source_admitted']=all(not row['differences'] and row['error'] is None for row in result['files'])
+    except Exception as error:result['error']=type(error).__name__+': '+str(error)
+    result['observed_input_bytes']=total;result['elapsed_seconds']=time.monotonic()-started
+    if result['elapsed_seconds']>TAP_METADATA_SECONDS:result['complete']=result['source_admitted']=False
+    write(output/('TAP_WORKTREE_'+phase+'.json'),result)
+    need(result['complete'],'Complete bounded tap source observation required')
+    return result
+
+
+def tap_readback(runner,providers,output,environment,phase,require_source=True):
     text,_=run_command(runner,providers,phase+'-tap-root','brew',['--repository','crimson-knight/agent-crystal'],output,environment)
     tap=Path(text.strip()).resolve(strict=True)
     head,_=run_command(runner,providers,phase+'-tap-commit','git',['-C',tap,'rev-parse','HEAD','HEAD^{tree}'],output,environment)
@@ -68,10 +108,33 @@ def tap_readback(runner,providers,output,environment,phase):
     need(head.splitlines()==[ALPHA,tree],'Ordinary default tap must equal reviewed promoted main')
     remote,_=run_command(runner,providers,phase+'-tap-origin','git',['-C',tap,'remote','get-url','origin'],output,environment)
     need(remote.strip() in ('https://github.com/crimson-knight/homebrew-agent-crystal','https://github.com/crimson-knight/homebrew-agent-crystal.git'),'Actual public tap origin required')
-    rows=read(ROOT/'inputs/ALPHA_FILES.json')['files']
-    for row in rows:
-        item,_=stable(tap/row['file']);need(item['sha256']==row['sha256'] and item['bytes']==row['bytes'] and item['mode']==(0o755 if row['mode']=='100755' else 0o644),'Exact ordinary tap working-tree source required')
-    return {'path':str(tap),'commit':ALPHA,'tree':tree,'origin':remote.strip(),'files':rows}
+    need(runner.deadline-time.monotonic()>=TAP_METADATA_SECONDS+2,'Complete tap metadata maximum plus return capacity required')
+    observation=tap_source_observation(tap,output,phase)
+    if require_source:need(observation['source_admitted'],'Exact ordinary tap working-tree source required')
+    return {'path':str(tap),'commit':ALPHA,'tree':tree,'origin':remote.strip(),'files':read(ROOT/'inputs/ALPHA_FILES.json')['files'],'working_tree_source_accepted':observation['source_admitted']}
+
+
+
+def observe_tap_metadata(args,driver,protected,providers):
+    """Observe an ordinary clone without installing or compiling a provider."""
+    output=args.output.absolute();need(output.parent.resolve(strict=True)==output.parent and not output.exists(),'Fresh physical tap metadata workspace required');output.mkdir()
+    started=time.monotonic();runner=driver.Runner(output);runner.deadline=started+330;env=clean_environment()
+    result={'format':'ordinary-public-tap-metadata-v108','passed':False,'observation_complete':False,'ordinary_installation_accepted':False,'SDK_readiness_accepted':False,'frozen_consumer_accepted':False,'native_profile_accepted':False,'actual_default_route_accepted':False,'working_tree_source_accepted':False,'maximum_seconds':360,'return_seconds':30,'job_identity':{k:os.environ.get(k) for k in ('GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT','GITHUB_JOB','GITHUB_SHA','GITHUB_REPOSITORY','RUNNER_NAME')},'finalization_errors':[],'Grant_target_cells_accepted':0}
+    try:
+        need(all(shutil.which(alias) is None for alias in ALIAS),'Fresh ordinary compiler alias absence required for metadata-only observation')
+        text,_=run_command(runner,providers,'initial-formula-absence','brew',['list','--versions','agent-crystal'],output,env,30,1);need(not text.strip(),'Fresh actual formula absence required for metadata-only observation')
+        run_command(runner,providers,'tap-public-default','brew',['tap','crimson-knight/agent-crystal'],output,env,120)
+        tap=tap_readback(runner,providers,output,env,'before-bottle',require_source=False)
+        result['tap']=tap;result['working_tree_source_accepted']=tap['working_tree_source_accepted'];result['observation_complete']=True;result['passed']=True
+    except Exception as error:result['error']=type(error).__name__+': '+str(error)
+    finally:
+        try:
+            revalidate(protected);verify_commands(runner.records,runner.group_observations)
+        except Exception as error:result['passed']=False;result['finalization_errors'].append(type(error).__name__+': '+str(error))
+        result.update(writers_confirmed_retired=runner.writers_confirmed_retired,original_groups=runner.group_observations,observed_providers=providers,source_return_protected=protected,elapsed_seconds=time.monotonic()-started)
+        if result['elapsed_seconds']>360 or not runner.writers_confirmed_retired:result['passed']=False;result['finalization_errors'].append('Complete metadata observation/original return refused')
+        write(output/'OBSERVATION_RESULT.json',result)
+    return 0 if result['passed'] else 2
 
 
 def sdk_return(directory):
@@ -280,10 +343,10 @@ def resume(args,driver,protected,providers):
 
 def main(args):
     driver,protected,providers=get_context(args)
-    return observe(args,driver,protected,providers) if args.mode=='observe' else resume(args,driver,protected,providers)
+    return observe_tap_metadata(args,driver,protected,providers) if args.mode=='tap-metadata' else observe(args,driver,protected,providers) if args.mode=='observe' else resume(args,driver,protected,providers)
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--mode',choices=['observe','resume'],required=True);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--packet-sha256',required=True)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--mode',choices=['observe','resume','tap-metadata'],required=True);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--packet-sha256',required=True)
     for name in ('brew','git','curl','bash','python'):parser.add_argument('--'+name,type=Path,required=True);parser.add_argument('--'+name+'-sha256',required=True)
     parser.add_argument('--sdk-mode',choices=['source','bottle'],default='source');parser.add_argument('--bottle-acceptance',type=Path);parser.add_argument('--bottle-acceptance-sha256')
     parser.add_argument('--admission',type=Path);parser.add_argument('--admission-sha256');raise SystemExit(main(parser.parse_args()))

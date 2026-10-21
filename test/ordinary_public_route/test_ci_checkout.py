@@ -313,5 +313,119 @@ class CICheckoutControls(unittest.TestCase):
         (self.args.route_output/'provider-preparation').mkdir()
         self.assertEqual(self.restore()[0],2);self.assertFalse(self.alias.exists())
 
+
+    def tap_metadata(self):
+        output=self.root/'tap metadata';output.mkdir()
+        return route.tap_source_observation(self.alias,output,'before-bottle'),output
+    def cleanup_unaccepted(self):
+        self.args.preserve_unaccepted_public_clone=True
+        return self.restore()
+    def test_v108_observer_preserves_all_expected_and_actual_metadata(self):
+        self.returned_clone();value,output=self.tap_metadata();self.assertTrue(value['source_admitted']);self.assertTrue(value['complete']);self.assertEqual(len(value['files']),len(support.read(ROOT/'inputs/ALPHA_FILES.json')['files']));self.assertTrue(all(row['expected']==row['observed'] for row in value['files']));self.assertTrue((output/'TAP_WORKTREE_before-bottle.json').is_file())
+    def test_v108_size_mismatch_retains_exact_row(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';path.write_bytes(b'SYNTHETIC changed recipe');value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertIn('bytes',row['differences']);self.assertEqual(row['observed']['bytes'],path.stat().st_size);self.assertEqual(row['observed']['sha256'],support.stable(path)[0]['sha256']);self.assertFalse(value['source_admitted'])
+    def test_v108_same_size_hash_mismatch_is_discriminating(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';raw=path.read_bytes();path.write_bytes(bytes([raw[0]^1])+raw[1:]);value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertEqual(row['differences'],['sha256'])
+    def test_v108_mode_mismatch_retains_octal_integer(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';path.chmod(0o664);value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertEqual(row['differences'],['mode']);self.assertEqual(row['observed']['mode'],0o664);self.assertEqual(row['expected']['mode'],0o644)
+    def test_v108_missing_file_is_retained(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').unlink();value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertEqual(row['observed']['kind'],'missing');self.assertFalse(value['source_admitted'])
+    def test_v108_symlink_metadata_keeps_kind_without_following(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';path.unlink();path.symlink_to(self.source/'fixture.py');value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertEqual(row['observed']['kind'],'symlink');self.assertEqual(row['observed']['target'],str(self.source/'fixture.py'));self.assertIsNone(row['observed']['sha256'])
+    def test_v108_special_kind_observation_is_finite(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';path.unlink();os.mkfifo(path);value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertEqual(row['observed']['kind'],'special');self.assertFalse(value['source_admitted'])
+    def test_v108_directory_kind_is_explicit(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';path.unlink();path.mkdir();value,output=self.tap_metadata();row=next(v for v in value['files'] if v['file']=='Formula/agent-crystal.rb');self.assertEqual(row['observed']['kind'],'directory');self.assertFalse(value['source_admitted'])
+    def test_v108_roster_continues_after_first_mismatch(self):
+        self.returned_clone();first=support.read(ROOT/'inputs/ALPHA_FILES.json')['files'][0]['file'];(self.alias/first).write_bytes(b'SYNTHETIC first source mismatch');value,output=self.tap_metadata();self.assertTrue(value['complete']);self.assertTrue(value['files'][0]['differences']);self.assertEqual(value['files'][-1]['ordinal'],len(value['files'])-1)
+    def test_v108_strict_dependency_admission_stays_false(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').chmod(0o664);output=self.root/'strict metadata';output.mkdir();runner=self.driver.Runner(output)
+        with self.assertRaisesRegex(RuntimeError,'working-tree source'):ci.tap_readback(runner,self.providers,output,{},'ci-public')
+        self.assertFalse(support.read(output/'TAP_WORKTREE_ci-public.json')['source_admitted'])
+    def test_v108_unreviewed_observation_phase_refuses(self):
+        self.returned_clone()
+        with self.assertRaises(RuntimeError):route.tap_source_observation(self.alias,self.root,'arbitrary-path')
+    def test_v108_explicit_cleanup_preserves_unaccepted_source_and_restores_link(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').write_bytes(b'SYNTHETIC changed recipe');before=ci.tree_identity(self.alias);code,value=self.cleanup_unaccepted();self.assertEqual(code,0);self.assertFalse(value['preserved_clone_dependency_source_accepted']);self.assertFalse(value['actual_default_route_accepted']);self.assertTrue(value['CI_checkout_link_restored']);self.assertEqual(ci.tree_identity(self.args.output/'preserved-public-tap'),before)
+    def test_v108_explicit_cleanup_preserves_mode_without_normalizing(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').chmod(0o664);code,value=self.cleanup_unaccepted();self.assertEqual(code,0);self.assertFalse(value['preserved_clone_dependency_source_accepted']);self.assertEqual((self.args.output/'preserved-public-tap/Formula/agent-crystal.rb').stat().st_mode&0o777,0o664)
+    def test_v108_explicit_cleanup_preserves_missing_source_scope(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').unlink();code,value=self.cleanup_unaccepted();self.assertEqual(code,0);self.assertFalse(value['preserved_clone_dependency_source_accepted']);self.assertFalse((self.args.output/'preserved-public-tap/Formula/agent-crystal.rb').exists())
+    def test_v108_cleanup_unreturned_writer_keeps_owned_clone_untouched(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').chmod(0o664);support.write(self.args.route_output/'BOTTLE_RESULT.json',{'writers_confirmed_retired':False});code,value=self.cleanup_unaccepted();self.assertEqual(code,2);self.assertFalse(value['CI_checkout_link_restored']);self.assertTrue(self.alias.is_dir());self.assertFalse(self.alias.is_symlink())
+    def test_v108_cleanup_source_alias_keeps_scope_refused(self):
+        self.returned_clone();(self.alias/'unexpected alias').symlink_to(self.alias/'Formula');self.assertEqual(self.cleanup_unaccepted()[0],2);self.assertFalse((self.args.output/'preserved-public-tap').exists())
+    def test_v108_modeled_pinned_post_contract_returns_after_unaccepted_clone(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').chmod(0o664);self.assertEqual(self.cleanup_unaccepted()[0],0);before=ci.tree_identity(self.workspace);post=(ROOT/'inputs/setup-homebrew/post.sh').read_text();self.assertIn('rm "${STATE_TAP_SYMLINK}"',post);self.assertIn('mv "${GITHUB_WORKSPACE}"/* "${STATE_TAP_SYMLINK}"',post)
+        # Model the pinned rm/mkdir/mv metadata contract under the process guard.
+        self.alias.unlink();self.alias.mkdir()
+        for child in list(self.workspace.iterdir()):child.rename(self.alias/child.name)
+        after=ci.tree_identity(self.alias);self.assertEqual([(x['path'],x['sha256'],x['mode']) for x in before['files']],[(x['path'],x['sha256'],x['mode']) for x in after['files']]);self.assertEqual(list(self.workspace.iterdir()),[]);self.assertTrue((self.args.output/'preserved-public-tap').is_dir())
+    def test_v108_CI_stage_retains_unaccepted_metadata_with_cleanup_success(self):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').chmod(0o664);self.assertEqual(self.cleanup_unaccepted()[0],0);self.stage_fixture()
+        with mock.patch.object(ci,'source_packet',return_value=self.protected):ci.stage(self.args)
+        self.assertFalse(support.read(self.args.stage/'restoration/TAP_WORKTREE_ci-public.json')['source_admitted']);self.assertFalse(any('.git/' in p['path'] for p in support.read(self.args.stage/'PUBLIC_STAGE.json')['files']))
+    def test_v108_hosted_entry_forwards_explicit_cleanup_option(self):
+        import hosted_entry
+        self.args.action='restore-ci-tap';self.args.packet_sha256='a'*64;self.args.preserve_unaccepted_public_clone=True;self.args.review_branch=None;self.args.sdk_mode='source';self.args.output=self.root/'new output';seen=[]
+        with mock.patch.object(hosted_entry,'source_packet',return_value={}),mock.patch.object(hosted_entry,'provider_arguments',return_value=([],{})),mock.patch.object(hosted_entry.runpy,'run_path',side_effect=lambda *a,**k:seen.append(list(sys.argv))):hosted_entry.main(self.args)
+        self.assertIn('--preserve-unaccepted-public-clone',seen[0]);self.assertIn('--route-step-outcomes',seen[0])
+    def test_v108_observer_entry_capacity_refuses_before_scan(self):
+        with mock.patch.object(route,'read',return_value={'files':[{'file':str(i)} for i in range(513)]}),self.assertRaises(RuntimeError):route.tap_source_observation(self.root,self.root,'before-bottle')
+
+
+    def test_v108_observer_member_capacity_precedes_raw_read(self):
+        self.returned_clone();original=route.stable;reads=[]
+        def observed(path,*a,**k):reads.append(Path(path));return original(path,*a,**k)
+        with mock.patch.object(route,'TAP_METADATA_MEMBER',1),mock.patch.object(route,'stable',side_effect=observed):value,output=self.tap_metadata()
+        self.assertEqual(reads,[]);self.assertFalse(value['source_admitted']);self.assertTrue(all(row['error'] for row in value['files']))
+    def test_v108_observer_aggregate_capacity_precedes_every_read(self):
+        self.returned_clone();original=route.stable;read_bytes=[]
+        def observed(path,*a,**k):result=original(path,*a,**k);read_bytes.append(result[0]['bytes']);return result
+        with mock.patch.object(route,'TAP_METADATA_BYTES',10000),mock.patch.object(route,'stable',side_effect=observed):value,output=self.tap_metadata()
+        self.assertLessEqual(sum(read_bytes),10000);self.assertEqual(value['observed_input_bytes'],sum(read_bytes));self.assertFalse(value['source_admitted']);self.assertTrue(any(row['error'] for row in value['files']))
+    def test_v108_observer_expired_horizon_keeps_negative_receipt_before_read(self):
+        self.returned_clone();output=self.root/'expired metadata';output.mkdir()
+        with mock.patch.object(route.time,'monotonic',side_effect=[0,21,21]),mock.patch.object(route,'stable',side_effect=AssertionError('Source member read after exhausted horizon')),self.assertRaises(RuntimeError):route.tap_source_observation(self.alias,output,'before-bottle')
+        value=support.read(output/'TAP_WORKTREE_before-bottle.json');self.assertFalse(value['complete']);self.assertFalse(value['source_admitted']);self.assertEqual(value['files'],[])
+    def test_v108_CI_cleanup_false_admission_preserves_complete_kind_and_identity(self):
+        self.returned_clone();path=self.alias/'Formula/agent-crystal.rb';path.chmod(0o664);before=ci.tree_identity(self.alias);self.assertEqual(self.cleanup_unaccepted()[0],0);meta=support.read(self.args.output/'restoration/TAP_WORKTREE_ci-public.json');row=next(r for r in meta['files'] if r['file']=='Formula/agent-crystal.rb');self.assertEqual(row['observed']['mode'],0o664);after=support.read(self.args.output/'PUBLIC_CLONE_AFTER_RESTORATION.json');self.assertEqual(after['filesystem'],before);self.assertFalse(after['tap']['working_tree_source_accepted'])
+
+
+    def test_v108_observer_requires_full_remaining_metadata_horizon(self):
+        self.returned_clone();output=self.root/'insufficient metadata capacity';output.mkdir();runner=self.driver.Runner(output);runner.deadline=time.monotonic()+1
+        responses=[(str(self.alias)+'\n',''),(route.ALPHA+'\n'+support.read(ROOT/'inputs/ALPHA_MAIN.json')['exact_tree']+'\n',''),('https://github.com/'+ci.REPOSITORY+'\n','')]
+        with mock.patch.object(route,'run_command',side_effect=responses),self.assertRaisesRegex(RuntimeError,'metadata maximum'):route.tap_readback(runner,self.providers,output,{},'ci-public')
+        self.assertFalse((output/'TAP_WORKTREE_ci-public.json').exists())
+
+
+    def metadata_route(self,scenario='normal'):
+        self.returned_clone();(self.alias/'Formula/agent-crystal.rb').chmod(0o664);old=self.driver.Runner;outer=self
+        class MetadataRunner(old):
+            def run(inner,label,argv,**kwargs):
+                mapped=label.replace('before-bottle-tap-','ci-public-tap-');answer=super().run(mapped,argv,**kwargs)
+                if mapped!=label:
+                    for stream in ('stdout','stderr'):(inner.output/(mapped+'.'+stream+'.txt')).rename(inner.output/(label+'.'+stream+'.txt'))
+                    inner.records[-1]['label']=label;support.write(inner.output/'COMMANDS.json',inner.records)
+                if scenario=='unreturned' and label=='before-bottle-tap-origin':inner.writers_confirmed_retired=False;inner.records[-1]['writers_confirmed_retired']=False;inner.group_observations[-1]['status']='present'
+                if scenario=='provider-drift' and label=='before-bottle-tap-origin':Path(outer.providers['brew']['path']).write_bytes(b'SYNTHETIC changed provider')
+                return answer
+        self.args.output=self.root/'metadata observation';code=route.observe_tap_metadata(self.args,types.SimpleNamespace(Runner=MetadataRunner),self.protected,self.providers);return code,support.read(self.args.output/'OBSERVATION_RESULT.json')
+    def test_v108_metadata_only_route_retains_mismatch_and_admits_no_runtime(self):
+        code,value=self.metadata_route();self.assertEqual(code,0);self.assertTrue(value['observation_complete']);self.assertFalse(value['working_tree_source_accepted']);self.assertFalse(value['ordinary_installation_accepted']);self.assertFalse(value['SDK_readiness_accepted']);self.assertFalse(value['actual_default_route_accepted']);rows=support.read(self.args.output/'COMMANDS.json');self.assertEqual([v['label'] for v in rows],['initial-formula-absence','tap-public-default','before-bottle-tap-root','before-bottle-tap-commit','before-bottle-tap-origin']);self.assertEqual(sum(r['maximum_seconds'] for r in rows),240);self.assertTrue(value['writers_confirmed_retired'])
+    def test_v108_metadata_only_route_unreturned_writer_refuses(self):
+        code,value=self.metadata_route('unreturned');self.assertEqual(code,2);self.assertFalse(value['writers_confirmed_retired']);self.assertTrue(value['finalization_errors']);self.assertFalse(value['ordinary_installation_accepted'])
+    def test_v108_metadata_only_route_provider_drift_refuses(self):
+        code,value=self.metadata_route('provider-drift');self.assertEqual(code,2);self.assertTrue(value['finalization_errors']);self.assertFalse(value['ordinary_installation_accepted'])
+    def test_v108_metadata_only_stage_retains_all_per_file_observations(self):
+        code,value=self.metadata_route();self.assertEqual(code,0)
+        import stage_results
+        dest=self.root/'metadata public stage'
+        with mock.patch.object(stage_results,'source_packet',return_value={}):stage_results.stage(self.args.output,dest,support.stable(ROOT/'SOURCE_PINS.json')[0]['sha256'])
+        self.assertFalse(support.read(dest/'TAP_WORKTREE_before-bottle.json')['source_admitted']);self.assertTrue((dest/'OBSERVATION_RESULT.json').is_file());self.assertFalse(support.read(dest/'PUBLIC_STAGE.json')['execution_admitted'])
+    def test_v108_metadata_only_hosted_entry_has_explicit_mode(self):
+        import hosted_entry
+        self.assertEqual(hosted_entry.ENTRIES['tap-metadata'],('run_route.py',['--mode','tap-metadata']));self.assertNotIn('bottle',hosted_entry.ENTRIES['tap-metadata'][1])
+
 if __name__=='__main__':
     result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(CICheckoutControls));print(json.dumps({'tests_run':result.testsRun,'errors':len(result.errors),'failures':len(result.failures),'skips':len(result.skipped),'actual_guard_calls':len(GUARD_CALLS)},sort_keys=True));raise SystemExit(0 if result.wasSuccessful() and not GUARD_CALLS else 2)

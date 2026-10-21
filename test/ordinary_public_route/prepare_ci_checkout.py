@@ -101,7 +101,7 @@ def link_identity(path,workspace):
 def detach(args,driver,protected,providers):
     output=args.output.absolute();need(output.parent.resolve(strict=True)==output.parent and not output.exists(),'Fresh physical CI preparation evidence required');output.mkdir()
     started=time.monotonic();runner=driver.Runner(output);runner.deadline=started+SECONDS;env=clean_environment()
-    result={'format':'ordinary-current-CI-checkout-preparation-v107','passed':False,'checkout_alias_detached':False,'writers_confirmed_retired':False,'original_groups':[],'finalization_errors':[],'actual_default_route_accepted':False}
+    result={'format':'ordinary-current-CI-checkout-preparation-v108','passed':False,'checkout_alias_detached':False,'writers_confirmed_retired':False,'original_groups':[],'finalization_errors':[],'actual_default_route_accepted':False}
     before=workspace=commit=alias=None
     try:
         workspace,commit=current_context(args);result['job_identity']={k:os.environ.get(k) for k in ('GITHUB_REPOSITORY','GITHUB_SHA','GITHUB_WORKSPACE','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT','GITHUB_JOB','RUNNER_NAME')};assert_fresh(runner,providers,output,env,'ci-formula-absence-before')
@@ -205,7 +205,7 @@ def returned_route(directory,outcome_text):
 
 def restore(args,driver,protected,providers):
     output=args.output.resolve(strict=True);directory=output/'restoration';directory.mkdir();started=time.monotonic();runner=driver.Runner(directory);runner.deadline=started+SECONDS;env=clean_environment()
-    result={'format':'ordinary-CI-setup-post-restoration-v107','passed':False,'public_clone_preserved':False,'CI_checkout_link_restored':False,'default_route_evidence_scope':'Recorded before CI setup restoration; original route acceptance stays in its own receipts','finalization_errors':[]}
+    result={'format':'ordinary-CI-setup-post-restoration-v108','passed':False,'public_clone_preserved':False,'CI_checkout_link_restored':False,'actual_default_route_accepted':False,'unaccepted_clone_preservation_requested':getattr(args,'preserve_unaccepted_public_clone',False),'default_route_evidence_scope':'Recorded before CI setup restoration; original route acceptance stays in its own receipts','finalization_errors':[]}
     before=None
     try:
         preparation=read(output/'CI_PREPARATION_RESULT.json');need(preparation['writers_confirmed_retired'] is True,'Preparation writers must return before setup restoration');need(preparation['observed_providers']==providers,'The same exact observed providers must span CI setup restoration')
@@ -220,7 +220,7 @@ def restore(args,driver,protected,providers):
             if alias.exists():
                 need(boundary['results'],'A returned actual default-route result is required before preserving its public clone')
                 physical_directory(alias);need(alias!=workspace and not workspace.is_relative_to(alias) and not alias.is_relative_to(workspace),'Independent public clone must be physically separate from the CI checkout')
-                public=tap_readback(runner,providers,directory,env,'ci-public');need(public['path']==str(alias) and public['commit']==ALPHA,'Exact independently cloned ordinary default tap required')
+                public=tap_readback(runner,providers,directory,env,'ci-public',require_source=not getattr(args,'preserve_unaccepted_public_clone',False));result['preserved_clone_dependency_source_accepted']=public['working_tree_source_accepted'];result['actual_default_route_accepted']=False;need(public['path']==str(alias) and public['commit']==ALPHA,'Exact independently cloned ordinary default tap required')
                 identity=tree_identity(alias);root_stat=alias.stat();root_identity=[root_stat.st_dev,root_stat.st_ino,root_stat.st_mode,root_stat.st_uid]
                 preserved=output/'preserved-public-tap';need(not preserved.exists() and not preserved.is_symlink(),'Fresh owned public clone preservation path required')
                 write(output/'PUBLIC_CLONE_BEFORE_RESTORATION.json',{'tap':public,'root_identity':root_identity,'filesystem':identity})
@@ -257,7 +257,7 @@ def stage(args):
     import importlib.util
     protected=source_packet(args.packet_sha256);source=args.output.resolve(strict=True);need(not args.stage.exists(),'Fresh fixed CI evidence stage required')
     helper=ROOT/'vendor/public_evidence_rules.py';need(stable(helper)[0]['sha256']=='eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed','Exact public evidence rules required');spec=importlib.util.spec_from_file_location('CI_public_rules',helper);rules=importlib.util.module_from_spec(spec);spec.loader.exec_module(rules)
-    selected={'CI_PREPARATION_RESULT.json','CI_CHECKOUT_BEFORE.json','CI_CHECKOUT_AFTER.json','CI_ALIAS_BEFORE.json','CI_RESTORATION_RESULT.json','PUBLIC_CLONE_BEFORE_RESTORATION.json','PUBLIC_CLONE_AFTER_RESTORATION.json'};payload={};started=time.monotonic()
+    selected={'CI_PREPARATION_RESULT.json','CI_CHECKOUT_BEFORE.json','CI_CHECKOUT_AFTER.json','CI_ALIAS_BEFORE.json','CI_RESTORATION_RESULT.json','PUBLIC_CLONE_BEFORE_RESTORATION.json','PUBLIC_CLONE_AFTER_RESTORATION.json','restoration/TAP_WORKTREE_ci-public.json'};payload={};started=time.monotonic()
     for name in tuple(selected):
         if not (source/name).exists():selected.remove(name)
     for folder,result_name in [('', 'CI_PREPARATION_RESULT.json'),('restoration','CI_RESTORATION_RESULT.json')]:
@@ -278,7 +278,7 @@ def stage(args):
     write(args.stage/'PUBLIC_STAGE.json',{'files':[{'path':n,'bytes':len(v),'sha256':sha(v)} for n,v in payload.items()],'preserved_public_clone_uploaded':False,'actual_default_route_acceptance':'Separate original default-route results','source_manifest_sha256':args.packet_sha256,'actual_local_workloads':0});revalidate(protected)
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['detach','restore','stage'],required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--packet-sha256',required=True);p.add_argument('--setup-tap-name');p.add_argument('--setup-repository-path');p.add_argument('--route-output',type=Path);p.add_argument('--route-step-outcomes');p.add_argument('--stage',type=Path)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['detach','restore','stage'],required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--packet-sha256',required=True);p.add_argument('--setup-tap-name');p.add_argument('--setup-repository-path');p.add_argument('--route-output',type=Path);p.add_argument('--route-step-outcomes');p.add_argument('--preserve-unaccepted-public-clone',action='store_true');p.add_argument('--stage',type=Path)
     for name in ('brew','git','curl','bash','python'):p.add_argument('--'+name,type=Path);p.add_argument('--'+name+'-sha256')
     args=p.parse_args()
     if args.mode=='stage':stage(args)

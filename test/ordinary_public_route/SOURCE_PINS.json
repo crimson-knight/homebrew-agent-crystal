@@ -46,9 +46,9 @@
       "sha256": "b01dfc86f927d30755dec9f45faf7a06da2aeccb277b79b4e3523e82e7396767"
     },
     {
-      "bytes": 3687,
+      "bytes": 3933,
       "path": "hosted_entry.py",
-      "sha256": "17792785e7411eb0b626f3abe739c8f5968988dde925c0065e0b6f5b83c6b5bb"
+      "sha256": "43dc98348257c22071fb623f3d20477f4b80e388815b1aed7a06340b7993153f"
     },
     {
       "bytes": 5800,
@@ -121,9 +121,9 @@
       "sha256": "b23df85c36237cfc0c36c75f857671d51429b2fce95d52324bddd8178f0f37ff"
     },
     {
-      "bytes": 25755,
+      "bytes": 26217,
       "path": "prepare_ci_checkout.py",
-      "sha256": "21ee97a972ee558875b2f4ad5e76e24e560814e5d6b42df66e30b956c3ec1cbf"
+      "sha256": "f4e45ea9350fd3d385bda6c3bb3adc6198e453fcef76e4db3138d4a2bf8032ae"
     },
     {
       "bytes": 8867,
@@ -136,24 +136,24 @@
       "sha256": "a496f0fea9a73c3f4d0486687b3b7e90aa3610d76b32cb6498841ed6d7603206"
     },
     {
-      "bytes": 27676,
+      "bytes": 34129,
       "path": "run_route.py",
-      "sha256": "f24e3ff7d7a4cceb4d7da852af8995d734bb0ea3b9fbf53214a17cf7979433d5"
+      "sha256": "9379c4bd8fe2b812cb2d86075e55063e05fae7a2807e94c3a7315d014195b77f"
     },
     {
       "bytes": 5533,
       "path": "run_source_controls.py",
-      "sha256": "8b1c2caf1edfc58b761629fd8c6eb1b0a74117f6cf0ff8262008c0d4fafdc087"
+      "sha256": "8429e0ffc6250b69b9d60a248b2c9f630b968015c88c2d208cef44beab09f72c"
     },
     {
-      "bytes": 7367,
+      "bytes": 7493,
       "path": "stage_results.py",
-      "sha256": "31b304baf628ebf65987d250bcc56b8daa61fc036e23f0df8c2f4072103e7818"
+      "sha256": "62036848ee59c7128533065b6642fd1f6f4631b4d82922cd26e39aa92cfa1ed0"
     },
     {
-      "bytes": 29900,
+      "bytes": 45782,
       "path": "test_ci_checkout.py",
-      "sha256": "e06eaa2536a4b7d6c4c0c6dd99da9645b573b1dcc27dea8c16eb23f1a5e50ffa"
+      "sha256": "a6f8e5bbf79986d34ce28573b6c4b63085a816a97b04201cc54c7901df8b2d87"
     },
     {
       "bytes": 5213,
@@ -200,6 +200,5 @@
       "path": "write_consumer_lock.rb",
       "sha256": "6b1e54f2d9c85d890ed8122ec7db80d280818f4d812154947dcb4381359c7882"
     }
-  ],
-  "format": "ordinary-public-route-source-manifest-v107"
+  ]
 }

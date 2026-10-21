@@ -1,4 +1,4 @@
-name: Qualified Alpha bottle preparation
+name: Ordinary public tap metadata and setup return
 on:
   workflow_dispatch:
 permissions: {}
@@ -6,19 +6,19 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ROUTE_SOURCE: test/ordinary_public_route
-  ATLAS_ROUTE_PACKET_SHA256: 6994f5358c544e3653cc13aca608d7e53e3378a85ffbc4b42a048e8454d06075
+  ATLAS_ROUTE_PACKET_SHA256: 9dfde48bcca883541ff392f667a408c996e10151e86743db386213724794f57f
   ATLAS_ROUTE_LAUNCH_SHA256: b23df85c36237cfc0c36c75f857671d51429b2fce95d52324bddd8178f0f37ff
 jobs:
-  prepare-public-bottle:
-    name: Prepare returned source-qualified bottle on ${{ matrix.os }}
+  observe-public-tap:
+    name: Observe ordinary source metadata on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 100
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
         os: [macos-26, ubuntu-24.04]
     steps:
-      - name: Check out the reviewed bottle preparation
+      - name: Check out the reviewed metadata observation
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
@@ -54,23 +54,23 @@ jobs:
           SETUP_REPOSITORY_PATH: ${{ steps.homebrew_setup.outputs.repository-path }}
         run: |
           python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action detach-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation"
-      - name: Build using the ordinary Homebrew bottle interface and qualify the SDK
-        id: bottle
-        timeout-minutes: 77
+      - name: Observe the ordinary clone and each pinned source member
+        id: observation
+        timeout-minutes: 7
         run: |
-          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action bottle --output "$RUNNER_TEMP/ordinary-bottle"
-      - name: Stage the fixed source provider and bottle artifact roster
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action tap-metadata --output "$RUNNER_TEMP/ordinary-tap-observation"
+      - name: Stage fixed metadata and complete source evidence
         id: result_stage
-        if: ${{ always() && steps.bottle.outcome != 'skipped' }}
+        if: ${{ always() && steps.observation.outcome != 'skipped' }}
         timeout-minutes: 2
         run: |
-          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint stage_results.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --source "$RUNNER_TEMP/ordinary-bottle" --output "$RUNNER_TEMP/ordinary-bottle-artifact"
-      - name: Return the exact bottle archive JSON recipe and SDK evidence
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint stage_results.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --source "$RUNNER_TEMP/ordinary-tap-observation" --output "$RUNNER_TEMP/ordinary-tap-observation-artifact"
+      - name: Return exact ordinary tap metadata and source evidence
         if: ${{ always() && steps.result_stage.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: ordinary-bottle-preparation-${{ matrix.os }}
-          path: ${{ runner.temp }}/ordinary-bottle-artifact
+          name: ordinary-tap-observation-preparation-${{ matrix.os }}
+          path: ${{ runner.temp }}/ordinary-tap-observation-artifact
           if-no-files-found: error
           include-hidden-files: false
           retention-days: 30
@@ -81,9 +81,9 @@ jobs:
         env:
           SETUP_TAP_NAME: ${{ steps.homebrew_setup.outputs.tap-name }}
           SETUP_REPOSITORY_PATH: ${{ steps.homebrew_setup.outputs.repository-path }}
-          ROUTE_STEP_OUTCOMES: '{"bottle":"${{ steps.bottle.outcome }}"}'
+          ROUTE_STEP_OUTCOMES: '{"observation":"${{ steps.observation.outcome }}","preparation":"skipped","consumer":"skipped"}'
         run: |
-          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action restore-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation" --route-output "$RUNNER_TEMP/ordinary-bottle" --route-step-outcomes "$ROUTE_STEP_OUTCOMES"
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action restore-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation" --route-output "$RUNNER_TEMP/ordinary-tap-observation" --route-step-outcomes "$ROUTE_STEP_OUTCOMES" --preserve-unaccepted-public-clone
       - name: Stage the fixed CI transition and original return metadata
         id: ci_stage
         if: ${{ always() && steps.ci_detach.outcome != 'skipped' }}
