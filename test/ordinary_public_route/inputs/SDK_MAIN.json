@@ -1,0 +1,22 @@
+{
+  "format": "atlas-sdk-default-main-source-promotion-v1",
+  "passed": true,
+  "main_commit": "6aaf4f953189c051bf11543e64d4c9f3f36e2cd3",
+  "exact_tree": "88ab26938f5db7c0a7ebe62f319dd11a81b86944",
+  "accepted_source_commit": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
+  "anonymous_archive": {
+    "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/6aaf4f953189c051bf11543e64d4c9f3f36e2cd3",
+    "bytes": 8369702,
+    "sha256": "bc00034341a83eb483c21b55d119e006c814fe23c54e1111ff42c525fcef35f6",
+    "tar_headers": 174
+  },
+  "all140_source_Git_blobs_and_modes_equal": true,
+  "prerequisite_merges": [
+    3,
+    2,
+    1
+  ],
+  "versioned_release_published": false,
+  "ordinary_default_consumer_qualified": false,
+  "actual_local_workload_jobs": 0
+}

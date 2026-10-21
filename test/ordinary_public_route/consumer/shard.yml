@@ -1,0 +1,11 @@
+name: public_budget_consumer
+version: 0.1.0
+description: Public default installation and frozen SDK dependency consumer.
+license: MIT
+repository: https://github.com/crimson-knight/homebrew-agent-crystal
+crystal: ">= 1.21.0, < 2.0.0"
+dependencies:
+  memory_budget:
+    github: amberframework/memory_budget
+    version: "0.1.1"
+    commit: 6aaf4f953189c051bf11543e64d4c9f3f36e2cd3

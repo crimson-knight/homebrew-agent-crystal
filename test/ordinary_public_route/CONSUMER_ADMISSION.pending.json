@@ -1,0 +1,12 @@
+{
+  "alpha_commit": "86ff489e927bf2f970abfb0f5bdca2d42f32beca",
+  "execution_admitted": false,
+  "format": "public-default-frozen-consumer-admission-v1",
+  "pending": [
+    "Actual installed compiler/native/Git/Minecart source/provider review",
+    "Schema-3 profile with independent SHA-256",
+    "Actual one-package public SDK frozen install",
+    "Separate Amber/Grant/adapter/Micrate graph and package-script-order proof"
+  ],
+  "sdk_commit": "6aaf4f953189c051bf11543e64d4c9f3f36e2cd3"
+}

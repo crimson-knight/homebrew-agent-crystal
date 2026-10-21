@@ -1,0 +1,165 @@
+{
+  "files": [
+    {
+      "bytes": 4583,
+      "file": ".github/workflows/autobump.yml",
+      "git_blob": "3e379cb59fba86d5589c55009ebf764fa1c1755c",
+      "mode": "100644",
+      "sha256": "10df5ec1dce84c9cdaeec82bf81a4883406d55cfb6c1fa417cd9d2b59f9048c7"
+    },
+    {
+      "bytes": 7973,
+      "file": ".github/workflows/formula-ci.yml",
+      "git_blob": "48b063da3f10c17ec4e70b4475be6674339bc6b6",
+      "mode": "100644",
+      "sha256": "8d16f96e30630060ce185b5e79a7776c8235e1b887af5dd6a47ddeaab777ad32"
+    },
+    {
+      "bytes": 6565,
+      "file": "Formula/agent-crystal.rb",
+      "git_blob": "8cdaf005f53418bebd71afad931a7ca7e1dbb511",
+      "mode": "100644",
+      "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67"
+    },
+    {
+      "bytes": 1869,
+      "file": "README.md",
+      "git_blob": "6aef7300d5c609d2dd391ed397955f66fae01e3f",
+      "mode": "100644",
+      "sha256": "eeabfc9d452959d4f62f2e7af6713616d9a9d258c8e3e9292f14f833be010542"
+    },
+    {
+      "bytes": 3922,
+      "file": "install.sh",
+      "git_blob": "fc295dc89973227376a4ebb775bbe83176ef18b6",
+      "mode": "100755",
+      "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb"
+    },
+    {
+      "bytes": 4311,
+      "file": "test/RUNTIME_CRYPTO_API_SOURCE.json",
+      "git_blob": "6e1e1840047788c6cae8e03c1c96d448b882fbc9",
+      "mode": "100644",
+      "sha256": "d7b37d8a2b67b7325c10e0e750a05f6f72886971bcf064d472d9c9fb10452923"
+    },
+    {
+      "bytes": 16083,
+      "file": "test/SDK_READINESS.md",
+      "git_blob": "0fcaec3b98d6c7d626211d1de91b42e4e7be726e",
+      "mode": "100644",
+      "sha256": "567db9f291bf7abbd7ee7bc83a4f328dde0ccfa3d3a8af8b246fe0079cda793a"
+    },
+    {
+      "bytes": 19576,
+      "file": "test/install_test.rb",
+      "git_blob": "b21b3e4bfb1ae5adb22fd821619e13b774fd1800",
+      "mode": "100644",
+      "sha256": "99b9b753f4194f7e744d98bb42c991033909b15373c2d2b79eccb3e7a40111a0"
+    },
+    {
+      "bytes": 31787,
+      "file": "test/linux_native_projection.py",
+      "git_blob": "5c440e07bcd706a7da26720be4929b11d1fbb9e5",
+      "mode": "100644",
+      "sha256": "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+    },
+    {
+      "bytes": 9053,
+      "file": "test/linux_projection_identity.py",
+      "git_blob": "ebd826923f0b8e09e767319264a63e926bbbd388",
+      "mode": "100644",
+      "sha256": "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb"
+    },
+    {
+      "bytes": 3541,
+      "file": "test/runtime_library_paths_formula_test.rb",
+      "git_blob": "58dfab7e571401fc13b1c7aefa8b0289863a9361",
+      "mode": "100644",
+      "sha256": "8f77f3d65189841c5ccb853bd3805e64943a312e9a3238819e90e581fab4d16f"
+    },
+    {
+      "bytes": 26850,
+      "file": "test/sdk_cpu_diagnostic.py",
+      "git_blob": "49ecbe2df9b49596ccbb60eb07f28f575e0d99f1",
+      "mode": "100644",
+      "sha256": "aa6626c9fdca4a3bc9c3276084a8015d2075fa3eb5bff4a1bebcbd0846ddb2e5"
+    },
+    {
+      "bytes": 51460,
+      "file": "test/sdk_install_qualification.py",
+      "git_blob": "3a7817e6f0b7c570b6c2003d58b3e317599558dd",
+      "mode": "100644",
+      "sha256": "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227"
+    },
+    {
+      "bytes": 18975,
+      "file": "test/sdk_owned_group_controls.py",
+      "git_blob": "d9d6f4601af5790a4b471286b42ce8a24a1c7fd6",
+      "mode": "100644",
+      "sha256": "83bbb3a597462918e303be4b62e9bfbb6be4c8ac9b8d39734d0fdd0217a8c436"
+    },
+    {
+      "bytes": 41187,
+      "file": "test/sdk_source_lock.json",
+      "git_blob": "25f1245e0ddd4885c986d20223d606d12d7133cc",
+      "mode": "100644",
+      "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f"
+    },
+    {
+      "bytes": 13917,
+      "file": "test/test_sdk_bounded_diagnostic.py",
+      "git_blob": "6d36eb7f994c4969250dc472f6616286eacd2805",
+      "mode": "100644",
+      "sha256": "35d7f80f962276b1faf418f61f1f3d5fdf6de8d30a3501bb7007ed793c9c3fa6"
+    },
+    {
+      "bytes": 9350,
+      "file": "test/test_sdk_bundle_boundary.py",
+      "git_blob": "87a767203f467c0ecf313375891066dcae990f21",
+      "mode": "100644",
+      "sha256": "c1c14182e6d1f048040d518e18af4538a5eb881ea926298df20422c3a361cf5e"
+    },
+    {
+      "bytes": 16997,
+      "file": "test/test_sdk_cpu_diagnostic.py",
+      "git_blob": "21febea104f3694cf15d3952f861e44b9ce32789",
+      "mode": "100644",
+      "sha256": "79000fa9848c6b0d75f7ca619790b77f661de987e07121be0740518221ea5d3e"
+    },
+    {
+      "bytes": 12291,
+      "file": "test/test_sdk_diagnostic_successor.py",
+      "git_blob": "27cdc26143cf27bf7878e20a396658e6d45920b6",
+      "mode": "100644",
+      "sha256": "ef09331548f9482e3d938a500c85bf25d0a707d4389f78432f3d28fc31c98b5a"
+    },
+    {
+      "bytes": 20843,
+      "file": "test/test_sdk_install_qualification.py",
+      "git_blob": "4ea43c58b7255fb23fbddbb8eb707b9d07410b19",
+      "mode": "100644",
+      "sha256": "f9ffda291d796e31c92eb3c995252f1b58839e7b08edd54b9d8006ef8227ebcf"
+    },
+    {
+      "bytes": 19280,
+      "file": "test/test_sdk_linux_projection.py",
+      "git_blob": "ce83cd08bbb8bcf1643c65abf022d7cf7a5834c9",
+      "mode": "100644",
+      "sha256": "2abbdc67d678c95b0da3f6e9c32a95fc4a635fabdf2635bffff359ee93754012"
+    },
+    {
+      "bytes": 8779,
+      "file": "test/test_sdk_owned_group_controls.py",
+      "git_blob": "e2bf7ec152f1bc9eb53187e27f33ecf31aab43cb",
+      "mode": "100644",
+      "sha256": "5c7555ef491ecc4fe949e00da7ca6007150132b56d4ed0cc8d419a560ff1f19c"
+    },
+    {
+      "bytes": 22368,
+      "file": "test/test_sdk_runtime_library_paths.py",
+      "git_blob": "dba4c6fd9897f1d7dbc1c72f704100ddfae16ffe",
+      "mode": "100644",
+      "sha256": "9690dbb7214f16542cc891f852333024a9cde68c3c066069097aadf7519bfedd"
+    }
+  ]
+}

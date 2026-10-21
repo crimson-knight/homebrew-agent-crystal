@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  memory_budget:
+    git: https://github.com/amberframework/memory_budget.git
+    version: 0.1.1+git.commit.6aaf4f953189c051bf11543e64d4c9f3f36e2cd3
+    checksum: git-tree:88ab26938f5db7c0a7ebe62f319dd11a81b86944

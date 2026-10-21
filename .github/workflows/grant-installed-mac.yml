@@ -1,0 +1,88 @@
+name: Qualified Alpha bottle preparation
+on:
+  workflow_dispatch:
+permissions: {}
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  PYTHONDONTWRITEBYTECODE: 1
+  ROUTE_SOURCE: test/ordinary_public_route
+  ATLAS_ROUTE_PACKET_SHA256: 215fd3c3d091fef0e36fb47fd2674f18ab99f615ec5342fa8b8db2d6c4a20029
+  ATLAS_ROUTE_LAUNCH_SHA256: f7e1f24a80dbcbdad72a3d1bbbc9ff9196935994ea3c730e178ee4855170ec5f
+jobs:
+  prepare-public-bottle:
+    name: Prepare returned source-qualified bottle on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 85
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, ubuntu-24.04]
+    steps:
+      - name: Check out the reviewed bottle preparation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+      - name: Verify the bounded source packet and fixture controls
+        id: source_controls
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, os, pathlib, runpy, sys
+          root = pathlib.Path(os.environ['ROUTE_SOURCE']).resolve()
+          launch = root / 'launch.py'
+          if launch.is_symlink() or hashlib.sha256(launch.read_bytes()).hexdigest() != os.environ['ATLAS_ROUTE_LAUNCH_SHA256']:
+              raise SystemExit('Reviewed bootstrap launcher differs')
+          ruby = pathlib.Path('/usr/bin/ruby').resolve()
+          if not ruby.is_file():
+              raise SystemExit('Actual supported Ruby launcher unavailable')
+          python = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(launch), '--entrypoint', 'run_source_controls.py', '--packet-sha256', os.environ['ATLAS_ROUTE_PACKET_SHA256'],
+              '--output', str(pathlib.Path(os.environ['RUNNER_TEMP']) / 'ordinary-source-controls'),
+              '--python', str(python), '--python-sha256', hashlib.sha256(python.read_bytes()).hexdigest(),
+              '--ruby', str(ruby), '--ruby-sha256', hashlib.sha256(ruby.read_bytes()).hexdigest()]
+          runpy.run_path(str(launch), run_name='__main__')
+          PYTHON
+      - name: Build using the ordinary Homebrew bottle interface and qualify the SDK
+        id: bottle
+        timeout-minutes: 77
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action bottle --output "$RUNNER_TEMP/ordinary-bottle"
+      - name: Stage the fixed source provider and bottle artifact roster
+        id: result_stage
+        if: ${{ always() && steps.bottle.outcome != 'skipped' }}
+        timeout-minutes: 2
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint stage_results.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --source "$RUNNER_TEMP/ordinary-bottle" --output "$RUNNER_TEMP/ordinary-bottle-artifact"
+      - name: Return the exact bottle archive JSON recipe and SDK evidence
+        if: ${{ always() && steps.result_stage.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: ordinary-bottle-preparation-${{ matrix.os }}
+          path: ${{ runner.temp }}/ordinary-bottle-artifact
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 30
+      - name: Preserve the exact bounded source-control receipt
+        if: ${{ always() && steps.source_controls.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        with:
+          name: ordinary-source-controls-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/ordinary-source-controls/SOURCE_CONTROL_RESULT.json
+            ${{ runner.temp }}/ordinary-source-controls/COMMANDS.json
+            ${{ runner.temp }}/ordinary-source-controls/Python-ordinary.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Python-ordinary.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/Python-optimized.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Python-optimized.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-provider.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-provider.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-writer.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-writer.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/fetch-public-source-fixtures.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/fetch-public-source-fixtures.stderr.txt
+          if-no-files-found: warn
+          include-hidden-files: false
+          retention-days: 30

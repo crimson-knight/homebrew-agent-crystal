@@ -1,0 +1,18 @@
+{
+  "format": "atlas-alpha-default-main-source-promotion-v1",
+  "passed": true,
+  "main_commit": "86ff489e927bf2f970abfb0f5bdca2d42f32beca",
+  "accepted_feature_commit": "e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32",
+  "exact_tree": "c2ba279e208af7a5b0e837ffbf869b2d062c609c",
+  "anonymous_archive": {
+    "url": "https://codeload.github.com/crimson-knight/homebrew-agent-crystal/tar.gz/86ff489e927bf2f970abfb0f5bdca2d42f32beca",
+    "bytes": 95351,
+    "sha256": "1fc53c2285e208497bf3cb58fb6b36a4ec44eb4ea4a14442766ee9cce7aaccc4",
+    "headers": 28
+  },
+  "all23_source_Git_blobs_and_modes_equal": true,
+  "formula_revision": 2,
+  "SDK_source_lock": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
+  "ordinary_default_channel_replay_accepted": false,
+  "actual_local_workload_jobs": 0
+}
