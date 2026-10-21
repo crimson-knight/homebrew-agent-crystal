@@ -1,0 +1,43 @@
+{
+  "format": "Git-source-permission-contract-v110",
+  "historical_fixture_mapping": {
+    "CICheckoutControls": "All93 original bodies run exact under explicit source_modes.HISTORICAL_POLICY in setUp. Source permission safety changes have separate production-policy controls.",
+    "PublicRouteControls": "All37 original bodies remain exact and active.",
+    "PublicationControls": "All33 v109 bodies remain exact and active.",
+    "SourceModeControls": "All35 new bodies use the current production policy and physically owned source nodes.",
+    "production_default": "git-executable-owned-permission-profiles-v110"
+  },
+  "observed_umask_causality_proved": false,
+  "primary_sources": [
+    {
+      "manual_version": "2.55.0",
+      "meaning": "Regular Git index entries encode 0644 or 0755; actual working tree owner/group and other permissions are distinct filesystem facts.",
+      "section": "Index entry",
+      "url": "https://git-scm.com/docs/gitformat-index"
+    },
+    {
+      "manual_version": "2.56.0",
+      "meaning": "Git compares the executable bit when honoring file mode; this proposal keeps the actual executable class strict.",
+      "section": "core.fileMode",
+      "url": "https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode"
+    },
+    {
+      "manual_version": "2.54.0",
+      "meaning": "Archive permission restriction defaults to 0002, with user as a separate option. The current actual Ubuntu causal source remains unproved.",
+      "section": "tar.umask",
+      "url": "https://git-scm.com/docs/git-archive#Documentation/git-archive.txt-tarumask"
+    }
+  ],
+  "profiles": {
+    "100644": {
+      "002": 436,
+      "022": 420,
+      "077": 384
+    },
+    "100755": {
+      "002": 509,
+      "022": 493,
+      "077": 448
+    }
+  }
+}

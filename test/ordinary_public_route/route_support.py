@@ -28,7 +28,7 @@ def stable(path,maximum=LIMIT):
 def source_packet(expected):
     manifest=ROOT/'SOURCE_PINS.json';row,raw=stable(manifest,1024*1024)
     need(row['sha256']==expected,'Exact externally selected route manifest required')
-    rows=json.loads(raw)['files'];need(1<=len(rows)<=40 and len({r['path'] for r in rows})==len(rows),'Finite unique route source roster required')
+    rows=json.loads(raw)['files'];need(1<=len(rows)<=48 and len({r['path'] for r in rows})==len(rows),'Finite unique route source roster required')
     protected={str(manifest):expected}
     for row in rows:
         name=PurePosixPath(row['path']);need(str(name)==row['path'] and not name.is_absolute() and '..' not in name.parts,'Contained source path required')

@@ -1,0 +1,22 @@
+{
+  "files": {
+    "metadata_supervisor.py": {
+      "bytes": 49665,
+      "sha256": "f6b709e32790ad89a160910afac03beeffa5f160d7b06af4027ceae9f98da396"
+    },
+    "run_capacity_controls.py": {
+      "bytes": 7231,
+      "sha256": "0cc0b3cb0885f869ab286dcb903372022d33fc9db29c4b0b95000ad76994f318"
+    },
+    "test_archive_capacity.py": {
+      "bytes": 9127,
+      "sha256": "a638b146243631be2768de4628c8e66713a42764ec489b932235ae96f3706cbb"
+    },
+    "test_provider_admission.py": {
+      "bytes": 3260,
+      "sha256": "123fe8967051f7f8d78e8f19f8c2a987f1f0a74c97721f92d0832ca9e81cbea4"
+    }
+  },
+  "format": "ordinary-public-route-capacity-source-v113",
+  "route_manifest_sha256": "32d56200605cc152a11b96878077669bd703a192ed59c8a6e33bfc13f6cc102f"
+}

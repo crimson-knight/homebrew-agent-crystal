@@ -1,4 +1,4 @@
-"""Fetch two immutable public SDK source archives for guarded source controls."""
+"""Fetch immutable public SDK and compiler source archives for guarded source controls."""
 import argparse
 import json
 from pathlib import Path
@@ -8,12 +8,14 @@ from route_support import need,sha,write
 
 FIXTURES=(('sdk58c.tar.gz','58c20acfed71e27cbcf207014f29d7c7b53dab18',8369770,'3a6d9c982ece74ef3b72eea0e2569bbfe31cd1767b3c4c7e8723d8f5f6d4b9bf'),('sdk-main.tar.gz','6aaf4f953189c051bf11543e64d4c9f3f36e2cd3',8369702,'bc00034341a83eb483c21b55d119e006c814fe23c54e1111ff42c525fcef35f6'))
 
+FIXTURES += (('compiler-source.tar.gz','v1.21.0-incremental-1',4435186,'2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05'),)
+
 def fetch(destination,opener=urllib.request.urlopen,clock=time.monotonic):
     need(destination.parent.resolve(strict=True)==destination.parent and not destination.exists(),'Fresh physical fixture destination required')
     started=clock();payload=[];rows=[]
     for name,commit,size,digest in FIXTURES:
         need(clock()-started<80,'Complete fixture fetch deadline exceeded')
-        url='https://codeload.github.com/amberframework/memory_budget/tar.gz/'+commit
+        url=('https://codeload.github.com/crimson-knight/crystal/tar.gz/refs/tags/'+commit) if name=='compiler-source.tar.gz' else 'https://codeload.github.com/amberframework/memory_budget/tar.gz/'+commit
         with opener(url,timeout=10) as stream:
             raw=bytearray()
             while True:

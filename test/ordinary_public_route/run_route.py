@@ -11,6 +11,7 @@ import shutil
 import stat
 import sys
 import time
+import source_modes
 
 from route_support import ROOT,need,sha,read,write,stable,source_packet,revalidate,load_driver,inventory,catalog,verify_commands,extract_provider
 
@@ -66,11 +67,11 @@ def run_command(runner,providers,label,tool,args,cwd,environment,seconds=30,expe
 
 
 def tap_source_observation(tap,output,phase):
-    """Retain bounded source metadata before the unchanged dependency predicate."""
+    """Retain exact source metadata and separately evaluate owned Git mode profiles."""
     need(phase in ('installed','returned','before-bottle','after-bottle','ci-public'),'Fixed tap observation phase required')
     started=time.monotonic();expected=read(ROOT/'inputs/ALPHA_FILES.json')['files']
     need(1<=len(expected)<=TAP_METADATA_FILES and len({r['file'] for r in expected})==len(expected),'Finite exact expected tap roster required')
-    result={'format':'ordinary-tap-working-tree-observation-v108','tap':str(tap),'phase':phase,'source_admitted':False,'complete':False,'maximum_seconds':TAP_METADATA_SECONDS,'maximum_entries':TAP_METADATA_FILES,'maximum_member_bytes':TAP_METADATA_MEMBER,'maximum_input_bytes':TAP_METADATA_BYTES,'files':[],'error':None}
+    result={'format':'ordinary-tap-working-tree-observation-v110','source_permission_policy':source_modes.DEFAULT_POLICY,'tap':str(tap),'phase':phase,'source_admitted':False,'complete':False,'maximum_seconds':TAP_METADATA_SECONDS,'maximum_entries':TAP_METADATA_FILES,'maximum_member_bytes':TAP_METADATA_MEMBER,'maximum_input_bytes':TAP_METADATA_BYTES,'files':[],'error':None}
     total=0
     try:
         for index,row in enumerate(expected):
@@ -82,16 +83,24 @@ def tap_source_observation(tap,output,phase):
             try:
                 need(path.parent.resolve(strict=True)==path.parent,'Physical tap member parent required')
                 info=path.lstat();kind='regular' if stat.S_ISREG(info.st_mode) else 'symlink' if stat.S_ISLNK(info.st_mode) else 'directory' if stat.S_ISDIR(info.st_mode) else 'special'
+                entry['observed_security']={'uid':info.st_uid,'gid':info.st_gid,'link_count':info.st_nlink,'current_uid':os.getuid(),'current_groups':sorted(set([os.getgid(),*os.getgroups()]))}
                 observed={'kind':kind,'mode':stat.S_IMODE(info.st_mode),'bytes':info.st_size,'sha256':None};entry['observed']=observed
                 if kind=='regular':
                     need(0<=info.st_size<=TAP_METADATA_MEMBER and total+info.st_size<=TAP_METADATA_BYTES,'Finite tap source input capacity required before reading')
-                    item,_=stable(path,TAP_METADATA_MEMBER);total+=item['bytes'];need(total<=TAP_METADATA_BYTES,'Finite complete tap source bytes required');observed.update({k:item[k] for k in ('bytes','sha256','mode')})
+                    item,raw=stable(path,TAP_METADATA_MEMBER);total+=item['bytes'];need(total<=TAP_METADATA_BYTES,'Finite complete tap source bytes required');observed.update({k:item[k] for k in ('bytes','sha256','mode')})
+                    need(source_modes.physical_identity(info)==source_modes.physical_identity(path.lstat()),'Complete source permission/read identity must remain stable')
+                    entry['permission']=source_modes.observe(info,row['mode'])
+                    git_blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest();entry['expected_git_blob']=row['git_blob'];entry['observed_git_blob']=git_blob
+                    entry['git_blob_matches']=git_blob==row['git_blob']
                 elif kind=='symlink':observed['target']=os.readlink(path)
                 entry['differences']=[key for key in want if observed.get(key)!=want[key]]
+                entry['admission_differences']=[key for key in entry['differences'] if key!='mode']
+                if not entry.get('permission',{}).get('accepted',False):entry['admission_differences'].append('permission')
+                if not entry.get('git_blob_matches',False):entry['admission_differences'].append('git_blob')
             except FileNotFoundError as error:entry.update(observed={'kind':'missing'},differences=list(want),error=type(error).__name__+': '+str(error))
             except Exception as error:entry.update(differences=list(want),error=type(error).__name__+': '+str(error))
             need(time.monotonic()-started<=TAP_METADATA_SECONDS,'Finite complete tap source observation horizon required')
-        result['complete']=True;result['source_admitted']=all(not row['differences'] and row['error'] is None for row in result['files'])
+        result['complete']=True;result['source_admitted']=all(not row.get('admission_differences',row['differences']) and row['error'] is None for row in result['files'])
     except Exception as error:result['error']=type(error).__name__+': '+str(error)
     result['observed_input_bytes']=total;result['elapsed_seconds']=time.monotonic()-started
     if result['elapsed_seconds']>TAP_METADATA_SECONDS:result['complete']=result['source_admitted']=False
@@ -111,7 +120,11 @@ def tap_readback(runner,providers,output,environment,phase,require_source=True):
     need(runner.deadline-time.monotonic()>=TAP_METADATA_SECONDS+2,'Complete tap metadata maximum plus return capacity required')
     observation=tap_source_observation(tap,output,phase)
     if require_source:need(observation['source_admitted'],'Exact ordinary tap working-tree source required')
-    return {'path':str(tap),'commit':ALPHA,'tree':tree,'origin':remote.strip(),'files':read(ROOT/'inputs/ALPHA_FILES.json')['files'],'working_tree_source_accepted':observation['source_admitted']}
+    result={'path':str(tap),'commit':ALPHA,'tree':tree,'origin':remote.strip(),'files':read(ROOT/'inputs/ALPHA_FILES.json')['files'],'working_tree_source_accepted':observation['source_admitted']}
+    if source_modes.DEFAULT_POLICY==source_modes.POLICY:
+        result['source_permission_policy']=source_modes.POLICY
+        result['actual_source_files']=[{'file':row['file'],'observed':row['observed'],'security':row.get('observed_security')} for row in observation['files']]
+    return result
 
 
 

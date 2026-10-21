@@ -7,6 +7,7 @@ import re
 import stat
 import sys
 import time
+import source_modes
 from route_support import ROOT,need,read,write,sha,stable,revalidate,verify_commands,command_maximum,source_packet
 from run_route import get_context,run_command,clean_environment,tap_readback,ALIAS,ALPHA
 
@@ -56,10 +57,13 @@ def tracked_identity(workspace,text):
         header,name=line.split('\t',1);mode,kind,blob=header.split();relative=PurePosixPath(name)
         need(str(relative)==name and not relative.is_absolute() and '..' not in relative.parts and '.git' not in relative.parts and not name.startswith('"'),'Contained canonical tracked source path required')
         need(mode in ('100644','100755') and kind=='blob' and re.fullmatch('[0-9a-f]{40}',blob) is not None,'Ordinary exact tracked source modes/Git blobs required')
-        row,raw=stable(workspace/relative,8*2**20);total+=len(raw)
-        need(row['mode']==(0o755 if mode=='100755' else 0o644) and sha_git(raw)==blob,'Current checkout bytes/mode must equal current-job Git source')
+        path=workspace/relative;need(path.parent.resolve(strict=True)==path.parent,'Physical tracked source parent required');info=path.lstat();row,raw=stable(path,8*2**20);total+=len(raw)
+        need(source_modes.physical_identity(info)==source_modes.physical_identity(path.lstat()),'Stable complete tracked source permission identity required')
+        permission=source_modes.observe(info,mode)
+        need(permission['accepted'] and sha_git(raw)==blob,'Current checkout bytes/Git executable class and safe permission profile must equal current-job source')
         need(len(rows)<MAX_FILES and total<=MAX_BYTES and time.monotonic()-started<=20,'Finite tracked source closure required')
         rows.append({'path':name,'mode':mode,'bytes':len(raw),'sha256':row['sha256'],'git_blob':blob})
+        if source_modes.DEFAULT_POLICY==source_modes.POLICY:rows[-1]['permission']=permission
     need(rows and len({r['path'] for r in rows})==len(rows),'Nonempty unique complete tracked source closure required')
     return sorted(rows,key=lambda r:r['path'])
 

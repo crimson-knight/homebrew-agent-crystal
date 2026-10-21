@@ -1,0 +1,809 @@
+{
+  "actual_umask_causality_proved": false,
+  "format": "accepted-actual-v108-mode-only-evidence",
+  "fresh_v110_per_file_owner_security_and_installation_acceptance_required": true,
+  "head": "55ff43147df82267bbea060455a1314b5cb4ab90",
+  "historical_v107_exact_mismatch_recovered": false,
+  "independent_actual_receipt_sha256": "b6515f950c9b93b42fb854472e03ab95b2cf2b66ae406b300a7f84e8e52235fa",
+  "platforms": [
+    {
+      "files": [
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 4583,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "10df5ec1dce84c9cdaeec82bf81a4883406d55cfb6c1fa417cd9d2b59f9048c7"
+          },
+          "file": ".github/workflows/autobump.yml",
+          "observed": {
+            "bytes": 4583,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "10df5ec1dce84c9cdaeec82bf81a4883406d55cfb6c1fa417cd9d2b59f9048c7"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 7973,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "8d16f96e30630060ce185b5e79a7776c8235e1b887af5dd6a47ddeaab777ad32"
+          },
+          "file": ".github/workflows/formula-ci.yml",
+          "observed": {
+            "bytes": 7973,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "8d16f96e30630060ce185b5e79a7776c8235e1b887af5dd6a47ddeaab777ad32"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 6565,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67"
+          },
+          "file": "Formula/agent-crystal.rb",
+          "observed": {
+            "bytes": 6565,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 1869,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "eeabfc9d452959d4f62f2e7af6713616d9a9d258c8e3e9292f14f833be010542"
+          },
+          "file": "README.md",
+          "observed": {
+            "bytes": 1869,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "eeabfc9d452959d4f62f2e7af6713616d9a9d258c8e3e9292f14f833be010542"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 3922,
+            "kind": "regular",
+            "mode": 493,
+            "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb"
+          },
+          "file": "install.sh",
+          "observed": {
+            "bytes": 3922,
+            "kind": "regular",
+            "mode": 493,
+            "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 4311,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d7b37d8a2b67b7325c10e0e750a05f6f72886971bcf064d472d9c9fb10452923"
+          },
+          "file": "test/RUNTIME_CRYPTO_API_SOURCE.json",
+          "observed": {
+            "bytes": 4311,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d7b37d8a2b67b7325c10e0e750a05f6f72886971bcf064d472d9c9fb10452923"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 16083,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "567db9f291bf7abbd7ee7bc83a4f328dde0ccfa3d3a8af8b246fe0079cda793a"
+          },
+          "file": "test/SDK_READINESS.md",
+          "observed": {
+            "bytes": 16083,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "567db9f291bf7abbd7ee7bc83a4f328dde0ccfa3d3a8af8b246fe0079cda793a"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 19576,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "99b9b753f4194f7e744d98bb42c991033909b15373c2d2b79eccb3e7a40111a0"
+          },
+          "file": "test/install_test.rb",
+          "observed": {
+            "bytes": 19576,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "99b9b753f4194f7e744d98bb42c991033909b15373c2d2b79eccb3e7a40111a0"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 31787,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          },
+          "file": "test/linux_native_projection.py",
+          "observed": {
+            "bytes": 31787,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 9053,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb"
+          },
+          "file": "test/linux_projection_identity.py",
+          "observed": {
+            "bytes": 9053,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 3541,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "8f77f3d65189841c5ccb853bd3805e64943a312e9a3238819e90e581fab4d16f"
+          },
+          "file": "test/runtime_library_paths_formula_test.rb",
+          "observed": {
+            "bytes": 3541,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "8f77f3d65189841c5ccb853bd3805e64943a312e9a3238819e90e581fab4d16f"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 26850,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "aa6626c9fdca4a3bc9c3276084a8015d2075fa3eb5bff4a1bebcbd0846ddb2e5"
+          },
+          "file": "test/sdk_cpu_diagnostic.py",
+          "observed": {
+            "bytes": 26850,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "aa6626c9fdca4a3bc9c3276084a8015d2075fa3eb5bff4a1bebcbd0846ddb2e5"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 51460,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227"
+          },
+          "file": "test/sdk_install_qualification.py",
+          "observed": {
+            "bytes": 51460,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 18975,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "83bbb3a597462918e303be4b62e9bfbb6be4c8ac9b8d39734d0fdd0217a8c436"
+          },
+          "file": "test/sdk_owned_group_controls.py",
+          "observed": {
+            "bytes": 18975,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "83bbb3a597462918e303be4b62e9bfbb6be4c8ac9b8d39734d0fdd0217a8c436"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 41187,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f"
+          },
+          "file": "test/sdk_source_lock.json",
+          "observed": {
+            "bytes": 41187,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 13917,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "35d7f80f962276b1faf418f61f1f3d5fdf6de8d30a3501bb7007ed793c9c3fa6"
+          },
+          "file": "test/test_sdk_bounded_diagnostic.py",
+          "observed": {
+            "bytes": 13917,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "35d7f80f962276b1faf418f61f1f3d5fdf6de8d30a3501bb7007ed793c9c3fa6"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 9350,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "c1c14182e6d1f048040d518e18af4538a5eb881ea926298df20422c3a361cf5e"
+          },
+          "file": "test/test_sdk_bundle_boundary.py",
+          "observed": {
+            "bytes": 9350,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "c1c14182e6d1f048040d518e18af4538a5eb881ea926298df20422c3a361cf5e"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 16997,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "79000fa9848c6b0d75f7ca619790b77f661de987e07121be0740518221ea5d3e"
+          },
+          "file": "test/test_sdk_cpu_diagnostic.py",
+          "observed": {
+            "bytes": 16997,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "79000fa9848c6b0d75f7ca619790b77f661de987e07121be0740518221ea5d3e"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 12291,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "ef09331548f9482e3d938a500c85bf25d0a707d4389f78432f3d28fc31c98b5a"
+          },
+          "file": "test/test_sdk_diagnostic_successor.py",
+          "observed": {
+            "bytes": 12291,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "ef09331548f9482e3d938a500c85bf25d0a707d4389f78432f3d28fc31c98b5a"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 20843,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "f9ffda291d796e31c92eb3c995252f1b58839e7b08edd54b9d8006ef8227ebcf"
+          },
+          "file": "test/test_sdk_install_qualification.py",
+          "observed": {
+            "bytes": 20843,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "f9ffda291d796e31c92eb3c995252f1b58839e7b08edd54b9d8006ef8227ebcf"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 19280,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "2abbdc67d678c95b0da3f6e9c32a95fc4a635fabdf2635bffff359ee93754012"
+          },
+          "file": "test/test_sdk_linux_projection.py",
+          "observed": {
+            "bytes": 19280,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "2abbdc67d678c95b0da3f6e9c32a95fc4a635fabdf2635bffff359ee93754012"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 8779,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "5c7555ef491ecc4fe949e00da7ca6007150132b56d4ed0cc8d419a560ff1f19c"
+          },
+          "file": "test/test_sdk_owned_group_controls.py",
+          "observed": {
+            "bytes": 8779,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "5c7555ef491ecc4fe949e00da7ca6007150132b56d4ed0cc8d419a560ff1f19c"
+          }
+        },
+        {
+          "differences": [],
+          "expected": {
+            "bytes": 22368,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "9690dbb7214f16542cc891f852333024a9cde68c3c066069097aadf7519bfedd"
+          },
+          "file": "test/test_sdk_runtime_library_paths.py",
+          "observed": {
+            "bytes": 22368,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "9690dbb7214f16542cc891f852333024a9cde68c3c066069097aadf7519bfedd"
+          }
+        }
+      ],
+      "historical_source_admitted": true,
+      "platform": "macos-26",
+      "raw_observation_bytes": 11886,
+      "raw_observation_sha256": "22a1ba0889f9753e9c7f36a620bf0f0718e9e305d5512a7088aa2efe091a5473"
+    },
+    {
+      "files": [
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 4583,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "10df5ec1dce84c9cdaeec82bf81a4883406d55cfb6c1fa417cd9d2b59f9048c7"
+          },
+          "file": ".github/workflows/autobump.yml",
+          "observed": {
+            "bytes": 4583,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "10df5ec1dce84c9cdaeec82bf81a4883406d55cfb6c1fa417cd9d2b59f9048c7"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 7973,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "8d16f96e30630060ce185b5e79a7776c8235e1b887af5dd6a47ddeaab777ad32"
+          },
+          "file": ".github/workflows/formula-ci.yml",
+          "observed": {
+            "bytes": 7973,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "8d16f96e30630060ce185b5e79a7776c8235e1b887af5dd6a47ddeaab777ad32"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 6565,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67"
+          },
+          "file": "Formula/agent-crystal.rb",
+          "observed": {
+            "bytes": 6565,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 1869,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "eeabfc9d452959d4f62f2e7af6713616d9a9d258c8e3e9292f14f833be010542"
+          },
+          "file": "README.md",
+          "observed": {
+            "bytes": 1869,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "eeabfc9d452959d4f62f2e7af6713616d9a9d258c8e3e9292f14f833be010542"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 3922,
+            "kind": "regular",
+            "mode": 493,
+            "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb"
+          },
+          "file": "install.sh",
+          "observed": {
+            "bytes": 3922,
+            "kind": "regular",
+            "mode": 509,
+            "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 4311,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d7b37d8a2b67b7325c10e0e750a05f6f72886971bcf064d472d9c9fb10452923"
+          },
+          "file": "test/RUNTIME_CRYPTO_API_SOURCE.json",
+          "observed": {
+            "bytes": 4311,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "d7b37d8a2b67b7325c10e0e750a05f6f72886971bcf064d472d9c9fb10452923"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 16083,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "567db9f291bf7abbd7ee7bc83a4f328dde0ccfa3d3a8af8b246fe0079cda793a"
+          },
+          "file": "test/SDK_READINESS.md",
+          "observed": {
+            "bytes": 16083,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "567db9f291bf7abbd7ee7bc83a4f328dde0ccfa3d3a8af8b246fe0079cda793a"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 19576,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "99b9b753f4194f7e744d98bb42c991033909b15373c2d2b79eccb3e7a40111a0"
+          },
+          "file": "test/install_test.rb",
+          "observed": {
+            "bytes": 19576,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "99b9b753f4194f7e744d98bb42c991033909b15373c2d2b79eccb3e7a40111a0"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 31787,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          },
+          "file": "test/linux_native_projection.py",
+          "observed": {
+            "bytes": 31787,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 9053,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb"
+          },
+          "file": "test/linux_projection_identity.py",
+          "observed": {
+            "bytes": 9053,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 3541,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "8f77f3d65189841c5ccb853bd3805e64943a312e9a3238819e90e581fab4d16f"
+          },
+          "file": "test/runtime_library_paths_formula_test.rb",
+          "observed": {
+            "bytes": 3541,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "8f77f3d65189841c5ccb853bd3805e64943a312e9a3238819e90e581fab4d16f"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 26850,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "aa6626c9fdca4a3bc9c3276084a8015d2075fa3eb5bff4a1bebcbd0846ddb2e5"
+          },
+          "file": "test/sdk_cpu_diagnostic.py",
+          "observed": {
+            "bytes": 26850,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "aa6626c9fdca4a3bc9c3276084a8015d2075fa3eb5bff4a1bebcbd0846ddb2e5"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 51460,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227"
+          },
+          "file": "test/sdk_install_qualification.py",
+          "observed": {
+            "bytes": 51460,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "d63a6dae115a58fa1fb4330203f219a429b6f3dcbe7ade36054ad847dd76a227"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 18975,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "83bbb3a597462918e303be4b62e9bfbb6be4c8ac9b8d39734d0fdd0217a8c436"
+          },
+          "file": "test/sdk_owned_group_controls.py",
+          "observed": {
+            "bytes": 18975,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "83bbb3a597462918e303be4b62e9bfbb6be4c8ac9b8d39734d0fdd0217a8c436"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 41187,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f"
+          },
+          "file": "test/sdk_source_lock.json",
+          "observed": {
+            "bytes": 41187,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 13917,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "35d7f80f962276b1faf418f61f1f3d5fdf6de8d30a3501bb7007ed793c9c3fa6"
+          },
+          "file": "test/test_sdk_bounded_diagnostic.py",
+          "observed": {
+            "bytes": 13917,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "35d7f80f962276b1faf418f61f1f3d5fdf6de8d30a3501bb7007ed793c9c3fa6"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 9350,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "c1c14182e6d1f048040d518e18af4538a5eb881ea926298df20422c3a361cf5e"
+          },
+          "file": "test/test_sdk_bundle_boundary.py",
+          "observed": {
+            "bytes": 9350,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "c1c14182e6d1f048040d518e18af4538a5eb881ea926298df20422c3a361cf5e"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 16997,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "79000fa9848c6b0d75f7ca619790b77f661de987e07121be0740518221ea5d3e"
+          },
+          "file": "test/test_sdk_cpu_diagnostic.py",
+          "observed": {
+            "bytes": 16997,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "79000fa9848c6b0d75f7ca619790b77f661de987e07121be0740518221ea5d3e"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 12291,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "ef09331548f9482e3d938a500c85bf25d0a707d4389f78432f3d28fc31c98b5a"
+          },
+          "file": "test/test_sdk_diagnostic_successor.py",
+          "observed": {
+            "bytes": 12291,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "ef09331548f9482e3d938a500c85bf25d0a707d4389f78432f3d28fc31c98b5a"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 20843,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "f9ffda291d796e31c92eb3c995252f1b58839e7b08edd54b9d8006ef8227ebcf"
+          },
+          "file": "test/test_sdk_install_qualification.py",
+          "observed": {
+            "bytes": 20843,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "f9ffda291d796e31c92eb3c995252f1b58839e7b08edd54b9d8006ef8227ebcf"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 19280,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "2abbdc67d678c95b0da3f6e9c32a95fc4a635fabdf2635bffff359ee93754012"
+          },
+          "file": "test/test_sdk_linux_projection.py",
+          "observed": {
+            "bytes": 19280,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "2abbdc67d678c95b0da3f6e9c32a95fc4a635fabdf2635bffff359ee93754012"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 8779,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "5c7555ef491ecc4fe949e00da7ca6007150132b56d4ed0cc8d419a560ff1f19c"
+          },
+          "file": "test/test_sdk_owned_group_controls.py",
+          "observed": {
+            "bytes": 8779,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "5c7555ef491ecc4fe949e00da7ca6007150132b56d4ed0cc8d419a560ff1f19c"
+          }
+        },
+        {
+          "differences": [
+            "mode"
+          ],
+          "expected": {
+            "bytes": 22368,
+            "kind": "regular",
+            "mode": 420,
+            "sha256": "9690dbb7214f16542cc891f852333024a9cde68c3c066069097aadf7519bfedd"
+          },
+          "file": "test/test_sdk_runtime_library_paths.py",
+          "observed": {
+            "bytes": 22368,
+            "kind": "regular",
+            "mode": 436,
+            "sha256": "9690dbb7214f16542cc891f852333024a9cde68c3c066069097aadf7519bfedd"
+          }
+        }
+      ],
+      "historical_source_admitted": false,
+      "platform": "ubuntu-24.04",
+      "raw_observation_bytes": 12416,
+      "raw_observation_sha256": "d37166fff9bc97fbcbeb3146f032f63a2c08786ababc7b68f01fb743b67c99f1"
+    }
+  ],
+  "run": 39535006318
+}
