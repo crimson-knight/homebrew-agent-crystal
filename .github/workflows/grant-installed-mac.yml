@@ -6,13 +6,13 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ROUTE_SOURCE: test/ordinary_public_route
-  ATLAS_ROUTE_PACKET_SHA256: 215fd3c3d091fef0e36fb47fd2674f18ab99f615ec5342fa8b8db2d6c4a20029
-  ATLAS_ROUTE_LAUNCH_SHA256: f7e1f24a80dbcbdad72a3d1bbbc9ff9196935994ea3c730e178ee4855170ec5f
+  ATLAS_ROUTE_PACKET_SHA256: 6994f5358c544e3653cc13aca608d7e53e3378a85ffbc4b42a048e8454d06075
+  ATLAS_ROUTE_LAUNCH_SHA256: b23df85c36237cfc0c36c75f857671d51429b2fce95d52324bddd8178f0f37ff
 jobs:
   prepare-public-bottle:
     name: Prepare returned source-qualified bottle on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 85
+    timeout-minutes: 100
     strategy:
       fail-fast: false
       matrix:
@@ -23,6 +23,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Homebrew
+        id: homebrew_setup
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
       - name: Verify the bounded source packet and fixture controls
         id: source_controls
@@ -45,6 +46,14 @@ jobs:
               '--ruby', str(ruby), '--ruby-sha256', hashlib.sha256(ruby.read_bytes()).hexdigest()]
           runpy.run_path(str(launch), run_name='__main__')
           PYTHON
+      - name: Detach only the verified current-job setup checkout link
+        id: ci_detach
+        timeout-minutes: 6
+        env:
+          SETUP_TAP_NAME: ${{ steps.homebrew_setup.outputs.tap-name }}
+          SETUP_REPOSITORY_PATH: ${{ steps.homebrew_setup.outputs.repository-path }}
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action detach-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation"
       - name: Build using the ordinary Homebrew bottle interface and qualify the SDK
         id: bottle
         timeout-minutes: 77
@@ -58,16 +67,41 @@ jobs:
           python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint stage_results.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --source "$RUNNER_TEMP/ordinary-bottle" --output "$RUNNER_TEMP/ordinary-bottle-artifact"
       - name: Return the exact bottle archive JSON recipe and SDK evidence
         if: ${{ always() && steps.result_stage.outcome == 'success' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ordinary-bottle-preparation-${{ matrix.os }}
           path: ${{ runner.temp }}/ordinary-bottle-artifact
           if-no-files-found: error
           include-hidden-files: false
           retention-days: 30
+      - name: Preserve the returned public clone and restore the setup post-action link
+        id: ci_restore
+        if: ${{ always() && steps.ci_detach.outcome != 'skipped' }}
+        timeout-minutes: 6
+        env:
+          SETUP_TAP_NAME: ${{ steps.homebrew_setup.outputs.tap-name }}
+          SETUP_REPOSITORY_PATH: ${{ steps.homebrew_setup.outputs.repository-path }}
+          ROUTE_STEP_OUTCOMES: '{"bottle":"${{ steps.bottle.outcome }}"}'
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action restore-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation" --route-output "$RUNNER_TEMP/ordinary-bottle" --route-step-outcomes "$ROUTE_STEP_OUTCOMES"
+      - name: Stage the fixed CI transition and original return metadata
+        id: ci_stage
+        if: ${{ always() && steps.ci_detach.outcome != 'skipped' }}
+        timeout-minutes: 1
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint prepare_ci_checkout.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --mode stage --output "$RUNNER_TEMP/ordinary-ci-preparation" --stage "$RUNNER_TEMP/ordinary-ci-artifact"
+      - name: Return separately attributable CI setup transition evidence
+        if: ${{ always() && steps.ci_stage.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ordinary-CI-transition-${{ matrix.os }}
+          path: ${{ runner.temp }}/ordinary-ci-artifact
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 30
       - name: Preserve the exact bounded source-control receipt
         if: ${{ always() && steps.source_controls.outcome != 'skipped' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ordinary-source-controls-${{ matrix.os }}
           path: |
@@ -77,6 +111,10 @@ jobs:
             ${{ runner.temp }}/ordinary-source-controls/Python-ordinary.stderr.txt
             ${{ runner.temp }}/ordinary-source-controls/Python-optimized.stdout.txt
             ${{ runner.temp }}/ordinary-source-controls/Python-optimized.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-ordinary.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-ordinary.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-optimized.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-optimized.stderr.txt
             ${{ runner.temp }}/ordinary-source-controls/Ruby-provider.stdout.txt
             ${{ runner.temp }}/ordinary-source-controls/Ruby-provider.stderr.txt
             ${{ runner.temp }}/ordinary-source-controls/Ruby-writer.stdout.txt

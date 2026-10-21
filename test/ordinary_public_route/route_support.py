@@ -77,8 +77,10 @@ def verify_commands(commands,group_observations,successful=True):
 
 def command_maximum(label):
     if label.startswith('review-poll-') and label[len('review-poll-'):].isdigit() and 1<=int(label[len('review-poll-'):])<=30:return 15
-    if any(label==p+'-tap-'+s for p in ('installed','returned','before-bottle','after-bottle') for s in ('root','commit','origin')):return 30
+    if any(label==p+'-tap-'+s for p in ('installed','returned','before-bottle','after-bottle','ci-public') for s in ('root','commit','origin')):return 30
     if label in ('alias-acrystal','alias-agent-crystal','alias-crystal-alpha'):return 30
+    if label in ('ci-formula-absence-before','ci-brew-root','ci-tap-location','ci-checkout-before','ci-tree-before','ci-checkout-origin','ci-checkout-after','ci-tree-after','ci-formula-absence-after','ci-checkout-restore-before','ci-tree-restore-before','ci-preserved-source','ci-preserved-origin','ci-checkout-restore-after','ci-tree-restore-after'):return 15
+    if label=='ci-untap-owned-checkout':return 30
     limits={**dict.fromkeys(('initial-formula-absence','initial-tap-location','public-default-main','homebrew-version','homebrew-config','homebrew-repository','homebrew-source','homebrew-source-return','homebrew-core-return','homebrew-cache','actual-installed-prefix','homebrew-core-source','consumer-install-bundle','consumer-profile'),30),
         **dict.fromkeys(('observed-git-version','observed-curl-version','observed-bash-version','observed-python-version','consumer-lock-check'),15),
         'download-public-installer':45,'ordinary-default-install':2700,'installed-formula-tests':120,'installed-dependency-metadata':60,
