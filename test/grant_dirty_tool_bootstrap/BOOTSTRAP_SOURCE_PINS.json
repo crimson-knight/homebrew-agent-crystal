@@ -1,0 +1,45 @@
+{
+  "files": [
+    {
+      "bytes": 1903,
+      "path": "BOOTSTRAP_INPUT_PINS.json",
+      "sha256": "c7cb064f0064d1a0a91f499be3840f23e234497950a036f556a7cb801efc671b"
+    },
+    {
+      "bytes": 22594,
+      "path": "bootstrap_tools.py",
+      "sha256": "b99d823a409e7e580f31b18b4aea397bd48a74299e7d7573502e290d967877d3"
+    },
+    {
+      "bytes": 1080,
+      "path": "inputs/AMEBA_ARCHIVE_IDENTITY.json",
+      "sha256": "580ebc32a31b890b83edf82279d9e8fa295d73ad912b6fed963982582da1595c"
+    },
+    {
+      "bytes": 101175,
+      "path": "inputs/AMEBA_COMPLETE_TREE_READBACK.json",
+      "sha256": "c6b56f5eeec65757d834d851bf2fd94cb54397eea2e24586ccee85bfc469772b"
+    },
+    {
+      "bytes": 1672,
+      "path": "inputs/CLI_ARCHIVE_IDENTITY.json",
+      "sha256": "5058c47dc0cdcdedea5c31b32679764680da576857e9d8985bacb273388c3f3b"
+    },
+    {
+      "bytes": 7899,
+      "path": "stage_tools.py",
+      "sha256": "567a6efafdc9292d8042212b797ca0723f8fd4596d74a9181fd2c86e1445cbf1"
+    },
+    {
+      "bytes": 18363,
+      "path": "test_bootstrap.py",
+      "sha256": "d12112dce00410bbafb6a1414a775fa62e7d3f76e052cdd51bdd916e07f9776f"
+    },
+    {
+      "bytes": 11775,
+      "path": "vendor/public_evidence_rules.py",
+      "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
+    }
+  ],
+  "format": "grant-proof-tool-bootstrap-source-v1"
+}
