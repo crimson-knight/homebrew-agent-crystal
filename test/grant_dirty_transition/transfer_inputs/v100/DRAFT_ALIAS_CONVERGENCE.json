@@ -1,0 +1,710 @@
+{
+  "actual_local_compiler_native_container_browser_SSH_jobs": 0,
+  "after": {
+    "Apple_imports": [
+      "/usr/lib/libSystem.B.dylib",
+      "/usr/lib/libiconv.2.dylib"
+    ],
+    "SDK_profile_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "dyld_cache_bytes_qualified": false,
+    "format": "atlas-grant-analysis-tool-native-observation-v1",
+    "full_native_memory_qualified": false,
+    "image_version": "synthetic-image",
+    "libraries": [
+      {
+        "bytes": 144,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/bdw-gc/lib/dependency.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/bdw-gc/8.2.12/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593549,
+          33188,
+          144,
+          1792544282241342430,
+          1792544282241342430
+        ],
+        "sha256": "2abab955107f6663421d573de83e02ba1d224be686944a7b2793e69c1b0e9804"
+      },
+      {
+        "bytes": 145,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/X.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5/lib/X.dylib",
+        "physical_identity": [
+          16777231,
+          647593550,
+          33188,
+          145,
+          1792544282241494262,
+          1792544282241494262
+        ],
+        "sha256": "b4e150c1247dd0f0289f1a072cbf704213cb3e4e90487a1efa8d2a01c741da57"
+      },
+      {
+        "bytes": 145,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/Y.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5/lib/Y.dylib",
+        "physical_identity": [
+          16777231,
+          647593551,
+          33188,
+          145,
+          1792544282241595886,
+          1792544282241595886
+        ],
+        "sha256": "89d3324ffd221d942b5ef69510a47b6901597dd0e6c962320a1338dd7cd7b4e6"
+      },
+      {
+        "bytes": 144,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/dependency.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593533,
+          33188,
+          144,
+          1792544282240083064,
+          1792544282240083064
+        ],
+        "sha256": "2abab955107f6663421d573de83e02ba1d224be686944a7b2793e69c1b0e9804"
+      },
+      {
+        "bytes": 744,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/openssl@3/lib/dependency.dylib",
+        "imports": [
+          "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/X.dylib",
+          "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/Y.dylib",
+          "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/selected.dylib",
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/openssl@3/3.5.9/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593525,
+          33188,
+          744,
+          1792544282241819968,
+          1792544282241819968
+        ],
+        "sha256": "228516e7bf176e7ba4921bcfa5d0a8af994f2a0fa4551209660d83689bfd7345"
+      },
+      {
+        "bytes": 144,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/pcre2/lib/dependency.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/pcre2/10.49/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593541,
+          33188,
+          144,
+          1792544282240662560,
+          1792544282240662560
+        ],
+        "sha256": "2abab955107f6663421d573de83e02ba1d224be686944a7b2793e69c1b0e9804"
+      }
+    ],
+    "packages": [
+      {
+        "declared": {
+          "full_name": "openssl@3",
+          "pkg_version": "3.5.9",
+          "revision": 0,
+          "version": "3.5.9"
+        },
+        "formula_identity": [
+          16777231,
+          647593522,
+          33188,
+          18,
+          1792544282238805616,
+          1792544282238805616
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "openssl@3",
+        "opt_identity": [
+          16777231,
+          647593524,
+          41453,
+          25,
+          1792544282239166280,
+          1792544282239166280
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/openssl@3",
+        "opt_target": "../Cellar/openssl@3/3.5.9",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/openssl@3/3.5.9",
+        "prefix_identity": [
+          16777231,
+          647593519,
+          16877,
+          160,
+          1792544282238908365,
+          1792544282238908365
+        ],
+        "receipt_identity": [
+          16777231,
+          647593523,
+          33188,
+          62,
+          1792544282239042322,
+          1792544282239042322
+        ],
+        "receipt_sha256": "10cecfca67e2df7a2718876b421359aa2459594ccbf124ed7cf7fe482ce68d9f"
+      },
+      {
+        "declared": {
+          "full_name": "libyaml",
+          "pkg_version": "0.2.5",
+          "revision": 0,
+          "version": "0.2.5"
+        },
+        "formula_identity": [
+          16777231,
+          647593530,
+          33188,
+          18,
+          1792544282239753067,
+          1792544282239753067
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "libyaml",
+        "opt_identity": [
+          16777231,
+          647593532,
+          41453,
+          23,
+          1792544282239952065,
+          1792544282239952065
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml",
+        "opt_target": "../Cellar/libyaml/0.2.5",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5",
+        "prefix_identity": [
+          16777231,
+          647593527,
+          16877,
+          160,
+          1792544282239828941,
+          1792544282239828941
+        ],
+        "receipt_identity": [
+          16777231,
+          647593531,
+          33188,
+          62,
+          1792544282239879941,
+          1792544282239879941
+        ],
+        "receipt_sha256": "9c87ec2df3bae1bef2f4cd11240340a6744b9c4cdc4f96fd551dee7448c2e8dd"
+      },
+      {
+        "declared": {
+          "full_name": "pcre2",
+          "pkg_version": "10.49",
+          "revision": 0,
+          "version": "10.49"
+        },
+        "formula_identity": [
+          16777231,
+          647593538,
+          33188,
+          18,
+          1792544282240398353,
+          1792544282240398353
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "pcre2",
+        "opt_identity": [
+          16777231,
+          647593540,
+          41453,
+          21,
+          1792544282240554769,
+          1792544282240554769
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/pcre2",
+        "opt_target": "../Cellar/pcre2/10.49",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/pcre2/10.49",
+        "prefix_identity": [
+          16777231,
+          647593535,
+          16877,
+          160,
+          1792544282240453520,
+          1792544282240453520
+        ],
+        "receipt_identity": [
+          16777231,
+          647593539,
+          33188,
+          62,
+          1792544282240502144,
+          1792544282240502144
+        ],
+        "receipt_sha256": "f84b1353bad0b275e4869949db843fe347b465d4dba4a720c15facb6262cd0e0"
+      },
+      {
+        "declared": {
+          "full_name": "bdw-gc",
+          "pkg_version": "8.2.12",
+          "revision": 0,
+          "version": "8.2.12"
+        },
+        "formula_identity": [
+          16777231,
+          647593546,
+          33188,
+          18,
+          1792544282241013016,
+          1792544282241013016
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "bdw-gc",
+        "opt_identity": [
+          16777231,
+          647593548,
+          41453,
+          23,
+          1792544282241181181,
+          1792544282241181181
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/bdw-gc",
+        "opt_target": "../Cellar/bdw-gc/8.2.12",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/bdw-gc/8.2.12",
+        "prefix_identity": [
+          16777231,
+          647593543,
+          16877,
+          160,
+          1792544282241086473,
+          1792544282241086473
+        ],
+        "receipt_identity": [
+          16777231,
+          647593547,
+          33188,
+          63,
+          1792544282241128765,
+          1792544282241128765
+        ],
+        "receipt_sha256": "5f89d43b312f83575f36ed3768310995ffe7a1a95c65376374ee17200ed60917"
+      }
+    ],
+    "same_job": {
+      "RUNNER_ARCH": "ARM64",
+      "RUNNER_OS": "macOS"
+    },
+    "system_files": [
+      {
+        "bytes": 603,
+        "path": "/System/Library/CoreServices/SystemVersion.plist",
+        "physical_identity": [
+          16777231,
+          1152921500312103456,
+          33060,
+          603,
+          1782354543000000000,
+          1782354543000000000
+        ],
+        "sha256": "cbf534776ca9200252e5637787e5d4fc26cf527fb354c19bcbac9688341c7a58"
+      },
+      {
+        "bytes": 2374000,
+        "path": "/usr/lib/dyld",
+        "physical_identity": [
+          16777231,
+          1152921500312573276,
+          33261,
+          2374000,
+          1782354543000000000,
+          1782354543000000000
+        ],
+        "sha256": "6da2d109f72330d031450f3c0ebea14bfc10f42f844a958858e16a4092c38f12"
+      }
+    ],
+    "unresolved_system": []
+  },
+  "alias_after": "Y.dylib",
+  "alias_before": "X.dylib",
+  "before": {
+    "Apple_imports": [
+      "/usr/lib/libSystem.B.dylib",
+      "/usr/lib/libiconv.2.dylib"
+    ],
+    "SDK_profile_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "dyld_cache_bytes_qualified": false,
+    "format": "atlas-grant-analysis-tool-native-observation-v1",
+    "full_native_memory_qualified": false,
+    "image_version": "synthetic-image",
+    "libraries": [
+      {
+        "bytes": 144,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/bdw-gc/lib/dependency.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/bdw-gc/8.2.12/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593549,
+          33188,
+          144,
+          1792544282241342430,
+          1792544282241342430
+        ],
+        "sha256": "2abab955107f6663421d573de83e02ba1d224be686944a7b2793e69c1b0e9804"
+      },
+      {
+        "bytes": 145,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/X.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5/lib/X.dylib",
+        "physical_identity": [
+          16777231,
+          647593550,
+          33188,
+          145,
+          1792544282241494262,
+          1792544282241494262
+        ],
+        "sha256": "b4e150c1247dd0f0289f1a072cbf704213cb3e4e90487a1efa8d2a01c741da57"
+      },
+      {
+        "bytes": 145,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/Y.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5/lib/Y.dylib",
+        "physical_identity": [
+          16777231,
+          647593551,
+          33188,
+          145,
+          1792544282241595886,
+          1792544282241595886
+        ],
+        "sha256": "89d3324ffd221d942b5ef69510a47b6901597dd0e6c962320a1338dd7cd7b4e6"
+      },
+      {
+        "bytes": 144,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/dependency.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593533,
+          33188,
+          144,
+          1792544282240083064,
+          1792544282240083064
+        ],
+        "sha256": "2abab955107f6663421d573de83e02ba1d224be686944a7b2793e69c1b0e9804"
+      },
+      {
+        "bytes": 744,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/openssl@3/lib/dependency.dylib",
+        "imports": [
+          "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/X.dylib",
+          "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/Y.dylib",
+          "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml/lib/selected.dylib",
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/openssl@3/3.5.9/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593525,
+          33188,
+          744,
+          1792544282241819968,
+          1792544282241819968
+        ],
+        "sha256": "228516e7bf176e7ba4921bcfa5d0a8af994f2a0fa4551209660d83689bfd7345"
+      },
+      {
+        "bytes": 144,
+        "declared_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/pcre2/lib/dependency.dylib",
+        "imports": [
+          "/usr/lib/libSystem.B.dylib",
+          "/usr/lib/libiconv.2.dylib"
+        ],
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/pcre2/10.49/lib/dependency.dylib",
+        "physical_identity": [
+          16777231,
+          647593541,
+          33188,
+          144,
+          1792544282240662560,
+          1792544282240662560
+        ],
+        "sha256": "2abab955107f6663421d573de83e02ba1d224be686944a7b2793e69c1b0e9804"
+      }
+    ],
+    "packages": [
+      {
+        "declared": {
+          "full_name": "openssl@3",
+          "pkg_version": "3.5.9",
+          "revision": 0,
+          "version": "3.5.9"
+        },
+        "formula_identity": [
+          16777231,
+          647593522,
+          33188,
+          18,
+          1792544282238805616,
+          1792544282238805616
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "openssl@3",
+        "opt_identity": [
+          16777231,
+          647593524,
+          41453,
+          25,
+          1792544282239166280,
+          1792544282239166280
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/openssl@3",
+        "opt_target": "../Cellar/openssl@3/3.5.9",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/openssl@3/3.5.9",
+        "prefix_identity": [
+          16777231,
+          647593519,
+          16877,
+          160,
+          1792544282238908365,
+          1792544282238908365
+        ],
+        "receipt_identity": [
+          16777231,
+          647593523,
+          33188,
+          62,
+          1792544282239042322,
+          1792544282239042322
+        ],
+        "receipt_sha256": "10cecfca67e2df7a2718876b421359aa2459594ccbf124ed7cf7fe482ce68d9f"
+      },
+      {
+        "declared": {
+          "full_name": "libyaml",
+          "pkg_version": "0.2.5",
+          "revision": 0,
+          "version": "0.2.5"
+        },
+        "formula_identity": [
+          16777231,
+          647593530,
+          33188,
+          18,
+          1792544282239753067,
+          1792544282239753067
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "libyaml",
+        "opt_identity": [
+          16777231,
+          647593532,
+          41453,
+          23,
+          1792544282239952065,
+          1792544282239952065
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/libyaml",
+        "opt_target": "../Cellar/libyaml/0.2.5",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/libyaml/0.2.5",
+        "prefix_identity": [
+          16777231,
+          647593527,
+          16877,
+          160,
+          1792544282239828941,
+          1792544282239828941
+        ],
+        "receipt_identity": [
+          16777231,
+          647593531,
+          33188,
+          62,
+          1792544282239879941,
+          1792544282239879941
+        ],
+        "receipt_sha256": "9c87ec2df3bae1bef2f4cd11240340a6744b9c4cdc4f96fd551dee7448c2e8dd"
+      },
+      {
+        "declared": {
+          "full_name": "pcre2",
+          "pkg_version": "10.49",
+          "revision": 0,
+          "version": "10.49"
+        },
+        "formula_identity": [
+          16777231,
+          647593538,
+          33188,
+          18,
+          1792544282240398353,
+          1792544282240398353
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "pcre2",
+        "opt_identity": [
+          16777231,
+          647593540,
+          41453,
+          21,
+          1792544282240554769,
+          1792544282240554769
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/pcre2",
+        "opt_target": "../Cellar/pcre2/10.49",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/pcre2/10.49",
+        "prefix_identity": [
+          16777231,
+          647593535,
+          16877,
+          160,
+          1792544282240453520,
+          1792544282240453520
+        ],
+        "receipt_identity": [
+          16777231,
+          647593539,
+          33188,
+          62,
+          1792544282240502144,
+          1792544282240502144
+        ],
+        "receipt_sha256": "f84b1353bad0b275e4869949db843fe347b465d4dba4a720c15facb6262cd0e0"
+      },
+      {
+        "declared": {
+          "full_name": "bdw-gc",
+          "pkg_version": "8.2.12",
+          "revision": 0,
+          "version": "8.2.12"
+        },
+        "formula_identity": [
+          16777231,
+          647593546,
+          33188,
+          18,
+          1792544282241013016,
+          1792544282241013016
+        ],
+        "formula_sha256": "7a2dabd2336b7b7223cbc69a3d3b0caf37d95a97bd7b72c4b97cf67c2eb3c22a",
+        "name": "bdw-gc",
+        "opt_identity": [
+          16777231,
+          647593548,
+          41453,
+          23,
+          1792544282241181181,
+          1792544282241181181
+        ],
+        "opt_path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/opt/bdw-gc",
+        "opt_target": "../Cellar/bdw-gc/8.2.12",
+        "physical_prefix": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v100/native alias return with spaces kbfg98f2/brew/Cellar/bdw-gc/8.2.12",
+        "prefix_identity": [
+          16777231,
+          647593543,
+          16877,
+          160,
+          1792544282241086473,
+          1792544282241086473
+        ],
+        "receipt_identity": [
+          16777231,
+          647593547,
+          33188,
+          63,
+          1792544282241128765,
+          1792544282241128765
+        ],
+        "receipt_sha256": "5f89d43b312f83575f36ed3768310995ffe7a1a95c65376374ee17200ed60917"
+      }
+    ],
+    "same_job": {
+      "RUNNER_ARCH": "ARM64",
+      "RUNNER_OS": "macOS"
+    },
+    "system_files": [
+      {
+        "bytes": 603,
+        "path": "/System/Library/CoreServices/SystemVersion.plist",
+        "physical_identity": [
+          16777231,
+          1152921500312103456,
+          33060,
+          603,
+          1782354543000000000,
+          1782354543000000000
+        ],
+        "sha256": "cbf534776ca9200252e5637787e5d4fc26cf527fb354c19bcbac9688341c7a58"
+      },
+      {
+        "bytes": 2374000,
+        "path": "/usr/lib/dyld",
+        "physical_identity": [
+          16777231,
+          1152921500312573276,
+          33261,
+          2374000,
+          1782354543000000000,
+          1782354543000000000
+        ],
+        "sha256": "6da2d109f72330d031450f3c0ebea14bfc10f42f844a958858e16a4092c38f12"
+      }
+    ],
+    "unresolved_system": []
+  },
+  "external_guard_calls": 0,
+  "format": "draft-native-alias-return-sensitivity",
+  "observed_library_count": 6,
+  "policy_view_unchanged": true,
+  "recorded_native_unchanged": true,
+  "selected_alias_recorded_as_first_path": false,
+  "source_sha256": "31b9f816dee9c058965a5851c7fbcbe9fe1696b31ba00a4f5326c8e7cfa7ce8e"
+}

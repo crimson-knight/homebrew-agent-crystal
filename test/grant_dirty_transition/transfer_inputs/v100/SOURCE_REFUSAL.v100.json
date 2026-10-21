@@ -1,0 +1,43 @@
+{
+  "accepted": false,
+  "actual_local_workloads": 0,
+  "core_manifest_sha256": "e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e",
+  "evidence": [
+    {
+      "path": "DRAFT_ALIAS_CONVERGENCE.json",
+      "sha256": "378d67b4670d3fe69c75163371cb1bc802c0373b85c2b07aa03a5c011c6a1f08"
+    },
+    {
+      "path": "DRAFT_CLEANUP_CLI.json",
+      "sha256": "17d15ddd46543952417c3456d764d2321c19c4b625598cb4d44903b716aff009"
+    },
+    {
+      "path": "TRANSFER_SOURCE_PINS.json",
+      "sha256": "6cd69970f2d666140faf50ffd0a3810e0dc45ec5603c03a9d70881d8b2a44973"
+    },
+    {
+      "path": "probe_draft_aliases.py",
+      "sha256": "f0ecc1b665145a3e1cf7a50372fe147b42a6dee776702cea79460bd33bcf4e27"
+    },
+    {
+      "path": "probe_draft_cleanup.py",
+      "sha256": "87a956b1f98513f1bad1845a33a91247fe7bec15fdfe8157b5a9d379675126cc"
+    },
+    {
+      "path": "proof_tool_transfer.py",
+      "sha256": "31b9f816dee9c058965a5851c7fbcbe9fe1696b31ba00a4f5326c8e7cfa7ce8e"
+    },
+    {
+      "path": "test_tool_transfer.py",
+      "sha256": "9728e2228becd17976e06b247518b513f22673c1552a1a021f26e0416f085726"
+    }
+  ],
+  "findings": [
+    "A lexical native alias can retarget between two already visited physical libraries without changing collected observation or policy.",
+    "The cleanup CLI discards cleanup.complete=false and returns0 after a real private-payload unlink failure."
+  ],
+  "format": "atlas-grant-tool-transfer-v100-source-refusal",
+  "passing_source_tests_sha256": "0967930301649b01a3b7d1fd9e586ceb8e17547711b8264993e4f318f4eec1c5",
+  "transfer_manifest_sha256": "6cd69970f2d666140faf50ffd0a3810e0dc45ec5603c03a9d70881d8b2a44973",
+  "workflow_sha256": "db6b3ea6eaec1dda243950d7d4f62251b9ebc0c4496768246b24d57becb46a9d"
+}

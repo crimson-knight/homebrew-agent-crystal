@@ -1,0 +1,330 @@
+{
+  "Grant_target_cells_accepted": 0,
+  "accepted": false,
+  "actual180_second_wall_wait_claimed": false,
+  "actual_guard_calls": 0,
+  "actual_local_compiler_native_container_browser_SSH_workloads": 0,
+  "added_executions": 106,
+  "additive_rows": 32,
+  "author_handoff": {
+    "bytes": 3203,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/HANDOFF.md",
+    "sha256": "35d0a0e11af2cd4ba15ab540b0746e96cb74dc7230a0276248256f03e57c79f9"
+  },
+  "author_receipt": {
+    "bytes": 83581,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/IMPLEMENTATION_RECEIPT.json",
+    "sha256": "8888b0d90641d054d548c562caff0d93137d04f4f81e1b44c1887555478a7ff2"
+  },
+  "clock_fixture_private_payloads_retired": true,
+  "components": [
+    {
+      "bytes": 1174,
+      "path": "REVIEW_PLAN.jsonl",
+      "sha256": "3fdc777bf4f91c9f6b1291112f0b852c7e6f1a7ce292493df17c88aef3907f30"
+    },
+    {
+      "bytes": 9402,
+      "path": "review_source.py",
+      "sha256": "4096d4ba668c79e732b59c5205c57f884e14cdd9935f707217174b443000c482"
+    },
+    {
+      "bytes": 8447,
+      "path": "INDEPENDENT_SOURCE_REPLAY_v101.json",
+      "sha256": "487c69868936c149ea9b58acccb843974ee2c1602ad7674f8c4093f168ab45ff"
+    },
+    {
+      "bytes": 28685,
+      "path": "SOURCE_COMMAND_RETURN_v101.json",
+      "sha256": "7189fcc5dbd3f00491db82e6ce085138e449056cf4a41495e88a80b2b6f6fb5d"
+    },
+    {
+      "bytes": 622,
+      "path": "DEADLINE_DERIVATION.json",
+      "sha256": "870d797e9592ea99b9959285a3c2baf3831ce54218702326418331d1a90ca9a0"
+    },
+    {
+      "bytes": 4073,
+      "path": "probe_alias_convergence.py",
+      "sha256": "3175a4bf51574737197288100be8d66becfb77ba41934150f444c924a5bff81a"
+    },
+    {
+      "bytes": 2918,
+      "path": "probe_cleanup_cli.py",
+      "sha256": "1596d2091a799bb626cc838b3ab91432cfa204832507d59aea037d47d8f7cb2d"
+    },
+    {
+      "bytes": 2807,
+      "path": "probe_clock_origin.py",
+      "sha256": "89195f021521294e27cfabc439045e5ce414af40c61777106b7e6d99c34a2b3d"
+    },
+    {
+      "bytes": 2939,
+      "path": "CLOCK_ORIGIN_SENSITIVITY.json",
+      "sha256": "ec6c325672db1aa6db7529563e55e54c79ad4c07dfa598499998f274be76d399"
+    },
+    {
+      "bytes": 492,
+      "path": "INITIAL_CLOCK_FIXTURE_CLEANUP.json",
+      "sha256": "f162c82b26fe09c2ff52afb31966f28cfffeea21785f3344e65780c356bfa23b"
+    },
+    {
+      "bytes": 3194,
+      "path": "probe_clock_origins_both.py",
+      "sha256": "6744c175469c036750ef1541cb285d35730f0932c8f45ce3356a05c294673def"
+    },
+    {
+      "bytes": 2683,
+      "path": "run_peer_controls.py",
+      "sha256": "c3b2a0397b96ae21d3df468983a392f97d2df8715dac9c219994145859246e03"
+    },
+    {
+      "bytes": 3298,
+      "path": "CLOCK_ORIGIN_ordinary.json",
+      "sha256": "35e0f361e52a3779e94a2a3c9ff621fb116a9fc56d1636e3648fcb13d38c2b86"
+    },
+    {
+      "bytes": 3299,
+      "path": "CLOCK_ORIGIN_optimized.json",
+      "sha256": "c821cd56d54eeb4c36004dc44e25aa3da2eac4b23cbbea357423604ec6f5a90a"
+    },
+    {
+      "bytes": 15895,
+      "path": "peer_controls/PEER_CONTROLS.json",
+      "sha256": "00cedb8d31bd42f36507cceb012bd30bf0e03a96a33789d431202ae8b3cfb4d8"
+    },
+    {
+      "bytes": 4884,
+      "path": "REVIEW.md",
+      "sha256": "0bcc65c654b602dd08c18e5057e14d0486cdd06cc74c2bf8e6590fae8bb3e28b"
+    },
+    {
+      "bytes": 20554,
+      "path": "independent_controls_v101/COMMANDS.json",
+      "sha256": "4649a8318906af0e11bf960eb9c29393e9d5cc5af882b093c89d45513237704a"
+    },
+    {
+      "bytes": 18619,
+      "path": "independent_controls_v101/core-optimized.stderr.txt",
+      "sha256": "5fa651ff4957cae77144abacaa8e43a1ca66b07112642f3dac9cb517bb6a96f4"
+    },
+    {
+      "bytes": 1418,
+      "path": "independent_controls_v101/core-optimized.stdout.txt",
+      "sha256": "3e9969c5dab9a03319456dfdaecff0a41335c2787c0d77b89e6bc9400cbc5bae"
+    },
+    {
+      "bytes": 18619,
+      "path": "independent_controls_v101/core-ordinary.stderr.txt",
+      "sha256": "7dc7a6e520cb42f3cc8dd53e30521672a4723fb091f0b967479260415676bf61"
+    },
+    {
+      "bytes": 1418,
+      "path": "independent_controls_v101/core-ordinary.stdout.txt",
+      "sha256": "7a5a77fd819c93514eb68a0b29457f4e3b57ef893e00775d457692f542da97ed"
+    },
+    {
+      "bytes": 18619,
+      "path": "independent_controls_v101/integrated-core-optimized.stderr.txt",
+      "sha256": "b58c1deeaa28e5f63b26bc95499940198ea1ef3046d94473e9c25fa31209116c"
+    },
+    {
+      "bytes": 1418,
+      "path": "independent_controls_v101/integrated-core-optimized.stdout.txt",
+      "sha256": "fac82dd87b2ed53c77a1b3ec821e061e5a495694452672d0143d3f8ddf2928eb"
+    },
+    {
+      "bytes": 18619,
+      "path": "independent_controls_v101/integrated-core-ordinary.stderr.txt",
+      "sha256": "00cdf8650aae867618813a737039d81db51304b4568f5cd8a772e533a123e617"
+    },
+    {
+      "bytes": 1424,
+      "path": "independent_controls_v101/integrated-core-ordinary.stdout.txt",
+      "sha256": "1d93f484d817aef377d1014e59f25949071e8931c6a9331d66b1eb657655f9d4"
+    },
+    {
+      "bytes": 108,
+      "path": "independent_controls_v101/new-entrypoint-optimized.stderr.txt",
+      "sha256": "c74af6b5a2de4d0193e8e2758136c74e9e44b920d3c50b5807c27a943634781c"
+    },
+    {
+      "bytes": 0,
+      "path": "independent_controls_v101/new-entrypoint-optimized.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 108,
+      "path": "independent_controls_v101/new-entrypoint-ordinary.stderr.txt",
+      "sha256": "c74af6b5a2de4d0193e8e2758136c74e9e44b920d3c50b5807c27a943634781c"
+    },
+    {
+      "bytes": 0,
+      "path": "independent_controls_v101/new-entrypoint-ordinary.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 971,
+      "path": "independent_controls_v101/old-entrypoint-optimized.stderr.txt",
+      "sha256": "01fbc9a574d2565112b09828c303671ccffd67db2b6de8a07c1be610a8a4f8f7"
+    },
+    {
+      "bytes": 0,
+      "path": "independent_controls_v101/old-entrypoint-optimized.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 971,
+      "path": "independent_controls_v101/old-entrypoint-ordinary.stderr.txt",
+      "sha256": "01fbc9a574d2565112b09828c303671ccffd67db2b6de8a07c1be610a8a4f8f7"
+    },
+    {
+      "bytes": 0,
+      "path": "independent_controls_v101/old-entrypoint-ordinary.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4739,
+      "path": "independent_controls_v101/transfer-optimized.stderr.txt",
+      "sha256": "eb5efc82c863f7ce1d122d6f511619cb67a40d50b38caecd17f1f50f9e4af60d"
+    },
+    {
+      "bytes": 158,
+      "path": "independent_controls_v101/transfer-optimized.stdout.txt",
+      "sha256": "358564595e868033d3b4cc6a739818b0cc495d24e3477ee2b3b147db513f1b6b"
+    },
+    {
+      "bytes": 4739,
+      "path": "independent_controls_v101/transfer-ordinary.stderr.txt",
+      "sha256": "7c4481ae879a7e32e1e24373c834afaa711526dedac6758ea7d53f740f81327e"
+    },
+    {
+      "bytes": 158,
+      "path": "independent_controls_v101/transfer-ordinary.stdout.txt",
+      "sha256": "51cd194cb400d968f3d12dd25a1704716a030c836ffb280525f1df0285fba0b7"
+    },
+    {
+      "bytes": 42719,
+      "path": "peer_controls/ALIAS_optimized.json",
+      "sha256": "6f46b525fc0fc0f9282a2b0112087e96085f0b9dbc8b7f489bafcc18494a09e1"
+    },
+    {
+      "bytes": 42719,
+      "path": "peer_controls/ALIAS_ordinary.json",
+      "sha256": "e0a78f8a91874638826e76d86f30b31e8312de35d203f0da0662d65a864aa55d"
+    },
+    {
+      "bytes": 10622,
+      "path": "peer_controls/COMMANDS.json",
+      "sha256": "cb6a3ce53a30972120fd1073e1d0d79aea0d1fd8ab6e8432326b70c96a92035f"
+    },
+    {
+      "bytes": 15895,
+      "path": "peer_controls/PEER_CONTROLS.json",
+      "sha256": "00cedb8d31bd42f36507cceb012bd30bf0e03a96a33789d431202ae8b3cfb4d8"
+    },
+    {
+      "bytes": 0,
+      "path": "peer_controls/alias-optimized.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 424,
+      "path": "peer_controls/alias-optimized.stdout.txt",
+      "sha256": "e6f82c4f53c6acdbf4f149a19c8d09e67bb9e0d5287fa400081dc057c93b0322"
+    },
+    {
+      "bytes": 0,
+      "path": "peer_controls/alias-ordinary.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 424,
+      "path": "peer_controls/alias-ordinary.stdout.txt",
+      "sha256": "e6f82c4f53c6acdbf4f149a19c8d09e67bb9e0d5287fa400081dc057c93b0322"
+    },
+    {
+      "bytes": 0,
+      "path": "peer_controls/cleanup-optimized.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 810,
+      "path": "peer_controls/cleanup-optimized.stdout.txt",
+      "sha256": "421e438370fc5af28357566e196858c5bf5418acec730624d12541ea30226cef"
+    },
+    {
+      "bytes": 0,
+      "path": "peer_controls/cleanup-ordinary.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 809,
+      "path": "peer_controls/cleanup-ordinary.stdout.txt",
+      "sha256": "a21ca400e0e32a70cd8bdafa38f7a3d059b4055ee2092ae52d8f664b4d950cf1"
+    },
+    {
+      "bytes": 0,
+      "path": "peer_controls/clock-optimized.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 136,
+      "path": "peer_controls/clock-optimized.stdout.txt",
+      "sha256": "f5b8deb05da87ce6d7eff199e63c6d5d27a75ca1a614f94848ea21524f85672a"
+    },
+    {
+      "bytes": 0,
+      "path": "peer_controls/clock-ordinary.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 138,
+      "path": "peer_controls/clock-ordinary.stdout.txt",
+      "sha256": "72e635ec18d5ab2b37ce39de259b5b62e081984900d320b67f1ac1a78c1d15fa"
+    },
+    {
+      "bytes": 877,
+      "path": "peer_controls/cleanup-ordinary/CLEANUP_CLI.json",
+      "sha256": "9df37f28e94c9c6e514e93db59366bf44908e83fb135d607d77747638f746328"
+    },
+    {
+      "bytes": 878,
+      "path": "peer_controls/cleanup-optimized/CLEANUP_CLI.json",
+      "sha256": "6288fa238067b14642740184c03f36446c3cdb079f5d788f974dcaa56b4c1354"
+    }
+  ],
+  "core_executions": 636,
+  "core_manifest": {
+    "bytes": 44400,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/SOURCE_PINS.json",
+    "sha256": "e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e"
+  },
+  "core_rows": 254,
+  "exact_preflight_controls": 4,
+  "format": "independent-grant-tool-transfer-source-refusal-v101",
+  "helper": {
+    "bytes": 33349,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/proof_tool_transfer.py",
+    "sha256": "8b7813c1f10ac0fe13f51f06961b0811bebf4dcaeea655da4c9a2b566044f3b4"
+  },
+  "initial_execution_policy": false,
+  "mission": "memory-budget-experiment",
+  "mocked_origin_finding_per_mode": true,
+  "new_finding": "Persisted time.monotonic transfer lease lacks cross-invocation shared clock admission; exact guarded replay accepts negative elapsed and an expired shared interval",
+  "original_groups_absent": 16,
+  "prior_finding_repairs_verified": 2,
+  "retained_added_test_bodies": 50,
+  "retained_core_test_bodies": 159,
+  "source_and_providers_returned_exact": true,
+  "transfer_manifest": {
+    "bytes": 5942,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/TRANSFER_SOURCE_PINS.json",
+    "sha256": "23bf55f5c300618f1e07eb99e75e805b48516a18f6afb14192972b0f29a5a937"
+  },
+  "workflow": {
+    "bytes": 21444,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/grant-dirty-tools-transfer-mac.proposed.yml",
+    "sha256": "dcc4ef698778fbbf1de3cc8e792d7276bd85f36e4924fd509d1a798dbf0d17e8"
+  }
+}

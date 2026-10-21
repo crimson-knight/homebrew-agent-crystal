@@ -1,0 +1,50 @@
+[
+  {
+    "member": "tools/amber-lsp",
+    "bytes": 3590088,
+    "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a",
+    "load_commands": [
+      {
+        "command": "0xc",
+        "path": "/opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib"
+      },
+      {
+        "command": "0xc",
+        "path": "/usr/lib/libiconv.2.dylib"
+      },
+      {
+        "command": "0xc",
+        "path": "/usr/lib/libSystem.B.dylib"
+      }
+    ],
+    "execution_admitted": false
+  },
+  {
+    "member": "tools/ameba",
+    "bytes": 4991560,
+    "sha256": "107c91a841e5e8ddef95f4bc6b1bc40ff365741eb51b17828844f3a2864ffd3b",
+    "load_commands": [
+      {
+        "command": "0xc",
+        "path": "/opt/homebrew/opt/libyaml/lib/libyaml-0.2.dylib"
+      },
+      {
+        "command": "0xc",
+        "path": "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib"
+      },
+      {
+        "command": "0xc",
+        "path": "/opt/homebrew/opt/bdw-gc/lib/libgc.1.dylib"
+      },
+      {
+        "command": "0xc",
+        "path": "/usr/lib/libiconv.2.dylib"
+      },
+      {
+        "command": "0xc",
+        "path": "/usr/lib/libSystem.B.dylib"
+      }
+    ],
+    "execution_admitted": false
+  }
+]

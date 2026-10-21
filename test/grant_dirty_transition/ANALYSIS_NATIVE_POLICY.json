@@ -1,0 +1,9 @@
+{
+  "Apple_platform_code_loading_reviewed": false,
+  "analysis_tool_source_and_bytes_admitted": true,
+  "execution_admitted": false,
+  "expected_native": null,
+  "format": "atlas-grant-analysis-native-policy-v1",
+  "independent_review_sha256": null,
+  "scope": "Exact accepted tool bytes and source; native-input observation precedes independent review and a source-pinned resume policy. Actual loading/API/lint and complete native memory qualification remain separate."
+}

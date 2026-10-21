@@ -1,0 +1,748 @@
+{
+  "actual_local_compiler_native_container_ssh_workload_jobs": 0,
+  "actual_target_cells_accepted": 0,
+  "additive_source_rows": 32,
+  "commands": [
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/run_guarded_source.py",
+        "--workflow-fixture",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/grant-causal-mac.proposed.yml",
+        "--dirty-workflow-fixture",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/grant-dirty-tools-transfer-mac.proposed.yml"
+      ],
+      "elapsed_seconds": 8.56597275,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "core-ordinary",
+      "maximum_seconds": 35,
+      "original_group": 74353,
+      "pid": 74353,
+      "refusal": null,
+      "stderr_sha256": "476f01ce18c7ffb6c6d3c26049a08a57d1446ca85891855642808ae6a31f91b6",
+      "stdout_sha256": "218cde264f70da94dd0d638fa4c25f5f691cbc54a05edad4d06ba0ff51791879",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 13.930480208,
+        "elapsed_seconds": 0.00018391699999931177,
+        "group": 74353,
+        "initial_sample": {
+          "elapsed_seconds": 4.1458000000105244e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 35.364948,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 4.1458000000105244e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 4.1458000000105244e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/test_tool_transfer.py",
+        "--artifact-zip",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_bootstrap_parent_actual_v101/tools-12310618101.zip"
+      ],
+      "elapsed_seconds": 2.90430675,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "transfer-ordinary",
+      "maximum_seconds": 35,
+      "original_group": 74612,
+      "pid": 74612,
+      "refusal": null,
+      "stderr_sha256": "687a621786a0012e3625d69ea86228500cf9ba906734b130a30b479885d22d3e",
+      "stdout_sha256": "51cd194cb400d968f3d12dd25a1704716a030c836ffb280525f1df0285fba0b7",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 16.835845624999997,
+        "elapsed_seconds": 0.0001172500000006238,
+        "group": 74612,
+        "initial_sample": {
+          "elapsed_seconds": 2.3458000001141954e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 43.9319015,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 2.3458000001141954e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 2.3458000001141954e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101_validation/final/integrated repository with spaces/test/grant_dirty_transition/run_guarded_source.py"
+      ],
+      "elapsed_seconds": 9.3719565,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "integrated-core-ordinary",
+      "maximum_seconds": 35,
+      "original_group": 74785,
+      "pid": 74785,
+      "refusal": null,
+      "stderr_sha256": "5113a58c00869aced5fbaffe36600fcc640037e5158d210c2176700849de992c",
+      "stdout_sha256": "41b38bedd40f50e8022b2ffaa96de678433a4dafca9d12b82c3b180d8fb1ef70",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 26.208595166,
+        "elapsed_seconds": 0.0001605420000032609,
+        "group": 74785,
+        "initial_sample": {
+          "elapsed_seconds": 4.900000000063187e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 46.836985958,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 4.900000000063187e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 4.900000000063187e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "-c",
+        "import hashlib, json, os, pathlib, runpy, sys\nroot = pathlib.Path(\"test/grant_dirty_transition\").resolve()\nexpected = os.environ[\"ATLAS_GRANT_PACKET_SHA256\"]\npins = root / \"SOURCE_PINS.json\"\nif hashlib.sha256(pins.read_bytes()).hexdigest() != expected:\n    raise SystemExit(\"Grant packet manifest differs\")\nfor row in json.loads(pins.read_bytes())[\"files\"]:\n    path = root / row[\"path\"]\n    if path.is_symlink() or len(path.read_bytes()) != row[\"bytes\"] or hashlib.sha256(path.read_bytes()).hexdigest() != row[\"sha256\"]:\n        raise SystemExit(\"Grant packet source differs: \" + row[\"path\"])\nsource = root / \"preflight_dirty_tools.py\"\nsys.argv = [str(source), \"--proof-tools\", str(root / \"PROOF_TOOLS_PENDING.json\"), \"--proof-tools-sha256\", \"7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893\"]\nrunpy.run_path(str(source), run_name=\"__main__\")\n"
+      ],
+      "elapsed_seconds": 0.21174899999999752,
+      "exit_code": 1,
+      "expected_exit": 1,
+      "label": "predecessor-entrypoint-ordinary",
+      "maximum_seconds": 15,
+      "original_group": 75036,
+      "pid": 75036,
+      "refusal": null,
+      "stderr_sha256": "590f389e3048157e43f0ed82eb9ab676cc3aa7c602ffe0a1cb383cafd6424a5a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 26.421461583,
+        "elapsed_seconds": 0.00012108299999979977,
+        "group": 75036,
+        "initial_sample": {
+          "elapsed_seconds": 2.6583000000357515e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 36.209954916,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 2.6583000000357515e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 2.6583000000357515e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "-c",
+        "import hashlib, json, os, pathlib, runpy, sys\nroot = pathlib.Path(\"test/grant_dirty_transition\").resolve()\nfor filename, variable in ((\"SOURCE_PINS.json\", \"ATLAS_GRANT_PACKET_SHA256\"), (\"TRANSFER_SOURCE_PINS.json\", \"ATLAS_GRANT_TRANSFER_SHA256\")):\n    pins = root / filename\n    if hashlib.sha256(pins.read_bytes()).hexdigest() != os.environ[variable]:\n        raise SystemExit(\"Exact externally reviewed manifest differs\")\n    for row in json.loads(pins.read_bytes())[\"files\"]:\n        path = root / row[\"path\"]\n        if path.is_symlink() or len(path.read_bytes()) != row[\"bytes\"] or hashlib.sha256(path.read_bytes()).hexdigest() != row[\"sha256\"]:\n            raise SystemExit(\"Exact execution source differs: \" + row[\"path\"])\nsource = root / \"preflight_transferred_tools.py\"\nsys.argv = [str(source), \"--proof-tools\", str(root / \"PROOF_TOOLS_PENDING.json\"), \"--proof-tools-sha256\", \"7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893\"]\ntry:\n    runpy.run_path(str(source), run_name=\"__main__\")\nexcept SystemExit as error:\n    if type(error.code) is not int or error.code != 2:\n        raise\nelse:\n    raise SystemExit(\"Pending proof registry unexpectedly admitted\")\n"
+      ],
+      "elapsed_seconds": 0.32135212500000065,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "successor-entrypoint-ordinary",
+      "maximum_seconds": 15,
+      "original_group": 75039,
+      "pid": 75039,
+      "refusal": null,
+      "stderr_sha256": "c74af6b5a2de4d0193e8e2758136c74e9e44b920d3c50b5807c27a943634781c",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 26.744112166,
+        "elapsed_seconds": 0.00014637499999992087,
+        "group": 75039,
+        "initial_sample": {
+          "elapsed_seconds": 4.412499999872921e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 36.423011958000004,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 4.412499999872921e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 4.412499999872921e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/run_guarded_source.py",
+        "--workflow-fixture",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/grant-causal-mac.proposed.yml",
+        "--dirty-workflow-fixture",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/grant-dirty-tools-transfer-mac.proposed.yml"
+      ],
+      "elapsed_seconds": 8.412326292,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "core-optimized",
+      "maximum_seconds": 35,
+      "original_group": 75071,
+      "pid": 75071,
+      "refusal": null,
+      "stderr_sha256": "4a70f4e1e80da9aad6f4327a571afbf8f9348c7e3ca695c0909faf860cd6bf6a",
+      "stdout_sha256": "d33b63218a5f7a730374551712713738a15179042f7041052a2666f0f14096a2",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 35.157465166,
+        "elapsed_seconds": 0.00010904199999828279,
+        "group": 75071,
+        "initial_sample": {
+          "elapsed_seconds": 3.1499999998629846e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 56.745477541,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 3.1499999998629846e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 3.1499999998629846e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101/test_tool_transfer.py",
+        "--artifact-zip",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_bootstrap_parent_actual_v101/tools-12310618101.zip"
+      ],
+      "elapsed_seconds": 2.4731765419999974,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "transfer-optimized",
+      "maximum_seconds": 35,
+      "original_group": 75236,
+      "pid": 75236,
+      "refusal": null,
+      "stderr_sha256": "377535b1dff587c3735742f12dc85697cb8a3418f52e7db3e21902b310761cc3",
+      "stdout_sha256": "358564595e868033d3b4cc6a739818b0cc495d24e3477ee2b3b147db513f1b6b",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 37.63201525,
+        "elapsed_seconds": 0.00014954099999897608,
+        "group": 75236,
+        "initial_sample": {
+          "elapsed_seconds": 5.49579999997718e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 65.159115291,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 5.49579999997718e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 5.49579999997718e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_v101_validation/final/integrated repository with spaces/test/grant_dirty_transition/run_guarded_source.py"
+      ],
+      "elapsed_seconds": 8.829594208000003,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "integrated-core-optimized",
+      "maximum_seconds": 35,
+      "original_group": 75265,
+      "pid": 75265,
+      "refusal": null,
+      "stderr_sha256": "2955ec7593d7d1dc819e487dec9f29743063b065adad8ba6d91f75e15ed20474",
+      "stdout_sha256": "1e993157873ff0ac0093695e566b9ae073d79b5671e8b7ddbadf0c5b755c1a10",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 46.462829791,
+        "elapsed_seconds": 0.00016616700000327,
+        "group": 75265,
+        "initial_sample": {
+          "elapsed_seconds": 6.037500000388718e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 67.63349308299999,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 6.037500000388718e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 6.037500000388718e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "-c",
+        "import hashlib, json, os, pathlib, runpy, sys\nroot = pathlib.Path(\"test/grant_dirty_transition\").resolve()\nexpected = os.environ[\"ATLAS_GRANT_PACKET_SHA256\"]\npins = root / \"SOURCE_PINS.json\"\nif hashlib.sha256(pins.read_bytes()).hexdigest() != expected:\n    raise SystemExit(\"Grant packet manifest differs\")\nfor row in json.loads(pins.read_bytes())[\"files\"]:\n    path = root / row[\"path\"]\n    if path.is_symlink() or len(path.read_bytes()) != row[\"bytes\"] or hashlib.sha256(path.read_bytes()).hexdigest() != row[\"sha256\"]:\n        raise SystemExit(\"Grant packet source differs: \" + row[\"path\"])\nsource = root / \"preflight_dirty_tools.py\"\nsys.argv = [str(source), \"--proof-tools\", str(root / \"PROOF_TOOLS_PENDING.json\"), \"--proof-tools-sha256\", \"7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893\"]\nrunpy.run_path(str(source), run_name=\"__main__\")\n"
+      ],
+      "elapsed_seconds": 0.21164216700000082,
+      "exit_code": 1,
+      "expected_exit": 1,
+      "label": "predecessor-entrypoint-optimized",
+      "maximum_seconds": 15,
+      "original_group": 75695,
+      "pid": 75695,
+      "refusal": null,
+      "stderr_sha256": "590f389e3048157e43f0ed82eb9ab676cc3aa7c602ffe0a1cb383cafd6424a5a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 46.675832625,
+        "elapsed_seconds": 0.00013775000000038062,
+        "group": 75695,
+        "initial_sample": {
+          "elapsed_seconds": 4.058300000053805e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 56.464400916,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 4.058300000053805e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 4.058300000053805e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "-c",
+        "import hashlib, json, os, pathlib, runpy, sys\nroot = pathlib.Path(\"test/grant_dirty_transition\").resolve()\nfor filename, variable in ((\"SOURCE_PINS.json\", \"ATLAS_GRANT_PACKET_SHA256\"), (\"TRANSFER_SOURCE_PINS.json\", \"ATLAS_GRANT_TRANSFER_SHA256\")):\n    pins = root / filename\n    if hashlib.sha256(pins.read_bytes()).hexdigest() != os.environ[variable]:\n        raise SystemExit(\"Exact externally reviewed manifest differs\")\n    for row in json.loads(pins.read_bytes())[\"files\"]:\n        path = root / row[\"path\"]\n        if path.is_symlink() or len(path.read_bytes()) != row[\"bytes\"] or hashlib.sha256(path.read_bytes()).hexdigest() != row[\"sha256\"]:\n            raise SystemExit(\"Exact execution source differs: \" + row[\"path\"])\nsource = root / \"preflight_transferred_tools.py\"\nsys.argv = [str(source), \"--proof-tools\", str(root / \"PROOF_TOOLS_PENDING.json\"), \"--proof-tools-sha256\", \"7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893\"]\ntry:\n    runpy.run_path(str(source), run_name=\"__main__\")\nexcept SystemExit as error:\n    if type(error.code) is not int or error.code != 2:\n        raise\nelse:\n    raise SystemExit(\"Pending proof registry unexpectedly admitted\")\n"
+      ],
+      "elapsed_seconds": 0.3235741250000004,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "successor-entrypoint-optimized",
+      "maximum_seconds": 15,
+      "original_group": 75701,
+      "pid": 75701,
+      "refusal": null,
+      "stderr_sha256": "c74af6b5a2de4d0193e8e2758136c74e9e44b920d3c50b5807c27a943634781c",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 47.000554333,
+        "elapsed_seconds": 0.0001329580000017927,
+        "group": 75701,
+        "initial_sample": {
+          "elapsed_seconds": 4.237500000670025e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 56.677179208,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 4.237500000670025e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 4.237500000670025e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    }
+  ],
+  "core_executions": 636,
+  "core_manifest_sha256": "e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e",
+  "core_source_rows": 254,
+  "exact_predecessor_runpy_import_failures": 2,
+  "exact_successor_pending_refusals": 2,
+  "format": "atlas-grant-tool-transfer-final-source-tests-v1",
+  "groups": [
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 13.930480208,
+      "elapsed_seconds": 0.00018391699999931177,
+      "group": 74353,
+      "initial_sample": {
+        "elapsed_seconds": 4.1458000000105244e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 35.364948,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 4.1458000000105244e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 4.1458000000105244e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 16.835845624999997,
+      "elapsed_seconds": 0.0001172500000006238,
+      "group": 74612,
+      "initial_sample": {
+        "elapsed_seconds": 2.3458000001141954e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 43.9319015,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.3458000001141954e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.3458000001141954e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 26.208595166,
+      "elapsed_seconds": 0.0001605420000032609,
+      "group": 74785,
+      "initial_sample": {
+        "elapsed_seconds": 4.900000000063187e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 46.836985958,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 4.900000000063187e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 4.900000000063187e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 26.421461583,
+      "elapsed_seconds": 0.00012108299999979977,
+      "group": 75036,
+      "initial_sample": {
+        "elapsed_seconds": 2.6583000000357515e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 36.209954916,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.6583000000357515e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.6583000000357515e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 26.744112166,
+      "elapsed_seconds": 0.00014637499999992087,
+      "group": 75039,
+      "initial_sample": {
+        "elapsed_seconds": 4.412499999872921e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 36.423011958000004,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 4.412499999872921e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 4.412499999872921e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 35.157465166,
+      "elapsed_seconds": 0.00010904199999828279,
+      "group": 75071,
+      "initial_sample": {
+        "elapsed_seconds": 3.1499999998629846e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 56.745477541,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.1499999998629846e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.1499999998629846e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 37.63201525,
+      "elapsed_seconds": 0.00014954099999897608,
+      "group": 75236,
+      "initial_sample": {
+        "elapsed_seconds": 5.49579999997718e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 65.159115291,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 5.49579999997718e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 5.49579999997718e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 46.462829791,
+      "elapsed_seconds": 0.00016616700000327,
+      "group": 75265,
+      "initial_sample": {
+        "elapsed_seconds": 6.037500000388718e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 67.63349308299999,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 6.037500000388718e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 6.037500000388718e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 46.675832625,
+      "elapsed_seconds": 0.00013775000000038062,
+      "group": 75695,
+      "initial_sample": {
+        "elapsed_seconds": 4.058300000053805e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 56.464400916,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 4.058300000053805e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 4.058300000053805e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 47.000554333,
+      "elapsed_seconds": 0.0001329580000017927,
+      "group": 75701,
+      "initial_sample": {
+        "elapsed_seconds": 4.237500000670025e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 56.677179208,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 4.237500000670025e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 4.237500000670025e-05,
+        "status": "absent"
+      }
+    }
+  ],
+  "inline_programs_parsed": 11,
+  "mission": "memory-budget-experiment",
+  "new_cases_per_mode": 53,
+  "original_test_bodies_exact": 159,
+  "providers": {
+    "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb",
+    "/usr/bin/python3": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+  },
+  "source_preserved": true,
+  "transfer_manifest_sha256": "23bf55f5c300618f1e07eb99e75e805b48516a18f6afb14192972b0f29a5a937",
+  "validation_source_sha256": "9142de3a023e88717f2bb862c001d28dda42125243e560af3d3a14bf018aa0a6",
+  "workflow_sha256": "dcc4ef698778fbbf1de3cc8e792d7276bd85f36e4924fd509d1a798dbf0d17e8"
+}

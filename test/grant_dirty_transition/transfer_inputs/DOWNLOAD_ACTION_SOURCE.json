@@ -1,0 +1,44 @@
+{
+  "commit": "d3f86a106a0bac45b974a628896c90dbdf5c8093",
+  "credential_interface": "github-token supplied exclusively to pinned supported action",
+  "files": [
+    {
+      "bytes": 9324,
+      "path": "transfer_inputs/download-artifact/README.md",
+      "sha256": "c088294825e648f9f1baf71deefd0a401984d97f0fc43d5c5be9a4ed64211639"
+    },
+    {
+      "bytes": 2137,
+      "path": "transfer_inputs/download-artifact/action.yml",
+      "sha256": "f81d687a5bb7c2c9428a2cfc32fc099c823d56faf533e7d0e1f3cdc0e10f9cc7"
+    },
+    {
+      "bytes": 4798714,
+      "path": "transfer_inputs/download-artifact/dist/index.js",
+      "sha256": "02c2cf24c5b60ae4b3f8d71d3cc85e2e6433dbdf106a38fee7ec3f1c96e2d18e"
+    },
+    {
+      "bytes": 6425,
+      "path": "transfer_inputs/download-artifact/src/download-artifact.ts",
+      "sha256": "1c67eb1bb4f77a462522341189f433422c4d35a6999d0dea2a1846e6edfedd80"
+    },
+    {
+      "bytes": 1097,
+      "path": "transfer_inputs/download-artifact/LICENSE",
+      "sha256": "3e855ffa704114a51628ef8f0bf3aeb41728adf9d9070e263bf58aa5640b0eb5"
+    }
+  ],
+  "mode_restoration": "Verified complete member bytes; canonical executable0755/corpus0644 destination modes. Supported action can canonicalize received files to0644.",
+  "official_source": "https://github.com/actions/download-artifact/tree/d3f86a106a0bac45b974a628896c90dbdf5c8093",
+  "permission": "actions: read",
+  "repository": "actions/download-artifact",
+  "supported_inputs": [
+    "artifact-ids",
+    "github-token",
+    "repository",
+    "run-id",
+    "path",
+    "merge-multiple"
+  ],
+  "version": "v4.3.0"
+}

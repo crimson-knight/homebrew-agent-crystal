@@ -1,0 +1,128 @@
+{
+  "accepted": true,
+  "actual_build_seconds": 95.59230624999987,
+  "actual_local_compiler_browser_native_container_ssh_workload_jobs": 0,
+  "actual_preparation_seconds": 98.26074462500014,
+  "actual_project_api_lint_hook_format_spec_proof_accepted": false,
+  "actual_sdk_profile_sha256": "cba1a21416353c8b3174252998d134ada86a3f783416d5fd141eb7f69973aedf",
+  "actual_target_cells_accepted": 0,
+  "artifact_files": 37,
+  "attempt": 1,
+  "compiler_color": "GREEN",
+  "complete_actual_replays": 2,
+  "components": [
+    {
+      "bytes": 14602,
+      "path": "RUN.json",
+      "sha256": "54d6abc9b8ae29a2d420e80ff5792a9e9402eae4e9ac2276503ee191fc9cfac6"
+    },
+    {
+      "bytes": 3383,
+      "path": "JOBS.json",
+      "sha256": "622ce484cc0ef40084b7b051bcc66df60c86a917f4fb86c6c92002449bb9193d"
+    },
+    {
+      "bytes": 1552,
+      "path": "ARTIFACTS.json",
+      "sha256": "12d33b9d218bd536c3d65253cb30751fbba07765a4593155ee4dba7894b7a8b7"
+    },
+    {
+      "bytes": 122336,
+      "path": "JOB.log.txt",
+      "sha256": "a401454b3c534189d30731c2c5bcce27384f8eeda6432a5814ab87be31d06601"
+    },
+    {
+      "bytes": 2959,
+      "path": "COLLECTION_COMMANDS.json",
+      "sha256": "05839135a6224a5da67ef0ee6a4b52e2f91c9da8debb5cc502389d5ac1184337"
+    },
+    {
+      "bytes": 6920,
+      "path": "ARTIFACT_12310618101_READBACK.json",
+      "sha256": "e18b94ed3b9c7611f2c401a7affcbe99970c01559f67e2982ac3311816585b29"
+    },
+    {
+      "bytes": 7035,
+      "path": "ARTIFACT_12310323377_READBACK.json",
+      "sha256": "87951e0fcf12278a356fd8cdeb072bfdb337e6c9dd8e7fc87db113e99c248b0a"
+    },
+    {
+      "bytes": 72915,
+      "path": "PUBLIC_SOURCE_READBACK.json",
+      "sha256": "fea5390bd391330538cdcaeeb83ac851841205c8cdc8e22989eac817e5f6ec5c"
+    },
+    {
+      "bytes": 7368,
+      "path": "NATIVE_DECLARATIONS.json",
+      "sha256": "71eea3c0358f33f1228f264e265a26a6fa4f13ed211d3731195b9886db6a04b3"
+    },
+    {
+      "bytes": 33832,
+      "path": "VALIDATION.json",
+      "sha256": "a8c02316261c3c396e56ef3e5b2cbdb6071490cf4b05c9845f1e0c41fa9c2aa9"
+    },
+    {
+      "bytes": 19976,
+      "path": "final-replay-ordinary/ACTUAL_REPLAY.json",
+      "sha256": "d5bda05453c3a702a33e8957598acd5ba7f5a95e46e5827b5c45b1ee48291707"
+    },
+    {
+      "bytes": 19976,
+      "path": "final-replay-optimized/ACTUAL_REPLAY.json",
+      "sha256": "d5bda05453c3a702a33e8957598acd5ba7f5a95e46e5827b5c45b1ee48291707"
+    },
+    {
+      "bytes": 4304,
+      "path": "final-controls-ordinary/READER_CONTROLS.json",
+      "sha256": "5c6b9518fea71b0d76940bffdd9f2313c50a829e8587fa7a88a13bb2d5c258ee"
+    },
+    {
+      "bytes": 4304,
+      "path": "final-controls-optimized/READER_CONTROLS.json",
+      "sha256": "0bd5739fc2ea82c830dc6a3674416d9a709497f0d2d9e693f4d7bc0e0641cce6"
+    },
+    {
+      "bytes": 976,
+      "path": "READER_LAYOUT_OBSERVATION.json",
+      "sha256": "30c635f2cc5ad12e3aa1a389f8d672cdaa4ebb34dbd14cdc9408a4aea03b7f38"
+    },
+    {
+      "bytes": 7966,
+      "path": "REPORT.md",
+      "sha256": "07fd349134862fbf0da43146834be1d030fc91228d917ea0eb5c5ae1ec07bf80"
+    },
+    {
+      "bytes": 532236,
+      "path": "FROZEN_FILES.json",
+      "sha256": "b84f845b5061f3bb95685f7e7ee49b3e83f96e489ccbce3f0a19036d9c4a2ad2"
+    }
+  ],
+  "dirty_four_arm_executed": false,
+  "event": "workflow_dispatch",
+  "format": "atlas-grant-proof-tool-actual-independent-acceptance-v101",
+  "git_tree_sha1": "40e3a569aab7b2ca975c09b18d9270eac3867739",
+  "head_sha": "104d2c253614ee969ba2f9284ca9a4ee4f20c192",
+  "job_id": 118957638252,
+  "mission": "memory-budget-experiment",
+  "original_command_groups_absent": 6,
+  "original_outer_fixture_groups_absent": 6,
+  "original_sdk_groups_absent": 11,
+  "original_source_cases_per_mode": 28,
+  "parent_commit": "6a825b91ccbefd1343bb14bc33afbb6f96dabcfc",
+  "physical_retained_vs_remote_provider_boundary": "Returned tool/archive/source/raw/artifact bytes are physically retained and independently hashed; remote compiler/Git/curl/Python/Ruby/std-lib file identities are source-attested metadata, with the wrapper source retained physically.",
+  "pull_request_merge_execution": false,
+  "reader_controls_per_mode": 29,
+  "recorded_successful_steps": 13,
+  "required_target_cells": 144,
+  "retained_expanded_artifact_bytes": 13180091,
+  "returned_ameba_sha256": "107c91a841e5e8ddef95f4bc6b1bc40ff365741eb51b17828844f3a2864ffd3b",
+  "returned_tools_execution_admitted": false,
+  "run_id": 39518892906,
+  "runner_name": "GitHub Actions 1000019248",
+  "scope": "Actual exact-source bounded preparation, same-job older SDK readiness, physical positive artifacts/provenance and original-group return",
+  "sdk_artifact_files": 38,
+  "selected_native_loader_closure_accepted": false,
+  "source_acceptance_sha256": "87adc912419776738b01e2cdb856e8526bc91003533159b55bdd7f1cd92154fa",
+  "source_manifest_sha256": "239dfd520deb496fbfa12db558e83cebbf0dac7b2d59e6ed25709e274e606bef",
+  "whole_build_native_device_shipping_qualification": false
+}

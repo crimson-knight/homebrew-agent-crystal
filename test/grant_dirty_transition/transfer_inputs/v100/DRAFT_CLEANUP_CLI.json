@@ -1,0 +1,21 @@
+{
+  "CLI_exit_code": 0,
+  "actual_local_compiler_native_container_browser_SSH_jobs": 0,
+  "external_guard_calls": 0,
+  "format": "draft-cleanup-CLI-return-sensitivity",
+  "helper_sha256": "31b9f816dee9c058965a5851c7fbcbe9fe1696b31ba00a4f5326c8e7cfa7ce8e",
+  "private_payload_preserved": true,
+  "retained_cleanup": {
+    "actual_tool_recovery_qualified": false,
+    "complete": false,
+    "elapsed_seconds": 0.0004826250000000143,
+    "error": "PermissionError: SYNTHETIC cleanup permission refusal",
+    "format": "atlas-grant-tool-private-cleanup-v1",
+    "maximum_seconds": 30,
+    "preserved": [
+      "tools"
+    ],
+    "removed": []
+  },
+  "transfer_manifest_sha256": "6cd69970f2d666140faf50ffd0a3810e0dc45ec5603c03a9d70881d8b2a44973"
+}

@@ -1,0 +1,33 @@
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	﻿2026-10-21T00:28:08.0991140Z ##[group]Run python3 - <<'PYTHON'
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0991530Z [36;1mpython3 - <<'PYTHON'[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0991880Z [36;1mimport hashlib, json, os, pathlib, runpy, sys[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0992290Z [36;1mroot = pathlib.Path("test/grant_dirty_transition").resolve()[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0992720Z [36;1mexpected = os.environ["ATLAS_GRANT_PACKET_SHA256"][0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0993040Z [36;1mpins = root / "SOURCE_PINS.json"[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0993410Z [36;1mif hashlib.sha256(pins.read_bytes()).hexdigest() != expected:[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0993850Z [36;1m    raise SystemExit("Grant packet manifest differs")[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0994280Z [36;1mfor row in json.loads(pins.read_bytes())["files"]:[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0994590Z [36;1m    path = root / row["path"][0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0995120Z [36;1m    if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0995770Z [36;1m        raise SystemExit("Grant packet source differs: " + row["path"])[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0996200Z [36;1msource = root / "preflight_dirty_tools.py"[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0996930Z [36;1msys.argv = [str(source), "--proof-tools", str(root / "PROOF_TOOLS_PENDING.json"), "--proof-tools-sha256", "7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893"][0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0997720Z [36;1mrunpy.run_path(str(source), run_name="__main__")[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.0998020Z [36;1mPYTHON[0m
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1052550Z shell: /bin/bash -e {0}
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1052750Z env:
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1052940Z   HOMEBREW_NO_AUTO_UPDATE: 1
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1053210Z   PYTHONDONTWRITEBYTECODE: 1
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1053580Z   ATLAS_GRANT_PACKET_SHA256: e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1053940Z   HOMEBREW_NO_INSTALL_FROM_API: 
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1059190Z   HOMEBREW_GITHUB_API_TOKEN: ***
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.1059430Z ##[endgroup]
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2607900Z Traceback (most recent call last):
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2609270Z   File "<stdin>", line 13, in <module>
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2609700Z   File "<frozen runpy>", line 292, in run_path
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2610040Z   File "<frozen runpy>", line 97, in _run_module_code
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2610340Z   File "<frozen runpy>", line 87, in _run_code
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2610910Z   File "/Users/runner/work/homebrew-agent-crystal/homebrew-agent-crystal/test/grant_dirty_transition/preflight_dirty_tools.py", line 5, in <module>
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2611520Z     from dirty_proof import admit_tools
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2612020Z ModuleNotFoundError: No module named 'dirty_proof'
+One rich2 four arm diagnostic	Admit exact hosted API and lint providers	2026-10-21T00:28:08.2703260Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,229 @@
+{
+  "archive_bytes": 6693802,
+  "archive_sha256": "b92262e930c0dfdc5c47ba51c310f1fe0590e7e1a7e72c7a401bcd8bd3fad31a",
+  "artifact_id": 12310618101,
+  "files": [
+    {
+      "archive_mode": 420,
+      "bytes": 7376,
+      "path": "BOOTSTRAP_RESULT.json",
+      "sha256": "4410080e03be1a2fc25dbb24bd26ea7089c21cb67163b54cd4415fcc136d1617"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 8717,
+      "path": "COMMANDS.json",
+      "sha256": "1b803b3882d1fc44092646a96749b64e7dc429b4b18792a148511bbee34f09fe"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1855,
+      "path": "DRAFT_TOOL_REGISTRY.json",
+      "sha256": "46218b24c5e56daaba86de7390517f3eda4ab42a3b5c6766f89313025bbc2ee6"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1526,
+      "path": "PROVIDERS_AFTER.json",
+      "sha256": "b1c9e5f10532257b74723cfe897d9fa77624af819b94f20d6e26ce5b1336b3c4"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1526,
+      "path": "PROVIDERS_BEFORE.json",
+      "sha256": "b1c9e5f10532257b74723cfe897d9fa77624af819b94f20d6e26ce5b1336b3c4"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 5916,
+      "path": "PUBLIC_STAGE.json",
+      "sha256": "9c879e0d284d8eef3e73896a6aaf9127b6e01e790257cf646092a0e970ec63ef"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 187098,
+      "path": "SDK_ADMISSION.json",
+      "sha256": "2064ce5ea2dbd51fc3653b218c248d3d3ab224e14e3ef9feabd7b59e662bf458"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 73167,
+      "path": "SOURCE_AFTER.json",
+      "sha256": "298f9722b8f8f42884008b020222558bbfdddf04a3f80da480514bf2ea751120"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 73167,
+      "path": "SOURCE_BEFORE.json",
+      "sha256": "298f9722b8f8f42884008b020222558bbfdddf04a3f80da480514bf2ea751120"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 180688,
+      "path": "STDLIB_AFTER.json",
+      "sha256": "91b26e52acc956731732ebf9ee3d3e21600ec836a8d5a2578afb42f9cdb4c143"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 180688,
+      "path": "STDLIB_BEFORE.json",
+      "sha256": "91b26e52acc956731732ebf9ee3d3e21600ec836a8d5a2578afb42f9cdb4c143"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 69,
+      "path": "archive-git-probe.stderr.txt",
+      "sha256": "d2b35cacadc66b7fad8dedd1be5244e17150a6625978c9330f831bd7a9cd6b1e"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "archive-git-probe.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "build-ameba.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "build-ameba.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "curl-version.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 413,
+      "path": "curl-version.stdout.txt",
+      "sha256": "3b9d852d02e8ef1c06fa67474e152b9b40a57db727e16592afb091cfec111926"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "download-ameba.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "download-ameba.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "download-cli.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "download-cli.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 0,
+      "path": "git-version.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 35,
+      "path": "git-version.stdout.txt",
+      "sha256": "0a72a762b37a3800276a1004e2c169aed0610d4a3ba601ba59e70e1c4d9f3200"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 200372,
+      "path": "inputs/ameba.tar.gz",
+      "sha256": "a0e91d582e0617b15c1bd3448c2d0db60c86454aa4d19887fcb6ee08d4ddf259"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 2933426,
+      "path": "inputs/cli.tar.gz",
+      "sha256": "0a9fb1227af6574c689eae3d2f4d83281cc3edfab3d40799079d470bb2c7ce61"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1903,
+      "path": "source/BOOTSTRAP_INPUT_PINS.json",
+      "sha256": "c7cb064f0064d1a0a91f499be3840f23e234497950a036f556a7cb801efc671b"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1368,
+      "path": "source/BOOTSTRAP_SOURCE_PINS.json",
+      "sha256": "239dfd520deb496fbfa12db558e83cebbf0dac7b2d59e6ed25709e274e606bef"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 22594,
+      "path": "source/bootstrap_tools.py",
+      "sha256": "b99d823a409e7e580f31b18b4aea397bd48a74299e7d7573502e290d967877d3"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1080,
+      "path": "source/inputs/AMEBA_ARCHIVE_IDENTITY.json",
+      "sha256": "580ebc32a31b890b83edf82279d9e8fa295d73ad912b6fed963982582da1595c"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 101175,
+      "path": "source/inputs/AMEBA_COMPLETE_TREE_READBACK.json",
+      "sha256": "c6b56f5eeec65757d834d851bf2fd94cb54397eea2e24586ccee85bfc469772b"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 1672,
+      "path": "source/inputs/CLI_ARCHIVE_IDENTITY.json",
+      "sha256": "5058c47dc0cdcdedea5c31b32679764680da576857e9d8985bacb273388c3f3b"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 7899,
+      "path": "source/stage_tools.py",
+      "sha256": "567a6efafdc9292d8042212b797ca0723f8fd4596d74a9181fd2c86e1445cbf1"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 18363,
+      "path": "source/test_bootstrap.py",
+      "sha256": "d12112dce00410bbafb6a1414a775fa62e7d3f76e052cdd51bdd916e07f9776f"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 11775,
+      "path": "source/vendor/public_evidence_rules.py",
+      "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
+    },
+    {
+      "archive_mode": 493,
+      "bytes": 3590088,
+      "path": "tools/amber-lsp",
+      "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a"
+    },
+    {
+      "archive_mode": 493,
+      "bytes": 4991560,
+      "path": "tools/ameba",
+      "sha256": "107c91a841e5e8ddef95f4bc6b1bc40ff365741eb51b17828844f3a2864ffd3b"
+    },
+    {
+      "archive_mode": 420,
+      "bytes": 9858,
+      "path": "tools/crystal.yml",
+      "sha256": "80bf5dff1c453a94d91da83c0f99a093a2997f8070b6a04af4b02b8c03cd454d"
+    }
+  ]
+}

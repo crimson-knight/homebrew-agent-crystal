@@ -1,0 +1,72 @@
+{
+  "actual_compiler_native_container_browser_SSH_workloads": 0,
+  "actual_current_provider_clock_metadata": {
+    "Python_version": "3.9.6 (default, May 22 2026, 11:13:45) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+    "common_MONOTONIC": 1915969.022231,
+    "local_implementation": "mach_absolute_time()",
+    "local_monotonic": 0.263280791,
+    "provider_path": "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+    "provider_sha256": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb"
+  },
+  "actual_wall_wait_claimed": false,
+  "external_guard_calls": 0,
+  "mocked_fresh_verifier_process_clock": 1,
+  "mocked_initializer_process_clock": 10,
+  "result": {
+    "actual_tool_executions": 0,
+    "artifact_archive_sha256": "b92262e930c0dfdc5c47ba51c310f1fe0590e7e1a7e72c7a401bcd8bd3fad31a",
+    "artifact_id": 12310618101,
+    "elapsed_seconds": -9,
+    "execution_admitted": false,
+    "format": "atlas-grant-proof-tool-transfer-v1",
+    "full_native_memory_qualified": false,
+    "maximum_seconds": 180,
+    "passed": true,
+    "tools": [
+      {
+        "bytes": 3590088,
+        "mode": 493,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v101/clock-origin-fixture/grant-proof-transfer-hdq9dl4k/tools/amber-lsp",
+        "physical_identity": [
+          16777231,
+          647769264,
+          33261,
+          3590088,
+          1792545107431955141,
+          1792545107432402971
+        ],
+        "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a"
+      },
+      {
+        "bytes": 4991560,
+        "mode": 493,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v101/clock-origin-fixture/grant-proof-transfer-hdq9dl4k/tools/ameba",
+        "physical_identity": [
+          16777231,
+          647769265,
+          33261,
+          4991560,
+          1792545107436102485,
+          1792545107436743855
+        ],
+        "sha256": "107c91a841e5e8ddef95f4bc6b1bc40ff365741eb51b17828844f3a2864ffd3b"
+      },
+      {
+        "bytes": 9858,
+        "mode": 420,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_peer_v101/clock-origin-fixture/grant-proof-transfer-hdq9dl4k/tools/share/amber_cli/api/crystal.yml",
+        "physical_identity": [
+          16777231,
+          647769269,
+          33188,
+          9858,
+          1792545107440791283,
+          1792545107440839241
+        ],
+        "sha256": "80bf5dff1c453a94d91da83c0f99a093a2997f8070b6a04af4b02b8c03cd454d"
+      }
+    ],
+    "transport_scope": "Pinned supported download-artifact interface; all37 member hashes independently enforced; ZIP digest retained from reviewed preparation authority"
+  },
+  "source_sha256": "8b7813c1f10ac0fe13f51f06961b0811bebf4dcaeea655da4c9a2b566044f3b4"
+}
