@@ -37,6 +37,7 @@ def source_packet(expected):
     return protected
 
 def revalidate(protected):
+    for invocation in getattr(protected,'invocations',[]):verify_invocation(invocation)
     for path,expected in protected.items():need(stable(path)[0]['sha256']==expected,'Pinned source/provider changed: '+path)
 
 def load_driver(bottle=False):
@@ -81,7 +82,7 @@ def command_maximum(label):
     if label in ('alias-acrystal','alias-agent-crystal','alias-crystal-alpha'):return 30
     if label in ('ci-formula-absence-before','ci-brew-root','ci-tap-location','ci-checkout-before','ci-tree-before','ci-checkout-origin','ci-checkout-after','ci-tree-after','ci-formula-absence-after','ci-checkout-restore-before','ci-tree-restore-before','ci-preserved-source','ci-preserved-origin','ci-checkout-restore-after','ci-tree-restore-after'):return 15
     if label=='ci-untap-owned-checkout':return 30
-    limits={**dict.fromkeys(('initial-formula-absence','initial-tap-location','public-default-main','homebrew-version','homebrew-config','homebrew-repository','homebrew-source','homebrew-source-return','homebrew-core-return','homebrew-cache','actual-installed-prefix','homebrew-core-source','consumer-install-bundle','consumer-profile'),30),
+    limits={**dict.fromkeys(('initial-formula-absence','initial-tap-location','public-default-main','homebrew-version','homebrew-config','homebrew-prefix','homebrew-invocation-prefix','homebrew-invocation-repository','homebrew-repository','homebrew-source','homebrew-source-return','homebrew-core-return','homebrew-cache','actual-installed-prefix','homebrew-core-source','consumer-install-bundle','consumer-profile'),30),
         **dict.fromkeys(('observed-git-version','observed-curl-version','observed-bash-version','observed-python-version','consumer-lock-check'),15),
         'download-public-installer':45,'ordinary-default-install':2700,'installed-formula-tests':120,'installed-dependency-metadata':60,
         'tap-public-default':120,'build-for-normal-bottle':2700,'create-bottle':300,'download-public-SDK':60,'download-reviewed-minecart':45,'consumer-write-lock':600,'consumer-frozen-install':600,'consumer-budget-spec':120,'download-reviewed-admission':20,'native-candidate':60,'Git-candidate':60,'profile-inspection':15}
@@ -107,3 +108,37 @@ def extract_provider(archive,destination,descriptor):
     for name,(raw,mode) in payload.items():
         path=destination/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);path.chmod(mode)
     return inventory(destination)
+
+
+class ProviderProtection(dict):
+    """Return the physical source ledger together with exact invocation identities."""
+    def __init__(self,values,invocations):super().__init__(values);self.invocations=invocations
+
+def physical_fields(info):return [info.st_dev,info.st_ino,info.st_mode,info.st_size,info.st_mtime_ns,info.st_ctime_ns]
+
+def observe_invocation(lexical):
+    """Resolve every lexical component while retaining bounded link/body identities."""
+    lexical=Path(lexical);need(lexical.is_absolute() and '..' not in lexical.parts,'Absolute canonical lexical provider required')
+    pending=list(lexical.parts[1:]);current=Path('/');links=[];directories=[];steps=0
+    while pending:
+        steps+=1;need(steps<=128 and len(links)<=32,'Finite complete provider alias chain required')
+        part=pending.pop(0)
+        if part in ('','.'):continue
+        if part=='..':current=current.parent;continue
+        candidate=current/part;before=candidate.lstat()
+        if stat.S_ISLNK(before.st_mode):
+            target=os.readlink(candidate);need(target and len(target.encode())<=4096,'Bounded complete provider alias target required')
+            need(physical_fields(before)==physical_fields(candidate.lstat()),'Provider alias must remain stable during observation')
+            links.append({'path':str(candidate),'target':target,'identity':physical_fields(before),'uid':before.st_uid,'gid':before.st_gid})
+            target_path=Path(target);pending=list(target_path.parts[1:] if target_path.is_absolute() else target_path.parts)+pending
+            if target_path.is_absolute():current=Path('/')
+        else:
+            current=candidate
+            if pending:
+                need(stat.S_ISDIR(before.st_mode),'Ordinary provider traversal directory required');directories.append({'path':str(current),'identity':[before.st_dev,before.st_ino,before.st_mode,before.st_uid,before.st_gid]})
+            else:need(stat.S_ISREG(before.st_mode),'Ordinary physical provider body required')
+    row,_=stable(current);info=current.lstat();need(current==lexical.resolve(strict=True),'Complete lexical provider resolution must join actual physical body')
+    return {'lexical':str(lexical),'physical':row,'physical_identity':physical_fields(info),'aliases':links,'directories':directories}
+
+def verify_invocation(value):
+    need(observe_invocation(value['lexical'])==value,'Exact lexical alias chain and complete physical provider return required')

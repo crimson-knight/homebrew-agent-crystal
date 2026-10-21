@@ -80,21 +80,46 @@ MAX_TAR_BYTES=272*2**20
 MAX_METADATA_BYTES=8*2**20
 
 class MetadataAllowanceReader:
-    """Admit standard TAR parser reads through its public fileobj interface."""
+    """Reserve complete physical extensions before serving standard-parser reads."""
+    EXTENSIONS=frozenset((tarfile.XHDTYPE,tarfile.XGLTYPE,tarfile.GNUTYPE_LONGNAME,tarfile.GNUTYPE_LONGLINK,tarfile.SOLARIS_XHDTYPE))
     def __init__(self,stream):
-        self.stream=stream
+        self.stream=stream;self.position=stream.tell();self.cache=b'';self.cache_start=0
+        here=stream.tell();self.length=stream.seek(0,io.SEEK_END);stream.seek(here)
         self.admit(0,MAX_METADATA_BYTES)
     def admit(self,start,remaining):
-        self.start=start;self.remaining=remaining
-    def tell(self):return self.stream.tell()
-    def seek(self,offset,whence=io.SEEK_SET):return self.stream.seek(offset,whence)
-    def read(self,size=-1):
-        position=self.tell()
-        if size is None or size<0:
-            end=self.stream.seek(0,io.SEEK_END);self.stream.seek(position)
-        else:end=position+size
+        need(type(start) is int and type(remaining) is int and 0<=start<=self.length and 0<=remaining<=MAX_METADATA_BYTES,'Finite exact next physical metadata admission required')
+        self.start=start;self.remaining=remaining;self.next_header=start;self.cache=b'';self.cache_start=0
+    def tell(self):return self.position
+    def seek(self,offset,whence=io.SEEK_SET):
+        need(type(offset) is int and whence in (io.SEEK_SET,io.SEEK_CUR,io.SEEK_END),'Public finite metadata seek required')
+        target=offset if whence==io.SEEK_SET else self.position+offset if whence==io.SEEK_CUR else self.length+offset
+        need(0<=target<=self.length,'Contained physical metadata seek required');self.position=target;return target
+    def allowed(self,end):
         need(max(0,end-self.start)<=self.remaining,'Finite complete physical TAR metadata capacity required before parser reading')
-        return self.stream.read(size)
+    def read(self,size=-1):
+        need(size is None or type(size) is int,'Exact public parser byte count required')
+        size=self.length-self.position if size is None or size<0 else size
+        position=self.position;end=position+size;self.allowed(end)
+        if self.cache and self.cache_start<=position and end<=self.cache_start+len(self.cache):
+            raw=self.cache[position-self.cache_start:end-self.cache_start];self.position+=len(raw);return raw
+        need(position!=self.next_header or size==512,'Exact complete standard parser header request required')
+        self.stream.seek(position)
+        if position==self.next_header and size==512:
+            raw=self.stream.read(512);self.position+=len(raw)
+            if len(raw)!=512 or raw==b'\0'*512:return raw
+            header=tarfile.TarInfo.frombuf(raw,'utf-8','surrogateescape')
+            need(header.type!=tarfile.GNUTYPE_SPARSE,'Reviewed contiguous archive layout requires ordinary nonsparse members')
+            need(header.size>=0,'Finite nonnegative physical archive member size required')
+            padded=((header.size+511)//512)*512
+            if header.type in self.EXTENSIONS:
+                extent=position+512+padded;self.allowed(extent)
+                need(extent<=self.length,'Complete physical extension extent required before reading')
+                self.cache_start=position+512;self.cache=self.stream.read(padded)
+                need(len(self.cache)==padded,'Complete admitted physical extension payload required')
+                self.next_header=extent
+            else:self.next_header=position+512+padded
+            return raw
+        raw=self.stream.read(size);self.position+=len(raw);return raw
 
 def inspect_metadata(archive_name,name,field,raw,rules,zero_padding=False):
     try:

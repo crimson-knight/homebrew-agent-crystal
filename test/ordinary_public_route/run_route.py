@@ -55,27 +55,54 @@ def get_context(args):
         need(row['sha256']==getattr(args,name+'_sha256'),'Exact observed provider SHA required: '+name)
         providers[name]=row;protected[str(path)]=row['sha256']
     need(providers['python']['path']==str(Path(sys.executable).resolve()),'Same observed Python backend required')
-    return driver,protected,providers
+    from route_support import observe_invocation,ProviderProtection
+    lexical=Path(args.brew).absolute();expected='/home/linuxbrew/.linuxbrew/bin/brew' if platform.system()=='Linux' else '/opt/homebrew/bin/brew'
+    need(str(lexical)==expected,'Reviewed normal lexical Homebrew entry required')
+    expected_physical=Path(expected).parent.parent/('Homebrew/bin/brew' if platform.system()=='Linux' else 'bin/brew')
+    need(providers['brew']['path']==str(expected_physical),'Reviewed normal Homebrew prefix/repository physical relationship required')
+    invocation=observe_invocation(lexical);need(invocation['physical']==providers['brew'],'Exact selected physical Homebrew provider required');providers['brew']['invocation']=invocation
+    return driver,ProviderProtection(protected,[invocation]),providers
 
 
 def run_command(runner,providers,label,tool,args,cwd,environment,seconds=30,expected_exit=0):
     need(len(runner.records)<96,'Finite outer command protocol required')
     need(runner.deadline-time.monotonic()>=seconds+2,'Complete original command maximum plus return reserve required')
-    value=runner.run(label,[providers[tool]['path'],*map(str,args)],cwd=cwd,environment=environment,seconds=seconds,expected_exit=expected_exit)
+    from route_support import verify_invocation
+    invocation=providers.get('brew',{}).get('invocation')
+    if invocation is not None:verify_invocation(invocation)
+    executable=providers[tool].get('invocation',{}).get('lexical',providers[tool]['path'])
+    try:value=runner.run(label,[executable,*map(str,args)],cwd=cwd,environment=environment,seconds=seconds,expected_exit=expected_exit)
+    finally:
+        if invocation is not None:verify_invocation(invocation)
     need(runner.records[-1]['maximum_seconds']==seconds,'Required command maximum remains unchanged')
     return value
+
+
+
+def homebrew_layout(runner,providers,output,environment):
+    """Observe normal prefix/repository before any ordinary installation build."""
+    invocation=providers['brew'].get('invocation')
+    if invocation is None:return None  # Historical guarded fixtures use their original physical-only interface.
+    expected_prefix=Path(invocation['lexical']).parent.parent
+    expected_repository=Path(invocation['physical']['path']).parent.parent
+    prefix,_=run_command(runner,providers,'homebrew-invocation-prefix','brew',['--prefix'],output,environment)
+    repository,_=run_command(runner,providers,'homebrew-invocation-repository','brew',['--repository'],output,environment)
+    value={'invocation':invocation,'prefix_stdout':prefix,'repository_stdout':repository,'expected_prefix':str(expected_prefix),'expected_repository':str(expected_repository),'accepted':False}
+    write(output/'HOMEBREW_INVOCATION.json',value)
+    need(prefix.strip()==str(expected_prefix) and repository.strip()==str(expected_repository),'Actual normal Homebrew prefix and physical repository must join the reviewed lexical invocation')
+    value['accepted']=True;write(output/'HOMEBREW_INVOCATION.json',value);return value
 
 
 def tap_source_observation(tap,output,phase):
     """Retain exact source metadata and separately evaluate owned Git mode profiles."""
     need(phase in ('installed','returned','before-bottle','after-bottle','ci-public'),'Fixed tap observation phase required')
-    started=time.monotonic();expected=read(ROOT/'inputs/ALPHA_FILES.json')['files']
+    started=time.monotonic();deadline=min(started+TAP_METADATA_SECONDS,globals().get('_RESTORE_METADATA_DEADLINE',float('inf')));expected=read(ROOT/'inputs/ALPHA_FILES.json')['files']
     need(1<=len(expected)<=TAP_METADATA_FILES and len({r['file'] for r in expected})==len(expected),'Finite exact expected tap roster required')
     result={'format':'ordinary-tap-working-tree-observation-v110','source_permission_policy':source_modes.DEFAULT_POLICY,'tap':str(tap),'phase':phase,'source_admitted':False,'complete':False,'maximum_seconds':TAP_METADATA_SECONDS,'maximum_entries':TAP_METADATA_FILES,'maximum_member_bytes':TAP_METADATA_MEMBER,'maximum_input_bytes':TAP_METADATA_BYTES,'files':[],'error':None}
     total=0
     try:
         for index,row in enumerate(expected):
-            need(time.monotonic()-started<=TAP_METADATA_SECONDS,'Finite tap source capacity required before each observation')
+            need(time.monotonic()<=deadline,'Finite tap source capacity required before each observation')
             from pathlib import PurePosixPath
             relative=PurePosixPath(row['file']);need(str(relative)==row['file'] and not relative.is_absolute() and '..' not in relative.parts,'Contained pinned tap source required')
             path=tap/relative;want={'kind':'regular','bytes':row['bytes'],'sha256':row['sha256'],'mode':0o755 if row['mode']=='100755' else 0o644}
@@ -99,11 +126,11 @@ def tap_source_observation(tap,output,phase):
                 if not entry.get('git_blob_matches',False):entry['admission_differences'].append('git_blob')
             except FileNotFoundError as error:entry.update(observed={'kind':'missing'},differences=list(want),error=type(error).__name__+': '+str(error))
             except Exception as error:entry.update(differences=list(want),error=type(error).__name__+': '+str(error))
-            need(time.monotonic()-started<=TAP_METADATA_SECONDS,'Finite complete tap source observation horizon required')
+            need(time.monotonic()<=deadline,'Finite complete tap source observation horizon required')
         result['complete']=True;result['source_admitted']=all(not row.get('admission_differences',row['differences']) and row['error'] is None for row in result['files'])
     except Exception as error:result['error']=type(error).__name__+': '+str(error)
     result['observed_input_bytes']=total;result['elapsed_seconds']=time.monotonic()-started
-    if result['elapsed_seconds']>TAP_METADATA_SECONDS:result['complete']=result['source_admitted']=False
+    if started+result['elapsed_seconds']>deadline:result['complete']=result['source_admitted']=False
     write(output/('TAP_WORKTREE_'+phase+'.json'),result)
     need(result['complete'],'Complete bounded tap source observation required')
     return result
@@ -134,6 +161,7 @@ def observe_tap_metadata(args,driver,protected,providers):
     started=time.monotonic();runner=driver.Runner(output);runner.deadline=started+330;env=clean_environment()
     result={'format':'ordinary-public-tap-metadata-v108','passed':False,'observation_complete':False,'ordinary_installation_accepted':False,'SDK_readiness_accepted':False,'frozen_consumer_accepted':False,'native_profile_accepted':False,'actual_default_route_accepted':False,'working_tree_source_accepted':False,'maximum_seconds':360,'return_seconds':30,'job_identity':{k:os.environ.get(k) for k in ('GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT','GITHUB_JOB','GITHUB_SHA','GITHUB_REPOSITORY','RUNNER_NAME')},'finalization_errors':[],'Grant_target_cells_accepted':0}
     try:
+        homebrew_layout(runner,providers,output,env)
         need(all(shutil.which(alias) is None for alias in ALIAS),'Fresh ordinary compiler alias absence required for metadata-only observation')
         text,_=run_command(runner,providers,'initial-formula-absence','brew',['list','--versions','agent-crystal'],output,env,30,1);need(not text.strip(),'Fresh actual formula absence required for metadata-only observation')
         run_command(runner,providers,'tap-public-default','brew',['tap','crimson-knight/agent-crystal'],output,env,120)
@@ -181,6 +209,7 @@ def observe(args,driver,protected,providers):
     result['absolute_monotonic_deadline']=result['started_monotonic']+TOTAL
     sdk_groups_retired=True;catalog_snapshot=None;tap=None;core_identity=None;git_identity=None
     try:
+        homebrew_layout(runner,providers,output,env)
         need(all(shutil.which(alias) is None for alias in ALIAS),'Fresh ordinary alias absence required')
         run=lambda label,tool,argv,seconds=30,expected=0:run_command(runner,providers,label,tool,argv,output,env,seconds,expected)
         absent,_=run('initial-formula-absence','brew',['list','--versions','agent-crystal'],expected=1);need(not absent.strip(),'Fresh ordinary formula absence requires an empty version roster')

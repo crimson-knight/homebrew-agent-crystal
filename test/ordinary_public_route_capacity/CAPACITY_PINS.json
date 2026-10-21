@@ -5,18 +5,26 @@
       "sha256": "f6b709e32790ad89a160910afac03beeffa5f160d7b06af4027ceae9f98da396"
     },
     "run_capacity_controls.py": {
-      "bytes": 7231,
-      "sha256": "0cc0b3cb0885f869ab286dcb903372022d33fc9db29c4b0b95000ad76994f318"
+      "bytes": 7955,
+      "sha256": "7822b36291956e1443ec1d0a015b818175125db323587647f520e78654543ea3"
+    },
+    "tarfile.cpython-3.15.0.py.txt": {
+      "bytes": 121716,
+      "sha256": "0b443116a6f406012ebe06455bb472d659fee6e402e0f0ed44b2da8b33de8d61"
     },
     "test_archive_capacity.py": {
       "bytes": 9127,
       "sha256": "a638b146243631be2768de4628c8e66713a42764ec489b932235ae96f3706cbb"
+    },
+    "test_portable_route.py": {
+      "bytes": 21640,
+      "sha256": "aededcc1ce218e36607d1e07dbc543b97a6a9bd562ff25f8ffd70daecd7c08f9"
     },
     "test_provider_admission.py": {
       "bytes": 3260,
       "sha256": "123fe8967051f7f8d78e8f19f8c2a987f1f0a74c97721f92d0832ca9e81cbea4"
     }
   },
-  "format": "ordinary-public-route-capacity-source-v113",
-  "route_manifest_sha256": "32d56200605cc152a11b96878077669bd703a192ed59c8a6e33bfc13f6cc102f"
+  "format": "ordinary-public-route-portable-source-v114",
+  "route_manifest_sha256": "295286e546e66006c9f5900c0ffd08506c2c5cf9f1ac450723e32472c97ef035"
 }

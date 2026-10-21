@@ -10,7 +10,7 @@ import time
 from urllib.parse import urlsplit
 
 from route_support import catalog,ROOT,need,sha,read,write,stable,revalidate,inventory,verify_commands
-from run_route import get_context,clean_environment,run_command,tap_readback,sdk_return,ALPHA,SDK
+from run_route import get_context,clean_environment,run_command,tap_readback,sdk_return,ALPHA,SDK,homebrew_layout
 
 ROOT_URL='https://github.com/crimson-knight/homebrew-agent-crystal/releases/download/agent-crystal-1.21.0-incremental-1_2-bottle.1'
 
@@ -59,6 +59,7 @@ def build(args,driver,protected,providers):
     result={'format':'alpha-bottle-preparation-v105','passed':False,'release_publication_admitted':False,'bottle_provider_accepted':False,'finalization_errors':[],'compiler_source_version':'1.21.0-incremental-1','Grant_target_cells_accepted':0}
     sdk_retired=True;tap=None;brew_identity=None;catalog_snapshot=None;core_identity=None
     try:
+        homebrew_layout(runner,providers,output,env)
         need(args.root_url==ROOT_URL,'Exact reviewed release-root version required')
         run=lambda label,tool,argv,seconds=30,expected=0:run_command(runner,providers,label,tool,argv,output,env,seconds,expected)
         run('initial-formula-absence','brew',['list','--versions','agent-crystal'],expected=1)
