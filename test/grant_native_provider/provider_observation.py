@@ -14,6 +14,7 @@ import stat
 import struct
 import sys
 import time
+import native_image_evidence as images
 
 ROOT=Path(__file__).resolve().parent
 TRANSFER_SHA='439df1016cdfdfa237521eccf1f47f9fc72827a4990c3c35b2ec4d8371e4cd92'
@@ -41,7 +42,8 @@ def need(value,message):
     if not value:raise RuntimeError(message)
 def canonical(value):return json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False).encode()
 def sha(raw):return hashlib.sha256(raw).hexdigest()
-def write(path,value):write_bytes(path,(json.dumps(value,indent=2,sort_keys=True,allow_nan=False)+'\n').encode())
+def write(path,value):
+    raw=(json.dumps(value,indent=2,sort_keys=True,allow_nan=False)+'\n').encode();need(len(raw)<=MAX_RAW,'Finite complete metadata receipt capacity required before writing');write_bytes(path,raw)
 def decode(raw):
     def unique(rows):
         value={}
@@ -186,7 +188,7 @@ def admit(args,deadline):
         transfer.tool_return(args.tool_workspace,transfer.Budget(min(end,time.monotonic()+30)))
         need(transfer.collect_native(transfer.Budget(min(end,time.monotonic()+45)),admitted,tool_root=args.tool_workspace/'tools')==tool_native,'Tool native physical/alias return required')
         for path,expected in protected.items():need(digest(path,end)==expected,'Protected source/provider return required')
-    return dict(admitted=admitted,driver=driver,transfer=transfer,tool_native=tool_native,protected=protected,check=check)
+    return dict(admitted=admitted,driver=driver,transfer=transfer,tool_native=tool_native,protected=protected,check=check,stream_images=True)
 
 def macho(raw,transfer):
     """Use the exact transfer import parser after selecting a complete ARM64 slice."""
@@ -235,14 +237,30 @@ def resolve_input(lexical,transfer):
     return dict(declared_path=lexical,resolved_path=str(current),links=links,resolved_physical_identity=identity(current))
 
 class Census:
-    def __init__(self,output,deadline,transfer):
+    def __init__(self,output,deadline,transfer,stream_images=False):
         self.output=output;self.deadline=deadline;self.transfer=transfer;self.rows={};self.resolutions={};self.snapshots=[];self.total=0
+        self.stream_images=stream_images;self.streamed={};self.image_evidence=[];self.image_total=0;self.evidence_total=0
     def file(self,lexical,kind):
         clock(self.deadline);resolution=resolve_input(str(lexical),self.transfer);path=Path(resolution['resolved_path'])
         need(str(lexical) not in self.resolutions or self.resolutions[str(lexical)]==resolution,'Stable lexical resolution required')
         self.resolutions[str(lexical)]=resolution;need(len(self.resolutions)<=768,'Bounded full lexical input roster required')
         if str(path) in self.rows:
             need(self.rows[str(path)]['physical_identity']==identity(path),'Revisited exact native physical identity required');return self.rows[str(path)]
+        if self.stream_images and kind in ('metadata-provider','analysis-tool-library','native-image','cc','llvm-image','linker'):
+            need(len(self.streamed)<MAX_NATIVE,'Finite streamed native/provider image roster required before reading')
+            images.admit_size(identity(path)[3],images.MAX_IMAGE_TOTAL-self.image_total)
+            value,evidence,raw=images.fingerprint(path,self.deadline,images.MAX_IMAGE_TOTAL-self.image_total,images.MAX_RETAINED_TOTAL-self.evidence_total)
+            need(len(self.streamed)<MAX_NATIVE,'Finite streamed native/provider image roster required');self.image_total+=value['bytes'];value.update(kind=kind,image_format='macho-header-v1' if evidence is not None else 'non-macho-metadata-provider');self.rows[str(path)]=value;self.streamed[str(path)]=dict(value)
+            if evidence is not None:
+                need(self.evidence_total+len(raw)<=images.MAX_RETAINED_TOTAL,'Aggregate retained native header evidence admission required before writing');self.evidence_total+=len(raw)
+                target=self.output/'provider-headers'/('%04d.bin'%len(self.streamed));write_bytes(target,raw)
+                self.image_evidence.append(dict(path=str(target.relative_to(self.output)),original_path=str(path),evidence=evidence))
+            elif kind=='metadata-provider':
+                need(self.total+value['bytes']<=MAX_TOTAL,'Original aggregate full-byte source admission required before reading');self.total+=value['bytes']
+                current,raw=stable(path,self.deadline);need(current['sha256']==value['sha256'],'Whole script/provider digest join required');target=self.output/'provider-bytes'/('%04d.bin'%len(self.rows));write_bytes(target,raw)
+                self.snapshots.append(dict(path=str(target.relative_to(self.output)),bytes=len(raw),sha256=value['sha256'],original_path=str(path),kind=kind))
+            else:need(False,'Native images require complete selected Mach-O header evidence')
+            return value
         value,raw=stable(path,self.deadline);need(len(self.rows)<MAX_NATIVE+MAX_HEADERS,'Finite complete native/header roster required')
         self.total+=len(raw);need(self.total<=MAX_TOTAL,'One-GiB aggregate selected native/header source ceiling exceeded')
         value['kind']=kind;self.rows[str(path)]=value
@@ -256,10 +274,17 @@ class Census:
     def verify(self):
         for name,expected in self.resolutions.items():need(resolve_input(name,self.transfer)==expected,'Complete lexical input/alias return required')
         for path,expected in self.rows.items():
-            current,_=stable(path,self.deadline);need(all(current[k]==expected[k] for k in ('bytes','sha256','mode','physical_identity')),'Complete physical native/header return required')
+            if path in self.streamed:
+                current,evidence,raw=images.fingerprint(path,self.deadline)
+                retained=next((r for r in self.image_evidence if r['original_path']==path),None)
+                need((retained is None and evidence is None) or (retained is not None and retained['evidence']==evidence and stable(self.output/retained['path'],self.deadline,images.MAX_RETAINED_BYTES)[1]==raw),'Fresh whole-image and retained header return join required')
+            else:current,_=stable(path,self.deadline)
+            need(all(current[k]==expected[k] for k in ('bytes','sha256','mode','physical_identity')),'Complete physical native/header return required')
         for row in self.snapshots:need(digest(self.output/row['path'],self.deadline)==row['sha256'],'Retained provider snapshot return required')
     def view(self):
-        return dict(files=[self.rows[p] for p in sorted(self.rows)],resolutions=[self.resolutions[p] for p in sorted(self.resolutions)],snapshots=self.snapshots,total_bytes=self.total)
+        value=dict(files=[self.rows[p] for p in sorted(self.rows)],resolutions=[self.resolutions[p] for p in sorted(self.resolutions)],snapshots=self.snapshots,total_bytes=self.total)
+        if self.stream_images:value.update(image_protocol='bounded-streaming-native-v2',streamed_files=[self.streamed[p] for p in sorted(self.streamed)],image_evidence=self.image_evidence,image_total_bytes=self.image_total,retained_image_evidence_bytes=self.evidence_total)
+        return value
 
 def native_graph(census,roots,allowed_roots):
     pending=list(map(str,roots));visited=set();rows=[];apple=set();unresolved=[];packages={}
@@ -271,7 +296,14 @@ def native_graph(census,roots,allowed_roots):
         need(any(Path(physical).is_relative_to(Path(root)) for root in allowed_roots),'Selected native input stays in reviewed package/toolchain roots')
         if physical in visited:continue
         need(len(rows)<MAX_NATIVE,'Finite64-image native closure required')
-        visited.add(physical);raw=stable(physical,census.deadline)[1];image=macho(raw,census.transfer);rows.append(dict(current,**image))
+        visited.add(physical)
+        if census.stream_images:
+            record=next((r for r in census.image_evidence if r['original_path']==physical),None);need(record is not None,'Selected native graph image requires retained architecture evidence')
+            evidence=record['evidence'];raw=stable(census.output/record['path'],census.deadline,images.MAX_RETAINED_BYTES)[1];images.validate(raw,evidence,current)
+            part=evidence['ranges'][-1];begin=part['retained_offset'];image=macho(raw[begin:begin+part['bytes']],census.transfer)
+            need(image=={k:evidence[k] for k in ('imports','rpaths')},'Pinned import parser and retained selected-header interpretation must agree')
+        else:raw=stable(physical,census.deadline)[1];image=macho(raw,census.transfer)
+        rows.append(dict(current,**image))
         for imported in image['imports']:
             if imported.startswith('@loader_path/'):
                 pending.append(str(Path(physical).parent/imported[len('@loader_path/'):]))
@@ -293,17 +325,20 @@ def stable_view(value):
         if row['kind'].endswith('receipt'):files.append(dict(path=row['path'],kind=row['kind'],stable_receipt=row['stable_receipt'],mode=row['mode']))
         else:files.append({k:row[k] for k in ('path','bytes','sha256','mode','kind')})
     graph=dict(value['native_graph']);graph['images']=[{k:r[k] for k in ('path','bytes','sha256','mode','imports','rpaths')} for r in graph['images']]
-    return dict(protocol='atlas-native-buffer-stable-inputs-v1',sources=value['sources'],platform=value['platform'],
+    result=dict(protocol='atlas-native-buffer-stable-inputs-v1',sources=value['sources'],platform=value['platform'],
         selected=selected,tool_native=value['tool_native_policy_view'],native_graph=graph,
         files=files,
         lexical=[dict(declared_path=r['declared_path'],resolved_path=r['resolved_path'],links=[dict(path=x['path'],target=x['target']) for x in r['links']]) for r in census['resolutions']],
         package={k:v for k,v in value['package'].items() if k!='receipt_sha256'},header_paths=value['header_paths'],search_outputs=value['search_outputs'],shim_compile_context=stable_shim_context(value['shim_compile_context']))
+    if census.get('image_protocol')=='bounded-streaming-native-v2':result.update(protocol='atlas-native-buffer-stable-inputs-v2',native_header_evidence=[dict(original_path=r['original_path'],evidence=r['evidence']) for r in census['image_evidence']])
+    return result
 
 def execute_observation(args,context,started):
     deadline=started+OBSERVE_SECONDS;work_deadline=deadline-RETURN_SECONDS
     owned_root(args.output)
     output=args.output;runner=context['driver'].Runner(output);runner.deadline=work_deadline
-    census=Census(output,deadline,context['transfer']);result=dict(format='atlas-native-buffer-provider-observation-v1',passed=False,execution_admitted=False,maximum_seconds=OBSERVE_SECONDS,actual_probe_executions=0,full_native_provider_acceptance=False,whole_build_memory_qualified=False,actual_target_cells_accepted=0,finalization_errors=[],phase='metadata',job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'])
+    census=Census(output,deadline,context['transfer'],context.get('stream_images',False));result=dict(format='atlas-native-buffer-provider-observation-v2' if census.stream_images else 'atlas-native-buffer-provider-observation-v1',passed=False,execution_admitted=False,maximum_seconds=OBSERVE_SECONDS,actual_probe_executions=0,full_native_provider_acceptance=False,whole_build_memory_qualified=False,actual_target_cells_accepted=0,finalization_errors=[],phase='metadata',job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'])
+    if census.stream_images:census.deadline=work_deadline
     expected={k:s for k,s in COMMANDS};env={k:v for k,v in os.environ.items() if k in ('PATH','HOME','TMPDIR','LANG','LC_ALL','SDKROOT','DEVELOPER_DIR')};env.update(LC_ALL='C',NO_COLOR='1',CRYSTAL_WORKERS='1')
     def run(label,argv,environment=None):
         need(label==COMMANDS[len(runner.records)][0] and work_deadline-time.monotonic()>=expected[label],'Original complete metadata command reservation required')
@@ -362,6 +397,7 @@ def execute_observation(args,context,started):
         result['stable_view']=stable_view(result);result['stable_view_sha256']=sha(canonical(result['stable_view']));result['passed']=True
     except BaseException as error:result['error']=type(error).__name__+': '+str(error)
     finally:
+        census.deadline=deadline
         result['partial_census']=census.view();result['commands']=runner.records;result['groups']=runner.group_observations;result['writers_confirmed_retired']=runner.writers_confirmed_retired
         try:
             need(runner.writers_confirmed_retired and len(runner.records)==len(runner.group_observations),'Complete original metadata writer/group return required')
@@ -378,11 +414,37 @@ def execute_observation(args,context,started):
         result['complete']=result['passed'];write(output/'OBSERVATION.json',result)
     return 0 if result['passed'] else 2
 
+def validate_image_census(root,value,deadline,physical=False):
+    census=value['census'];streaming=value['format']=='atlas-native-buffer-provider-observation-v2'
+    if not streaming:need('image_protocol' not in census,'Legacy full-byte observations keep their exact census protocol');return
+    need(census.get('image_protocol')=='bounded-streaming-native-v2','Explicit streaming image census protocol required')
+    rows=census['streamed_files'];need(type(rows) is list and 0<len(rows)<=MAX_NATIVE and len({r['path'] for r in rows})==len(rows),'Unique finite complete-image roster required')
+    files={r['path']:r for r in census['files']};need(len(files)==len(census['files']),'Unique complete physical file roster required');remaining=images.MAX_IMAGE_TOTAL
+    for row in rows:
+        need(row==files.get(row['path']) and row['digest_scope']=='complete-physical-file','Whole-image digest meaning and physical census join required');images.admit_size(row['bytes'],remaining);remaining-=row['bytes']
+    need(census['image_total_bytes']==images.MAX_IMAGE_TOTAL-remaining,'Exact aggregate complete-image byte count required')
+    evidence_rows=census['image_evidence'];need(len(evidence_rows)==len({r['original_path'] for r in evidence_rows})<=MAX_NATIVE,'Unique finite native header evidence roster required');by_path={r['path']:r for r in rows};expected={r['path'] for r in rows if r['image_format']=='macho-header-v1'}
+    need({r['original_path'] for r in evidence_rows}==expected and all(r['image_format']=='macho-header-v1' or (r['image_format']=='non-macho-metadata-provider' and r['kind']=='metadata-provider') for r in rows),'Complete selected native architecture evidence coverage required');total=0
+    for record in evidence_rows:
+        name=PurePosixPath(record['path']);need(str(name)==record['path'] and record['path'].startswith('provider-headers/') and name.suffix=='.bin' and not name.is_absolute() and '..' not in name.parts,'Contained positive native header evidence path required')
+        evidence=record['evidence'];need(type(evidence['retained_bytes']) is int and 0<evidence['retained_bytes']<=images.MAX_RETAINED_BYTES and total+evidence['retained_bytes']<=images.MAX_RETAINED_TOTAL,'Per-image and aggregate retained evidence admission required before reading');total+=evidence['retained_bytes']
+        raw=stable(root/name,deadline,images.MAX_RETAINED_BYTES)[1];images.validate(raw,evidence,by_path[record['original_path']])
+    need(total==census['retained_image_evidence_bytes'],'Exact aggregate retained-header byte count required')
+    evidence_map={r['original_path']:r['evidence'] for r in evidence_rows}
+    for row in value['native_graph']['images']:
+        need(row['path'] in evidence_map and all(row[k]==files[row['path']][k] for k in ('bytes','sha256','mode','physical_identity')) and all(row[k]==evidence_map[row['path']][k] for k in ('imports','rpaths')),'Whole-image/native-graph/retained-header interpretation join required')
+    if physical:
+        replay=Census(root,deadline,None,True);replay.rows=files;replay.resolutions={r['declared_path']:r for r in census['resolutions']};replay.snapshots=census['snapshots'];replay.streamed=by_path;replay.image_evidence=evidence_rows
+        # The physical replay uses the same externally pinned resolver as production.
+        transfer_path=ROOT.parent/'grant_dirty_transition/proof_tool_transfer.py'
+        if not transfer_path.exists():transfer_path=ROOT.parents[1]/'grant_dirty_tool_transfer_v103/proof_tool_transfer.py'
+        replay.transfer=load(transfer_path,TOOL_HELPER_SHA,'streaming_native_return_resolver',deadline);replay.verify()
+
 def admit_observation(root,expected,absolute_deadline=None,private_snapshots=True):
     deadline=time.monotonic()+POLICY_SECONDS
     if absolute_deadline is not None:deadline=min(deadline,absolute_deadline)
     raw=stable(root/'OBSERVATION.json',deadline,8*2**20)[1];need(sha(raw)==expected,'Exact externally selected observation receipt required');value=decode(raw)
-    need(value['format']=='atlas-native-buffer-provider-observation-v1' and value['passed'] is True and value['complete'] is True and value['execution_admitted'] is False and value['source_provider_return_accepted'] is True and value['writers_confirmed_retired'] is True and value['finalization_errors']==[],'Complete returned observation-only receipt required')
+    need(value['format'] in ('atlas-native-buffer-provider-observation-v1','atlas-native-buffer-provider-observation-v2') and value['passed'] is True and value['complete'] is True and value['execution_admitted'] is False and value['source_provider_return_accepted'] is True and value['writers_confirmed_retired'] is True and value['finalization_errors']==[],'Complete returned observation-only receipt required')
     need(type(value['elapsed_seconds']) in (int,float) and math.isfinite(value['elapsed_seconds']) and 0<=value['elapsed_seconds']<=OBSERVE_SECONDS,'Original finite observation return horizon required')
     need(value['stable_view']==stable_view(value) and value['stable_view_sha256']==sha(canonical(value['stable_view'])),'Exact complete stable review view required')
     need([r['label'] for r in value['commands']]==[r[0] for r in COMMANDS] and len(value['groups'])==len(COMMANDS),'Complete20-command observation roster required')
@@ -397,6 +459,7 @@ def admit_observation(root,expected,absolute_deadline=None,private_snapshots=Tru
             observed,_=stable(root/rel,deadline);need(observed['sha256']==row['sha256'] and observed['bytes']==row['bytes'],'Exact retained selected source/provider bytes required')
     need(value.get('private_snapshot_return_accepted') is True,'Complete private native/header replay return attestation required')
     need(value['native_graph']['unresolved']==[] and value['native_graph']['frontier']==[] and value['full_native_provider_acceptance'] is False and value['whole_build_memory_qualified'] is False and type(value['actual_probe_executions']) is int and value['actual_probe_executions']==0,'Selected closed-file/Apple platform/whole-build scopes required')
+    validate_image_census(root,value,deadline,physical=private_snapshots)
     return value
 
 def public_snapshot(row,value):
@@ -419,22 +482,38 @@ def physical_public_files(root):
     return files
 
 def admit_public_projection(root,expected):
-    deadline=time.monotonic()+120;actual=physical_public_files(root);value=admit_observation(root,expected,deadline,private_snapshots=False)
+    deadline=time.monotonic()+120
+    manifest=stable(ROOT/'SOURCE_PINS.json',deadline,2**20)[0]
+    protected=protect(ROOT,'SOURCE_PINS.json',manifest['sha256'],32,deadline)
+    source_before={path:stable(path,deadline)[0] for path in protected}
+    need(source_before[ROOT/'SOURCE_PINS.json']==manifest and all(source_before[path]['sha256']==pin for path,pin in protected.items()),'Exact original admitted reader source identities required')
+    actual=physical_public_files(root);root_before=identity(root)
+    preview,raw=stable(root/'OBSERVATION.json',deadline,MAX_RAW);need(preview['sha256']==expected,'Exact externally selected public observation required')
+    format=decode(raw)['format'];need(format in ('atlas-native-buffer-provider-observation-v1','atlas-native-buffer-provider-observation-v2'),'Known bounded original public protocol required')
+    ceiling=160*2**20 if format=='atlas-native-buffer-provider-observation-v2' else MAX_TOTAL+16*2**20
+    need(sum(identity(root/name)[3] for name in actual)<=ceiling,'Complete original public byte admission required before return capture')
+    public_before={name:stable(root/name,deadline)[0] for name in sorted(actual)}
+    need(public_before['OBSERVATION.json']==preview,'Exact original public observation identity required')
+    value=admit_observation(root,expected,deadline,private_snapshots=False)
     projection=decode(stable(root/'PUBLIC_PROJECTION.json',deadline,MAX_RAW)[1])
     need(projection['format']=='atlas-native-buffer-provider-public-projection-v1' and projection['observation_sha256']==expected and projection['private_replay_return_attested'] is True,'Exact public metadata/private replay join required')
     expected_rows=[dict(row,visibility='public-retained' if public_snapshot(row,value) else 'private-fingerprint-only') for row in value['census']['snapshots']]
     need(projection['snapshots']==expected_rows,'Complete exact public/private selected input roster required')
+    evidence_rows=value['census'].get('image_evidence',[]);need(projection.get('native_header_evidence',[])==evidence_rows,'Complete bounded public header evidence join required')
     for row in expected_rows:
         if row['visibility']=='public-retained':
             observed,_=stable(root/row['path'],deadline);need(observed['sha256']==row['sha256'] and observed['bytes']==row['bytes'],'Exact selected public native/package byte identity required')
         else:need(not (root/row['path']).exists(),'Apple/private selected snapshots remain in the private replay workspace')
     need(stable(root/'LLVM_LICENSE.TXT',deadline,2**20)[1]==stable(ROOT/'inputs/LLVM_LICENSE.TXT',deadline,2**20)[1],'Exact pinned LLVM distribution license required')
-    names={'OBSERVATION.json','PUBLIC_PROJECTION.json','LLVM_LICENSE.TXT','COMMANDS.json'}|{label+'.'+stream+'.txt' for label,_ in COMMANDS for stream in ('stdout','stderr')}|{r['path'] for r in expected_rows if r['visibility']=='public-retained'}
+    names={'OBSERVATION.json','PUBLIC_PROJECTION.json','LLVM_LICENSE.TXT','COMMANDS.json'}|{label+'.'+stream+'.txt' for label,_ in COMMANDS for stream in ('stdout','stderr')}|{r['path'] for r in expected_rows if r['visibility']=='public-retained'}|{r['path'] for r in evidence_rows}
     stage=decode(stable(root/'PUBLIC_STAGE.json',deadline,MAX_RAW)[1]);need(stage['format']=='atlas-native-buffer-provider-public-stage-v1' and stage['execution_admitted'] is False and stage['complete_observation'] is True and {r['path'] for r in stage['files']}==names and len(stage['files'])==len(names),'Exact positive public projection file roster required')
     for row in stage['files']:
         observed,_=stable(root/row['path'],deadline);need(observed['bytes']==row['bytes'] and observed['sha256']==row['sha256'],'Complete positive projection hash/size joins required')
     need(actual==physical_public_files(root)==names|{'PUBLIC_STAGE.json'},'Exact physical public projection roster required')
-    return value
+    for name,original in public_before.items():need(stable(root/name,deadline)[0]==original,'Complete original public bytes/hash/physical return required')
+    for path,original in source_before.items():need(stable(path,deadline)[0]==original,'Complete original public reader source return required')
+    need(identity(root)==root_before and all(identity(root/name)==row['physical_identity'] for name,row in public_before.items()) and all(identity(path)==row['physical_identity'] for path,row in source_before.items()),'Complete final public/source physical identity return required')
+    clock(deadline);return value
 
 def materialize(args,context,started):
     deadline=started+POLICY_SECONDS
@@ -448,7 +527,7 @@ def materialize(args,context,started):
     for field in ('Apple_platform_code_loading_reviewed','compiler_driver_search_policy_reviewed','selected_native_closure_reviewed'):need(decision[field] is True,'Explicit native/platform/driver review required: '+field)
     need(re.fullmatch('[0-9a-f]{64}',decision['independent_review_sha256']) is not None and re.fullmatch('[0-9a-f]{64}',decision['origin_observation_sha256']) is not None,'Exact independently retained review/origin identities required')
     need(decision['stable_view']==current['stable_view'] and decision['stable_view_sha256']==current['stable_view_sha256'],'Fresh-run stable native/source/platform inputs must equal the independently reviewed view')
-    census=Census(args.observation,deadline,context['transfer']);census.rows={r['path']:r for r in current['census']['files']};census.resolutions={r['declared_path']:r for r in current['census']['resolutions']};census.snapshots=current['census']['snapshots'];census.verify()
+    census=Census(args.observation,deadline,context['transfer'],current['format']=='atlas-native-buffer-provider-observation-v2');census.rows={r['path']:r for r in current['census']['files']};census.resolutions={r['declared_path']:r for r in current['census']['resolutions']};census.snapshots=current['census']['snapshots'];census.streamed={r['path']:r for r in current['census'].get('streamed_files',[])};census.image_evidence=current['census'].get('image_evidence',[]);census.verify()
     native=[{k:r[k] for k in ('path','bytes','sha256','mode')} for r in current['census']['files'] if r['kind']!='header']
     headers=[{k:r[k] for k in ('path','bytes','sha256','mode','physical_identity')} for r in current['census']['files'] if r['kind']=='header']
     need(0<len(native)<=MAX_NATIVE and len(headers)<=MAX_HEADERS,'Original selected-input and separately bounded header rosters required')
@@ -456,6 +535,7 @@ def materialize(args,context,started):
     need(len(aliases)<=MAX_ALIASES,'Original128-alias policy ceiling required')
     admission=context['admitted'];policy=dict(format='atlas-native-buffer-provider-policy-v1',execution_admitted=True,scope='native-buffer-ownership-probe-only',compiler_profile_sha256=admission['observed_profile_sha256'],compiler_wrapper_sha256=admission['providers']['compiler_wrapper']['sha256'],compiler_backend_sha256=admission['providers']['compiler_backend']['sha256'],llvm_version='21.1.8',llvm_source_commit='2078da43e25a4623cab2d0d60decddf709aaea28',selected_native_closure_reviewed=True,compiler_driver_search_policy_reviewed=True,native_files=native,auxiliary_header_files=headers,aliases=list(aliases.values()),cc=current['selected']['cc'],llvm_library=current['selected']['llvm_library'],independent_decision_sha256=args.decision_sha256,current_observation_sha256=args.observation_sha256,job_identity=admission['job_identity'],full_native_provider_acceptance=False,whole_build_memory_qualified=False)
     policy['shim_compile_context']=current['shim_compile_context']
+    if census.stream_images:policy['streamed_native_files']=current['census']['streamed_files'];policy['native_header_evidence']=current['census']['image_evidence']
     tool_policy=dict(format='atlas-grant-analysis-native-policy-v1',execution_admitted=True,independent_review_sha256=decision['independent_review_sha256'],expected_native=context['transfer'].policy_view(context['tool_native']),Apple_platform_code_loading_reviewed=True)
     result=dict(format='atlas-native-buffer-policy-materialization-v1',passed=False,maximum_seconds=POLICY_SECONDS,execution_admitted=False,origin_observation_sha256=decision['origin_observation_sha256'],current_observation_sha256=args.observation_sha256,reviewer_decision_sha256=args.decision_sha256,stable_view_sha256=current['stable_view_sha256'],job_identity=admission['job_identity'],compiler_profile_sha256=admission['observed_profile_sha256'],compiler_backend_sha256=admission['providers']['compiler_backend']['sha256'],sdk_binding_sha256=digest(args.sdk_evidence/'SAME_JOB_BINDING.json',deadline),finalization_errors=[],actual_target_cells_accepted=0)
     registry=None
@@ -464,7 +544,7 @@ def materialize(args,context,started):
         write_bytes(args.output/'DECISION.json',raw);write(args.output/'CURRENT_SDK_JOIN.json',dict(job_identity=admission['job_identity'],observed_profile_sha256=admission['observed_profile_sha256'],providers=admission['providers'],profile=admission['profile'] if 'profile' in admission else {},sdk_binding_sha256=result['sdk_binding_sha256']))
         write(args.output/'NATIVE_POLICY.json',policy);write(args.output/'TOOL_POLICY.json',tool_policy)
         registry=context['transfer'].registry(args.tool_workspace/'tools',tool_policy,context['tool_native']);need(registry['execution_admitted'] is True,'Independently reviewed current tool registry required');write(args.output/'PROOF_TOOLS.json',registry)
-        context['probe'].native_policy(args.output/'NATIVE_POLICY.json',digest(args.output/'NATIVE_POLICY.json',deadline),admission)
+        context['probe'].native_policy(args.output/'NATIVE_POLICY.json',digest(args.output/'NATIVE_POLICY.json',deadline),admission,absolute_deadline=deadline)
         context['proof'].admit_tools(args.output/'PROOF_TOOLS.json',digest(args.output/'PROOF_TOOLS.json',deadline))
         result['policies']={n:digest(args.output/n,deadline) for n in ('NATIVE_POLICY.json','TOOL_POLICY.json','PROOF_TOOLS.json')};result['passed']=result['execution_admitted']=True
     except BaseException as error:result['error']=type(error).__name__+': '+str(error)

@@ -29,6 +29,10 @@ def main(args):
             try:runpy.run_path(str(directory/name),run_name='__main__')
             except SystemExit as error:need(type(error.code) is int and error.code==0,'Complete guarded source controls must pass')
         return 0
+    if args.operation=='stream-controls':
+        try:runpy.run_path(str(ROOT/'test_streamed_images.py'),run_name='__main__')
+        except SystemExit as error:need(type(error.code) is int and error.code==0,'Complete guarded streaming image controls must pass')
+        return 0
     if args.operation in ('observe','materialize'):
         args.probe_packet_sha256=coupling['native'];return producer.main(args,started=started)
     if args.operation=='stage':
@@ -71,7 +75,7 @@ def main(args):
     raise RuntimeError('Executable delegate must return its explicit status')
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('operation',choices=('observe','fetch','materialize','feedback','probe','stage','bundle','cleanup','controls'))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('operation',choices=('observe','fetch','materialize','feedback','probe','stage','bundle','cleanup','controls','stream-controls'))
     for name in ('repository','sdk-evidence','transfer-packet','tool-workspace','probe-packet','feedback-packet','output'):p.add_argument('--'+name,type=Path,required=True)
     for name in ('packet','python'):p.add_argument('--'+name+'-sha256',required=True)
     for name in ('decision','observation','source','policies','feedback-result','probe-result'):p.add_argument('--'+name,type=Path)

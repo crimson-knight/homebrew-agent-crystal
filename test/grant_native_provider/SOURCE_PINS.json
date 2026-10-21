@@ -34,7 +34,7 @@
       "bytes": 325,
       "mode": 420,
       "path": "inputs/COUPLING.json",
-      "sha256": "280a0eafc75fb6d947ca3ce873562ec5851f17032603301c8aae7e5ccc21864b"
+      "sha256": "464915c7325e46dc08813cb432b695ad9a07d43e4048b429fa9c6f8891570096"
     },
     {
       "bytes": 14900,
@@ -91,16 +91,22 @@
       "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
     },
     {
-      "bytes": 7583,
+      "bytes": 7881,
       "mode": 420,
       "path": "launch.py",
-      "sha256": "67af99ed7251e84dbaefe3f1e508968e2efabaa9dcbb04e0e51b268aef48647b"
+      "sha256": "52f8dc988f2f959eb777e9e90c8fe329780a9b5fa44cc9a41d78899d1a5c4744"
     },
     {
-      "bytes": 51929,
+      "bytes": 8937,
+      "mode": 420,
+      "path": "native_image_evidence.py",
+      "sha256": "ea299e6ec8789d0251d79b8af9364946a628679f11c8081a78988881df56308f"
+    },
+    {
+      "bytes": 62384,
       "mode": 420,
       "path": "provider_observation.py",
-      "sha256": "662c94fbdd090cbdc789003a2634ad416fd1610d43692f7c5229ad2597dae006"
+      "sha256": "1d809790efc2988fe8ff4788953a50a049b32e325fd49a61fdf130632a7e38d8"
     },
     {
       "bytes": 3079,
@@ -109,10 +115,10 @@
       "sha256": "28bf06d43e395cf38d3d65e2ce75af6607bdf35ee5d680f435d879565cea8009"
     },
     {
-      "bytes": 6134,
+      "bytes": 6838,
       "mode": 420,
       "path": "stage_observation.py",
-      "sha256": "5ff93c96dda5a4d6d7d3af4c04623c14b36f60c67488e13f37566d7eae317eef"
+      "sha256": "4b888f2f5028fad7f1db2f4a9335a5a58968a296d86d228da203bc71ecb3ca64"
     },
     {
       "bytes": 9647,
@@ -125,6 +131,12 @@
       "mode": 420,
       "path": "test_provider_observation.py",
       "sha256": "22913454db7547b8415b89184b1b5fac40ef1db410180755c3b29a2ed4d6a501"
+    },
+    {
+      "bytes": 15490,
+      "mode": 420,
+      "path": "test_streamed_images.py",
+      "sha256": "9a769632512ecd6d8495b441726b21060e88631c67d5bde4438d200ca41be653"
     }
   ],
   "format": "atlas-native-buffer-provider-source-pins-v1"

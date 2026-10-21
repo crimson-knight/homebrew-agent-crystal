@@ -98,7 +98,8 @@ def aliases(rows):
         result.append(dict(row))
     return result
 
-def native_policy(path, expected, admitted):
+def native_policy(path, expected, admitted, absolute_deadline=None):
+    if absolute_deadline is not None:need(time.monotonic()<=absolute_deadline,'Complete native policy phase deadline required before reading')
     identity,raw=stable(path,2**20)
     need(identity['sha256'] == expected, 'Exact independently reviewed native policy required')
     policy = json.loads(raw)
@@ -119,12 +120,27 @@ def native_policy(path, expected, admitted):
          len({r['path'] for r in header_rows}) == len(header_rows), 'Finite unique auxiliary header roster required')
     need(not ({r['path'] for r in header_rows} & {r['path'] for r in rows}), 'Distinct native/header policy inputs required')
     header_paths = {r['path'] for r in header_rows}
+    streaming=policy.get('streamed_native_files',[])
+    image_rows={r['path']:r for r in streaming}
+    image_reader=None;image_remaining=0;image_evidence={}
+    if streaming:
+        need(type(streaming) is list and len(streaming)==len(image_rows)<=64 and set(image_rows).issubset({r['path'] for r in rows}),'Complete distinct streaming native-policy roster required')
+        image_reader=load(ROOT/'native_image_evidence.py','ea299e6ec8789d0251d79b8af9364946a628679f11c8081a78988881df56308f','probe_streamed_native_image_reader')
+        image_remaining=image_reader.MAX_IMAGE_TOTAL
+        evidence_rows=policy['native_header_evidence'];need(type(evidence_rows) is list and len(evidence_rows)==len({r['original_path'] for r in evidence_rows})<=64,'Unique finite policy header evidence required')
+        image_evidence={r['original_path']:r['evidence'] for r in evidence_rows}
+        need(set(image_evidence)=={r['path'] for r in streaming if r['image_format']=='macho-header-v1'},'Complete policy selected-architecture evidence required')
+    native_deadline=time.monotonic()+RETURN_SECONDS
+    if absolute_deadline is not None:native_deadline=min(native_deadline,absolute_deadline)
     rows = list(rows) + header_rows
     total, observed = 0, {}
     for row in rows:
         physical = Path(row['path'])
         need(physical.is_absolute() and str(physical.resolve(strict=True)) == str(physical), 'Physical absolute native provider required')
-        current, _ = stable(physical)
+        if str(physical) in image_rows:
+            declared=image_rows[str(physical)];current,evidence,raw=image_reader.fingerprint(physical,native_deadline,image_remaining);image_remaining-=current['bytes']
+            need(all(current[k]==declared[k] for k in ('bytes','sha256','mode','physical_identity','digest_scope')) and evidence==image_evidence.get(str(physical)),'Fresh complete-image/physical/header policy return join required')
+        else:current, _ = stable(physical)
         need(all(current[k] == row[k] for k in ('bytes', 'sha256', 'mode')), 'Exact native provider bytes/mode required')
         if str(physical) in header_paths:
             need(set(row) == {'path', 'bytes', 'sha256', 'mode', 'physical_identity'} and
@@ -134,7 +150,7 @@ def native_policy(path, expected, admitted):
             state = physical.lstat()
             current['physical_identity'] = [state.st_dev, state.st_ino, state.st_mode, state.st_size, state.st_mtime_ns, state.st_ctime_ns]
             need(current['physical_identity'] == row['physical_identity'], 'Same-job physical header identity required')
-        total += current['bytes']
+        if str(physical) not in image_rows:total += current['bytes']
         need(total <= MAX_INPUT, 'Aggregate native input bound exceeded')
         observed[str(physical)] = current
     for key in ('cc', 'llvm_library'):
@@ -407,7 +423,7 @@ def execute(args, driver, context, protected):
     native_before = aliases_before = policy = None
     expected_working = {}
     try:
-        policy, native_before, aliases_before = native_policy(args.native_policy,args.native_policy_sha256,context['admitted'])
+        policy, native_before, aliases_before = native_policy(args.native_policy,args.native_policy_sha256,context['admitted'],absolute_deadline=started+OUTER_SECONDS-RETURN_SECONDS)
         policy_raw=stable(args.native_policy)[1]
         need(hashlib.sha256(policy_raw).hexdigest()==args.native_policy_sha256,'Exact original native policy admission bytes required')
         (output/'NATIVE_POLICY.json').write_bytes(policy_raw)
@@ -478,7 +494,7 @@ def execute(args, driver, context, protected):
             except Exception as error: result['errors'].append(label+': '+str(error))
         try:
             if policy is not None:
-                _,after,alias_after=native_policy(args.native_policy,args.native_policy_sha256,context['admitted'])
+                _,after,alias_after=native_policy(args.native_policy,args.native_policy_sha256,context['admitted'],absolute_deadline=started+OUTER_SECONDS)
                 need(after==native_before and alias_after==aliases_before,'Exact native input/alias return required')
                 if 'shim_compile_context' in policy:verify_shim_context(policy,cc_argv,environment(private,policy['cc']),private)
                 write(output/'NATIVE_AFTER.json',{'files':after,'aliases':alias_after})

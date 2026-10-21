@@ -23,7 +23,7 @@ permissions:
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
-  ATLAS_PROVIDER_PACKET_SHA256: 81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693
+  ATLAS_PROVIDER_PACKET_SHA256: 0107519e8936b6e91d6ac87b87b576ec29a91069a646c381c8cb55d8ecdaed0a
   ATLAS_PROVIDER_MODE: ${{ inputs.mode }}
   ATLAS_PROVIDER_DECISION_URL: ${{ inputs.decision_url }}
   ATLAS_PROVIDER_DECISION_SHA256: ${{ inputs.decision_sha256 }}
@@ -241,8 +241,14 @@ jobs:
               "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
           argv += ["--output", str(temporary / "unused-controls-output")]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
+          for operation in ("controls", "stream-controls"):
+              sys.argv = list(argv)
+              sys.argv[1] = operation
+              try:
+                  runpy.run_path(str(source), run_name="__main__")
+              except SystemExit as result:
+                  if type(result.code) is not int or result.code != 0:
+                      raise
           PYTHON
 
           python3 -O -I -S -B - <<'PYTHON'
@@ -264,8 +270,14 @@ jobs:
               "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
           argv += ["--output", str(temporary / "unused-controls-output")]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
+          for operation in ("controls", "stream-controls"):
+              sys.argv = list(argv)
+              sys.argv[1] = operation
+              try:
+                  runpy.run_path(str(source), run_name="__main__")
+              except SystemExit as result:
+                  if type(result.code) is not int or result.code != 0:
+                      raise
           PYTHON
 
       - name: Install the ordinary formula through the installer

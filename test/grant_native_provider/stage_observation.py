@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path, PurePosixPath
 import time
 from provider_observation import ROOT,MAX_FILE,MAX_TOTAL,MAX_RAW,COMMANDS,need,stable,digest,decode,write,load,protect,admit_observation,public_snapshot,canonical,sha
+MAX_STREAMING_PUBLIC_BYTES=160*2**20
 
 def stage(args,absolute_deadline=None):
     started=time.monotonic();deadline=started+45
@@ -18,7 +19,7 @@ def stage(args,absolute_deadline=None):
         write(args.output/'PUBLIC_STAGE.json',result);return result
     receipt=decode(stable(args.source/'OBSERVATION.json',deadline,MAX_RAW)[1]);names=['OBSERVATION.json']
     generated={}
-    need(receipt['format']=='atlas-native-buffer-provider-observation-v1' and type(receipt['passed']) is bool and receipt['execution_admitted'] is False,'Explicit observation-only result required')
+    need(receipt['format'] in ('atlas-native-buffer-provider-observation-v1','atlas-native-buffer-provider-observation-v2') and type(receipt['passed']) is bool and receipt['execution_admitted'] is False,'Explicit observation-only result required')
     if receipt['passed']:
         admit_observation(args.source,digest(args.source/'OBSERVATION.json',deadline),deadline)
     if receipt.get('writers_confirmed_retired') is True:
@@ -38,16 +39,21 @@ def stage(args,absolute_deadline=None):
             need(identity['sha256']==row['sha256'] and identity['bytes']==row['bytes'],'Exact provider snapshot bytes required')
             retained=public_snapshot(row,receipt);projection.append(dict(row,visibility='public-retained' if retained else 'private-fingerprint-only'))
             if retained:names.append(name)
-        generated['PUBLIC_PROJECTION.json']=canonical(dict(format='atlas-native-buffer-provider-public-projection-v1',observation_sha256=digest(args.source/'OBSERVATION.json',deadline),private_replay_return_attested=receipt.get('private_snapshot_return_accepted') is True,snapshots=projection))+b'\n';names.append('PUBLIC_PROJECTION.json')
+        public_projection=dict(format='atlas-native-buffer-provider-public-projection-v1',observation_sha256=digest(args.source/'OBSERVATION.json',deadline),private_replay_return_attested=receipt.get('private_snapshot_return_accepted') is True,snapshots=projection)
+        if receipt['passed'] and receipt['format']=='atlas-native-buffer-provider-observation-v2':
+            evidence_rows=census['image_evidence'];public_projection['native_header_evidence']=evidence_rows;names.extend(row['path'] for row in evidence_rows)
+        generated['PUBLIC_PROJECTION.json']=canonical(public_projection)+b'\n';names.append('PUBLIC_PROJECTION.json')
         generated['LLVM_LICENSE.TXT']=stable(ROOT/'inputs/LLVM_LICENSE.TXT',deadline,2**20)[1];names.append('LLVM_LICENSE.TXT')
     need(len(names)==len(set(names))<=640,'Finite unique selected metadata/native roster required')
+    ceiling=MAX_STREAMING_PUBLIC_BYTES if receipt['format']=='atlas-native-buffer-provider-observation-v2' else MAX_TOTAL+16*2**20
+    need(sum(len(generated[name]) if name in generated else (args.source/name).lstat().st_size for name in names)<=ceiling,'Complete public projection byte admission required before retention')
     payload=[];total=0
     for name in names:
         rules.public_path(name);path=args.source/name
         if name in generated:raw=generated[name];current=dict(bytes=len(raw),sha256=sha(raw))
         else:
             need(all(parent.resolve(strict=True)==parent for parent in [path.parent,args.source]),'Physical source stage parents required');current,raw=stable(path,deadline,MAX_FILE)
-        total+=len(raw);need(total<=MAX_TOTAL+16*2**20,'Finite complete provider/metadata public byte ceiling')
+        total+=len(raw);need(total<=ceiling,'Finite complete provider/metadata public byte ceiling')
         rules.inspect_public_bytes(name,raw);payload.append((name,current,raw))
     for path,expected in protected.items():need(digest(path,deadline)==expected,'Stage source return required')
     args.output.mkdir()
