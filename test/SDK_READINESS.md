@@ -97,7 +97,7 @@ loader, GMP/SQLite, package origins, header candidates and lexical/physical alia
 The candidate identifies paths outside the proposed read-only mounts, including
 `/etc/alternatives`, and preserves unresolved ELF/header/link choices for review.
 
-Collection admits 150 seconds, 32 metadata commands, 8,192 entries, 2 GiB of
+Collection admits 150 seconds, 36 metadata commands, 8,192 entries, 2 GiB of
 unique hash inputs, 256 MiB per file and 32 MiB of raw command output. Every command
 retains its argv, complete raw streams and original-group observation. A separate
 artifact is retained on success or refusal. The candidate grants zero native-profile
@@ -153,8 +153,8 @@ queries use that distro provider with explicit `/usr/lib/x86_64-linux-gnu/pkgcon
 and sysroot. The selected SQLite PC source must belong to those roots. Homebrew
 GMP retains its own observed provider. Required metadata queries still require
 zero exit, exact argv and provider identities, confirmed original-group absence,
-and complete raw hashes. The additional controls stay inside the existing
-32-command, 150-second, entry/hash-input/file/output limits.
+and complete raw hashes. Those original provider controls remain exact inside
+the versioned 28-fixed-plus-8-ELF protocol and its 150-second, entry/hash-input/file/output limits.
 
 The CPU diagnostic now runs after ordinary SDK execution, with the same
 always-after-successful-source-install condition. Each ordinary behavior gate
@@ -168,7 +168,9 @@ each new installation, and the full Grant build remain separate pending gates.
 
 The CPU diagnostic retains default and explicit generic arithmetic as separate observations inside its original 240-second and 32-MiB raw-output contracts. Disassembly uses a selected ELF entry-point address window of at most 256 bytes. For an actual generated-program SIGILL with GDB available, the same bounded debugger command first preserves registers, runtime entry point, instruction text, raw instruction bytes and symbol identity. A valid x86-64 executable/PIE mapping selects a window around that actual fault address. An unavailable or unqualified address mapping keeps an explicitly unqualified `_start` symbol selection and the original raw fault evidence. The existing per-command output gate remains active. Partial contrast rows survive an original command refusal. Diagnostic collection and fault-address qualification remain separate from ordinary smoke, SDK and Grant acceptance.
 
-Native metadata discovery classifies each identified candidate by its retained regular-file or directory kind before opening an ELF header. Directories keep kind/mode provenance; regular non-ELF inputs keep byte/hash accounting. Lexical aliases remain in the roster. Only unique identified ELF files enter each wave's existing 96-file bound. The report distinguishes actual executed ELF waves from candidate waves considered. Original 150-second, 32-command, 8,192-entry, 2-GiB-input, 256-MiB-file and 32-MiB-output contracts remain in force. A complete candidate roster still awaits independent provider review and actual loader/link/header/GMP/SQLite canaries.
+Native metadata discovery classifies each identified candidate by its retained regular-file or directory kind before opening an ELF header. Directories keep kind/mode provenance; regular non-ELF inputs keep byte/hash accounting. All lexical aliases and mount gaps remain in the roster. Device/inode, bytes/hash and mode identify a physical provider across later aliases and hard links; changed identities refuse and exact restoration retains its explicit test. Only unique identified ELF files enter each wave's existing 96-file bound.
+
+The versioned `28-fixed-plus-8-ELF-v1` command roster preserves the original28 metadata labels and admits at most8 `readelf` waves,36 commands in total. A final classification-only ninth pass executes zero additional commands: an already inspected alias can close the frontier; a genuine uninspected physical provider leaves an explicit exhausted/incomplete closure. Unresolved sonames and missing/special node paths also retain their exact frontier/refusal evidence. The report distinguishes successful readelf waves, classification passes, raw lexical candidates, physical queue identities and uncompleted command inputs. Its150-second horizon starts at collector entry and includes final provider observations. Original30/45-second command limits,8,192-entry,2-GiB-input,256-MiB-file,32-MiB-output and4-MiB-per-command combined caps remain in force. The reviewed Runner, stable file reader and source/package/provider checks retain their identities. Source/provider finalization errors survive alongside an original failure. Candidate closure grants zero native-profile, actual loader or Grant build admission; complete headers/link/loaded-provider choices and GMP/SQLite canaries remain required.
 
 ## Revision2 Linux runtime-library manifest proposal
 
@@ -181,3 +183,5 @@ The SDK retains its original840-second complete horizon and original Runner clas
 The Linux cryptographic consumer uses the ordinary crystal-alpha wrapper, a cold cache and a filtered SDK environment, hashes the constant atlas-runtime with OpenSSL SHA256 and checks the exact digest. It requires GREEN format/build, retains bounded ELF dynamic/interpreter metadata, and runs the generated executable. Its20-MiB binary snapshot requires confirmed original writer retirement and stable before/after hashes. Original and retention failures remain separate. Failed SDK spec binaries are similarly retained at most20MiB each after confirmed original-group return before the private cache is removed. Full native-loader closure, API-lookup admission, whole-build memory and customer installation acceptance remain separate.
 
 The exact digest/IO source signatures join the pinned Alpha source archive and the accepted installed standard-library roster in test/RUNTIME_CRYPTO_API_SOURCE.json. Actual-project Amber LSP provider/lookup and actual formatter/compiler/consumer execution are pending hosted validation. The formatter/build/runtime commands are explicit in the qualifier. The separate Grant Mac diagnostic remains on its e48/revision1 branch.
+
+The v102 candidate revalidates every recorded physical ELF path by device/inode, size/hash and mode during final return, after the ordinary source/provider checks. Changed identities retain an explicit failed return observation alongside any primary error; restored identities qualify again under the same deadline. Explicit PT_INTERP paths remain required lexical candidates even when absent, with separate unresolved_interpreters evidence and incomplete/refused closure. Optional search directories retain their existing meaning. The protocol remains28 fixed plus at most8 ELF commands,36 total within150 seconds; full loader/native/Grant admission remains separate. All185 predecessor source cases remain exact, with two additional final-identity and missing-interpreter/restoration controls.

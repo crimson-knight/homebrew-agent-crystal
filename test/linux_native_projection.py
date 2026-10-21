@@ -17,7 +17,19 @@ MAX_FILES = 8192
 MAX_HASH_BYTES = 2 * 1024**3
 MAX_FILE_BYTES = 256 * 1024**2
 MAX_METADATA_BYTES = 32 * 1024**2
-MAX_COMMANDS = 32
+MAX_ELF_WAVES = 8
+BASE_COMMAND_LABELS = (
+    'brew-prefix', 'brew-root', 'brew-alpha-info', 'runtime-dependency-metadata',
+    'alpha-version', 'brew-installed-origins', 'ubuntu-package-origins',
+    'cc-version', 'ld-version', 'readelf-version', 'pkg-config-version',
+    'cc-search-dirs', 'cc-include', 'cc-libgcc-a', 'cc-libgcc_s-so-1',
+    'cc-crtbegin-o', 'loader-cache', 'gmp-libdir', 'gmp-includedir',
+    'gmp-pcfiledir', 'gmp-version', 'sqlite3-homebrew-libdir-control',
+    'system-pkg-config-version', 'system-pkg-config-search-path',
+    'sqlite3-libdir', 'sqlite3-includedir', 'sqlite3-pcfiledir', 'sqlite3-version',
+)
+COMMAND_LABELS = BASE_COMMAND_LABELS + tuple('elf-wave-' + str(i) for i in range(MAX_ELF_WAVES))
+MAX_COMMANDS = len(COMMAND_LABELS)
 MAX_SECONDS = 150
 ORIGINAL_MOUNTS = ('/usr', '/home/linuxbrew/.linuxbrew', '/etc/ld.so.cache', '/etc/ld.so.conf', '/etc/ld.so.conf.d')
 LOADER_ENV = ('CRYSTAL_LIBRARY_PATH', 'LD_LIBRARY_PATH', 'LD_RUN_PATH', 'LD_PRELOAD', 'LD_AUDIT', 'PKG_CONFIG_PATH', 'PKG_CONFIG_LIBDIR', 'CC', 'CXX', 'LIBRARY_PATH', 'CPATH')
@@ -196,14 +208,18 @@ def validate_command(record, require_success=True):
 
 
 class Commands:
-    def __init__(self, runner, roster, output):
+    def __init__(self, runner, roster, output, expected_labels=None):
         self.runner, self.roster, self.output = runner, roster, output
         self.identities = {}
         self.count = 0
+        self.expected_labels = expected_labels
 
     def run(self, label, arguments, seconds=30, *, environment=None, observe_nonzero=False):
         self.roster.check()
         need(self.count < MAX_COMMANDS and type(seconds) is int and 1 <= seconds <= 45, 'Metadata command roster/deadline exceeded')
+        if self.expected_labels is not None:
+            need(self.count < len(self.expected_labels) and label == self.expected_labels[self.count], 'Reviewed metadata command sequence differs')
+            need(seconds == (45 if label == 'runtime-dependency-metadata' else 30), 'Reviewed metadata per-command deadline differs')
         executable = self.roster.add(arguments[0], required=True)
         need(self.roster.entries[executable]['kind'] == 'file', 'Metadata command requires an identified executable')
         expected_identity = {key: self.roster.entries[executable][key] for key in ('path', 'bytes', 'sha256')}
@@ -272,6 +288,10 @@ def elf_needed(raw):
     return sorted(set(re.findall(r'\(NEEDED\)\s+Shared library: \[([^\]\r\n]+)\]', raw)))
 
 
+def elf_program_interpreters(raw):
+    return sorted(set(re.findall(r'\[Requesting program interpreter: ([^\]\r\n]*)\]', raw)))
+
+
 def elf_search_directories(raw, physical):
     directories = set()
     for value in re.findall(r'\((?:RPATH|RUNPATH)\)\s+(?:Library rpath|Library runpath): \[([^\]\r\n]*)\]', raw):
@@ -288,9 +308,12 @@ def extract_absolute_paths(raw):
     return sorted(set(re.findall(r'(?<![A-Za-z0-9])(/[^\s\[\]()<>;,:]+)', raw)))
 
 
-def classify_elf_candidates(roster, pending, seen, result):
+def classify_elf_candidates(roster, pending, seen, result, physical_seen=None):
     """Retain directories and regular non-ELF inputs separately from ELF providers."""
     physical = []
+    identities = {} if physical_seen is None else physical_seen
+    by_key = identities.setdefault('by_key', {})
+    by_path = identities.setdefault('by_path', {})
     for path in sorted(set(pending) - seen):
         resolved = roster.add(path, required=True)
         row = roster.entries[resolved]
@@ -303,12 +326,36 @@ def classify_elf_candidates(roster, pending, seen, result):
         else:
             need(row['kind'] == 'file' and stat.S_ISREG(observed.st_mode)
                  and stat.S_IMODE(observed.st_mode) == row['mode'], 'ELF candidate requires its current regular-file kind and mode')
-            with Path(resolved).open('rb') as stream:
-                is_elf = stream.read(4) == b'\x7fELF'
+            need(observed.st_size == row['bytes'], 'ELF candidate physical size changed')
+            identity = {'device': observed.st_dev, 'inode': observed.st_ino,
+                        'bytes': row['bytes'], 'sha256': row['sha256'], 'mode': row['mode']}
+            previous_path = by_path.get(resolved)
+            need(previous_path is None or previous_path == identity, 'ELF candidate physical inode/hash/mode identity changed')
+            key = (observed.st_dev, observed.st_ino)
+            previous = by_key.get(key)
+            if previous is not None:
+                need(previous['identity'] == identity, 'ELF physical inode/hash/mode alias identity changed')
+                need(roster.read_file(resolved) == {k: row[k] for k in ('path', 'bytes', 'sha256')},
+                     'Previously inspected ELF physical bytes changed')
+                is_elf = previous['is_elf']
+                classification['physical_duplicate_of'] = previous['first_path']
+            else:
+                with Path(resolved).open('rb') as stream:
+                    is_elf = stream.read(4) == b'\x7fELF'
+                after = Path(resolved).lstat()
+                need((after.st_dev, after.st_ino, after.st_mode, after.st_size) ==
+                     (observed.st_dev, observed.st_ino, observed.st_mode, observed.st_size),
+                     'ELF physical identity changed during classification')
+                previous = {'identity': identity, 'first_path': resolved, 'is_elf': is_elf, 'scheduled': False}
+                by_key[key] = previous
+                result.setdefault('ELF_physical_classifications', []).append(dict(identity,
+                    first_path=resolved, classification='ELF-provider' if is_elf else 'regular-non-ELF'))
+            by_path[resolved] = identity
             classification.update(classification='ELF-provider' if is_elf else 'regular-non-ELF',
-                                  bytes=row['bytes'], sha256=row['sha256'])
-            if is_elf and resolved not in physical:
+                                  bytes=row['bytes'], sha256=row['sha256'], physical_identity=identity)
+            if is_elf and not previous['scheduled'] and resolved not in seen:
                 physical.append(resolved)
+                previous['scheduled'] = True
         result.setdefault('ELF_candidate_classifications', []).append(classification)
         if classification['classification'] != 'ELF-provider':
             result.setdefault('non_ELF_candidates', []).append(classification)
@@ -318,7 +365,121 @@ def classify_elf_candidates(roster, pending, seen, result):
     return physical
 
 
+def discover_elf_closure(roster, commands, readelf, initial, cache_map, search_roots, result):
+    """Inspect at most eight physical ELF waves and retain the exact final frontier."""
+    pending, seen, physical_seen = list(initial), set(), {}
+    completed, considered = 0, 0
+    active_frontier = sorted(set(pending))
+    active_physical = []
+    result.update(ELF_discovery_protocol='physical-identity-8-waves-v1',
+                  ELF_discovery_waves=[], ELF_closure_complete=False,
+                  ELF_frontier_exhausted=False, unresolved_needed=[], unresolved_interpreters=[])
+    try:
+        # The ninth classification pass issues zero commands. It can prove an
+        # alias-only frontier converged or retain genuine uninspected providers.
+        for wave in range(MAX_ELF_WAVES + 1):
+            roster.check()
+            considered += 1
+            active_frontier = sorted(set(pending) - seen)
+            entry = {'wave': wave, 'requested_paths': active_frontier,
+                     'classification_only': wave == MAX_ELF_WAVES,
+                     'readelf_completed': False}
+            result['ELF_discovery_waves'].append(entry)
+            active_physical = classify_elf_candidates(roster, pending, seen, result, physical_seen)
+            entry['physical_readelf_inputs'] = list(active_physical)
+            if not active_physical:
+                active_frontier = []
+                result['ELF_closure_complete'] = not result['unresolved_needed'] and not result['unresolved_interpreters']
+                break
+            if wave == MAX_ELF_WAVES:
+                result['ELF_frontier_exhausted'] = True
+                break
+            label = 'elf-wave-' + str(wave)
+            entry['command_label'] = label
+            raw = commands.run(label, [readelf, '-W', '-d', '-l', *active_physical])[0]
+            completed += 1
+            entry['readelf_completed'] = True
+            search_directories = sorted(set(list(search_roots) + elf_search_directories(raw, active_physical)))
+            result.setdefault('observed_elf_search_directories', []).extend(search_directories)
+            pending = []
+            entry['dependencies'] = []
+            for needed in elf_needed(raw):
+                need('/' not in needed and needed not in ('.', '..'), 'ELF dependency names require a simple soname')
+                paths = list(cache_map.get(needed, []))
+                paths += [str(Path(directory) / needed) for directory in search_directories
+                          if (Path(directory) / needed).exists()]
+                paths = sorted(set(paths))
+                entry['dependencies'].append({'soname': needed, 'candidate_paths': paths})
+                if not paths and needed not in result['unresolved_needed']:
+                    result['unresolved_needed'].append(needed)
+                pending.extend(paths)
+            entry['program_interpreters'] = []
+            for interpreter in elf_program_interpreters(raw):
+                need(interpreter.startswith('/') and '\x00' not in interpreter,
+                     'ELF program interpreter requires an absolute ordinary path')
+                interpreter = os.path.normpath(interpreter)
+                present = Path(interpreter).exists()
+                entry['program_interpreters'].append({'path': interpreter, 'present': present})
+                if not present and interpreter not in result['unresolved_interpreters']:
+                    result['unresolved_interpreters'].append(interpreter)
+                # Required interpreters retain their lexical frontier even when
+                # absent; the next bounded classification records their refusal.
+                pending.append(interpreter)
+            for path in extract_absolute_paths(raw):
+                if Path(path).exists():
+                    pending.append(path)
+            entry['next_lexical_frontier'] = sorted(set(pending) - seen)
+            active_frontier = entry['next_lexical_frontier']
+            active_physical = []
+    finally:
+        result['static_elf_waves'] = completed
+        result['ELF_candidate_waves_considered'] = considered
+        result['unvisited_elf_candidates'] = active_frontier
+        result['uninspected_physical_ELF_frontier'] = active_physical
+        result['unresolved_needed'] = sorted(result['unresolved_needed'])
+        result['unresolved_interpreters'] = sorted(result['unresolved_interpreters'])
+        result['observed_elf_search_directories'] = sorted(set(result.get('observed_elf_search_directories', [])))
+        result['static_resolution_scope'] = 'Union of observed cache, RUNPATH/RPATH and Linuxbrew search candidates; actual loader choice remains unqualified'
+    return result['ELF_closure_complete']
+
+
+def verify_elf_physical_identities(roster, result):
+    """Revalidate every recorded physical provider path during final return."""
+    result['ELF_physical_identities_verified_on_return'] = False
+    observations = result['ELF_physical_return_observations'] = []
+    verified = {}
+    for row in result.get('ELF_candidate_classifications', []):
+        if 'physical_identity' not in row:
+            continue
+        roster.check()
+        path, expected = row['resolved_path'], row['physical_identity']
+        if path in verified:
+            need(verified[path] == expected, 'Recorded ELF physical identities disagree')
+            continue
+        before = Path(path).lstat()
+        observed = {'device': before.st_dev, 'inode': before.st_ino,
+                    'bytes': before.st_size, 'mode': stat.S_IMODE(before.st_mode)}
+        observation = {'path': path, 'expected_identity': expected,
+                       'observed_identity': observed, 'verified': False}
+        observations.append(observation)
+        need(stat.S_ISREG(before.st_mode) and all(observed[key] == expected[key] for key in observed),
+             'ELF physical provider identity changed on final return: ' + path)
+        actual = roster.read_file(path)
+        observed['sha256'] = actual['sha256']
+        need(actual == {'path': path, 'bytes': expected['bytes'], 'sha256': expected['sha256']},
+             'ELF physical provider bytes changed on final return: ' + path)
+        after = Path(path).lstat()
+        need((before.st_dev, before.st_ino, before.st_mode, before.st_size) ==
+             (after.st_dev, after.st_ino, after.st_mode, after.st_size),
+             'ELF physical provider changed during final verification: ' + path)
+        roster.check()
+        observation['verified'] = True
+        verified[path] = expected
+    result['ELF_physical_identities_verified_on_return'] = True
+
+
 def collect(args):
+    started = time.monotonic()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     result = {'format': 'atlas-linux-native-projection-candidate-v1', 'admitted': False, 'native_manifest_accepted': False, 'execution_admitted': False, 'compiler_jobs': 0, 'container_jobs': 0, 'actual_Grant_cells': 0, 'state': 'collecting-unreviewed-metadata', 'pending': ['independent exact native roster/profile review', 'complete header/link-input closure', 'actual proposed-container loader/link/GMP/SQLite canaries', 'SDK readiness and complete Grant build admission']}
@@ -334,9 +495,9 @@ def collect(args):
         lock = json.loads(args.source_lock.read_text())
         need(type(lock) is dict and type(lock.get('alpha')) is dict, 'The reviewed SDK source lock is required')
         runner = driver.Runner(output)
-        runner.deadline = min(runner.deadline, time.monotonic() + MAX_SECONDS)
+        runner.deadline = min(runner.deadline, started + MAX_SECONDS)
         roster = Roster(reader.file_identity, runner.deadline)
-        commands = Commands(runner, roster, output)
+        commands = Commands(runner, roster, output, expected_labels=COMMAND_LABELS)
         result['inputs'] = {key: {'path': str(path.resolve()), 'sha256': sha(path)} for key, path in [('collector', Path(__file__)), ('driver', args.driver), ('linux_reader', args.linux_reader), ('source_lock', args.source_lock), ('python', Path(sys.executable))]}
         result['host'] = {'uname': list(os.uname()), 'image_os': os.environ.get('ImageOS'), 'image_version': os.environ.get('ImageVersion'), 'run_id': os.environ.get('GITHUB_RUN_ID'), 'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'), 'source_commit': os.environ.get('GITHUB_SHA'), 'python_version': platform.python_version(), 'loader_environment': {key: os.environ.get(key) for key in LOADER_ENV}}
         brew = shutil.which('brew'); need(brew, 'Ordinary Homebrew installation is required')
@@ -434,29 +595,8 @@ def collect(args):
         result['required_native_packages'] = native
         pending = [str(compiler), str(Path(sys.executable).resolve())] + list(tools.values())
         pending += [path for path, row in roster.entries.items() if row['kind'] == 'file' and ('.so' in Path(path).name or Path(path).name.startswith('ld-linux'))]
-        seen = set()
-        executed_elf_waves = 0
-        for wave in range(3):
-            physical = classify_elf_candidates(roster, pending, seen, result)
-            if not physical: break
-            raw = commands.run('elf-wave-' + str(wave), [tools['readelf'], '-W', '-d', '-l', *physical])[0]
-            executed_elf_waves += 1
-            pending = []
-            search_directories = [str(brew_root / 'lib'), str(prefix / 'lib')] + elf_search_directories(raw, physical)
-            result.setdefault('observed_elf_search_directories', []).extend(search_directories)
-            for needed in elf_needed(raw):
-                need('/' not in needed and needed not in ('.', '..'), 'ELF dependency names require a simple soname')
-                paths = list(cache_map.get(needed, []))
-                paths += [str(Path(directory) / needed) for directory in search_directories if (Path(directory) / needed).exists()]
-                if not paths: result.setdefault('unresolved_needed', []).append(needed)
-                pending.extend(paths)
-            for path in extract_absolute_paths(raw):
-                if Path(path).exists(): pending.append(path)
-        result['static_elf_waves'] = executed_elf_waves
-        result['ELF_candidate_waves_considered'] = wave + 1
-        result['static_resolution_scope'] = 'Union of observed cache, RUNPATH/RPATH and Linuxbrew search candidates; actual loader choice remains unqualified'
-        result['observed_elf_search_directories'] = sorted(set(result.get('observed_elf_search_directories', [])))
-        result['unvisited_elf_candidates'] = sorted(set(pending) - seen)
+        discover_elf_closure(roster, commands, tools['readelf'], pending, cache_map,
+                             [str(brew_root / 'lib'), str(prefix / 'lib')], result)
         if runtime_identity:
             driver.verify_runtime_dependency_identity(runtime_identity)
         stdlib_after = stdlib_identity(stdlib, roster)
@@ -466,6 +606,7 @@ def collect(args):
         roster.verify()
         pin(Path(sys.executable).resolve(), args.python_sha256)
         pin(__file__, args.source_sha256); pin(args.driver, args.driver_sha256); pin(args.linux_reader, args.linux_reader_sha256); pin(args.source_lock, args.source_lock_sha256)
+        need(result['ELF_closure_complete'], 'Static ELF candidate closure is incomplete: unresolved sonames or exhausted physical frontier')
         result.update(state='candidate-recorded-unreviewed', metadata_collection_passed=True)
     except Exception as error:
         result.update(state='metadata-collection-refused', metadata_collection_passed=False, error=type(error).__name__ + ': ' + str(error))
@@ -483,6 +624,25 @@ def collect(args):
             except Exception as final_error:
                 result.update(state='metadata-collection-refused', metadata_collection_passed=False)
                 result['finalization_errors'].append(type(final_error).__name__ + ': ' + str(final_error))
+        if 'inputs' in result:
+            for key, path, expected in (
+                    ('collector', Path(__file__), args.source_sha256),
+                    ('driver', args.driver, args.driver_sha256),
+                    ('linux_reader', args.linux_reader, args.linux_reader_sha256),
+                    ('source_lock', args.source_lock, args.source_lock_sha256),
+                    ('python', Path(sys.executable).resolve(), args.python_sha256)):
+                try:
+                    roster.check()
+                    pin(path, expected)
+                except Exception as final_error:
+                    result.update(state='metadata-collection-refused', metadata_collection_passed=False)
+                    result['finalization_errors'].append('Final ' + key + ': ' + type(final_error).__name__ + ': ' + str(final_error))
+        if roster:
+            try:
+                verify_elf_physical_identities(roster, result)
+            except Exception as final_error:
+                result.update(state='metadata-collection-refused', metadata_collection_passed=False)
+                result['finalization_errors'].append('Final ELF physical identities: ' + type(final_error).__name__ + ': ' + str(final_error))
         if roster:
             dump(output / 'NATIVE_PATH_ROSTER.json', {'entries': roster.entries, 'missing': roster.missing, 'hashed_bytes': roster.total_bytes, 'entry_count': len(roster.entries)})
             result['proposed_original_read_only_mounts'] = list(ORIGINAL_MOUNTS)
@@ -492,7 +652,13 @@ def collect(args):
             result['original_group_observations'] = runner.group_observations
             result['writers_confirmed_retired'] = runner.writers_confirmed_retired
             result['command_count'] = len(runner.records)
-        result['limits'] = {'seconds': MAX_SECONDS, 'commands': MAX_COMMANDS, 'entries': MAX_FILES, 'hashed_bytes': MAX_HASH_BYTES, 'individual_file_bytes': MAX_FILE_BYTES, 'raw_output_bytes': MAX_METADATA_BYTES, 'per_command_seconds': 45, 'per_command_combined_output_bytes': 4 * 1024**2}
+        result['limits'] = {'seconds': MAX_SECONDS, 'commands': MAX_COMMANDS, 'entries': MAX_FILES, 'hashed_bytes': MAX_HASH_BYTES, 'individual_file_bytes': MAX_FILE_BYTES, 'raw_output_bytes': MAX_METADATA_BYTES, 'per_command_seconds': 45, 'per_command_combined_output_bytes': 4 * 1024**2, 'ELF_waves': MAX_ELF_WAVES, 'ELF_inputs_per_wave': 96, 'classification_only_final_passes': 1}
+        result['reviewed_command_protocol'] = {'version': '28-fixed-plus-8-ELF-v1',
+            'fixed_labels': list(BASE_COMMAND_LABELS), 'ELF_labels': list(COMMAND_LABELS[len(BASE_COMMAND_LABELS):])}
+        result['terminal_elapsed_seconds'] = time.monotonic() - started
+        if not 0 <= result['terminal_elapsed_seconds'] <= MAX_SECONDS:
+            result.update(state='metadata-collection-refused', metadata_collection_passed=False)
+            result['finalization_errors'].append('Complete metadata terminal time budget exceeded')
         dump(output / 'PROJECTION_RESULT.json', result)
     return 0 if result.get('metadata_collection_passed') else 2
 

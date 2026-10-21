@@ -136,7 +136,7 @@ jobs:
           import os
 
           source = pathlib.Path("test/linux_native_projection.py").resolve()
-          expected = "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          expected = "37a52f80e2b3c8da760d3c2b53ecfb8bfb23ecf9f598feba9d89d6a6d802ef51"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("Native projection collector source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
