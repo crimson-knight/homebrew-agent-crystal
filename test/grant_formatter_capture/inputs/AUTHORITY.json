@@ -1,0 +1,88 @@
+{
+  "base_commit": "45c02591af82624a90f5763bffdb6c610d1acc99",
+  "census_manifest": "e15bc87f17bd03edb1d3ba6f1bd6db9cc2acaf94aca45f40d0c3f5c55fe1020e",
+  "format": "atlas-hosted-original-formatter-source-authority-v1",
+  "frozen_census_workflow_sha256": "aa31482a3d22ac0cb2be7ce9cacf53822d07293acc6eaca4d230d015ee07bd35",
+  "inherited_workflow_fixtures": {
+    "test/grant_dirty_transition/grant-causal-mac.proposed.yml": "6ac777b761aa67f4a140a622d444905f52c5b4f74a32fec0193301c9aae2459b"
+  },
+  "original_fixture": {
+    "bytes": 9781,
+    "path": "inputs/products/new_broad_hash.cr.txt",
+    "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+  },
+  "products": [
+    {
+      "bytes": 208,
+      "path": "inputs/products/library_floor.cr.txt",
+      "sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+    },
+    {
+      "bytes": 1164,
+      "path": "inputs/products/library_floor.json",
+      "sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07"
+    },
+    {
+      "bytes": 1682,
+      "path": "inputs/products/declarations.cr.txt",
+      "sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+    },
+    {
+      "bytes": 1549,
+      "path": "inputs/products/declarations.json",
+      "sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0"
+    },
+    {
+      "bytes": 3297,
+      "path": "inputs/products/new_empty.cr.txt",
+      "sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+    },
+    {
+      "bytes": 1862,
+      "path": "inputs/products/new_empty.json",
+      "sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb"
+    },
+    {
+      "bytes": 9397,
+      "path": "inputs/products/new_keywords.cr.txt",
+      "sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+    },
+    {
+      "bytes": 2925,
+      "path": "inputs/products/new_keywords.json",
+      "sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d"
+    },
+    {
+      "bytes": 9781,
+      "path": "inputs/products/new_broad_hash.cr.txt",
+      "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+    },
+    {
+      "bytes": 2929,
+      "path": "inputs/products/new_broad_hash.json",
+      "sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8"
+    },
+    {
+      "bytes": 16044,
+      "path": "inputs/products/canonical_create.cr.txt",
+      "sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+    },
+    {
+      "bytes": 4935,
+      "path": "inputs/products/canonical_create.json",
+      "sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797"
+    },
+    {
+      "bytes": 3020,
+      "path": "inputs/products/PRODUCTION.json",
+      "sha256": "4e3e5504cf906efc3db6cdba9b3cce4dd1f812f1b236215b19d5846abdc8b98f"
+    }
+  ],
+  "sources": {
+    "test/grant_assignment_cost/SOURCE_PINS.json": "9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09",
+    "test/grant_assignment_cost/same_job_policy.py": "9148b3472b7cb9a2a29bbfdd4bf85116b520933a1cd5289d725977fdbdac9f97",
+    "test/grant_compiler_census_api/run_census.py": "bc7146020cce99e3aa4b22e39a388f4498fee714657e39f7593046ba9986bf6e",
+    "test/grant_native_provider/inputs/public_evidence_rules.py": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed",
+    "test/sdk_install_qualification.py": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797"
+  }
+}

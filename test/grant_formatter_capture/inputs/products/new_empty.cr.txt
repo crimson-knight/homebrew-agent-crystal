@@ -1,0 +1,73 @@
+require "../../../../src/grant"
+require "../../../../src/adapter/sqlite"
+require "json"
+
+class AcceptancePerson0000 < Grant::Base
+  connection acceptance
+  table acceptance_person_0000
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 0_i64) }
+  belongs_to parent : AcceptancePerson0001, optional: true
+  has_many children : AcceptancePerson0001, foreign_key: parent_id
+end
+
+class AcceptancePerson0001 < Grant::Base
+  connection acceptance
+  table acceptance_person_0001
+  column id : Int64, primary: true
+  column first_name : String
+  column email : String
+  column age : Int32
+  column is_active : Bool
+  column score : Float64
+  column country_code : String
+  column notes : String?
+  column rating : Int32?
+  column balance : Float64?
+  column group_number : Int64
+  column settings_text : String?
+  column created_at : Time
+  column updated_at : Time
+  column parent_id : Int64?
+  column sequence_number : Int64
+  scope expected_sequence, -> { where(sequence_number: 1_i64) }
+  belongs_to parent : AcceptancePerson0000, optional: true
+  has_many children : AcceptancePerson0000, foreign_key: parent_id
+end
+
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_PROFILE=new_empty"
+has_wrong_expectation = ENV["GRANT_FRONTEND_INJECT_WRONG_EXPECTATION"]? == "1"
+record_0000 = AcceptancePerson0000.new
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0000/new_record") unless record_0000.new_record? == !has_wrong_expectation
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/new_record"
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0000/persisted") unless record_0000.persisted? == false
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/persisted"
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0000/id") unless record_0000.id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/id"
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0000/parent_id") unless record_0000.parent_id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0000/parent_id"
+record_0001 = AcceptancePerson0001.new
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0001/new_record") unless record_0001.new_record? == true
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/new_record"
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0001/persisted") unless record_0001.persisted? == false
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/persisted"
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0001/id") unless record_0001.id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/id"
+raise Grant::ErrorBase.new("new_empty: AcceptancePerson0001/parent_id") unless record_0001.parent_id.nil?
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_CHECK=AcceptancePerson0001/parent_id"
+STDOUT.puts "GRANT_FRONTEND_DIAGNOSTIC_OK=new_empty"

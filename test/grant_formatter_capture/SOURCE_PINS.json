@@ -1,0 +1,125 @@
+{
+  "files": [
+    {
+      "bytes": 20920,
+      "mode": 420,
+      "path": "capture.py",
+      "sha256": "f45d16f3e5d5267cdd7d2ddcd58f88ca241f253ed691be282144cd44c0972776"
+    },
+    {
+      "bytes": 2704,
+      "mode": 420,
+      "path": "formatter_exec.py",
+      "sha256": "5ae5be714821af36f3f55b2a1d83e200be0d6e5f9005ee7cbedc4f828a0d546b"
+    },
+    {
+      "bytes": 3521,
+      "mode": 420,
+      "path": "inputs/AUTHORITY.json",
+      "sha256": "0ffa30fda885b1dfd21ee9c56c594793f5462ec077d342cde7b6aaaae58f7bc8"
+    },
+    {
+      "bytes": 34857,
+      "mode": 420,
+      "path": "inputs/CENSUS_WORKFLOW.v103.yml",
+      "sha256": "aa31482a3d22ac0cb2be7ce9cacf53822d07293acc6eaca4d230d015ee07bd35"
+    },
+    {
+      "bytes": 3020,
+      "mode": 420,
+      "path": "inputs/products/PRODUCTION.json",
+      "sha256": "4e3e5504cf906efc3db6cdba9b3cce4dd1f812f1b236215b19d5846abdc8b98f"
+    },
+    {
+      "bytes": 16044,
+      "mode": 420,
+      "path": "inputs/products/canonical_create.cr.txt",
+      "sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+    },
+    {
+      "bytes": 4935,
+      "mode": 420,
+      "path": "inputs/products/canonical_create.json",
+      "sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797"
+    },
+    {
+      "bytes": 1682,
+      "mode": 420,
+      "path": "inputs/products/declarations.cr.txt",
+      "sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+    },
+    {
+      "bytes": 1549,
+      "mode": 420,
+      "path": "inputs/products/declarations.json",
+      "sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0"
+    },
+    {
+      "bytes": 208,
+      "mode": 420,
+      "path": "inputs/products/library_floor.cr.txt",
+      "sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+    },
+    {
+      "bytes": 1164,
+      "mode": 420,
+      "path": "inputs/products/library_floor.json",
+      "sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07"
+    },
+    {
+      "bytes": 9781,
+      "mode": 420,
+      "path": "inputs/products/new_broad_hash.cr.txt",
+      "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+    },
+    {
+      "bytes": 2929,
+      "mode": 420,
+      "path": "inputs/products/new_broad_hash.json",
+      "sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8"
+    },
+    {
+      "bytes": 3297,
+      "mode": 420,
+      "path": "inputs/products/new_empty.cr.txt",
+      "sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+    },
+    {
+      "bytes": 1862,
+      "mode": 420,
+      "path": "inputs/products/new_empty.json",
+      "sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb"
+    },
+    {
+      "bytes": 9397,
+      "mode": 420,
+      "path": "inputs/products/new_keywords.cr.txt",
+      "sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+    },
+    {
+      "bytes": 2925,
+      "mode": 420,
+      "path": "inputs/products/new_keywords.json",
+      "sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d"
+    },
+    {
+      "bytes": 899,
+      "mode": 420,
+      "path": "launch.py",
+      "sha256": "34690e2606d10af654d0905e240b926759d71b53b1fc7a727c21e72e7aead850"
+    },
+    {
+      "bytes": 15445,
+      "mode": 420,
+      "path": "test_capture.py",
+      "sha256": "4d8b28346201f35bbbd2bfb14a283a8ad1a914053762f2b9dcb7f8242b7755a1"
+    },
+    {
+      "bytes": 11775,
+      "mode": 420,
+      "path": "vendor/public_evidence_rules.py",
+      "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
+    }
+  ],
+  "format": "atlas-hosted-formatter-source-pins-v1"
+}

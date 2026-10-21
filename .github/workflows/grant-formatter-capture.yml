@@ -1,0 +1,495 @@
+---
+name: Original broad-hash formatter capture
+'on':
+  workflow_dispatch: {}
+permissions:
+  actions: read
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  PYTHONDONTWRITEBYTECODE: 1
+  ATLAS_PROVIDER_PACKET_SHA256: 81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693
+  ATLAS_CENSUS_PACKET_SHA256: e15bc87f17bd03edb1d3ba6f1bd6db9cc2acaf94aca45f40d0c3f5c55fe1020e
+  ATLAS_CENSUS_MODE: observe
+  ATLAS_CENSUS_DECISION_URL: ''
+  ATLAS_CENSUS_DECISION_SHA256: ''
+  ATLAS_GRANT_TRANSFER_SHA256: 439df1016cdfdfa237521eccf1f47f9fc72827a4990c3c35b2ec4d8371e4cd92
+  ATLAS_GRANT_PACKET_SHA256: e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e
+  ATLAS_FORMATTER_PACKET_SHA256: 50092149a1ffa318f3e4ea29a0aca58a970d395f6d18cac679a4ac8378dd4046
+jobs:
+  grant-formatter-capture-mac:
+    name: Capture original formatter output after ordinary Alpha SDK admission
+    runs-on: macos-26
+    timeout-minutes: 110
+    steps:
+    - name: Check out reviewed tap source
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        persist-credentials: false
+      timeout-minutes: 2
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+      timeout-minutes: 5
+    - name: Retain real pending-provider negative control
+      timeout-minutes: 1
+      run: |
+        python3 - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            pins = root / filename
+            if hashlib.sha256(pins.read_bytes()).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact externally reviewed manifest differs")
+            for row in json.loads(pins.read_bytes())["files"]:
+                path = root / row["path"]
+                if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs: " + row["path"])
+        source = root / "preflight_transferred_tools.py"
+        sys.argv = [str(source), "--proof-tools", str(root / "PROOF_TOOLS_PENDING.json"), "--proof-tools-sha256", "7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893"]
+        try:
+            runpy.run_path(str(source), run_name="__main__")
+        except SystemExit as error:
+            if type(error.code) is not int or error.code != 2:
+                raise
+        else:
+            raise SystemExit("Pending proof registry unexpectedly admitted")
+        PYTHON
+    - name: Allocate fresh private finite tool transfer
+      id: transfer_start
+      timeout-minutes: 1
+      run: |
+        python3 - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            raw = (root / filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact execution manifest differs")
+            for row in json.loads(raw)["files"]:
+                path = root / row["path"]
+                if not stat.S_ISREG(path.lstat().st_mode):
+                    raise SystemExit("Physical execution source required")
+                value = path.read_bytes()
+                if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs")
+        source = root / 'proof_tool_transfer.py'
+        sys.argv = [str(source), *[os.path.expandvars(value) for value in ['initialize', '--root', '$RUNNER_TEMP', '--transfer-sha256', '$ATLAS_GRANT_TRANSFER_SHA256']]]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+    - name: Transfer the exact independently reviewed preparation artifact
+      id: tool_download
+      timeout-minutes: 2
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        artifact-ids: '12310618101'
+        repository: crimson-knight/homebrew-agent-crystal
+        run-id: '39518892906'
+        github-token: "${{ github.token }}"
+        merge-multiple: true
+        path: "${{ steps.transfer_start.outputs.workspace }}/download"
+    - name: Verify all37 artifact members and canonical tool source identities
+      id: tool_transfer
+      timeout-minutes: 1
+      env:
+        TRANSFER_WORKSPACE: "${{ steps.transfer_start.outputs.workspace }}"
+        TRANSFER_CLOCK_SHA256: "${{ steps.transfer_start.outputs.clock_sha256 }}"
+      run: |
+        python3 - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            raw = (root / filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact execution manifest differs")
+            for row in json.loads(raw)["files"]:
+                path = root / row["path"]
+                if not stat.S_ISREG(path.lstat().st_mode):
+                    raise SystemExit("Physical execution source required")
+                value = path.read_bytes()
+                if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs")
+        source = root / 'proof_tool_transfer.py'
+        sys.argv = [str(source), *[os.path.expandvars(value) for value in ['transfer', '--root', '$TRANSFER_WORKSPACE', '--clock-sha256', '$TRANSFER_CLOCK_SHA256', '--transfer-sha256', '$ATLAS_GRANT_TRANSFER_SHA256']]]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+    - name: Exercise all original and installed provider source controls
+      timeout-minutes: 3
+      env:
+        TRANSFER_WORKSPACE: "${{ steps.transfer_start.outputs.workspace }}"
+      run: |
+        mkdir -p "$RUNNER_TEMP/census-fixture"
+        ATLAS_FIXTURE_ROOT="$RUNNER_TEMP/census-fixture" TMPDIR="$RUNNER_TEMP/census-fixture" python3 -I -S -B - <<'CENSUS_CONTROLS'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_compiler_census_api").resolve()
+        raw = (root / "SOURCE_PINS.json").read_bytes()
+        if hashlib.sha256(raw).hexdigest() != os.environ["ATLAS_CENSUS_PACKET_SHA256"]:
+            raise SystemExit("Exact census controls manifest required before imports")
+        for row in json.loads(raw)["files"]:
+            path = root / row["path"]
+            if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                raise SystemExit("Exact census control source required before import")
+        for filename in ("test_census.py", "test_api_only.py"):
+            sys.argv = [str(root / filename)]
+            try:
+                runpy.run_path(sys.argv[0], run_name="__main__")
+            except SystemExit as status:
+                if status.code is not False and not (type(status.code) is int and status.code == 0):
+                    raise RuntimeError("Guarded source cohort must finish successfully") from status
+        CENSUS_CONTROLS
+        ATLAS_FIXTURE_ROOT="$RUNNER_TEMP/census-fixture" TMPDIR="$RUNNER_TEMP/census-fixture" python3 -O -I -S -B - <<'CENSUS_CONTROLS'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_compiler_census_api").resolve()
+        raw = (root / "SOURCE_PINS.json").read_bytes()
+        if hashlib.sha256(raw).hexdigest() != os.environ["ATLAS_CENSUS_PACKET_SHA256"]:
+            raise SystemExit("Exact census controls manifest required before imports")
+        for row in json.loads(raw)["files"]:
+            path = root / row["path"]
+            if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                raise SystemExit("Exact census control source required before import")
+        for filename in ("test_census.py", "test_api_only.py"):
+            sys.argv = [str(root / filename)]
+            try:
+                runpy.run_path(sys.argv[0], run_name="__main__")
+            except SystemExit as status:
+                if status.code is not False and not (type(status.code) is int and status.code == 0):
+                    raise RuntimeError("Guarded source cohort must finish successfully") from status
+        CENSUS_CONTROLS
+        ruby test/install_test.rb
+        python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
+        python3 -I -S -B test/grant_dirty_transition/test_assignment_cost.py
+        python3 -I -S -B test/grant_dirty_transition/test_same_job_policy.py
+        python3 -I -S -B test/grant_dirty_transition/test_causal_only.py
+        python3 -I -S -B test/grant_dirty_transition/test_timing_profile.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+        python3 -O -I -S -B test/grant_dirty_transition/test_timing_profile.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+        python3 -I -S -B test/grant_dirty_transition/test_workflow_layout.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+        python3 -O -I -S -B test/grant_dirty_transition/test_workflow_layout.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+        python3 -I -S -B test/grant_dirty_transition/test_dirty_transition.py
+        python3 -O -I -S -B test/grant_dirty_transition/test_dirty_transition.py
+        python3 -I -S -B test/grant_dirty_transition/test_dirty_prerequisites.py
+        python3 -O -I -S -B test/grant_dirty_transition/test_dirty_prerequisites.py
+
+        python3 - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            raw = (root / filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact execution manifest differs")
+            for row in json.loads(raw)["files"]:
+                path = root / row["path"]
+                if not stat.S_ISREG(path.lstat().st_mode):
+                    raise SystemExit("Physical execution source required")
+                value = path.read_bytes()
+                if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs")
+        source = root / 'test_tool_transfer.py'
+        sys.argv = [str(source), *[os.path.expandvars(value) for value in ['--artifact-directory', '$TRANSFER_WORKSPACE/download']]]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+        python3 -O - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            raw = (root / filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact execution manifest differs")
+            for row in json.loads(raw)["files"]:
+                path = root / row["path"]
+                if not stat.S_ISREG(path.lstat().st_mode):
+                    raise SystemExit("Physical execution source required")
+                value = path.read_bytes()
+                if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs")
+        source = root / 'test_tool_transfer.py'
+        sys.argv = [str(source), *[os.path.expandvars(value) for value in ['--artifact-directory', '$TRANSFER_WORKSPACE/download']]]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+        python3 - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            raw = (root / filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact execution manifest differs")
+            for row in json.loads(raw)["files"]:
+                path = root / row["path"]
+                if not stat.S_ISREG(path.lstat().st_mode):
+                    raise SystemExit("Physical execution source required")
+                value = path.read_bytes()
+                if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs")
+        source = root / 'test_native_tool_roots.py'
+        sys.argv = [str(source), *[os.path.expandvars(value) for value in []]]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+        python3 -O - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+            raw = (root / filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                raise SystemExit("Exact execution manifest differs")
+            for row in json.loads(raw)["files"]:
+                path = root / row["path"]
+                if not stat.S_ISREG(path.lstat().st_mode):
+                    raise SystemExit("Physical execution source required")
+                value = path.read_bytes()
+                if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                    raise SystemExit("Exact execution source differs")
+        source = root / 'test_native_tool_roots.py'
+        sys.argv = [str(source), *[os.path.expandvars(value) for value in []]]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+
+        python3 -I -S -B - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_native_provider").resolve()
+        pins = root / "SOURCE_PINS.json"
+        expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+        if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+            raise SystemExit("Exact provider source manifest before imports required")
+        for row in json.loads(pins.read_bytes())["files"]:
+            path = root / row["path"]
+            if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                raise SystemExit("Exact provider source before imports required")
+        repo = pathlib.Path.cwd().resolve()
+        temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+        source = root / "launch.py"
+        argv = [str(source), 'controls', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+            "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+            "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+            "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+        argv += ["--output", str(temporary / "unused-controls-output")]
+        sys.argv = argv
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+
+        python3 -O -I -S -B - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_native_provider").resolve()
+        pins = root / "SOURCE_PINS.json"
+        expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+        if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+            raise SystemExit("Exact provider source manifest before imports required")
+        for row in json.loads(pins.read_bytes())["files"]:
+            path = root / row["path"]
+            if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                raise SystemExit("Exact provider source before imports required")
+        repo = pathlib.Path.cwd().resolve()
+        temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+        source = root / "launch.py"
+        argv = [str(source), 'controls', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+            "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+            "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+            "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+        argv += ["--output", str(temporary / "unused-controls-output")]
+        sys.argv = argv
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+    - name: Exercise original formatter capture guarded source controls
+      id: formatter_controls
+      timeout-minutes: 1
+      run: |
+        mkdir -p "$RUNNER_TEMP/formatter-fixtures"
+        export ATLAS_FIXTURE_ROOT="$RUNNER_TEMP/formatter-fixtures"
+        python3 -I -S -B - <<'FORMATTER_CONTROLS'
+        import hashlib,json,os,pathlib,runpy,sys
+        root=pathlib.Path('test/grant_formatter_capture').resolve();raw=(root/'SOURCE_PINS.json').read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=os.environ['ATLAS_FORMATTER_PACKET_SHA256']:raise RuntimeError('Exact formatter source before imports required')
+        for row in json.loads(raw)['files']:
+         p=root/row['path']
+         if p.is_symlink() or len(p.read_bytes())!=row['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest()!=row['sha256']:raise RuntimeError('Exact formatter source member required')
+        sys.path.insert(0,str(root))
+        sys.argv=[str(root/'test_capture.py')];runpy.run_path(sys.argv[0],run_name='__main__')
+        FORMATTER_CONTROLS
+        python3 -O -I -S -B - <<'FORMATTER_CONTROLS'
+        import hashlib,json,os,pathlib,runpy,sys
+        root=pathlib.Path('test/grant_formatter_capture').resolve();raw=(root/'SOURCE_PINS.json').read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=os.environ['ATLAS_FORMATTER_PACKET_SHA256']:raise RuntimeError('Exact formatter source before imports required')
+        for row in json.loads(raw)['files']:
+         p=root/row['path']
+         if p.is_symlink() or len(p.read_bytes())!=row['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest()!=row['sha256']:raise RuntimeError('Exact formatter source member required')
+        sys.path.insert(0,str(root))
+        sys.argv=[str(root/'test_capture.py')];runpy.run_path(sys.argv[0],run_name='__main__')
+        FORMATTER_CONTROLS
+    - name: Install the ordinary formula through the installer
+      id: ordinary_install
+      timeout-minutes: 45
+      run: |
+        AGENT_CRYSTAL_FORMULA_PATH="$PWD/Formula/agent-crystal.rb" ./install.sh
+        test "$(crystal-alpha eval 'puts 6 * 7')" = "42"
+        brew test agent-crystal
+    - name: Qualify the exact SDK in this job and seal its observed compiler
+      id: sdk
+      timeout-minutes: 15
+      run: |
+        python3 - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, sys
+        root = pathlib.Path("test/grant_dirty_transition").resolve()
+        pins = root / "SOURCE_PINS.json"
+        expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
+        if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+            raise SystemExit("Grant packet manifest differs")
+        for row in json.loads(pins.read_bytes())["files"]:
+            path = root / row["path"]
+            if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                raise SystemExit("Grant packet source differs: " + row["path"])
+        source = root / "qualify_same_job_sdk.py"
+        sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
+            "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
+            "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness")]
+        runpy.run_path(str(source), run_name="__main__")
+        PYTHON
+    - name: Capture exact original formatter STDIN and raw STDOUT
+      id: formatter_capture
+      timeout-minutes: 3
+      run: |
+        python3 -I -S -B - <<'FORMATTER'
+        import hashlib,json,os,pathlib,runpy,sys
+        root=pathlib.Path('test/grant_formatter_capture').resolve();raw=(root/'SOURCE_PINS.json').read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=os.environ['ATLAS_FORMATTER_PACKET_SHA256']:raise RuntimeError('Exact formatter source before imports required')
+        for row in json.loads(raw)['files']:
+         p=root/row['path']
+         if p.is_symlink() or len(p.read_bytes())!=row['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest()!=row['sha256']:raise RuntimeError('Exact formatter source member required')
+        sys.path.insert(0,str(root))
+        repo=pathlib.Path.cwd().resolve();temporary=pathlib.Path(os.environ['RUNNER_TEMP'])
+        sys.argv=[str(root/'capture.py'),'capture','--repository',str(repo),'--sdk-evidence',str(temporary/'grant-sdk-readiness'),'--output',str(temporary/('formatter-public' if 'capture'=='stage' else 'formatter-capture')),'--packet-sha256',os.environ['ATLAS_FORMATTER_PACKET_SHA256']]
+        runpy.run_path(str(root/'capture.py'),run_name='__main__')
+        FORMATTER
+    - name: Stage exact positive and failed formatter raw return
+      id: formatter_stage
+      timeout-minutes: 1
+      run: |
+        python3 -I -S -B - <<'FORMATTER'
+        import hashlib,json,os,pathlib,runpy,sys
+        root=pathlib.Path('test/grant_formatter_capture').resolve();raw=(root/'SOURCE_PINS.json').read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=os.environ['ATLAS_FORMATTER_PACKET_SHA256']:raise RuntimeError('Exact formatter source before imports required')
+        for row in json.loads(raw)['files']:
+         p=root/row['path']
+         if p.is_symlink() or len(p.read_bytes())!=row['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest()!=row['sha256']:raise RuntimeError('Exact formatter source member required')
+        sys.path.insert(0,str(root))
+        repo=pathlib.Path.cwd().resolve();temporary=pathlib.Path(os.environ['RUNNER_TEMP'])
+        sys.argv=[str(root/'capture.py'),'stage','--repository',str(repo),'--sdk-evidence',str(temporary/'grant-sdk-readiness'),'--output',str(temporary/('formatter-public' if 'stage'=='stage' else 'formatter-capture')),'--packet-sha256',os.environ['ATLAS_FORMATTER_PACKET_SHA256']]
+        sys.argv += ['--source',str(temporary/'formatter-capture')]
+        runpy.run_path(str(root/'capture.py'),run_name='__main__')
+        FORMATTER
+      if: "${{ always() && steps.formatter_capture.outcome != 'skipped' }}"
+    - name: Return exact formatter capture and guarded source receipts
+      if: "${{ always() && steps.formatter_capture.outcome != 'skipped' }}"
+      timeout-minutes: 2
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: original-broad-hash-formatter-capture
+        path: "${{ runner.temp }}/formatter-public\n"
+        if-no-files-found: error
+      id: formatter_upload
+    - name: Retire exact source-fixture transfer after formatter original-group return
+      id: cleanup
+      if: "${{ always() && steps.transfer_start.outcome == 'success' }}"
+      timeout-minutes: 2
+      env:
+        CENSUS_ATTEMPTED: 'false'
+        TRANSFER_WORKSPACE: "${{ steps.transfer_start.outputs.workspace }}"
+        FORMATTER_ATTEMPTED: "${{ steps.formatter_capture.outcome != 'skipped' }}"
+      run: |
+        python3 -I -S -B - <<'FORMATTER_RETURN'
+        import hashlib,json,os,pathlib,runpy,sys
+        root=pathlib.Path('test/grant_formatter_capture').resolve();raw=(root/'SOURCE_PINS.json').read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=os.environ['ATLAS_FORMATTER_PACKET_SHA256']:raise RuntimeError('Exact formatter source before imports required')
+        for row in json.loads(raw)['files']:
+         p=root/row['path']
+         if p.is_symlink() or len(p.read_bytes())!=row['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest()!=row['sha256']:raise RuntimeError('Exact formatter source member required')
+        sys.path.insert(0,str(root))
+        result=pathlib.Path(os.environ['RUNNER_TEMP'])/'formatter-capture/RESULT.json'
+        if os.environ['FORMATTER_ATTEMPTED']=='true' and not result.is_file():raise RuntimeError('Original formatter return receipt required before source-fixture cleanup')
+        if result.exists():
+         value=json.loads(result.read_bytes())
+         if value.get('writers_confirmed_retired') is not True or any(g['status']!='absent' for g in value.get('groups',[])):raise RuntimeError('Original formatter groups must return before source-fixture cleanup')
+        FORMATTER_RETURN
+        python3 -I -S -B - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_compiler_census_api").resolve()
+        raw = (root / "SOURCE_PINS.json").read_bytes()
+        expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+        if hashlib.sha256(raw).hexdigest() != expected:
+            raise SystemExit("Exact API-only manifest required before every import")
+        for row in json.loads(raw)["files"]:
+            path = root / row["path"]
+            if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                raise SystemExit("Physical API-only execution source required")
+            body = path.read_bytes()
+            if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"] or stat.S_IMODE(path.stat().st_mode) != row["mode"]:
+                raise SystemExit("Exact API-only execution bytes/modes required")
+        repo = pathlib.Path.cwd().resolve()
+        temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+        common = ["--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+            "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+            "--policies", str(temporary / "census-provider-policies"), "--packet-sha256", expected]
+        def delegate(operation, extra):
+            sys.argv = [str(root / "launch_api.py"), operation, *common, *extra]
+            try:
+                runpy.run_path(sys.argv[0], run_name="__main__")
+            except SystemExit as status:
+                if type(status.code) is not int or status.code != 0:
+                    raise
+        if os.environ.get("CENSUS_ATTEMPTED") == "true":
+            extra = ["--output", str(temporary / "unused-api-return"), "--source", str(temporary / "compiler-census-result")]
+            if os.environ["ATLAS_CENSUS_MODE"] == "execute":
+                extra += ["--decision", str(temporary / "census-review-decision/DECISION.json"), "--decision-sha256", os.environ["ATLAS_CENSUS_DECISION_SHA256"]]
+            delegate("return", extra)
+        delegate("cleanup", ["--output", str(temporary / "census-cleanup-result")])
+        PYTHON
+    - name: Stage the exact original tool retirement receipt
+      id: cleanup_stage
+      if: "${{ always() && steps.cleanup.outcome == 'success' }}"
+      timeout-minutes: 1
+      env:
+        TRANSFER_WORKSPACE: "${{ steps.transfer_start.outputs.workspace }}"
+      run: |
+        python3 -I -S -B - <<'PYTHON'
+        import hashlib, json, os, pathlib, runpy, stat, sys
+        root = pathlib.Path("test/grant_compiler_census_api").resolve()
+        raw = (root / "SOURCE_PINS.json").read_bytes()
+        expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+        if hashlib.sha256(raw).hexdigest() != expected:
+            raise SystemExit("Exact API-only manifest required before every import")
+        for row in json.loads(raw)["files"]:
+            path = root / row["path"]
+            if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                raise SystemExit("Physical API-only execution source required")
+            body = path.read_bytes()
+            if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"] or stat.S_IMODE(path.stat().st_mode) != row["mode"]:
+                raise SystemExit("Exact API-only execution bytes/modes required")
+        repo = pathlib.Path.cwd().resolve()
+        temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+        common = ["--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+            "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+            "--policies", str(temporary / "census-provider-policies"), "--packet-sha256", expected]
+        def delegate(operation, extra):
+            sys.argv = [str(root / "launch_api.py"), operation, *common, *extra]
+            try:
+                runpy.run_path(sys.argv[0], run_name="__main__")
+            except SystemExit as status:
+                if type(status.code) is not int or status.code != 0:
+                    raise
+        delegate("stage", ["--source", str(temporary / "census-cleanup-result"), "--output", str(temporary / "census-cleanup-public")])
+        PYTHON
+    - name: Return original source-fixture retirement metadata
+      if: "${{ always() && steps.cleanup_stage.outcome == 'success' }}"
+      timeout-minutes: 2
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: formatter-source-fixture-cleanup
+        path: "${{ runner.temp }}/census-cleanup-public"
+        include-hidden-files: false
+        if-no-files-found: error
+        retention-days: 30
+    - name: Preserve exact same-job SDK evidence
+      if: "${{ always() && steps.sdk.outcome != 'skipped' }}"
+      timeout-minutes: 2
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: grant-native-provider-sdk
+        path: "${{ runner.temp }}/grant-sdk-readiness"
+        include-hidden-files: false
+        if-no-files-found: error
+        retention-days: 30
