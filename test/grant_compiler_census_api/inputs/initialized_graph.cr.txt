@@ -1,0 +1,57 @@
+require "compiler/requires"
+
+# These private-fixture helpers read nullable initialized state directly.
+# Their runtime traversal and allocation invariants need the later tiny census fixture.
+module Crystal
+  abstract class Type
+    def atlas_existing_metaclass : Type?
+      @metaclass
+    end
+  end
+
+  module DefInstanceContainer
+    def atlas_existing_def_instances : Hash(DefInstanceKey, Def)?
+      @def_instances
+    end
+  end
+end
+
+module AtlasCompilerCensusAPI
+  private def self.accept_unsigned_snapshot(_value : UInt64) : Nil
+  end
+
+  private def self.accept_existing_cache(_value : Hash(Crystal::DefInstanceKey, Crystal::Def)?) : Nil
+  end
+
+  private def self.accept_existing_type(_value : Crystal::Type?) : Nil
+  end
+
+  private def self.accept_existing_types(_value : Hash(String, Crystal::NamedType)?) : Nil
+  end
+
+  private def self.accept_argument_types(_value : Array(Crystal::Type)) : Nil
+  end
+
+  private def self.accept_named_arguments(_value : Array(Crystal::NamedArgumentType)?) : Nil
+  end
+
+  def self.check_existing_graph_signatures : Nil
+    program = Crystal::Program.new
+    accept_unsigned_snapshot(program.object_id)
+    accept_existing_types(program.types?)
+    accept_existing_type(program.atlas_existing_metaclass)
+    accept_existing_cache(program.atlas_existing_def_instances)
+    key = Crystal::DefInstanceKey.new(1_u64, [] of Crystal::Type, nil, nil)
+    accept_unsigned_snapshot(key.def_object_id)
+    accept_argument_types(key.arg_types)
+    accept_existing_type(key.block_type)
+    accept_named_arguments(key.named_args)
+    program.array.each_instantiated_type do |type|
+      accept_unsigned_snapshot(type.object_id)
+      accept_existing_types(type.types?)
+      accept_existing_type(type.atlas_existing_metaclass)
+    end
+  end
+end
+
+AtlasCompilerCensusAPI.check_existing_graph_signatures

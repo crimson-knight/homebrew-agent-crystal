@@ -1,19 +1,19 @@
-name: Grant native provider observation and reviewed buffer proof
+name: Grant API-only provider observation and compiler census
 
 on:
   workflow_dispatch:
     inputs:
-      mode:
+      census_mode:
         type: choice
-        options: [observe, resume]
+        options: [observe, execute]
         default: observe
         required: true
-      decision_url:
-        description: Immutable public reviewer decision URL for resume
+      census_decision_url:
+        description: Immutable separately reviewed census scope decision URL
         type: string
         required: false
-      decision_sha256:
-        description: Independently selected exact reviewer decision SHA-256
+      census_decision_sha256:
+        description: Independently selected census decision SHA-256
         type: string
         required: false
 
@@ -24,15 +24,16 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ATLAS_PROVIDER_PACKET_SHA256: 81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693
-  ATLAS_PROVIDER_MODE: ${{ inputs.mode }}
-  ATLAS_PROVIDER_DECISION_URL: ${{ inputs.decision_url }}
-  ATLAS_PROVIDER_DECISION_SHA256: ${{ inputs.decision_sha256 }}
+  ATLAS_CENSUS_PACKET_SHA256: e15bc87f17bd03edb1d3ba6f1bd6db9cc2acaf94aca45f40d0c3f5c55fe1020e
+  ATLAS_CENSUS_MODE: ${{ inputs.census_mode }}
+  ATLAS_CENSUS_DECISION_URL: ${{ inputs.census_decision_url }}
+  ATLAS_CENSUS_DECISION_SHA256: ${{ inputs.census_decision_sha256 }}
   ATLAS_GRANT_TRANSFER_SHA256: 439df1016cdfdfa237521eccf1f47f9fc72827a4990c3c35b2ec4d8371e4cd92
   ATLAS_GRANT_PACKET_SHA256: e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e
 
 jobs:
   grant-dirty-transition-mac:
-    name: Exact native inputs then optional reviewed ownership proof
+    name: Exact compiler API cards and concrete receiver proof
     runs-on: macos-26
     timeout-minutes: 148
     steps:
@@ -135,6 +136,43 @@ jobs:
         env:
           TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
+          mkdir -p "$RUNNER_TEMP/census-fixture"
+          ATLAS_FIXTURE_ROOT="$RUNNER_TEMP/census-fixture" TMPDIR="$RUNNER_TEMP/census-fixture" python3 -I -S -B - <<'CENSUS_CONTROLS'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          if hashlib.sha256(raw).hexdigest() != os.environ["ATLAS_CENSUS_PACKET_SHA256"]:
+              raise SystemExit("Exact census controls manifest required before imports")
+          for row in json.loads(raw)["files"]:
+              path = root / row["path"]
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact census control source required before import")
+          for filename in ("test_census.py", "test_api_only.py"):
+              sys.argv = [str(root / filename)]
+              try:
+                  runpy.run_path(sys.argv[0], run_name="__main__")
+              except SystemExit as status:
+                  if status.code is not False and not (type(status.code) is int and status.code == 0):
+                      raise RuntimeError("Guarded source cohort must finish successfully") from status
+          CENSUS_CONTROLS
+          ATLAS_FIXTURE_ROOT="$RUNNER_TEMP/census-fixture" TMPDIR="$RUNNER_TEMP/census-fixture" python3 -O -I -S -B - <<'CENSUS_CONTROLS'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          if hashlib.sha256(raw).hexdigest() != os.environ["ATLAS_CENSUS_PACKET_SHA256"]:
+              raise SystemExit("Exact census controls manifest required before imports")
+          for row in json.loads(raw)["files"]:
+              path = root / row["path"]
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact census control source required before import")
+          for filename in ("test_census.py", "test_api_only.py"):
+              sys.argv = [str(root / filename)]
+              try:
+                  runpy.run_path(sys.argv[0], run_name="__main__")
+              except SystemExit as status:
+                  if status.code is not False and not (type(status.code) is int and status.code == 0):
+                      raise RuntimeError("Guarded source cohort must finish successfully") from status
+          CENSUS_CONTROLS
           ruby test/install_test.rb
           python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
           python3 -I -S -B test/grant_dirty_transition/test_assignment_cost.py
@@ -323,39 +361,10 @@ jobs:
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Observe exact CC LLVM header linker and native inputs
-        id: provider
-        timeout-minutes: 6
-        env:
-          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
-        run: |
-          python3 -I -S -B - <<'PYTHON'
-          import hashlib, json, os, pathlib, runpy, stat, sys
-          root = pathlib.Path("test/grant_native_provider").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
-          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Exact provider source manifest before imports required")
-          for row in json.loads(pins.read_bytes())["files"]:
-              path = root / row["path"]
-              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Exact provider source before imports required")
-          repo = pathlib.Path.cwd().resolve()
-          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
-          source = root / "launch.py"
-          argv = [str(source), 'observe', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
-              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
-              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          argv += ["--output", str(temporary / "native-provider-observation")]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
-          PYTHON
-
-      - name: Fetch independently pinned immutable reviewer decision
-        id: review
-        if: ${{ inputs.mode == 'resume' }}
-        timeout-minutes: 15
+      - name: Fetch independently pinned separate census decision
+        id: census_review
+        if: ${{ inputs.census_mode == 'execute' }}
+        timeout-minutes: 1
         env:
           TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
@@ -377,176 +386,171 @@ jobs:
               "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
               "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          argv += ["--output", str(temporary / "native-review-decision"), "--decision-url", os.environ["ATLAS_PROVIDER_DECISION_URL"], "--decision-sha256", os.environ["ATLAS_PROVIDER_DECISION_SHA256"]]
+          argv += ["--output", str(temporary / "census-review-decision"), "--decision-url", os.environ["ATLAS_CENSUS_DECISION_URL"], "--decision-sha256", os.environ["ATLAS_CENSUS_DECISION_SHA256"]]
           sys.argv = argv
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Materialize current same-job policies from reviewed stable inputs
-        id: policies
-        if: ${{ inputs.mode == 'resume' }}
-        timeout-minutes: 2
+      - name: Observe or qualify separately admitted compiler census APIs
+        id: census
+        if: ${{ steps.tool_admission.outcome == 'success' && (inputs.census_mode == 'observe' || steps.census_review.outcome == 'success') }}
+        timeout-minutes: 45
         env:
           TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
           python3 -I -S -B - <<'PYTHON'
           import hashlib, json, os, pathlib, runpy, stat, sys
-          root = pathlib.Path("test/grant_native_provider").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
-          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Exact provider source manifest before imports required")
-          for row in json.loads(pins.read_bytes())["files"]:
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+          if hashlib.sha256(raw).hexdigest() != expected:
+              raise SystemExit("Exact census source manifest required before import")
+          for row in json.loads(raw)["files"]:
               path = root / row["path"]
-              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Exact provider source before imports required")
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                  raise SystemExit("Physical census executable source required")
+              body = path.read_bytes()
+              if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact census executable source required")
           repo = pathlib.Path.cwd().resolve()
           temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
-          source = root / "launch.py"
-          argv = [str(source), 'materialize', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+          argv = [str(root / "launch_api.py"), os.environ["ATLAS_CENSUS_MODE"], "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
               "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
-              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          observation = temporary / "native-provider-observation"
-          argv += ["--output", str(temporary / "native-provider-policies"), "--observation", str(observation),
-              "--observation-sha256", hashlib.sha256((observation / "OBSERVATION.json").read_bytes()).hexdigest(),
-              "--decision", str(temporary / "native-review-decision/DECISION.json"), "--decision-sha256", os.environ["ATLAS_PROVIDER_DECISION_SHA256"]]
+              "--policies", str(temporary / "census-provider-policies"),
+              "--packet-sha256", expected, "--output", str(temporary / "compiler-census-result")]
+          if os.environ["ATLAS_CENSUS_MODE"] == "execute":
+              argv += ["--decision", str(temporary / "census-review-decision/DECISION.json"), "--decision-sha256", os.environ["ATLAS_CENSUS_DECISION_SHA256"]]
           sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
+          runpy.run_path(str(root / "launch_api.py"), run_name="__main__")
           PYTHON
 
-      - name: Prove all actual-project APIs and Crystal source feedback
-        id: feedback
-        if: ${{ inputs.mode == 'resume' }}
-        timeout-minutes: 30
-        env:
-          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
-        run: |
-          python3 -I -S -B - <<'PYTHON'
-          import hashlib, json, os, pathlib, runpy, stat, sys
-          root = pathlib.Path("test/grant_native_provider").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
-          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Exact provider source manifest before imports required")
-          for row in json.loads(pins.read_bytes())["files"]:
-              path = root / row["path"]
-              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Exact provider source before imports required")
-          repo = pathlib.Path.cwd().resolve()
-          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
-          source = root / "launch.py"
-          argv = [str(source), 'feedback', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
-              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
-              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          argv += ["--output", str(temporary / "native-buffer-source-feedback"), "--policies", str(temporary / "native-provider-policies")]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
-          PYTHON
-
-      - name: Execute exact native original fixed restored ownership proof
-        id: probe
-        if: ${{ inputs.mode == 'resume' }}
-        timeout-minutes: 15
-        env:
-          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
-        run: |
-          python3 -I -S -B - <<'PYTHON'
-          import hashlib, json, os, pathlib, runpy, stat, sys
-          root = pathlib.Path("test/grant_native_provider").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
-          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Exact provider source manifest before imports required")
-          for row in json.loads(pins.read_bytes())["files"]:
-              path = root / row["path"]
-              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Exact provider source before imports required")
-          repo = pathlib.Path.cwd().resolve()
-          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
-          source = root / "launch.py"
-          argv = [str(source), 'probe', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
-              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
-              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          argv += ["--output", str(temporary / "native-buffer-probe"), "--policies", str(temporary / "native-provider-policies"), "--feedback-result", str(temporary / "native-buffer-source-feedback")]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
-          PYTHON
-
-      - name: Stage finite positive provider and proof evidence
-        id: stage
-        if: ${{ always() && steps.provider.outcome != 'skipped' }}
-        timeout-minutes: 2
-        env:
-          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
-        run: |
-          python3 -I -S -B - <<'PYTHON'
-          import hashlib, json, os, pathlib, runpy, stat, sys
-          root = pathlib.Path("test/grant_native_provider").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
-          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Exact provider source manifest before imports required")
-          for row in json.loads(pins.read_bytes())["files"]:
-              path = root / row["path"]
-              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Exact provider source before imports required")
-          repo = pathlib.Path.cwd().resolve()
-          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
-          source = root / "launch.py"
-          argv = [str(source), 'bundle', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
-              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
-              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          argv += ["--output", str(temporary / "native-provider-public"), "--source", str(temporary / "native-provider-observation"),
-              "--policies", str(temporary / "native-provider-policies"), "--feedback-result", str(temporary / "native-buffer-source-feedback"), "--probe-result", str(temporary / "native-buffer-probe")]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
-          PYTHON
-
-      - name: Retire transferred tools after verified consumer return
-        id: cleanup
-        if: ${{ always() && steps.transfer_start.outcome == 'success' }}
+      - name: Stage positive compiler census evidence
+        id: census_stage
+        if: ${{ always() && steps.census.outcome != 'skipped' }}
         timeout-minutes: 1
         env:
-          FEEDBACK_ATTEMPTED: ${{ steps.feedback.outcome != 'skipped' }}
-          PROBE_ATTEMPTED: ${{ steps.probe.outcome != 'skipped' }}
           TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
           python3 -I -S -B - <<'PYTHON'
           import hashlib, json, os, pathlib, runpy, stat, sys
-          root = pathlib.Path("test/grant_native_provider").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
-          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Exact provider source manifest before imports required")
-          for row in json.loads(pins.read_bytes())["files"]:
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+          if hashlib.sha256(raw).hexdigest() != expected:
+              raise SystemExit("Exact census source manifest required before import")
+          for row in json.loads(raw)["files"]:
               path = root / row["path"]
-              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Exact provider source before imports required")
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                  raise SystemExit("Physical census executable source required")
+              body = path.read_bytes()
+              if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact census executable source required")
           repo = pathlib.Path.cwd().resolve()
           temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
-          source = root / "launch.py"
-          argv = [str(source), 'cleanup', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+          argv = [str(root / "launch_api.py"), "stage", "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
               "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
-              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
-          argv += ["--output", str(temporary / "unused-cleanup-output"), "--source", str(temporary / "native-provider-public"), "--feedback-result", str(temporary / "native-buffer-source-feedback"), "--probe-result", str(temporary / "native-buffer-probe")]
-          if os.environ.get("FEEDBACK_ATTEMPTED") == "true": argv += ["--feedback-attempted"]
-          if os.environ.get("PROBE_ATTEMPTED") == "true": argv += ["--probe-attempted"]
-          sys.argv = argv
-          runpy.run_path(str(source), run_name="__main__")
+              "--policies", str(temporary / "census-provider-policies"),
+              "--packet-sha256", expected, "--output", str(temporary / "compiler-census-public")]
+          sys.argv = [*argv, "--source", str(temporary / "compiler-census-result")]
+          runpy.run_path(str(root / "launch_api.py"), run_name="__main__")
           PYTHON
 
-      - name: Preserve exact selected provider and proof evidence
-        if: ${{ always() && steps.stage.outcome == 'success' }}
+      - name: Preserve positive compiler API proof and diagnostic evidence
+        if: ${{ always() && steps.census_stage.outcome == 'success' }}
         timeout-minutes: 2
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: grant-native-provider-observation-and-proof
-          path: ${{ runner.temp }}/native-provider-public
+          name: grant-compiler-census-api
+          path: ${{ runner.temp }}/compiler-census-public
+          include-hidden-files: false
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Retire transferred tools after exact API-only consumer return
+        id: cleanup
+        if: ${{ always() && steps.transfer_start.outcome == 'success' }}
+        timeout-minutes: 2
+        env:
+          CENSUS_ATTEMPTED: ${{ steps.census.outcome != 'skipped' }}
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+          if hashlib.sha256(raw).hexdigest() != expected:
+              raise SystemExit("Exact API-only manifest required before every import")
+          for row in json.loads(raw)["files"]:
+              path = root / row["path"]
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                  raise SystemExit("Physical API-only execution source required")
+              body = path.read_bytes()
+              if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"] or stat.S_IMODE(path.stat().st_mode) != row["mode"]:
+                  raise SystemExit("Exact API-only execution bytes/modes required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          common = ["--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--policies", str(temporary / "census-provider-policies"), "--packet-sha256", expected]
+          def delegate(operation, extra):
+              sys.argv = [str(root / "launch_api.py"), operation, *common, *extra]
+              try:
+                  runpy.run_path(sys.argv[0], run_name="__main__")
+              except SystemExit as status:
+                  if type(status.code) is not int or status.code != 0:
+                      raise
+          if os.environ.get("CENSUS_ATTEMPTED") == "true":
+              extra = ["--output", str(temporary / "unused-api-return"), "--source", str(temporary / "compiler-census-result")]
+              if os.environ["ATLAS_CENSUS_MODE"] == "execute":
+                  extra += ["--decision", str(temporary / "census-review-decision/DECISION.json"), "--decision-sha256", os.environ["ATLAS_CENSUS_DECISION_SHA256"]]
+              delegate("return", extra)
+          delegate("cleanup", ["--output", str(temporary / "census-cleanup-result")])
+          PYTHON
+
+      - name: Stage the exact original tool retirement receipt
+        id: cleanup_stage
+        if: ${{ always() && steps.cleanup.outcome == 'success' }}
+        timeout-minutes: 1
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+          if hashlib.sha256(raw).hexdigest() != expected:
+              raise SystemExit("Exact API-only manifest required before every import")
+          for row in json.loads(raw)["files"]:
+              path = root / row["path"]
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                  raise SystemExit("Physical API-only execution source required")
+              body = path.read_bytes()
+              if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"] or stat.S_IMODE(path.stat().st_mode) != row["mode"]:
+                  raise SystemExit("Exact API-only execution bytes/modes required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          common = ["--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--policies", str(temporary / "census-provider-policies"), "--packet-sha256", expected]
+          def delegate(operation, extra):
+              sys.argv = [str(root / "launch_api.py"), operation, *common, *extra]
+              try:
+                  runpy.run_path(sys.argv[0], run_name="__main__")
+              except SystemExit as status:
+                  if type(status.code) is not int or status.code != 0:
+                      raise
+          delegate("stage", ["--source", str(temporary / "census-cleanup-result"), "--output", str(temporary / "census-cleanup-public")])
+          PYTHON
+
+      - name: Preserve exact original transferred tool retirement
+        if: ${{ always() && steps.cleanup_stage.outcome == 'success' }}
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: grant-census-tool-retirement
+          path: ${{ runner.temp }}/census-cleanup-public
           include-hidden-files: false
           if-no-files-found: error
           retention-days: 30

@@ -1,0 +1,18 @@
+{
+  "baseline_sdk_specs_accepted": false,
+  "compiler_color": "UNEXECUTED",
+  "compiler_profile_sha256": "PENDING_ACTUAL_REVIEW",
+  "diagnostics_accepted": false,
+  "format": "atlas-native-buffer-source-gates-v1",
+  "job_identity": {},
+  "lint_accepted": false,
+  "lookup_accepted": false,
+  "no_codegen_accepted": false,
+  "raw_evidence": [],
+  "source_sha256": {
+    "buffer_probe.cr.txt": "fcedc0a3963c47ee28cba4f9afdc990e29f43a8f8baae7058fc4bd62786adc7e",
+    "inputs/memory_buffer.fixed.cr.txt": "8a22f15a736a19f67528f3c22872b9b006b1a1c5be9013496fa7695d578e8da5",
+    "inputs/memory_buffer.original.cr.txt": "78205f4cb4dbbb5c3639b89903234879449b61462165165b04376a8ce7fcaabc"
+  },
+  "tool_provider_review_accepted": false
+}

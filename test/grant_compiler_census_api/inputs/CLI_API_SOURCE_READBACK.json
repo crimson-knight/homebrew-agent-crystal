@@ -1,0 +1,38 @@
+{
+  "archive_bytes": 367162,
+  "archive_sha256": "6e90f3cdba3ed87cefbf7443ab93da627af314fac5960a4b9288ae80e31f591f",
+  "commit": "faed4b205063a84650b00e2dc02f01793f373527",
+  "format": "atlas-census-primary-cli-source-v1",
+  "members": [
+    {
+      "bytes": 10016,
+      "path": "src/amber_lsp/lookup/lookup_command.cr",
+      "sha256": "9320d595f356de4feeaa4da79e70cfe54e306bf2abae0986418571b256e2b4fe"
+    },
+    {
+      "bytes": 20406,
+      "path": "src/amber_lsp/lookup/verify_api_query.cr",
+      "sha256": "05f99e1f9f0c542ead3a956f0f62af185637a229758bf629f80be6ce18524030"
+    },
+    {
+      "bytes": 1399,
+      "path": "src/amber_lsp/lookup/build_crystal_docs_json.cr",
+      "sha256": "21569b3434c3ec5462d0196d61d447811de69a55f8b8bfe17d9de9bd7d6b6bb9"
+    },
+    {
+      "bytes": 20256,
+      "path": "src/amber_lsp/lookup/build_layered_api_index.cr",
+      "sha256": "f4a59ab6b8afede3a384c60faf8b198692c7ef715fc1aaee348aac1b878dda0b"
+    },
+    {
+      "bytes": 299,
+      "path": "src/amber_lsp/lookup/default_compiler_command.cr",
+      "sha256": "1b607500daf4effacf40520038f609d773580ecaf32cb90080eacf1b4125dc22"
+    },
+    {
+      "bytes": 14351,
+      "path": "src/amber_lsp/lookup/index_cache.cr",
+      "sha256": "cdd83b1698968f1c71c9014a487f057a05b12b90296e870a79633e7d41091e12"
+    }
+  ]
+}

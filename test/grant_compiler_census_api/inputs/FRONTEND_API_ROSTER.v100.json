@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "memory-budget-experiment",
+  "state": "source_only_actual_lookup_pending",
+  "root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-implementation/crystal-runtime",
+  "root_access": "read_only_source_lookup",
+  "source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "lookup_executable_sha256": "211fe01290d62c7045ea9452a2405d4097cb3292587b310ad9085af29153d250",
+  "resource_profile": {"memory_gib": 0.25, "cpu_units": 1, "aggregate_seconds": 120},
+  "per_raw_stream_bytes": 131072,
+  "aggregate_raw_bytes": 4194304,
+  "queries": [
+    {"query": "GC.stats", "source": "src/gc/boehm.cr:403", "question": "Safe non-owning snapshot type"},
+    {"query": "GC::Stats#heap_size", "source": "src/gc.cr:55", "question": "GC heap capacity and exact UInt64 type"},
+    {"query": "GC::Stats#free_bytes", "source": "src/gc.cr:60", "question": "Approximate free capacity and exact UInt64 type"},
+    {"query": "GC::Stats#unmapped_bytes", "source": "src/gc.cr:67", "question": "GC unmapped capacity and exact UInt64 type"},
+    {"query": "GC::Stats#bytes_since_gc", "source": "src/gc.cr:71", "question": "Allocation traffic since the latest collection"},
+    {"query": "GC::Stats#total_bytes", "source": "src/gc.cr:76", "question": "Cumulative allocation traffic"},
+    {"query": "GC.collect", "source": "src/gc/boehm.cr:350", "question": "Separately labeled forced-collection profile prerequisite"},
+    {"query": "Object#object_id", "source": "src/object.cr", "question": "Numeric non-owning identity and concrete compiler object receivers"},
+    {"query": "Crystal::Type#types?", "source": "src/compiler/crystal/types.cr:372", "question": "Initialized nested storage; verify overrides without creating getters"},
+    {"query": "Crystal::Type#metaclass?", "source": "src/compiler/crystal/types.cr:177", "question": "Classification only; distinguish from existing-metaclass storage"},
+    {"query": "Crystal::GenericType#each_instantiated_type", "source": "src/compiler/crystal/types.cr:1576", "question": "Iteration over existing initialized generic instances"},
+    {"query": "Crystal::DefInstanceContainer#def_instances", "source": "src/compiler/crystal/types.cr:893", "question": "Exact inferred-cache value/key types; creating getter remains outside read-only traversal"},
+    {"query": "Crystal::Call#target_defs", "source": "src/compiler/crystal/semantic/call.cr:10", "question": "Selected post-cleanup method edges and nil state"},
+    {"query": "Crystal::Def#body", "source": "src/compiler/crystal/syntax/ast.cr", "question": "Typed method graph traversal receiver"},
+    {"query": "Crystal::ASTNode#location", "source": "src/compiler/crystal/syntax/ast.cr", "question": "Source and generated-origin attribution prerequisite"}
+  ],
+  "card_acceptance": {
+    "statuses_recorded": [0, 4, 5],
+    "unresolved_signature_action": "compiler_backed_verify_then_concrete_graph_receiver",
+    "census_validation_action": "tiny_nested_generic_shared_cycle_and_reached_unreached_fixture",
+    "actual_queries": 0
+  },
+  "primary_profile": "ordinary_gc_policy",
+  "separate_profile": "explicit_forced_collection_diagnostic"
+}

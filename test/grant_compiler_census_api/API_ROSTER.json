@@ -1,0 +1,368 @@
+{
+  "actual_API_calls": 0,
+  "compiler_source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "creating_getters_are_diagnostic_only": [
+    "Crystal::DefInstanceContainer#def_instances"
+  ],
+  "format": "atlas-compiler-census-api-roster-v1",
+  "gc_prof_stats_fields": [
+    "heap_size",
+    "free_bytes",
+    "unmapped_bytes",
+    "bytes_since_gc",
+    "bytes_before_gc",
+    "non_gc_bytes",
+    "gc_no",
+    "markers_m1",
+    "bytes_reclaimed_since_gc",
+    "reclaimed_bytes_before_gc",
+    "expl_freed_bytes_since_gc",
+    "obtained_from_os_bytes"
+  ],
+  "gc_stats_fields": [
+    "heap_size",
+    "free_bytes",
+    "unmapped_bytes",
+    "bytes_since_gc",
+    "total_bytes"
+  ],
+  "mission": "memory-budget-experiment",
+  "queries": [
+    {
+      "origin": "src/gc/boehm.cr:403",
+      "query": "GC.stats",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc.cr:55",
+      "query": "GC::Stats#heap_size",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc.cr:60",
+      "query": "GC::Stats#free_bytes",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc.cr:67",
+      "query": "GC::Stats#unmapped_bytes",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc.cr:71",
+      "query": "GC::Stats#bytes_since_gc",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc.cr:76",
+      "query": "GC::Stats#total_bytes",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc/boehm.cr:350",
+      "query": "GC.collect",
+      "required": false,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/object.cr",
+      "query": "Object#object_id",
+      "required": false,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/types.cr:372",
+      "query": "Crystal::Type#types?",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/types.cr:177",
+      "query": "Crystal::Type#metaclass?",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/types.cr:1576",
+      "query": "Crystal::GenericType#each_instantiated_type",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/types.cr:893",
+      "query": "Crystal::DefInstanceContainer#def_instances",
+      "required": false,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/semantic/call.cr:10",
+      "query": "Crystal::Call#target_defs",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/syntax/ast.cr",
+      "query": "Crystal::Def#body",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/compiler/crystal/syntax/ast.cr",
+      "query": "Crystal::ASTNode#location",
+      "required": true,
+      "role": "historical-question"
+    },
+    {
+      "origin": "src/gc/boehm.cr",
+      "query": "GC.prof_stats",
+      "required": true,
+      "role": "profiler-snapshot"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#heap_size",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#free_bytes",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#unmapped_bytes",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#bytes_since_gc",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#bytes_before_gc",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#non_gc_bytes",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#gc_no",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#markers_m1",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#bytes_reclaimed_since_gc",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#reclaimed_bytes_before_gc",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#expl_freed_bytes_since_gc",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "src/gc.cr",
+      "query": "GC::ProfStats#obtained_from_os_bytes",
+      "required": true,
+      "role": "profiler-counter"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Program.new",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Program#array",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::NamedType#types?",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::ModuleType#add_def",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def.new",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Call.new",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Location.new",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Nop.new",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::ASTNode#at",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def#owner",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def#original_owner",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def#owner=",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def#original_owner=",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def#original_name",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Def#name",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::ASTNode#type?",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Location#filename",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Location#line_number",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Location#column_number",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Location#macro_location",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::Location#expanded_location",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Reference#object_id",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::GenericClassType#each_instantiated_type",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::DefInstanceKey.new",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::DefInstanceKey#arg_types",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::DefInstanceKey#block_type",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::DefInstanceKey#named_args",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    },
+    {
+      "origin": "complete canonical9c1 source root",
+      "query": "Crystal::DefInstanceKey#def_object_id",
+      "required": true,
+      "role": "concrete-receiver-and-origin"
+    }
+  ]
+}

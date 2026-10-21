@@ -1,0 +1,310 @@
+{
+  "actual_compiler_formatter_lint_spec_executions": 0,
+  "actual_lookup_executions": 0,
+  "actual_native_api_proof": "Exact C header/implementation sources plus hosted -Wall -Wextra -Werror compilation and actual allocator/parse/dispose controls",
+  "compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "format": "atlas-native-buffer-api-prerequisites-v1",
+  "lookup_commands": [
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer.new",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer.from_file",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer#to_slice",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer#to_unsafe",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer#dispose",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer#finalize",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "LLVM::MemoryBuffer#release_ownership",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "String.new",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "String#empty?",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Array.new",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Array#size",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Array#[]",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Array#<<",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Array#each",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Int#times",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "GC.collect",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "Exception#message",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "JSON::Serializable#to_json",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "IO#puts",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer::Snapshot.new",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer::Result.new",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer.allocate_for_gc",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer.require_result",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer.perform",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer::Result#list_of_snapshots",
+      "--root",
+      "<actual-owned-probe-project>"
+    ],
+    [
+      "amber-lsp",
+      "lookup",
+      "AtlasBuffer::Snapshot#list_of_counters",
+      "--root",
+      "<actual-owned-probe-project>"
+    ]
+  ],
+  "methods": [
+    "LLVM::MemoryBuffer.new",
+    "LLVM::MemoryBuffer.from_file",
+    "LLVM::MemoryBuffer#to_slice",
+    "LLVM::MemoryBuffer#to_unsafe",
+    "LLVM::MemoryBuffer#dispose",
+    "LLVM::MemoryBuffer#finalize",
+    "LLVM::MemoryBuffer#release_ownership",
+    "String.new",
+    "String#empty?",
+    "Array.new",
+    "Array#size",
+    "Array#[]",
+    "Array#<<",
+    "Array#each",
+    "Int#times",
+    "GC.collect",
+    "Exception#message",
+    "JSON::Serializable#to_json",
+    "IO#puts",
+    "AtlasBuffer::Snapshot.new",
+    "AtlasBuffer::Result.new",
+    "AtlasBuffer.allocate_for_gc",
+    "AtlasBuffer.require_result",
+    "AtlasBuffer.perform",
+    "AtlasBuffer::Result#list_of_snapshots",
+    "AtlasBuffer::Snapshot#list_of_counters"
+  ],
+  "receiver_argument_proofs": [
+    "Void-pointer alias identity and out-argument mapping",
+    "LibC::SizeT Slice length compatibility",
+    "JSON::Serializable field roster with nil-valued memory fields",
+    "Getter predicate serialization and native UInt64 integer width",
+    "GC finalizer callback on the exact source wrapper",
+    "Candidate release_ownership followed by native consuming IR with no later release"
+  ],
+  "same_job_source_gate_required": true,
+  "source_compatibility_accepted": false,
+  "source_rows": [
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 62540,
+      "path": "array.cr",
+      "sha256": "92ccfd8c8418033c9a18dd62835b5d1ae2b9c8c09f7784c8b753ee7b9734706d"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 38173,
+      "path": "slice.cr",
+      "sha256": "2cf0556b1a1c6a2b78c7e9612b3466de3e660f809a337ce12f0adf0e1521c305"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 180451,
+      "path": "string.cr",
+      "sha256": "7c7aceb5e4a6760715a0077728d15f5cb70212b71412ab4d610874115e3c532f"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 18437,
+      "path": "gc/boehm.cr",
+      "sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 19209,
+      "path": "json/serialization.cr",
+      "sha256": "7543b956cb92f5620aea1c36511f95cd79d732ec6c7d15fcb7a8014d2e6aa8d0"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 67428,
+      "path": "compiler/crystal/compiler.cr",
+      "sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 30303,
+      "path": "compiler/crystal/command.cr",
+      "sha256": "feb3414baaf4e92376066c22f20bdf126a7455f8f792e40380ca8a86d4535dad"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 24316,
+      "path": "llvm/lib_llvm/core.cr",
+      "sha256": "cda6d0691f233b9bc0a80605125ee36b4258980f24f7716ceb089ebde03dbd9c"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 156,
+      "path": "llvm/lib_llvm/bit_reader.cr",
+      "sha256": "757af5fcfa904937e9bb44a134fc753c5d2fb71235319e55391299cd19ffc061"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 186,
+      "path": "llvm/lib_llvm/ir_reader.cr",
+      "sha256": "30598eca8d3c168a4c9a49daecd0ee019a361ac347ed38bddcc1bbd42b415e63"
+    },
+    {
+      "accepted_9c1_roster_match": true,
+      "bytes": 346,
+      "path": "llvm/lib_llvm/bit_writer.cr",
+      "sha256": "424d481f19adace43d4bc043d5e83a70c9c3ea170cf059b63b08afc338d394db"
+    },
+    {
+      "bytes": 15141,
+      "path": "llvm_primary/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/LICENSE.TXT"
+    },
+    {
+      "bytes": 11798,
+      "path": "CRYSTAL_LICENSE",
+      "sha256": "d936c11961ab8e041bb54a0dbf6148810a5b9f0a1130a9fd8c557a2252a17bdf",
+      "url": "https://raw.githubusercontent.com/crimson-knight/crystal/9c1e8ec64f6be6343e90d3979bc9536c4b050292/LICENSE"
+    }
+  ],
+  "unknown_signature_policy": "Repeat exact lookup with --verify and retain compiler compatibility probe before admission"
+}

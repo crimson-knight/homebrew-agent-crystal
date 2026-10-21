@@ -1,0 +1,752 @@
+{
+  "actual_API_commands": 0,
+  "actual_counter_measurements": 0,
+  "canonical_gc_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+  "compiler_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+  "compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "counters": [
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::Stats#heap_size",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.stats",
+      "sampling_source": {
+        "line": 391,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.stats"
+      },
+      "source": {
+        "line": 55,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "getter heap_size : UInt64"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::Stats#free_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.stats",
+      "sampling_source": {
+        "line": 391,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.stats"
+      },
+      "source": {
+        "line": 60,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "getter free_bytes : UInt64"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::Stats#unmapped_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.stats",
+      "sampling_source": {
+        "line": 391,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.stats"
+      },
+      "source": {
+        "line": 67,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "getter unmapped_bytes : UInt64"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::Stats#bytes_since_gc",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.stats",
+      "sampling_source": {
+        "line": 391,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.stats"
+      },
+      "source": {
+        "line": 71,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "getter bytes_since_gc : UInt64"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::Stats#total_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.stats",
+      "sampling_source": {
+        "line": 391,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.stats"
+      },
+      "source": {
+        "line": 76,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "getter total_bytes : UInt64"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#heap_size",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 93,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "heap_size : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#free_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 94,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "free_bytes : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#unmapped_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 95,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "unmapped_bytes : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#bytes_since_gc",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 96,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "bytes_since_gc : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#bytes_before_gc",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 97,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "bytes_before_gc : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#non_gc_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 98,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "non_gc_bytes : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#gc_no",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 99,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "gc_no : UInt64,"
+      },
+      "unit": "collector metadata count"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#markers_m1",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 100,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "markers_m1 : UInt64,"
+      },
+      "unit": "collector metadata count"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#bytes_reclaimed_since_gc",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 101,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "bytes_reclaimed_since_gc : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#reclaimed_bytes_before_gc",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 102,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "reclaimed_bytes_before_gc : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#expl_freed_bytes_since_gc",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 103,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "expl_freed_bytes_since_gc : UInt64,"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup/verification and receiver compile",
+      "counter": "GC::ProfStats#obtained_from_os_bytes",
+      "intended_attribution": "phase-local allocation/collector pressure; exact retained object ownership is separate",
+      "measured": false,
+      "sample_at": [
+        "program initialized",
+        "parse",
+        "semantic declarations",
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "sampling_method": "GC.prof_stats",
+      "sampling_source": {
+        "line": 407,
+        "path": "src/gc/boehm.cr",
+        "source_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+        "source_text": "def self.prof_stats"
+      },
+      "source": {
+        "line": 104,
+        "path": "src/gc.cr",
+        "source_sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119",
+        "source_text": "obtained_from_os_bytes : UInt64"
+      },
+      "unit": "bytes"
+    },
+    {
+      "API_status": "pending actual lookup and concrete receiver compile",
+      "counter": "initialized type count",
+      "intended_attribution": "Count only existing named-type entries, deduplicate physical object identity.",
+      "measured": false,
+      "sample_at": [
+        "semantic declarations",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 372,
+        "path": "src/compiler/crystal/types.cr",
+        "source_sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6",
+        "source_text": "def types?"
+      },
+      "source_method": "Crystal::Type#types?",
+      "unit": "objects or events as explicitly named"
+    },
+    {
+      "API_status": "pending actual lookup and concrete receiver compile",
+      "counter": "existing typed method cache entries",
+      "intended_attribution": "Read existing @def_instances through the nullable fixture accessor; the public getter can create the Hash.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 893,
+        "path": "src/compiler/crystal/types.cr",
+        "source_sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6",
+        "source_text": "getter(def_instances) { {} of DefInstanceKey => Def }"
+      },
+      "source_method": "Crystal::DefInstanceContainer#def_instances",
+      "unit": "objects or events as explicitly named"
+    },
+    {
+      "API_status": "pending actual lookup and concrete receiver compile",
+      "counter": "typed method additions",
+      "intended_attribution": "Count insertions at the mutation site, separating total events from distinct retained cache keys.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 895,
+        "path": "src/compiler/crystal/types.cr",
+        "source_sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6",
+        "source_text": "def add_def_instance(key, typed_def)"
+      },
+      "source_method": "Crystal::DefInstanceContainer#add_def_instance",
+      "unit": "objects or events as explicitly named"
+    },
+    {
+      "API_status": "pending actual lookup and concrete receiver compile",
+      "counter": "typed method cache lookups",
+      "intended_attribution": "Count lookups/hits/misses at the actual cache access; no current runtime measurements.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 899,
+        "path": "src/compiler/crystal/types.cr",
+        "source_sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6",
+        "source_text": "def lookup_def_instance(key)"
+      },
+      "source_method": "Crystal::DefInstanceContainer#lookup_def_instance",
+      "unit": "objects or events as explicitly named"
+    },
+    {
+      "API_status": "pending actual lookup and concrete receiver compile",
+      "counter": "generic instances",
+      "intended_attribution": "Count existing concrete type instantiations, deduplicate visited type identities.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 1576,
+        "path": "src/compiler/crystal/types.cr",
+        "source_sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6",
+        "source_text": "def each_instantiated_type(&)"
+      },
+      "source_method": "Crystal::GenericType#each_instantiated_type",
+      "unit": "objects or events as explicitly named"
+    },
+    {
+      "API_status": "pending actual lookup and concrete receiver compile",
+      "counter": "metaclass identities",
+      "intended_attribution": "Read existing @metaclass through the nullable fixture accessor; avoid constructing a metaclass during observation.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 177,
+        "path": "src/compiler/crystal/types.cr",
+        "source_sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6",
+        "source_text": "def metaclass?"
+      },
+      "source_method": "Crystal::Type#metaclass?",
+      "unit": "objects or events as explicitly named"
+    },
+    {
+      "API_status": "pending actual lookup/concrete receiver compile; runtime traversal and observer calibration are later",
+      "counter": "retained definition body roots",
+      "intended_attribution": "Count distinct reachable AST identities starting at each existing method body; shared nodes receive one physical count and explicit owner edges.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 1428,
+        "path": "src/compiler/crystal/syntax/ast.cr",
+        "source_sha256": "4d66c0ea89fed790eae6955a810633c446ab9fc3a5e277785b6a83ee6582a912",
+        "source_text": "property body : ASTNode"
+      },
+      "source_method": "Crystal::Def#body",
+      "unit": "distinct objects and explicitly separate graph edges"
+    },
+    {
+      "API_status": "pending actual lookup/concrete receiver compile; runtime traversal and observer calibration are later",
+      "counter": "resolved call target edges",
+      "intended_attribution": "Count typed target edges and distinct reached definitions; distinguish edge count from unique retained method count.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 10,
+        "path": "src/compiler/crystal/semantic/call.cr",
+        "source_sha256": "aedb22dc62ed2585239bce7dbbd9a91bf411edf2d46656c468036a9c083d2830",
+        "source_text": "property target_defs : Array(Def)?"
+      },
+      "source_method": "Crystal::Call#target_defs",
+      "unit": "distinct objects and explicitly separate graph edges"
+    },
+    {
+      "API_status": "pending actual lookup/concrete receiver compile; runtime traversal and observer calibration are later",
+      "counter": "definition receiver and original owner",
+      "intended_attribution": "Group initialized definitions by receiver and original source owner. Uninitialized raising accessors require an explicit later runtime guard.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 140,
+        "path": "src/compiler/crystal/semantic/ast.cr",
+        "source_sha256": "88f5a973703371293a3b5b94be5675b9c7c1616e6c6c8dea21d461a311c5d978",
+        "source_text": "property! original_owner : Type"
+      },
+      "source_method": "Crystal::Def#owner/#original_owner",
+      "unit": "distinct objects and explicitly separate graph edges"
+    },
+    {
+      "API_status": "pending actual lookup/concrete receiver compile; runtime traversal and observer calibration are later",
+      "counter": "source and macro origin metadata",
+      "intended_attribution": "Group reached nodes by real source path and expansion origin; retain unknown origins and avoid duplicating nodes shared across macro expansions.",
+      "measured": false,
+      "sample_at": [
+        "semantic main",
+        "semantic cleanup"
+      ],
+      "source": {
+        "line": 44,
+        "path": "src/compiler/crystal/syntax/location.cr",
+        "source_sha256": "44e0c4fb2c600ac79318d9d3c88d56e5530b199a82fc2716865dd648947a40b6",
+        "source_text": "def expanded_location"
+      },
+      "source_method": "Crystal::ASTNode#location / Crystal::Location#expanded_location",
+      "unit": "distinct objects and explicitly separate graph edges"
+    }
+  ],
+  "format": "atlas-compiler-census-counter-phase-map-v1",
+  "notes": [
+    "API_ROSTER origin strings remain historical hints; this map derives current method anchors directly from the exact archive. GC.stats begins at391, prof_stats407 in canonical526f, rather than the older overlay line positions.",
+    "This phase validates APIs and static receiver compatibility. The next separately reviewed instrumentation inserts phase snapshots/event counters; then tiny-fixture traversal and observer calibration precede unchanged Grant runs.",
+    "GC.total_bytes measures cumulative requested GC allocation. heap_size-free_bytes is a rough occupied heap estimate. Neither identifies exact retained owners or process RSS.",
+    "LLVM/codegen is a later full-build phase; this no-codegen route establishes no LLVM allocation or whole-build measurement."
+  ],
+  "phases": [
+    {
+      "method": "Crystal::Compiler#new_program",
+      "phase": "program initialized",
+      "source": {
+        "line": 409,
+        "path": "src/compiler/crystal/compiler.cr",
+        "source_sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166",
+        "source_text": "private def new_program(sources)"
+      }
+    },
+    {
+      "method": "Crystal::Compiler#parse",
+      "phase": "parse",
+      "source": {
+        "line": 443,
+        "path": "src/compiler/crystal/compiler.cr",
+        "source_sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166",
+        "source_text": "private def parse(program, sources : Array)"
+      }
+    },
+    {
+      "method": "Crystal::Program#top_level_semantic",
+      "phase": "semantic declarations",
+      "source": {
+        "line": 66,
+        "path": "src/compiler/crystal/semantic.cr",
+        "source_sha256": "47e5d1a58e888fa4212b213a5d8dd8d9c8d10df78727d9fa2a05c81babb0d674",
+        "source_text": "def top_level_semantic(node, main_visitor : MainVisitor = MainVisitor.new(self))"
+      }
+    },
+    {
+      "method": "Crystal::Program#visit_main",
+      "phase": "semantic main",
+      "source": {
+        "line": 5,
+        "path": "src/compiler/crystal/semantic/main_visitor.cr",
+        "source_sha256": "72c1da6ff3fb3b2c6629cd30a06acdec1502dbe2bccabbb0f79123105de2c3a5",
+        "source_text": "def visit_main(node, visitor : MainVisitor = MainVisitor.new(self), process_finished_hooks = false, cleanup = true)"
+      }
+    },
+    {
+      "method": "Crystal::Program#semantic",
+      "phase": "semantic cleanup",
+      "source": {
+        "line": 49,
+        "path": "src/compiler/crystal/semantic.cr",
+        "source_sha256": "47e5d1a58e888fa4212b213a5d8dd8d9c8d10df78727d9fa2a05c81babb0d674",
+        "source_text": "@progress_tracker.stage(\"Semantic (cleanup)\") do"
+      }
+    },
+    {
+      "method": "Crystal::Compiler#codegen",
+      "phase": "LLVM/code generation",
+      "source": {
+        "line": 578,
+        "path": "src/compiler/crystal/compiler.cr",
+        "source_sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166",
+        "source_text": "private def codegen(program, node : ASTNode, sources, output_filename)"
+      }
+    }
+  ],
+  "probes": [
+    {
+      "expected_exit": 0,
+      "maximum_seconds": 300,
+      "path": "inputs/gc_stats.cr.txt",
+      "purpose": "Prove all five Stats and twelve ProfStats fields accept UInt64.",
+      "sha256": "8812957ebdf434d57d1966edf18710e2f5f36525980291a2c1532ca05fb91086"
+    },
+    {
+      "expected_exit": 0,
+      "maximum_seconds": 300,
+      "path": "inputs/initialized_graph.cr.txt",
+      "purpose": "Prove initialized Program/type/generic/cache-key receiver compatibility; nullable existing-state accessors avoid initializing the observed caches.",
+      "sha256": "312e47b8f0f6ce56611a2ce38878ac6427b2f50330766286929dfbbfa7b7bbbb"
+    },
+    {
+      "expected_exit": 0,
+      "maximum_seconds": 300,
+      "path": "inputs/source_origins.cr.txt",
+      "purpose": "Prove method owners, bodies, call targets and source/macro-location receiver compatibility.",
+      "sha256": "18416e29c5c97ccb33818c3049c338d965bc8e06469ee2dc42abf209c030e5e9"
+    },
+    {
+      "expected_exit": 1,
+      "maximum_seconds": 60,
+      "path": "inputs/gc_stats_wrong_type.cr.txt",
+      "purpose": "Prove an actual UInt64/String incompatibility is refused, so a successful command cannot silently omit the tested code.",
+      "sha256": "2b3316adc4afc1bc5a2b5793300c46fb60b126adaabce8fa133d8cc631486bd7"
+    }
+  ],
+  "queries": 56,
+  "query_roster": "API_ROSTER.json",
+  "query_roster_sha256": "05b52120e7a8bfa72da8a66ff002aa4415af70f1f92c124096df4269b06b350b",
+  "retained_owner_attribution_implemented": false,
+  "whole_build_memory_qualified": false
+}

@@ -1,0 +1,10 @@
+{
+  "format": "atlas-native-buffer-tool-input-origin-v1",
+  "run_id": 39533117634,
+  "head_sha": "b3954910a55af3534ce041ef0e4cadf870798937",
+  "actual_acceptance_sha256": "8855f58a5c37478ccec1ec01e80fe2523e332688841eead36a342c56f3b3d590",
+  "stable_file_sha256": "5c9017be9b9ee50c780b049c161ffdd9479e48b542c61a8638e8fb99b5b77f8f",
+  "canonical_stable_view_sha256": "41e88da63e122233426ff376cb048f36f1df319e59f841fba335fa1f59923805",
+  "analysis_execution_policy_publicly_admitted": false,
+  "additional_CC_LLVM_header_scope_admitted": false
+}

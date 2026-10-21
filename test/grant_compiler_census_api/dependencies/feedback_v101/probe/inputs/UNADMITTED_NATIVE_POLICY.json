@@ -1,0 +1,17 @@
+{
+  "aliases": [],
+  "cc": "PENDING_ACTUAL_REVIEW",
+  "compiler_backend_sha256": "PENDING_ACTUAL_REVIEW",
+  "compiler_driver_search_policy_reviewed": false,
+  "compiler_profile_sha256": "PENDING_ACTUAL_REVIEW",
+  "compiler_wrapper_sha256": "5597f8891468ec305a55c8d7a910c392c4cd5b923fba475ba061b0221b8763a0",
+  "execution_admitted": false,
+  "format": "atlas-native-buffer-provider-policy-v1",
+  "llvm_library": "PENDING_ACTUAL_REVIEW",
+  "llvm_source_commit": "2078da43e25a4623cab2d0d60decddf709aaea28",
+  "llvm_version": "21.1.8",
+  "native_files": [],
+  "required_review": "Exact selected CC/header/linker/LLVM/runtime/system-image inputs and aliases, actual source-built backend profile, and independent scoped execution admission",
+  "scope": "native-buffer-ownership-probe-only",
+  "selected_native_closure_reviewed": false
+}

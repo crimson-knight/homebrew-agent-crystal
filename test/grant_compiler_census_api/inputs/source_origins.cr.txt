@@ -1,0 +1,50 @@
+require "compiler/requires"
+
+module AtlasCompilerCensusAPI
+  private def self.accept_type(_value : Crystal::Type?) : Nil
+  end
+
+  private def self.accept_body(_value : Crystal::ASTNode) : Nil
+  end
+
+  private def self.accept_targets(_value : Array(Crystal::Def)?) : Nil
+  end
+
+  private def self.accept_location(_value : Crystal::Location?) : Nil
+  end
+
+  private def self.accept_filename(_value : String | Crystal::VirtualFile | Nil) : Nil
+  end
+
+  private def self.accept_coordinate(_value : Int32) : Nil
+  end
+
+  private def self.accept_origin_name(_value : String) : Nil
+  end
+
+  def self.check_method_and_origin_signatures : Nil
+    program = Crystal::Program.new
+    definition = Crystal::Def.new("census_api_fixture")
+    definition.owner = program
+    definition.original_owner = program
+    accept_type(definition.owner)
+    accept_type(definition.original_owner)
+    accept_body(definition.body)
+    accept_origin_name(definition.name)
+    accept_origin_name(definition.original_name)
+
+    call = Crystal::Call.new(nil, "census_api_fixture")
+    accept_targets(call.target_defs)
+    accept_type(call.type?)
+    location = Crystal::Location.new("census_api_fixture.cr", 1, 1)
+    call.at(location)
+    accept_location(call.location)
+    accept_location(location.expanded_location)
+    accept_location(location.macro_location)
+    accept_filename(location.filename)
+    accept_coordinate(location.line_number)
+    accept_coordinate(location.column_number)
+  end
+end
+
+AtlasCompilerCensusAPI.check_method_and_origin_signatures

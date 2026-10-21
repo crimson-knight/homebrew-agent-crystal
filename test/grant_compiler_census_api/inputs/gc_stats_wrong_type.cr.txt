@@ -1,0 +1,6 @@
+module AtlasCompilerCensusAPI
+  def self.accept_wrong_snapshot_type(_value : String) : Nil
+  end
+end
+
+AtlasCompilerCensusAPI.accept_wrong_snapshot_type(GC.stats.heap_size)

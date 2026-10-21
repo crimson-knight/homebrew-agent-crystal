@@ -1,0 +1,670 @@
+{
+  "actual_local_compiler_native_container_browser_ssh_workload_jobs": 0,
+  "actual_target_cells_accepted": 0,
+  "admission_gates": [
+    "Independent source/protocol review",
+    "Exact supported compiler/LLVM/GC/profiler/shim provider selection with loaded-image proof",
+    "Actual API/type/formatter/lint/spec and probe GREEN status",
+    "Bounds/output/corruption/complete original-group return controls",
+    "Independent retained artifact replay",
+    "Separate repeated/full300/500/default-feature/compiler-and-whole-build/device/shipping qualification"
+  ],
+  "checkpoint_protocol": {
+    "before_first_phase": [
+      "process start before Compiler creation",
+      "before and after Program creation/TargetMachine creation",
+      "source/fixture/profile/backend/native-image identity"
+    ],
+    "census_maximum_output_bytes": 8388608,
+    "census_maximum_owner_rows": 4096,
+    "census_maximum_seconds_per_checkpoint": 2,
+    "census_maximum_unique_ids": 1000000,
+    "forced_gc_in_ordinary_workload": false,
+    "forced_gc_sensitivity": "Separate known-owner-retirement probe; record gc_no advance and source/profile difference",
+    "frontend_stage_pairs": 11,
+    "native_subphases": [
+      "native module creation",
+      "per-unit serialization start/end",
+      "per-unit cache compare/write",
+      "per-unit eager parse/context isolation",
+      "pass pipeline start/end",
+      "per-unit object emission",
+      "linker child start/wait",
+      "conditional dsymutil"
+    ],
+    "observer_overhead": "Measure checkpoint duration and its GC allocation separately; no arithmetic subtraction presented as an exact unobserved run",
+    "observer_state": "Bounded numeric identities and counters; no strong AST/type/module references",
+    "output": "Typed JSON::Serializable records to a separate owned JSONL sidecar; ordinary --stats/raw streams retain exact parser shape",
+    "overflow_policy": "Retain diagnostic refusal with explicit truncation/dropped coverage; stop before interpreting ownership totals",
+    "phase_catalog": "Source-defined actual stages; retain conditional flags, do not assume STAGES=16 is universal",
+    "required_file_parse_events_inside_semantics": true
+  },
+  "counter_map": [
+    {
+      "fields": [
+        "phase_id",
+        "ordered_phase_name",
+        "event_entry_or_exit",
+        "pid",
+        "birth_identity",
+        "monotonic_ns",
+        "observer_output_offset",
+        "gc_heap_size",
+        "gc_free_bytes",
+        "gc_unmapped_bytes",
+        "gc_bytes_since_gc",
+        "gc_total_bytes",
+        "gc_no",
+        "gc_reclaimed_since_gc",
+        "gc_reclaimed_before_gc",
+        "gc_obtained_from_os",
+        "checkpoint_wall_ns",
+        "checkpoint_gc_allocation_bytes"
+      ],
+      "group": "phase_gc",
+      "meaning": "GC total_bytes delta is gross GC allocation; free/heap is approximate arena occupancy; no deep-live or phase-exclusive RSS claim",
+      "sources": [
+        {
+          "lines": [
+            16,
+            49
+          ],
+          "path": "compiler_source/compiler/crystal/progress_tracker.cr",
+          "sha256": "e13b8285ab84d8eed452e048b7569dee6693a18051b40a0689da87ac9a2f934f"
+        },
+        {
+          "lines": [
+            48,
+            109
+          ],
+          "path": "compiler_source/gc.cr",
+          "sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119"
+        },
+        {
+          "lines": [
+            391,
+            424
+          ],
+          "path": "compiler_source/gc/boehm.cr",
+          "sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "files_parsed",
+        "source_bytes_parsed",
+        "parse_cache_hits",
+        "parse_cache_misses",
+        "ast_clone_events",
+        "syntax_roots",
+        "macro_expansion_roots",
+        "normalized_roots",
+        "typed_body_roots",
+        "unique_visited_ast_ids",
+        "ast_class_counts",
+        "ast_origin_counts",
+        "visited_edge_kind_coverage",
+        "truncated"
+      ],
+      "group": "parser_ast",
+      "meaning": "Root- and edge-labeled retained AST inventory only; allocation-site tracing and full semantic/GC graph coverage remain additional gates. Required-file parsing occurs inside semantic work",
+      "sources": [
+        {
+          "lines": [
+            443,
+            487
+          ],
+          "path": "compiler_source/compiler/crystal/compiler.cr",
+          "sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166"
+        },
+        {
+          "lines": [
+            87,
+            146
+          ],
+          "path": "compiler_source/compiler/crystal/semantic/semantic_visitor.cr",
+          "sha256": "afb14bb81c227b0e72de1def60de4af7dd6c01ef48d2f8b7fce40d0920130742"
+        },
+        {
+          "lines": [
+            79,
+            87
+          ],
+          "path": "compiler_source/compiler/crystal/syntax/ast.cr",
+          "sha256": "4d66c0ea89fed790eae6955a810633c446ab9fc3a5e277785b6a83ee6582a912"
+        },
+        {
+          "lines": [
+            4,
+            37
+          ],
+          "path": "compiler_source/compiler/crystal/syntax/visitor.cr",
+          "sha256": "17b62117097ae7ae1151dea4e01d55c784dd0f9f28928da45079adadc4b7d12b"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "declared_type_count",
+        "generic_instance_count",
+        "metaclass_count",
+        "union_count",
+        "union_width_histogram",
+        "declared_def_count",
+        "def_instance_cache_entries",
+        "typed_def_cache_hits",
+        "typed_def_cache_misses",
+        "uncached_typed_def_creations",
+        "typed_body_analysis_count",
+        "origin_receiver_argument_shape_counts"
+      ],
+      "group": "types_methods",
+      "meaning": "Count cache insertions and uncached creations separately. Traverse nested types, generic instances, metaclasses, unions/procs/tuples and file modules with identity deduplication",
+      "sources": [
+        {
+          "lines": [
+            892,
+            900
+          ],
+          "path": "compiler_source/compiler/crystal/types.cr",
+          "sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6"
+        },
+        {
+          "lines": [
+            1551,
+            1624
+          ],
+          "path": "compiler_source/compiler/crystal/types.cr",
+          "sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6"
+        },
+        {
+          "lines": [
+            365,
+            455
+          ],
+          "path": "compiler_source/compiler/crystal/semantic/call.cr",
+          "sha256": "aedb22dc62ed2585239bce7dbbd9a91bf411edf2d46656c468036a9c083d2830"
+        },
+        {
+          "lines": [
+            1164,
+            1269
+          ],
+          "path": "compiler_source/compiler/crystal/semantic/call.cr",
+          "sha256": "aedb22dc62ed2585239bce7dbbd9a91bf411edf2d46656c468036a9c083d2830"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "requires_count",
+        "file_module_count",
+        "after_inference_type_count",
+        "symbol_count",
+        "string_pool_entries",
+        "string_pool_capacity",
+        "string_pool_payload_bytes",
+        "parse_cache_entries",
+        "preparsed_file_count",
+        "file_dependency_edges",
+        "initializer_counts",
+        "splat_expansion_entries",
+        "compiler_program_present",
+        "incremental_data_present",
+        "llvm_typer_type_cache_sizes",
+        "codegen_module_and_type_map_sizes"
+      ],
+      "group": "retention_caches",
+      "meaning": "Read existing nullable backing state; avoid lazy getter allocation and object retention in the observer. Counts/payloads are not deep-exclusive retained bytes",
+      "sources": [
+        {
+          "lines": [
+            27,
+            144
+          ],
+          "path": "compiler_source/compiler/crystal/program.cr",
+          "sha256": "f30b348051698d9125bb790dc4f9d8782deaae385eb2a9bbd31341c4f0955c35"
+        },
+        {
+          "lines": [
+            678,
+            735
+          ],
+          "path": "compiler_source/compiler/crystal/incremental_cache.cr",
+          "sha256": "eeb8fbe92bb4040715ce4bd4217961e2d18b0be6c0e52cd51a1ada4331ece247"
+        },
+        {
+          "lines": [
+            30,
+            55
+          ],
+          "path": "compiler_source/string_pool.cr",
+          "sha256": "2dca2cd8c63d605ab6bf50ba9ab58e619a4db35f468867d0d638eedb3a40d5ab"
+        },
+        {
+          "lines": [
+            14,
+            48
+          ],
+          "path": "compiler_source/compiler/crystal/codegen/llvm_typer.cr",
+          "sha256": "b08a2caaac16f5c8fa81d911bce6b31a383ba6f339d2d192ff3f323407a76c7d"
+        },
+        {
+          "lines": [
+            285,
+            340
+          ],
+          "path": "compiler_source/compiler/crystal/codegen/codegen.cr",
+          "sha256": "4105b925f48098d45921f95987ab16b27ac2cf010a08cd83820b1b451f786a80"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "contexts_created",
+        "contexts_native_disposed",
+        "modules_created",
+        "modules_transferred",
+        "builders_created",
+        "builders_native_disposed",
+        "target_machines_created",
+        "target_machines_native_disposed",
+        "target_data_created",
+        "target_data_native_disposed",
+        "pass_options_created",
+        "pass_options_native_disposed",
+        "buffers_registered",
+        "buffer_payload_bytes_registered",
+        "buffer_explicit_dispose_entered",
+        "buffer_explicit_dispose_completed",
+        "buffer_transfers_to_IR",
+        "outstanding_caller_owned_buffers",
+        "outstanding_caller_owned_payload_bytes",
+        "module_functions",
+        "module_globals",
+        "module_basic_blocks",
+        "module_instructions",
+        "serialization_transient_allocator_peak"
+      ],
+      "group": "native_owners",
+      "meaning": "Native call completion and payload ownership channels. Count context-owned modules until native context disposal. Payload size excludes LLVM internal arenas/object headers, temporary copies and allocator overhead",
+      "sources": [
+        {
+          "lines": [
+            1,
+            36
+          ],
+          "path": "compiler_source/llvm/memory_buffer.cr",
+          "sha256": "78205f4cb4dbbb5c3639b89903234879449b61462165165b04376a8ce7fcaabc"
+        },
+        {
+          "lines": [
+            1,
+            19
+          ],
+          "path": "compiler_source/llvm/context.cr",
+          "sha256": "754e3c6c56ace9a4a094f594b7f8c9484bbe546f3f4276bf0c8a09737f333999"
+        },
+        {
+          "lines": [
+            138,
+            162
+          ],
+          "path": "compiler_source/llvm/context.cr",
+          "sha256": "754e3c6c56ace9a4a094f594b7f8c9484bbe546f3f4276bf0c8a09737f333999"
+        },
+        {
+          "lines": [
+            1,
+            16
+          ],
+          "path": "compiler_source/llvm/module.cr",
+          "sha256": "741cad02a8836ba0a7a262a26df606006b31dc93a9695704e4799b4c0d61f7af"
+        },
+        {
+          "lines": [
+            75,
+            77
+          ],
+          "path": "compiler_source/llvm/module.cr",
+          "sha256": "741cad02a8836ba0a7a262a26df606006b31dc93a9695704e4799b4c0d61f7af"
+        },
+        {
+          "lines": [
+            4,
+            27
+          ],
+          "path": "compiler_source/llvm/pass_builder_options.cr",
+          "sha256": "4bdf0802071ac5a9efc5dc2b5c255bec6c0aa7eb515b0dc6ad5eae4858da8d86"
+        },
+        {
+          "lines": [
+            1713,
+            1810
+          ],
+          "path": "compiler_source/compiler/crystal/compiler.cr",
+          "sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "sampled_pid_rss_bytes",
+        "sample_interval_ns",
+        "maximum_observation_gap_ns",
+        "calibrated_waited_maxrss_bytes",
+        "whole_build_peak_charge_bytes",
+        "allocator_allocated_bytes",
+        "allocator_live_bytes",
+        "allocator_peak_bytes",
+        "allocator_freed_bytes",
+        "mapping_live_bytes",
+        "known_allocator_sites_covered",
+        "known_gc_object_events_covered",
+        "unknown_stack_bytes",
+        "dropped_event_count",
+        "profiler_enabled",
+        "trace_overhead_wall_cpu_gc_rss"
+      ],
+      "group": "process_allocator",
+      "meaning": "Separate available flags for each channel. Whole-build provider and compiler-only exclusivity remain independently qualified; sampled maxima are lower bounds",
+      "sources": []
+    }
+  ],
+  "format": "atlas-grant-compiler-attribution-finite-experiment-v100",
+  "full_compiler_intervention": {
+    "build_requirement": "Fresh owned compiler backends; target-program CRYSTAL_PATH overlay does not patch the already running backend",
+    "controls_fixed": [
+      "default Grant features",
+      "cold private cache",
+      "one explicit compiler thread",
+      "optimization/debug/module mode",
+      "CPU target/native versions",
+      "no explicit emit target",
+      "ordinary cache behavior"
+    ],
+    "each_arm_seconds": 1500,
+    "each_backend_build_seconds": 900,
+    "each_build_seconds": 900,
+    "each_runtime_seconds": 120,
+    "output": "Original/fixed/restored buffer payload/call/census events, compile/RSS/CPU, useful behavior/corruption, complete source/provider and original-group/final return evidence",
+    "phase_seconds": {
+      "allocated_total": 10140,
+      "complete_outer": 10800,
+      "fresh_same_job_sdk": 840,
+      "native_probe": 900,
+      "remaining_reserve": 660,
+      "return_seconds": 600,
+      "source_api_proof": 600,
+      "three_backend_builds": 2700,
+      "three_complete_arms": 4500
+    },
+    "proposed_resource": "Fresh parent-owned supported hosted job or admitted Mini capacity; current local work has no execution admission",
+    "scope": "One diagnostic contrast first; neither one successful probe nor one RSS contrast establishes repeated savings or the full target",
+    "source_change": "MemoryBuffer guard transition at real native release; Context#parse_ir explicit consuming transfer; same independent native shim in every observed arm",
+    "source_restoration": "All pinned compiler source rows and all1554 original Grant/dependency logical rows, every allowed staged change, exact original/restored hashes; installed prefixes remain outside owned output",
+    "workload": "Complete unchanged a2fc694a rich2, original field/operation/association and same-binary corruption checks; then rich10 only after useful behavior and mechanism acceptance"
+  },
+  "inputs": {
+    "compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+    "compiler_source_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+    "evidence_index_sha256": "d2eb2e282d20c380ba5929de199a7f44c51c3392ea50043fb15f774990254d32",
+    "llvm_commit": "2078da43e25a4623cab2d0d60decddf709aaea28",
+    "llvm_version": "21.1.8",
+    "routes": [
+      {
+        "declared_counts": {
+          "association_macros": 0,
+          "columns": 0,
+          "model_classes": 0,
+          "named_scope_macros": 0,
+          "source_bytes": 208,
+          "source_lines": 6
+        },
+        "model_count": 0,
+        "oracle_sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07",
+        "route": "library_floor",
+        "runtime_checks": 0,
+        "source_sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+      },
+      {
+        "declared_counts": {
+          "association_macros": 4,
+          "columns": 32,
+          "model_classes": 2,
+          "named_scope_macros": 2,
+          "source_bytes": 1682,
+          "source_lines": 54
+        },
+        "model_count": 2,
+        "oracle_sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0",
+        "route": "declarations",
+        "runtime_checks": 0,
+        "source_sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+      },
+      {
+        "declared_counts": {
+          "association_macros": 4,
+          "columns": 32,
+          "model_classes": 2,
+          "named_scope_macros": 2,
+          "source_bytes": 3297,
+          "source_lines": 73
+        },
+        "model_count": 2,
+        "oracle_sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb",
+        "route": "new_empty",
+        "runtime_checks": 8,
+        "source_sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+      },
+      {
+        "declared_counts": {
+          "association_macros": 4,
+          "columns": 32,
+          "model_classes": 2,
+          "named_scope_macros": 2,
+          "source_bytes": 9397,
+          "source_lines": 159
+        },
+        "model_count": 2,
+        "oracle_sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d",
+        "route": "new_keywords",
+        "runtime_checks": 36,
+        "source_sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+      },
+      {
+        "declared_counts": {
+          "association_macros": 4,
+          "columns": 32,
+          "model_classes": 2,
+          "named_scope_macros": 2,
+          "source_bytes": 9781,
+          "source_lines": 161
+        },
+        "model_count": 2,
+        "oracle_sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8",
+        "route": "new_broad_hash",
+        "runtime_checks": 36,
+        "source_sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+      },
+      {
+        "declared_counts": {
+          "association_macros": 4,
+          "columns": 32,
+          "model_classes": 2,
+          "named_scope_macros": 2,
+          "source_bytes": 16044,
+          "source_lines": 275
+        },
+        "model_count": 2,
+        "oracle_sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797",
+        "route": "canonical_create",
+        "runtime_checks": 32,
+        "source_sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+      }
+    ]
+  },
+  "measurements_accepted": false,
+  "mission": "memory-budget-experiment",
+  "native_probe": {
+    "bytes_per_copy": 1048576,
+    "cases": [
+      "owned copy explicit dispose twice then later finalizer: one native release in candidate",
+      "natural finalizer without explicit dispose",
+      "owned file mapping success and missing-file failure",
+      "valid borrowed bitcode parse, dispose original buffer, verify/use distinct module",
+      "invalid borrowed bitcode parse leaves caller ownership",
+      "valid consuming IR input: transfer once, no later wrapper release",
+      "invalid consuming IR input: transfer still once, no later wrapper release",
+      "deliberately omitted native release raises outstanding bytes",
+      "duplicate-release attempt intercepted by shim before second native call",
+      "changed shim/library/source identity refuses before invocation"
+    ],
+    "expected_actual_native_calls": null,
+    "expected_source_model_disposal_calls": [
+      0,
+      1,
+      0
+    ],
+    "maximum_owned_payload_bytes": 67108864,
+    "note": "This is an unexecuted finite proposed envelope. A build over its bound refuses and retains evidence; local execution remains held",
+    "original_fixed_restored": [
+      "original exact source",
+      "guard relocation plus explicit consuming-IR transfer state",
+      "restored original exact source"
+    ],
+    "payload_copies": 64,
+    "phase_budget": {
+      "admission_seconds": 90,
+      "compiler_builds": 3,
+      "complete_seconds": 900,
+      "each_probe_build_seconds": 180,
+      "each_probe_run_seconds": 60,
+      "probe_runs": 3,
+      "return_seconds": 90
+    },
+    "registry_maximum_handles": 256,
+    "resource_proposal": {
+      "compiler_threads": 1,
+      "complete_disk_projection_bytes": 536870912,
+      "cpu_units": 1,
+      "memory_gib": 2
+    },
+    "shim": "Separate source/hash-pinned C ABI shim registers successful handle/LLVMGetBufferSize, logs entry and completion around real LLVMDisposeMemoryBuffer, and marks caller ownership transfer before consuming IR APIs",
+    "transferred_payload_definition": "Retired caller ownership only; native free/destructor after consumption needs independent allocator observation",
+    "useful_compile_invariant": "Same valid module parse/verify/emit and output behavior, no stale borrowed slices after release; errors/transfer and finalization remain explicit"
+  },
+  "ownership_contracts": [
+    {
+      "api": "LLVMCreateMemoryBufferWithContentsOfFile",
+      "caller": "LLVM::MemoryBuffer.from_file",
+      "contract": "owned on success; none on failure; may map file pages",
+      "llvm_site": "llvm/lib/IR/Core.cpp:4510"
+    },
+    {
+      "api": "LLVMWriteBitcodeToMemoryBuffer",
+      "caller": "Module#write_bitcode_to_memory_buffer; CompilationUnit#generate_bitcode",
+      "contract": "returns an owned copy after temporary std::string serialization",
+      "llvm_site": "llvm/lib/Bitcode/Writer/BitWriter.cpp:43"
+    },
+    {
+      "api": "LLVMParseBitcodeInContext2",
+      "caller": "Module.parse; CompilationUnit#isolate_module_context",
+      "contract": "borrows buffer on success and failure; separately returns a module",
+      "llvm_site": "llvm/lib/Bitcode/Reader/BitReader.cpp:57"
+    },
+    {
+      "api": "LLVMParseIRInContext",
+      "caller": "Context#parse_ir; no found ordinary compiler/src/spec call site",
+      "contract": "consumes buffer on success and failure through unique_ptr",
+      "llvm_site": "llvm/lib/IRReader/IRReader.cpp:112"
+    },
+    {
+      "api": "LLVMDisposeMemoryBuffer",
+      "caller": "MemoryBuffer#finalize; current explicit dispose guard bypasses it",
+      "contract": "deletes owned native buffer",
+      "llvm_site": "llvm/lib/IR/Core.cpp:4564"
+    }
+  ],
+  "performance_acceptance": false,
+  "priority": [
+    "Actual known-buffer disposal/transfer sensitivity",
+    "Unchanged six-route stock semantic ladder",
+    "Cheap phase/owner census and profiler qualification",
+    "Actual original/fixed/restored useful rich2 build",
+    "Repeated rich10 then unchanged full300/500 target"
+  ],
+  "profiler_qualification": {
+    "coverage": "C malloc/calloc/realloc/free plus C++ new/delete and mmap/munmap. Verify stack attribution and native object retirement; use separate GC allocation/census channels for compiler objects allocated inside Boehm arenas",
+    "missed_event_or_overhead_result": "Raw mechanism profile with measured limitations; repeat and counterbalance before adopting a profiler-assisted memory-saving claim",
+    "overhead_order": [
+      "ordinary reference R0",
+      "cheap snapshots/counts",
+      "full census/native profiler",
+      "ordinary reference R1"
+    ],
+    "owner_ladder_backend_build": "Separately admitted build/qualification phase; not hidden inside4500",
+    "owner_ladder_proposed_phase_seconds": {
+      "allocated_total": 4020,
+      "audits": 120,
+      "complete_outer": 4500,
+      "remaining_reserve": 480,
+      "return_seconds": 120,
+      "six_cheap_profiles": 900,
+      "six_full_profiles": 1080,
+      "twenty_four_sdk_preparations": 360,
+      "two_references_per_six_routes": 1440
+    },
+    "positive_controls": [
+      "GC-managed pointerful and atomic allocations with held then retired roots",
+      "known 64-MiB native copied-buffer allocation and release",
+      "1-ms and200-ms allocations to measure missed short-lived events",
+      "realloc movement and size change",
+      "mapped file lifecycle",
+      "short-lived child allocation separately tagged",
+      "missing/dropped events injected into retained trace reader"
+    ],
+    "required_identities": [
+      "profiler source/archive/version/hash",
+      "actual executable and instrumentation library hashes",
+      "selected LLVM/GC/runtime images",
+      "compiled symbol/unwind settings",
+      "target backend/stdlib and phase sidecar hashes"
+    ]
+  },
+  "required_target_cells": 144,
+  "state": "Source diagnostic readiness; runnable native/compiler implementation and parent admission pending",
+  "stock_ladder": {
+    "actual_accepted_route_measurements": 0,
+    "argv": [
+      "<admitted backend>",
+      "build",
+      "--no-color",
+      "--error-on-warnings",
+      "-Dwithout_mt",
+      "--threads",
+      "1",
+      "--no-codegen",
+      "--stats",
+      "<exact route fixture>",
+      "-o",
+      "<absent output>"
+    ],
+    "backend_sha256": "7809e9cd9174a651818bcba5e6206f038089716d72746f5e425a2c1829943dfe",
+    "compiler_commands": 6,
+    "complete_mini_projection_bytes": 1259339776,
+    "complete_seconds": 900,
+    "each_compiler_seconds": 120,
+    "each_sdk_prepare_seconds": 15,
+    "entrypoint": "grant_frontend_semantic_transport_v102/worker.py",
+    "internal_macro_native_absence_qualified": false,
+    "new_internal_counter_coverage": false,
+    "per_route_cold_cache_cap_bytes": 67108864,
+    "profile_sha256": "4d2acc5fa95190379a838b5c9dd5ab6f666656daa8861df766de37266ecde629",
+    "root_cap_bytes": 1073741824,
+    "source_only_boundary": "v102 representation/generation/control and fresh parent/shared native admission required; retained earlier native attempt had zero compiler commands",
+    "terminal_seconds": 30,
+    "work_seconds": 870
+  }
+}

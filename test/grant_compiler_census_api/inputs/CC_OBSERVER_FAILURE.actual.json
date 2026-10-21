@@ -1,0 +1,1030 @@
+{
+  "actual_probe_executions": 0,
+  "actual_target_cells_accepted": 0,
+  "commands": [
+    {
+      "arguments": [
+        "/usr/bin/xcode-select",
+        "-p"
+      ],
+      "elapsed_seconds": 0.13018208299990874,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "developer",
+      "maximum_seconds": 5,
+      "original_group": 30435,
+      "pid": 30435,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "56f3907ca311ea06dd092dac1c343e94c3e5c5d9647cb253cb3bb559f572b613",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 1301.603821375,
+        "elapsed_seconds": 0.00016537500005142647,
+        "group": 30435,
+        "initial_sample": {
+          "elapsed_seconds": 1.7042000081346487e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 1301.603821375,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.7042000081346487e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.7042000081346487e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/xcrun",
+        "--show-sdk-path"
+      ],
+      "elapsed_seconds": 0.20347666599991499,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "sdk",
+      "maximum_seconds": 5,
+      "original_group": 30436,
+      "pid": 30436,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "9c2b830f936613062cfa5439e6bcd707520fefcce24ec9ffae10a605d8e352b8",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 1301.73653625,
+        "elapsed_seconds": 0.00029291700002431753,
+        "group": 30436,
+        "initial_sample": {
+          "elapsed_seconds": 3.566700002011203e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 1301.73653625,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 3.566700002011203e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 3.566700002011203e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/xcrun",
+        "--find",
+        "clang"
+      ],
+      "elapsed_seconds": 0.20025083300015467,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "cc-path",
+      "maximum_seconds": 5,
+      "original_group": 30439,
+      "pid": 30439,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "76241ee955cbf21684ae742c82150bf7d9b3a3489e3ad28d908e003af6fbb61c",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 1301.943228875,
+        "elapsed_seconds": 0.0002822090000336175,
+        "group": 30439,
+        "initial_sample": {
+          "elapsed_seconds": 3.0292000019471743e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 1301.943228875,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 3.0292000019471743e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 3.0292000019471743e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/xcrun",
+        "--find",
+        "ld"
+      ],
+      "elapsed_seconds": 0.11800583300009748,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "ld-path",
+      "maximum_seconds": 5,
+      "original_group": 30440,
+      "pid": 30440,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e8656b3b0867d333dd192abdefa51eec4ae4007c59993ff67af04fbd5dff675b",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 1302.1469505,
+        "elapsed_seconds": 0.00025224999990314245,
+        "group": 30440,
+        "initial_sample": {
+          "elapsed_seconds": 3.720899985637516e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 1302.1469505,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 3.720899985637516e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 3.720899985637516e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/xcrun",
+        "--sdk",
+        "macosx",
+        "--show-sdk-version"
+      ],
+      "elapsed_seconds": 2.883426082999904,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "sdk-version",
+      "maximum_seconds": 5,
+      "original_group": 30441,
+      "pid": 30441,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "25205f2e2f02dc71036ee827e19c49b893b231a3d1af240e35a3ac55aa8cdcb6",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 1302.266991833,
+        "elapsed_seconds": 0.00042712499998742715,
+        "group": 30441,
+        "initial_sample": {
+          "elapsed_seconds": 9.858399994300271e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 1302.266991833,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 9.858399994300271e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 9.858399994300271e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/xcrun",
+        "--sdk",
+        "macosx",
+        "--show-sdk-build-version"
+      ],
+      "elapsed_seconds": 0.9502678329999981,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "sdk-build",
+      "maximum_seconds": 5,
+      "original_group": 30451,
+      "pid": 30451,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "689da41311934ccfa356c6f871ab66553f10aaa3a8897ab3ac645a4cba448e7e",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 1305.152789958,
+        "elapsed_seconds": 0.0003897500000675791,
+        "group": 30451,
+        "initial_sample": {
+          "elapsed_seconds": 6.200000007083872e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 1305.152789958,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 6.200000007083872e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 6.200000007083872e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    }
+  ],
+  "compiler_profile_sha256": "580b145872f4bb6babd1a45f9a157a6aba34b70a626b11258e302e4757323d36",
+  "complete": false,
+  "elapsed_seconds": 5.619243666000102,
+  "error": "RuntimeError: Bounded physical regular input required: /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+  "execution_admitted": false,
+  "finalization_errors": [],
+  "format": "atlas-native-buffer-provider-observation-v1",
+  "full_native_provider_acceptance": false,
+  "groups": [
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1301.603821375,
+      "elapsed_seconds": 0.00016537500005142647,
+      "group": 30435,
+      "initial_sample": {
+        "elapsed_seconds": 1.7042000081346487e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1301.603821375,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.7042000081346487e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.7042000081346487e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1301.73653625,
+      "elapsed_seconds": 0.00029291700002431753,
+      "group": 30436,
+      "initial_sample": {
+        "elapsed_seconds": 3.566700002011203e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1301.73653625,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.566700002011203e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.566700002011203e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1301.943228875,
+      "elapsed_seconds": 0.0002822090000336175,
+      "group": 30439,
+      "initial_sample": {
+        "elapsed_seconds": 3.0292000019471743e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1301.943228875,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.0292000019471743e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.0292000019471743e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1302.1469505,
+      "elapsed_seconds": 0.00025224999990314245,
+      "group": 30440,
+      "initial_sample": {
+        "elapsed_seconds": 3.720899985637516e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1302.1469505,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.720899985637516e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.720899985637516e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1302.266991833,
+      "elapsed_seconds": 0.00042712499998742715,
+      "group": 30441,
+      "initial_sample": {
+        "elapsed_seconds": 9.858399994300271e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1302.266991833,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 9.858399994300271e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 9.858399994300271e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1305.152789958,
+      "elapsed_seconds": 0.0003897500000675791,
+      "group": 30451,
+      "initial_sample": {
+        "elapsed_seconds": 6.200000007083872e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1305.152789958,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 6.200000007083872e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 6.200000007083872e-05,
+        "status": "absent"
+      }
+    }
+  ],
+  "job_identity": {
+    "GITHUB_JOB": "grant-dirty-transition-mac",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_RUN_ID": "39544354994",
+    "GITHUB_SHA": "6d551531af81dc4ee7d977ccecdba91b0e0c6527",
+    "RUNNER_ARCH": "ARM64",
+    "RUNNER_NAME": "GitHub Actions 1000019271",
+    "RUNNER_OS": "macOS"
+  },
+  "maximum_seconds": 360,
+  "partial_census": {
+    "files": [
+      {
+        "bytes": 1993,
+        "kind": "analysis-package-formula",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/.brew/bdw-gc.rb",
+        "physical_identity": [
+          16777228,
+          3050724,
+          33188,
+          1993,
+          1770311590000000000,
+          1792557107191066041
+        ],
+        "sha256": "29e18ec05f648ebc3693467f8008e640d777f1b1623db263f7ea932161357c9f"
+      },
+      {
+        "bytes": 1029,
+        "kind": "analysis-package-receipt",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/INSTALL_RECEIPT.json",
+        "physical_identity": [
+          16777228,
+          3068610,
+          33188,
+          1029,
+          1792557124007160833,
+          1792557124007307499
+        ],
+        "sha256": "7e3372cafb8766b865e18ab5ff588643594e74ce07047b9c07b5d5b3f83f448f",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "8.2.12",
+              "version_scheme": 0
+            }
+          }
+        }
+      },
+      {
+        "bytes": 190848,
+        "kind": "analysis-tool-library",
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.5.6.dylib",
+        "physical_identity": [
+          16777228,
+          3050761,
+          33060,
+          190848,
+          1792557122809280333,
+          1792557123789493666
+        ],
+        "sha256": "84ed86e53e8e595d7942ad31387d0faab9d04ecbf9ec27a1870fa096fa5aa95b"
+      },
+      {
+        "bytes": 955,
+        "kind": "analysis-package-formula",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/libyaml/0.2.5/.brew/libyaml.rb",
+        "physical_identity": [
+          16777228,
+          444392,
+          33188,
+          955,
+          1591046390000000000,
+          1791866869901087920
+        ],
+        "sha256": "9d1b80fbde1233901d8e53e744661f55ca71d879108e2cead7e8cc90d82f7955"
+      },
+      {
+        "bytes": 1000,
+        "kind": "analysis-package-receipt",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/libyaml/0.2.5/INSTALL_RECEIPT.json",
+        "physical_identity": [
+          16777228,
+          467914,
+          33188,
+          1000,
+          1791866873670656920,
+          1791866873670819543
+        ],
+        "sha256": "d4e62d3bc27c49497f31a75d669a58ba7c782921ae5d0c2a45aabbe9a468abd9",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "0.2.5",
+              "version_scheme": 0
+            }
+          }
+        }
+      },
+      {
+        "bytes": 128384,
+        "kind": "analysis-tool-library",
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/libyaml/0.2.5/lib/libyaml-0.2.dylib",
+        "physical_identity": [
+          16777228,
+          444399,
+          33060,
+          128384,
+          1791866873259463470,
+          1791866873658064044
+        ],
+        "sha256": "346089bac9f11b5ee6e5ee64f04a181a17deb4e8df0183b5049d2d7a1c042a20"
+      },
+      {
+        "bytes": 6371,
+        "kind": "analysis-package-formula",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/openssl@3/3.5.9/.brew/openssl@3.rb",
+        "physical_identity": [
+          16777228,
+          3050837,
+          33188,
+          6371,
+          1790690700000000000,
+          1792557108322722708
+        ],
+        "sha256": "3d26736b3b4882af226d2cfb0676bbe8ea6a39f7359308c70ddda983812267f5"
+      },
+      {
+        "bytes": 1702,
+        "kind": "analysis-package-receipt",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/openssl@3/3.5.9/INSTALL_RECEIPT.json",
+        "physical_identity": [
+          16777228,
+          3069395,
+          33188,
+          1702,
+          1792557160012912374,
+          1792557160013229791
+        ],
+        "sha256": "a20b60ce82b5df5ee94767400127d1a6e897bcf1435b29f433991fe74bff0282",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [
+            {
+              "bottle_rebuild": 0,
+              "compatibility_version": 1,
+              "declared_directly": true,
+              "full_name": "ca-certificates",
+              "pkg_version": "2026-10-20",
+              "revision": 0,
+              "version": "2026-10-20"
+            }
+          ],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "3.5.9",
+              "version_scheme": 1
+            }
+          }
+        }
+      },
+      {
+        "bytes": 4720224,
+        "kind": "analysis-tool-library",
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/openssl@3/3.5.9/lib/libcrypto.3.dylib",
+        "physical_identity": [
+          16777228,
+          3051012,
+          33060,
+          4720224,
+          1792557157124615374,
+          1792557158349418833
+        ],
+        "sha256": "ddd632c9239b6ca56abfd5f142b806c6343902c510bad7b307b2c5de59952a72"
+      },
+      {
+        "bytes": 1181,
+        "kind": "analysis-package-formula",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/pcre2/10.49/.brew/pcre2.rb",
+        "physical_identity": [
+          16777228,
+          503816,
+          33188,
+          1181,
+          1790596947000000000,
+          1791866918121432462
+        ],
+        "sha256": "94c19a0d869da4990a8f3f371e37c986ad72124d2d94032e061c4a9019f9e174"
+      },
+      {
+        "bytes": 1361,
+        "kind": "analysis-package-receipt",
+        "mode": 420,
+        "path": "/opt/homebrew/Cellar/pcre2/10.49/INSTALL_RECEIPT.json",
+        "physical_identity": [
+          16777228,
+          506067,
+          33188,
+          1361,
+          1791866919796021960,
+          1791866919796197715
+        ],
+        "sha256": "2a015d3dda7c3407ce4554c825d6fa351cb25988789a35f45f0526ed5178a86a",
+        "stable_receipt": {
+          "arch": "arm64",
+          "compiler": "clang",
+          "poured_from_bottle": true,
+          "runtime_dependencies": [],
+          "source": {
+            "spec": "stable",
+            "tap": "homebrew/core",
+            "tap_git_head": "d468370ffda2edead693e575824fcba0692af9ee",
+            "versions": {
+              "compatibility_version": null,
+              "head": null,
+              "stable": "10.49",
+              "version_scheme": 0
+            }
+          }
+        }
+      },
+      {
+        "bytes": 574096,
+        "kind": "analysis-tool-library",
+        "mode": 292,
+        "path": "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib",
+        "physical_identity": [
+          16777228,
+          503837,
+          33060,
+          574096,
+          1791866919399218952,
+          1791866919771647613
+        ],
+        "sha256": "c3adcd954967b7e92812831fe12c614a9ca2d12221e897a87ee379df2ac004fd"
+      },
+      {
+        "bytes": 118912,
+        "kind": "metadata-provider",
+        "mode": 493,
+        "path": "/usr/bin/xcode-select",
+        "physical_identity": [
+          16777228,
+          1152921500312573111,
+          33261,
+          118912,
+          1786589515000000000,
+          1786589515000000000
+        ],
+        "sha256": "e7c2963f798dca1b7fc2fd6fce9639d1fd25d914c85d17ea0c79eb693112b006"
+      },
+      {
+        "bytes": 117104,
+        "kind": "metadata-provider",
+        "mode": 493,
+        "path": "/usr/bin/xcrun",
+        "physical_identity": [
+          16777228,
+          1152921500312573114,
+          33261,
+          117104,
+          1786589515000000000,
+          1786589515000000000
+        ],
+        "sha256": "178e19cfe796ce33815195c42d34562c20ec4d5131534fb7e6a55b91f14371d5"
+      }
+    ],
+    "resolutions": [
+      {
+        "declared_path": "/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+        "links": [],
+        "resolved_path": "/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+        "resolved_physical_identity": [
+          16777228,
+          2225001,
+          33261,
+          290664032,
+          1791867567512294256,
+          1791867567512295631
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/.brew/bdw-gc.rb",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/.brew/bdw-gc.rb",
+        "resolved_physical_identity": [
+          16777228,
+          3050724,
+          33188,
+          1993,
+          1770311590000000000,
+          1792557107191066041
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/INSTALL_RECEIPT.json",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/INSTALL_RECEIPT.json",
+        "resolved_physical_identity": [
+          16777228,
+          3068610,
+          33188,
+          1029,
+          1792557124007160833,
+          1792557124007307499
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.5.6.dylib",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.5.6.dylib",
+        "resolved_physical_identity": [
+          16777228,
+          3050761,
+          33060,
+          190848,
+          1792557122809280333,
+          1792557123789493666
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/libyaml/0.2.5/.brew/libyaml.rb",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/libyaml/0.2.5/.brew/libyaml.rb",
+        "resolved_physical_identity": [
+          16777228,
+          444392,
+          33188,
+          955,
+          1591046390000000000,
+          1791866869901087920
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/libyaml/0.2.5/INSTALL_RECEIPT.json",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/libyaml/0.2.5/INSTALL_RECEIPT.json",
+        "resolved_physical_identity": [
+          16777228,
+          467914,
+          33188,
+          1000,
+          1791866873670656920,
+          1791866873670819543
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/libyaml/0.2.5/lib/libyaml-0.2.dylib",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/libyaml/0.2.5/lib/libyaml-0.2.dylib",
+        "resolved_physical_identity": [
+          16777228,
+          444399,
+          33060,
+          128384,
+          1791866873259463470,
+          1791866873658064044
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/.brew/openssl@3.rb",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/.brew/openssl@3.rb",
+        "resolved_physical_identity": [
+          16777228,
+          3050837,
+          33188,
+          6371,
+          1790690700000000000,
+          1792557108322722708
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/INSTALL_RECEIPT.json",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/INSTALL_RECEIPT.json",
+        "resolved_physical_identity": [
+          16777228,
+          3069395,
+          33188,
+          1702,
+          1792557160012912374,
+          1792557160013229791
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/lib/libcrypto.3.dylib",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/lib/libcrypto.3.dylib",
+        "resolved_physical_identity": [
+          16777228,
+          3051012,
+          33060,
+          4720224,
+          1792557157124615374,
+          1792557158349418833
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/pcre2/10.49/.brew/pcre2.rb",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/pcre2/10.49/.brew/pcre2.rb",
+        "resolved_physical_identity": [
+          16777228,
+          503816,
+          33188,
+          1181,
+          1790596947000000000,
+          1791866918121432462
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/pcre2/10.49/INSTALL_RECEIPT.json",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/pcre2/10.49/INSTALL_RECEIPT.json",
+        "resolved_physical_identity": [
+          16777228,
+          506067,
+          33188,
+          1361,
+          1791866919796021960,
+          1791866919796197715
+        ]
+      },
+      {
+        "declared_path": "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib",
+        "links": [],
+        "resolved_path": "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib",
+        "resolved_physical_identity": [
+          16777228,
+          503837,
+          33060,
+          574096,
+          1791866919399218952,
+          1791866919771647613
+        ]
+      },
+      {
+        "declared_path": "/usr/bin/xcode-select",
+        "links": [],
+        "resolved_path": "/usr/bin/xcode-select",
+        "resolved_physical_identity": [
+          16777228,
+          1152921500312573111,
+          33261,
+          118912,
+          1786589515000000000,
+          1786589515000000000
+        ]
+      },
+      {
+        "declared_path": "/usr/bin/xcrun",
+        "links": [],
+        "resolved_path": "/usr/bin/xcrun",
+        "resolved_physical_identity": [
+          16777228,
+          1152921500312573114,
+          33261,
+          117104,
+          1786589515000000000,
+          1786589515000000000
+        ]
+      }
+    ],
+    "snapshots": [
+      {
+        "bytes": 190848,
+        "kind": "analysis-tool-library",
+        "original_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/lib/libgc.1.5.6.dylib",
+        "path": "provider-bytes/0001.bin",
+        "sha256": "84ed86e53e8e595d7942ad31387d0faab9d04ecbf9ec27a1870fa096fa5aa95b"
+      },
+      {
+        "bytes": 128384,
+        "kind": "analysis-tool-library",
+        "original_path": "/opt/homebrew/Cellar/libyaml/0.2.5/lib/libyaml-0.2.dylib",
+        "path": "provider-bytes/0002.bin",
+        "sha256": "346089bac9f11b5ee6e5ee64f04a181a17deb4e8df0183b5049d2d7a1c042a20"
+      },
+      {
+        "bytes": 4720224,
+        "kind": "analysis-tool-library",
+        "original_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/lib/libcrypto.3.dylib",
+        "path": "provider-bytes/0003.bin",
+        "sha256": "ddd632c9239b6ca56abfd5f142b806c6343902c510bad7b307b2c5de59952a72"
+      },
+      {
+        "bytes": 574096,
+        "kind": "analysis-tool-library",
+        "original_path": "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib",
+        "path": "provider-bytes/0004.bin",
+        "sha256": "c3adcd954967b7e92812831fe12c614a9ca2d12221e897a87ee379df2ac004fd"
+      },
+      {
+        "bytes": 1702,
+        "kind": "analysis-package-receipt",
+        "original_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/INSTALL_RECEIPT.json",
+        "path": "provider-bytes/0005.bin",
+        "sha256": "a20b60ce82b5df5ee94767400127d1a6e897bcf1435b29f433991fe74bff0282"
+      },
+      {
+        "bytes": 6371,
+        "kind": "analysis-package-formula",
+        "original_path": "/opt/homebrew/Cellar/openssl@3/3.5.9/.brew/openssl@3.rb",
+        "path": "provider-bytes/0006.bin",
+        "sha256": "3d26736b3b4882af226d2cfb0676bbe8ea6a39f7359308c70ddda983812267f5"
+      },
+      {
+        "bytes": 1000,
+        "kind": "analysis-package-receipt",
+        "original_path": "/opt/homebrew/Cellar/libyaml/0.2.5/INSTALL_RECEIPT.json",
+        "path": "provider-bytes/0007.bin",
+        "sha256": "d4e62d3bc27c49497f31a75d669a58ba7c782921ae5d0c2a45aabbe9a468abd9"
+      },
+      {
+        "bytes": 955,
+        "kind": "analysis-package-formula",
+        "original_path": "/opt/homebrew/Cellar/libyaml/0.2.5/.brew/libyaml.rb",
+        "path": "provider-bytes/0008.bin",
+        "sha256": "9d1b80fbde1233901d8e53e744661f55ca71d879108e2cead7e8cc90d82f7955"
+      },
+      {
+        "bytes": 1361,
+        "kind": "analysis-package-receipt",
+        "original_path": "/opt/homebrew/Cellar/pcre2/10.49/INSTALL_RECEIPT.json",
+        "path": "provider-bytes/0009.bin",
+        "sha256": "2a015d3dda7c3407ce4554c825d6fa351cb25988789a35f45f0526ed5178a86a"
+      },
+      {
+        "bytes": 1181,
+        "kind": "analysis-package-formula",
+        "original_path": "/opt/homebrew/Cellar/pcre2/10.49/.brew/pcre2.rb",
+        "path": "provider-bytes/0010.bin",
+        "sha256": "94c19a0d869da4990a8f3f371e37c986ad72124d2d94032e061c4a9019f9e174"
+      },
+      {
+        "bytes": 1029,
+        "kind": "analysis-package-receipt",
+        "original_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/INSTALL_RECEIPT.json",
+        "path": "provider-bytes/0011.bin",
+        "sha256": "7e3372cafb8766b865e18ab5ff588643594e74ce07047b9c07b5d5b3f83f448f"
+      },
+      {
+        "bytes": 1993,
+        "kind": "analysis-package-formula",
+        "original_path": "/opt/homebrew/Cellar/bdw-gc/8.2.12/.brew/bdw-gc.rb",
+        "path": "provider-bytes/0012.bin",
+        "sha256": "29e18ec05f648ebc3693467f8008e640d777f1b1623db263f7ea932161357c9f"
+      },
+      {
+        "bytes": 118912,
+        "kind": "metadata-provider",
+        "original_path": "/usr/bin/xcode-select",
+        "path": "provider-bytes/0013.bin",
+        "sha256": "e7c2963f798dca1b7fc2fd6fce9639d1fd25d914c85d17ea0c79eb693112b006"
+      },
+      {
+        "bytes": 117104,
+        "kind": "metadata-provider",
+        "original_path": "/usr/bin/xcrun",
+        "path": "provider-bytes/0014.bin",
+        "sha256": "178e19cfe796ce33815195c42d34562c20ec4d5131534fb7e6a55b91f14371d5"
+      }
+    ],
+    "total_bytes": 5865160
+  },
+  "passed": false,
+  "phase": "metadata",
+  "private_snapshot_return_accepted": true,
+  "source_provider_return_accepted": true,
+  "whole_build_memory_qualified": false,
+  "writers_confirmed_retired": true
+}

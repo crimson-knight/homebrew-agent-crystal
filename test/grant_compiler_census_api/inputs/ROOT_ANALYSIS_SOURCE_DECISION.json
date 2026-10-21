@@ -1,0 +1,21 @@
+{
+  "CC_LLVM_header_admitted": false,
+  "actual_independent_receipt_sha256": "8855f58a5c37478ccec1ec01e80fe2523e332688841eead36a342c56f3b3d590",
+  "actual_loading_API_lint_accepted": false,
+  "actual_tool_executions": 0,
+  "candidate_policy_sha256": "cac109a3bb5d3f3fe9deaf2a479c6bea6c8dd3db2d38826be51d90467a3c291f",
+  "changed_evidence_refusals": 24,
+  "decision": "Accept exact restricted proposal for immutable successor source integration and fresh-job parity; actual execution remains gated by the successor SDK/source/native return contracts",
+  "format": "atlas-root-reviewed-analysis-native-input-policy-v1",
+  "frozen_review_sha256": "8d11c52f9581c667808777da345605ace9cdfbb1e203a6032adf061f0c915f4e",
+  "full_native_or_whole_build_memory_qualified": false,
+  "individual_Apple_shared_cache_bytes_qualified": false,
+  "passed": true,
+  "public_initial_policy_changed": false,
+  "reviewed_scope": "Exact four Homebrew library/tool import inputs and named observed Apple platform boundary for bounded analysis-tool compatibility",
+  "root_groups_absent": 2,
+  "root_readers_ordinary_optimized_passed": true,
+  "runtime_dlopen_completeness_qualified": false,
+  "stable_projection_canonical_sha256": "41e88da63e122233426ff376cb048f36f1df319e59f841fba335fa1f59923805",
+  "target_cells_accepted": 0
+}

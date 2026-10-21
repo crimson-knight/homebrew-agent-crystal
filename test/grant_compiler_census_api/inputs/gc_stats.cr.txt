@@ -1,0 +1,29 @@
+module AtlasCompilerCensusAPI
+  private def self.accept_unsigned_snapshot(_value : UInt64) : Nil
+  end
+
+  def self.check_gc_snapshot_signatures : Nil
+    snapshot = GC.stats
+    accept_unsigned_snapshot(snapshot.heap_size)
+    accept_unsigned_snapshot(snapshot.free_bytes)
+    accept_unsigned_snapshot(snapshot.unmapped_bytes)
+    accept_unsigned_snapshot(snapshot.bytes_since_gc)
+    accept_unsigned_snapshot(snapshot.total_bytes)
+
+    profile = GC.prof_stats
+    accept_unsigned_snapshot(profile.heap_size)
+    accept_unsigned_snapshot(profile.free_bytes)
+    accept_unsigned_snapshot(profile.unmapped_bytes)
+    accept_unsigned_snapshot(profile.bytes_since_gc)
+    accept_unsigned_snapshot(profile.bytes_before_gc)
+    accept_unsigned_snapshot(profile.non_gc_bytes)
+    accept_unsigned_snapshot(profile.gc_no)
+    accept_unsigned_snapshot(profile.markers_m1)
+    accept_unsigned_snapshot(profile.bytes_reclaimed_since_gc)
+    accept_unsigned_snapshot(profile.reclaimed_bytes_before_gc)
+    accept_unsigned_snapshot(profile.expl_freed_bytes_since_gc)
+    accept_unsigned_snapshot(profile.obtained_from_os_bytes)
+  end
+end
+
+AtlasCompilerCensusAPI.check_gc_snapshot_signatures

@@ -1,0 +1,30 @@
+{
+  "API_commands_executed": 0,
+  "actual_target_cells_accepted": 0,
+  "all_original_groups_absent": true,
+  "artifact_id": 12321033676,
+  "bytes": 31991,
+  "clang": {
+    "declared_path": "/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+    "links": [],
+    "resolved_path": "/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+    "resolved_physical_identity": [
+      16777228,
+      2225001,
+      33261,
+      290664032,
+      1791867567512294256,
+      1791867567512295631
+    ]
+  },
+  "format": "atlas-api-only-native-prerequisite-separation-v1",
+  "original_file_ceiling": 268435456,
+  "reason": "C/headers remain a separate native ownership prerequisite; the API-only observer selects LLVM/config/package inputs and the already accepted SDK/tools",
+  "retained_error": "RuntimeError: Bounded physical regular input required: /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+  "retained_phase": "metadata",
+  "run_id": 39544354994,
+  "sha256": "39005278132807238bb9d04af93a24bacbe8d48a00d5eabf80bd49c0bdfb3ce1",
+  "source": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_provider_public_v102/actual-run-39544354994-v100/artifact-12321033676/observation/OBSERVATION.json",
+  "source_provider_return_accepted": true,
+  "successful_metadata_commands": 6
+}

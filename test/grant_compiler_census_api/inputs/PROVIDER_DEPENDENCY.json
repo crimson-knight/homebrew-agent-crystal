@@ -1,0 +1,134 @@
+{
+  "controller_sha256": "662c94fbdd090cbdc789003a2634ad416fd1610d43692f7c5229ad2597dae006",
+  "files": [
+    {
+      "bytes": 1843,
+      "mode": 420,
+      "path": "fetch_decision.py",
+      "sha256": "e7880176c62428bc847782260b6b897261d13053babe03c2c30b124f7eb90708"
+    },
+    {
+      "bytes": 4715,
+      "mode": 420,
+      "path": "inputs/ACCEPTED_TOOL_NATIVE_INPUTS.json",
+      "sha256": "5c9017be9b9ee50c780b049c161ffdd9479e48b542c61a8638e8fb99b5b77f8f"
+    },
+    {
+      "bytes": 2615,
+      "mode": 420,
+      "path": "inputs/ACTUAL_TOOL_NATIVE_ACCEPTANCE.json",
+      "sha256": "8855f58a5c37478ccec1ec01e80fe2523e332688841eead36a342c56f3b3d590"
+    },
+    {
+      "bytes": 543,
+      "mode": 420,
+      "path": "inputs/ACTUAL_TOOL_NATIVE_ORIGIN.json",
+      "sha256": "53e8b3a5530e385ba338dc5fcad053e9d3a871d12d1707b050eb398c4c73b9a0"
+    },
+    {
+      "bytes": 1265,
+      "mode": 420,
+      "path": "inputs/BASE_INPUT_PINS.json",
+      "sha256": "9fa6664691acefc72d3a461a3ea225ee2889f9da633b59316e4bddb343d6d6c1"
+    },
+    {
+      "bytes": 325,
+      "mode": 420,
+      "path": "inputs/COUPLING.json",
+      "sha256": "280a0eafc75fb6d947ca3ce873562ec5851f17032603301c8aae7e5ccc21864b"
+    },
+    {
+      "bytes": 14900,
+      "mode": 420,
+      "path": "inputs/FEEDBACK_SOURCE_PINS.v100.json",
+      "sha256": "c2264388cffccbc6e8197fc0fd9195e6e3d787fa47fc4f8751d6a2e6dd1e56c3"
+    },
+    {
+      "bytes": 15141,
+      "mode": 420,
+      "path": "inputs/LLVM_LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+    },
+    {
+      "bytes": 11657,
+      "mode": 420,
+      "path": "inputs/NATIVE_SOURCE_PINS.v101.json",
+      "sha256": "7e5e3f2841fb9b1c0afef1e5d1a3d50c5b2568b6f73ed32f46c386d4a325ee28"
+    },
+    {
+      "bytes": 11657,
+      "mode": 420,
+      "path": "inputs/NATIVE_SOURCE_PINS.v102.json",
+      "sha256": "4e4a24d2a36853ee7888b8e86494cda0aa3a209ca3633ef8c9fbae33a2751fac"
+    },
+    {
+      "bytes": 59843,
+      "mode": 420,
+      "path": "inputs/PROVIDER_FROZEN_SOURCE.v100.json",
+      "sha256": "9037d2192f6699bd006b7018ec9b00a38582142ca06933fc96e617b2567b4d42"
+    },
+    {
+      "bytes": 1305,
+      "mode": 420,
+      "path": "inputs/ROOT_ANALYSIS_SOURCE_DECISION.json",
+      "sha256": "c422d3625f7efe657d3c2dbdd575ed3b0f60bfe3ee7f8fde57b3462de9355a4f"
+    },
+    {
+      "bytes": 9749,
+      "mode": 420,
+      "path": "inputs/TRANSFER_SOURCE_PINS.v103.json",
+      "sha256": "439df1016cdfdfa237521eccf1f47f9fc72827a4990c3c35b2ec4d8371e4cd92"
+    },
+    {
+      "bytes": 4295,
+      "mode": 420,
+      "path": "inputs/command_contract.py",
+      "sha256": "33418b91a8ed01e0d3b442781fb5c7ebdbfbb32927e5caecb9747251d9dd52c9"
+    },
+    {
+      "bytes": 11775,
+      "mode": 420,
+      "path": "inputs/public_evidence_rules.py",
+      "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
+    },
+    {
+      "bytes": 7583,
+      "mode": 420,
+      "path": "launch.py",
+      "sha256": "67af99ed7251e84dbaefe3f1e508968e2efabaa9dcbb04e0e51b268aef48647b"
+    },
+    {
+      "bytes": 51929,
+      "mode": 420,
+      "path": "provider_observation.py",
+      "sha256": "662c94fbdd090cbdc789003a2634ad416fd1610d43692f7c5229ad2597dae006"
+    },
+    {
+      "bytes": 3079,
+      "mode": 420,
+      "path": "stage_bundle.py",
+      "sha256": "28bf06d43e395cf38d3d65e2ce75af6607bdf35ee5d680f435d879565cea8009"
+    },
+    {
+      "bytes": 6134,
+      "mode": 420,
+      "path": "stage_observation.py",
+      "sha256": "5ff93c96dda5a4d6d7d3af4c04623c14b36f60c67488e13f37566d7eae317eef"
+    },
+    {
+      "bytes": 9647,
+      "mode": 420,
+      "path": "test_entrypoints.py",
+      "sha256": "9234aa96e8915a4d4016fb2f3a4a79e08c6160d891b7d18d1df1c84d7e1d1a7f"
+    },
+    {
+      "bytes": 31811,
+      "mode": 420,
+      "path": "test_provider_observation.py",
+      "sha256": "22913454db7547b8415b89184b1b5fac40ef1db410180755c3b29a2ed4d6a501"
+    }
+  ],
+  "format": "atlas-census-static-observation-dependency-v1",
+  "installed_path": "test/grant_native_provider",
+  "manifest_sha256": "81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693"
+}
