@@ -209,6 +209,78 @@ class HostedFrontend(unittest.TestCase):
         self.assertIn('Exact working route source/manifest after compiler',result['error'])
         self.assertFalse(result['source_provider_return_accepted'])
 
+
+    def test_projection_exact_broad_source_and_twenty_six_lines(self):
+        from format_projection import measured_source,PROJECTED_BROAD,projection
+        original=(ROOT/'products/new_broad_hash.cr.txt').read_bytes();value=measured_source('new_broad_hash',original)
+        self.assertEqual(hashlib.sha256(value).hexdigest(),PROJECTED_BROAD)
+        self.assertEqual(sum(a!=b for a,b in zip(original.splitlines(),value.splitlines())),26)
+        self.assertEqual(len(value)-len(original),176)
+        self.assertEqual(projection('new_broad_hash',original)['original_product_sha256'],hashlib.sha256(original).hexdigest())
+    def test_projection_preserves_every_non_horizontal_arrow_byte(self):
+        import re
+        from format_projection import measured_source
+        original=(ROOT/'products/new_broad_hash.cr.txt').read_bytes();value=measured_source('new_broad_hash',original)
+        self.assertEqual(re.sub(rb' +=>',b' =>',original),re.sub(rb' +=>',b' =>',value))
+    def test_projection_five_other_routes_are_byte_identical(self):
+        from format_projection import measured_source,projection
+        for profile in host.PROFILES:
+            if profile=='new_broad_hash':continue
+            raw=(ROOT/'products'/(profile+'.cr.txt')).read_bytes();self.assertEqual(measured_source(profile,raw),raw);self.assertEqual(projection(profile,raw)['changed_lines'],0)
+    def test_projection_changed_literal_and_punctuation_refuse(self):
+        from format_projection import measured_source
+        raw=(ROOT/'products/new_broad_hash.cr.txt').read_bytes()
+        for changed in (raw.replace(b'Person0000',b'Person9000',1),raw.replace(b' => ',b' = ',1),raw+b'\n'):
+            with self.assertRaises(RuntimeError):measured_source('new_broad_hash',changed)
+    def test_projection_unknown_or_wrong_profile_refuses(self):
+        from format_projection import measured_source
+        raw=(ROOT/'products/new_broad_hash.cr.txt').read_bytes()
+        for profile in ('unknown','canonical_create','../new_broad_hash'):
+            with self.assertRaises(RuntimeError):measured_source(profile,raw)
+    def test_projection_already_transformed_input_refuses_original_authority(self):
+        from format_projection import measured_source
+        original=(ROOT/'products/new_broad_hash.cr.txt').read_bytes();value=measured_source('new_broad_hash',original)
+        with self.assertRaises(RuntimeError):measured_source('new_broad_hash',value)
+    def test_controller_and_stager_join_original_to_measured_source(self):
+        from format_projection import ORIGINALS,PROJECTED_BROAD
+        result=self.positive();value=result['samples'][4];self.assertEqual(value['source_sha256'],PROJECTED_BROAD)
+        self.assertEqual(value['source_format_projection']['original_product_sha256'],ORIGINALS['new_broad_hash'])
+        self.assertEqual(result['working_fixture_return']['new_broad_hash']['fixture.cr'],PROJECTED_BROAD)
+        self.assertTrue(self.stage()['diagnostic_complete'])
+    def test_changed_projection_source_receipt_refuses_staging(self):
+        self.positive();p=self.args.output/'RESULT.json';value=gate.read(p);value['route_source_projections']['new_broad_hash']['projection_source_sha256']='0'*64;gate.write(p,value)
+        with self.assertRaises(RuntimeError):self.stage()
+    def test_missing_projection_join_refuses_staging(self):
+        self.positive();p=self.args.output/'RESULT.json';value=gate.read(p);del value['route_source_projections']['new_broad_hash'];gate.write(p,value)
+        with self.assertRaises(KeyError):self.stage()
+    def test_misreported_projection_padding_refuses_staging(self):
+        self.positive();p=self.args.output/'new_broad_hash-RESULT.json';value=gate.read(p);value['source_format_projection']['added_horizontal_spaces']=175;gate.write(p,value)
+        with self.assertRaises(RuntimeError):self.stage()
+    def test_restoring_original_working_sha_refuses_staging(self):
+        from format_projection import ORIGINALS
+        self.positive();p=self.args.output/'RESULT.json';value=gate.read(p);value['working_fixture_return']['new_broad_hash']['fixture.cr']=ORIGINALS['new_broad_hash'];gate.write(p,value)
+        with self.assertRaises(RuntimeError):self.stage()
+    def test_primary_alignment_model_distinguishes_predecessor_and_successor(self):
+        import format_projection
+        original_run=self.driver.Runner.run
+        def checked(runner,label,argv,**kwargs):
+            raw,err=original_run(runner,label,argv,**kwargs)
+            if label=='new_broad_hash-format':
+                original=(ROOT/'products/new_broad_hash.cr.txt').read_bytes()
+                required=expected_projection('new_broad_hash',original)
+                if Path(argv[-1]).read_bytes()!=required:
+                    path=runner.output/(label+'.stderr.txt');path.write_text("formatting 'SYNTHETIC/new_broad_hash/fixture.cr' produced changes\n")
+                    runner.records[-1].update(exit_code=1,stderr_sha256=gate.digest(path));raise RuntimeError('SYNTHETIC primary-alignment check refused predecessor')
+            return raw,err
+        expected_projection=format_projection.measured_source
+        with mock.patch.object(self.driver.Runner,'run',checked):
+            with mock.patch.object(format_projection,'measured_source',side_effect=lambda profile,raw:raw):
+                code,result=self.perform()
+            self.assertEqual(code,2);self.assertEqual(result['commands'][-1]['label'],'new_broad_hash-format');self.assertEqual(result['commands'][-1]['exit_code'],1)
+            self.assertFalse(any(r['label']=='new_broad_hash-compile' for r in result['commands']));self.assertTrue(result['private_removed'])
+        shutil.rmtree(self.args.output)
+        with mock.patch.object(self.driver.Runner,'run',checked):self.assertTrue(self.positive()['passed'])
+
 def main():
     gate.admit(gate.digest(ROOT/'SOURCE_PINS.json'))
     import test_frontend_boundaries

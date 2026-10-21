@@ -15,7 +15,7 @@ def main(a):
         for mode,flags in [('ordinary',[]),('optimized',['-O'])]:
             need(runner.deadline-time.monotonic()>=75,'Complete original source-cohort allowance required')
             out,err=runner.run(mode,[sys.executable,*flags,'-I','-S','-B',ROOT/'test_hosted.py'],cwd=ROOT,environment=dict(os.environ,TMPDIR=str(a.output)),seconds=75)
-            summary=json.loads(out);need(summary==dict(tests_run=42,failures=0,errors=0,skipped=0,guard_calls=0,actual_local_compiler_native_container_browser_ssh_workload_jobs=0),'Complete original12 and new30 guarded cases required');result['summaries'].append(summary)
+            summary=json.loads(out);need(summary==dict(tests_run=54,failures=0,errors=0,skipped=0,guard_calls=0,actual_local_compiler_native_container_browser_ssh_workload_jobs=0),'Complete original42 and new12 guarded cases required');result['summaries'].append(summary)
         admit(a.packet_sha256);need(digest(a.driver)==DRIVER_SHA and digest(Path(sys.executable).resolve())==a.python_sha256,'Original source/provider return required');result['passed']=True
     except Exception as error:result['error']=type(error).__name__+': '+str(error)
     finally:

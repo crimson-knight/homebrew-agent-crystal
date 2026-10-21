@@ -9,6 +9,8 @@ from products import frontend_boundary as boundary
 from products.parse_semantic_stats import parse
 from products.parse_stage_stats import associate_observed_intervals
 from observe_compiler import parse_ps
+from format_projection import measured_source,projection
+import hashlib
 PROFILES=boundary.PROFILES
 
 def review(source,expected,admitted):
@@ -25,9 +27,11 @@ def review(source,expected,admitted):
     backend=admitted['providers']['compiler_backend']['path']
     for i,profile in enumerate(PROFILES):
         value=read(source/(profile+'-RESULT.json'));need(value==result['samples'][i],'Exact retained route/result join required')
-        need(value['source_sha256']==digest(ROOT/'products'/(profile+'.cr.txt')) and value['fixture_manifest_sha256']==digest(ROOT/'products'/(profile+'.json')),'Exact original route source/roster identities required')
+        original=stable(ROOT/'products'/(profile+'.cr.txt'));projected=projection(profile,original);measured_sha=hashlib.sha256(measured_source(profile,original)).hexdigest()
+        need(value['source_format_projection']==result['route_source_projections'][profile]==projected,'Exact original-to-measured formatting projection required')
+        need(value['source_sha256']==measured_sha and value['fixture_manifest_sha256']==digest(ROOT/'products'/(profile+'.json')),'Exact measured route source/original roster identities required')
         source_argument=Path(value['source_argument']);need(source_argument==source/'private/projection/grant/performance/results/frontend-diagnostic'/profile/'fixture.cr','Exact runtime-owned route source argument required')
-        need(result['working_fixture_return'][profile]=={'fixture.cr':digest(ROOT/'products'/(profile+'.cr.txt')),'fixture.json':digest(ROOT/'products'/(profile+'.json'))},'Exact completed working fixture/manifest return required')
+        need(result['working_fixture_return'][profile]=={'fixture.cr':measured_sha,'fixture.json':digest(ROOT/'products'/(profile+'.json'))},'Exact completed working fixture/manifest return required')
         argv=boundary.compiler_argv(backend,source_argument,source_argument.parent/'absent-output')
         format_record,compile_record=commands[2*i:2*i+2]
         need(compile_record['arguments']==argv==value['compiler_arguments'] and value['compiler_record']==compile_record,'Exact original compiler argv/source-record joins required')

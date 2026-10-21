@@ -43,12 +43,14 @@ def execute(args,driver,context,started):
     from products.parse_semantic_stats import parse
     from products.parse_stage_stats import associate_observed_intervals
     from observe_compiler import Observer
+    from format_projection import measured_source,projection
     from vendor.command_contract import terminal
     need(args.output.is_absolute() and args.output.parent.resolve(strict=True)==args.output.parent and not args.output.exists(),'Fresh physical owned frontend output required')
     output=args.output;output.mkdir();private=output/'private';private.mkdir()
     runner=driver.Runner(output);runner.deadline=started+SECONDS-RETURN
     result=dict(metadata_provider=context.get('metadata_provider',{'scope':'SYNTHETIC guarded metadata provider'}),controller_pid=os.getpid(),execution_inputs={name:str(getattr(args,name)) for name in ('repository','driver','sdk_evidence','packet_sha256','python_sha256','ps_sha256')},format='atlas-grant-hosted-frontend-six-v1',passed=False,diagnostic_complete=False,compiler_color='UNEXECUTED',maximum_seconds=SECONDS,return_seconds=RETURN,source_packet_sha256=args.packet_sha256,admitted_same_job=context['admitted'],samples=[],observer_results=[],finalization_errors=[],command_count=0,target_cells_accepted=0,required_target_cells=144,whole_build_provider_qualified=False,retained_live_frontend_bytes_qualified=False,overhead_qualified=False,API_lookup_accepted=False,Ameba_lint_accepted=False,route_runtime_behavior_accepted=False,source_provider_return_accepted=False)
     write(output/'RESULT.json',result);before=None;grant=None;observers=[];working={}
+    result['route_source_projections']={}
     try:
         boundary.verify_products(ROOT/'products',read(ROOT/'products/FRONTEND_MATERIALIZATION.json'))
         boundary.verify_producer_evidence(ROOT/'products',read(ROOT/'products/FRONTEND_MATERIALIZATION.json'))
@@ -59,7 +61,9 @@ def execute(args,driver,context,started):
         for index,profile in enumerate(PROFILES):
             need(runner.deadline-time.monotonic()>=(len(PROFILES)-index)*(COMPILER+FORMAT),'All remaining full original route horizons required')
             work=grant/'performance/results/frontend-diagnostic'/profile;work.mkdir(parents=True)
-            fixture=work/'fixture.cr';fixture.write_bytes(stable(ROOT/'products'/(profile+'.cr.txt')));(work/'fixture.json').write_bytes(stable(ROOT/'products'/(profile+'.json')))
+            original=stable(ROOT/'products'/(profile+'.cr.txt'))
+            result['route_source_projections'][profile]=projection(profile,original)
+            fixture=work/'fixture.cr';fixture.write_bytes(measured_source(profile,original));(work/'fixture.json').write_bytes(stable(ROOT/'products'/(profile+'.json')))
             fixture.chmod(0o644);(work/'fixture.json').chmod(0o644)
             working[profile]={name:digest(work/name) for name in ('fixture.cr','fixture.json')}
             boundary.require_source_paths(grant,fixture,profile)
@@ -90,7 +94,7 @@ def execute(args,driver,context,started):
             after_cache=boundary.cache_inventory(cache);boundary.require_semantic_cache(cache_before,after_cache)
             need(audit_prepared_stdlib(context['stdlib'],prepared,overlay,manifest,output/(profile+'-STDLIB_AFTER.json'))==prepared_identity,'Exact SDK-prepared stdlib return required')
             rows,after=context['inventory'](grant);boundary.source_rows_equal(before,rows);need(after==fingerprint,'Full original source changed during route')
-            sample=dict(profile=profile,source_sha256=digest(fixture),fixture_manifest_sha256=digest(work/'fixture.json'),source_argument=str(fixture),compiler_arguments=list(map(str,argv)),compiler_record=record,stats=stats,direct_compiler_observation=observation,phase_intervals=intervals,prepared_stdlib=prepared_identity,cache_before=cache_before,cache_after=after_cache,compiler_color='GREEN',actual_top_level_binary_absent=True)
+            sample=dict(profile=profile,source_format_projection=result['route_source_projections'][profile],source_sha256=digest(fixture),fixture_manifest_sha256=digest(work/'fixture.json'),source_argument=str(fixture),compiler_arguments=list(map(str,argv)),compiler_record=record,stats=stats,direct_compiler_observation=observation,phase_intervals=intervals,prepared_stdlib=prepared_identity,cache_before=cache_before,cache_after=after_cache,compiler_color='GREEN',actual_top_level_binary_absent=True)
             result['samples'].append(sample);write(output/(profile+'-RESULT.json'),sample)
         result.update(passed=True,diagnostic_complete=True,compiler_color='GREEN')
     except Exception as error:

@@ -40,7 +40,13 @@
       "bytes": 3428,
       "mode": 420,
       "path": "check_sources.py",
-      "sha256": "bf82d929ba84f55beb0c7f8a8c82989043cbbf783de54011c34a1c5ccbd89dff"
+      "sha256": "df8e2585ddf6acb80844c18b519d53090a1bb5dce7b1f3b1ff1cf6170f543e2c"
+    },
+    {
+      "bytes": 3446,
+      "mode": 420,
+      "path": "format_projection.py",
+      "sha256": "74a9dca1422bfdea5f70b7fa8a545aa88fab86f788692c0a117f7f532fd5593f"
     },
     {
       "bytes": 2847,
@@ -193,10 +199,10 @@
       "sha256": "f8a822470f3e56ac3b67dcad42f330570760164f06932c04543e0738b9373d63"
     },
     {
-      "bytes": 15845,
+      "bytes": 16157,
       "mode": 420,
       "path": "run_frontend.py",
-      "sha256": "cab5d0d7195462816734882cf4f5a6021fe3d57c4a92c3df3c738d564b9869b6"
+      "sha256": "7a098c48329b4a2fe9638a94aeb79753617e6a5f9d71ffde2d1782e665e13526"
     },
     {
       "bytes": 2684,
@@ -205,16 +211,16 @@
       "sha256": "111b6c6edf71a50a94df1bb4de166a73baa8cb3e74b99a06e5fd7b3ef7e1f891"
     },
     {
-      "bytes": 12691,
+      "bytes": 13049,
       "mode": 420,
       "path": "stage_results.py",
-      "sha256": "f37a260d790cdcff316a8a64bba71830bab6d0a3bb96ef1448b23b59e5ad7693"
+      "sha256": "fb229d5d5f8b42a5a2da6f16a1cb576200e3ac8963dc543afbc258f86be26c36"
     },
     {
-      "bytes": 20481,
+      "bytes": 26310,
       "mode": 420,
       "path": "test_hosted.py",
-      "sha256": "8b262c9180f386ef0d6c4eadfb4230d9adaea4b5ccf57b12f1cc212528db7301"
+      "sha256": "1be0ec66722de41eab835801710482f293561c3dc33b7f132e7eaf4bc0bbdfaa"
     },
     {
       "bytes": 4295,
