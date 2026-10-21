@@ -24,11 +24,11 @@ COMPILER_COMMIT = '9c1e8ec64f6be6343e90d3979bc9536c4b050292'
 CANONICAL_GC_SHA = '526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307'
 STABLE_TOOLS_SHA = '41e88da63e122233426ff376cb048f36f1df319e59f841fba335fa1f59923805'
 CONTRACT_SHA = '33418b91a8ed01e0d3b442781fb5c7ebdbfbb32927e5caecb9747251d9dd52c9'
-CONTEXT = dict(compiler_flags=['without_mt','without_libxml2','without_openssl','without_zlib'], LLVM_VERSION='21.1.8', LLVM_TARGETS='AArch64', LLVM_LDFLAGS='selected-reviewed-shared-LLVM-image', interpreter=True, target_scope='no-codegen compatibility only')
+CONTEXT = dict(compiler_flags=['strict_multi_assign','preview_overload_order','without_libxml2','without_openssl','without_zlib'], LLVM_VERSION='21.1.8', LLVM_TARGETS='AArch64', LLVM_LDFLAGS='selected-reviewed-shared-LLVM-image', interpreter=True, target_scope='no-codegen compatibility only')
 DOCS_ENTRY = 'src/compiler/requires.cr'
 DOCS_ENTRY_SHA = '6908270a8f88147052605b981c18113d13b76bc0b3b2ddb1bce8a6c22607c8eb'
 DOCS_CARD_PATH = '.amber-lsp/api/compiler-census.yml'
-CONTEXT.update(docs_selection=dict(path=DOCS_CARD_PATH,docs_entry=DOCS_ENTRY,docs_entry_sha256=DOCS_ENTRY_SHA,card_sha256='9741ffa44d3aaad6f3074529aefb86730f96adf129c333e38caa69eb8ac8ef98'),execution_order='versions; formatter and concrete receiver probes; API lookups')
+CONTEXT.update(docs_semantic_profile={'scope': 'documentation semantic analysis only', 'feature_context': 'supported -D flags including release', 'machine_code_generation_qualified': False, 'debug_metadata_generation_qualified': False, 'compiler_concurrency_qualified': False, 'command_source_sha256': '587db897d2653f6d0f4420c383e9efbfb126ff6b1d4fb568799d8d46001d08da'},compiler_host_profile='recipe-derived-ordinary-compiler-host-v105',compiler_build_options=['--release','--no-debug'],compiled_Grant_application_flags=['without_mt'],source_profile_proof='Formula+Makefile-derived; full actual build argv partially unretained',docs_selection=dict(path=DOCS_CARD_PATH,docs_entry=DOCS_ENTRY,docs_entry_sha256=DOCS_ENTRY_SHA,card_sha256='9741ffa44d3aaad6f3074529aefb86730f96adf129c333e38caa69eb8ac8ef98'),execution_order='versions; formatter and concrete receiver probes; API lookups')
 PROBES = ('gc_stats','initialized_graph','source_origins','gc_stats_wrong_type')
 MAX_RAW = 4 * 2**20
 MAX_PUBLIC = 128 * 2**20
@@ -220,11 +220,11 @@ def docs_selection_evidence(rows, project):
     return dict(format='atlas-configured-compiler-docs-pre-exec-selection-v1',configuration_sha256=CONTEXT['docs_selection']['card_sha256'],configured_docs_entry=DOCS_ENTRY,canonical_docs_pre_exec_count=len(selected),observed=bool(selected),matches=bool(matches),canonical_docs_pre_exec_record_sha256s=[sha(canonical(row)) for row in selected],scope='pre-exec admissions; individual command completion remains separately attested')
 
 def command_roster():
-    rows = [('llvm-config-version',10),('amber-lsp-version',10),('ameba-version',10)]
+    rows = [('pkg-config-version',10),('pkg-config-bdw-gc-version',10),('pkg-config-bdw-gc-pcfiledir',10),('llvm-config-version',10),('amber-lsp-version',10),('ameba-version',10)]
     rows += [('format-'+name,15) for name in PROBES]
     rows += [('compatibility-'+name,60 if name == 'gc_stats_wrong_type' else 300) for name in PROBES]
     for index in range(56):rows += [('api-'+str(index),120 if index == 0 else 10),('api-verify-'+str(index),10)]
-    need(len(rows) == 123 and sum(seconds for _,seconds in rows) == 2280, 'Exact finite123-command2280-second worst-case roster required')
+    need(len(rows) == 126 and sum(seconds for _,seconds in rows) == 2310, 'Exact finite126-command2310-second worst-case roster required')
     need(PREPARATION_SECONDS + sum(s for _,s in rows) + RETURN_SECONDS <= OUTER_SECONDS, 'Composed API phase must fit the unchanged complete horizon')
     return rows
 
@@ -237,6 +237,7 @@ def admit_decision(args, context, protected):
     need(decision['reviewed_llvm_config'] == llvm_config_identity(args,context), 'Additional LLVM-config bytes/imports/aliases must equal the independently reviewed stable provider')
     need(decision['LLVM_config_code_loading_reviewed'] is True, 'Explicit additional metadata-provider loading scope required')
     need(context['llvm_config']['unresolved_imports'] == [] and context['llvm_config']['native_file_closure_covered'] is True and decision['Apple_platform_code_loading_reviewed'] is True, 'Every extra provider import must join the admitted file closure or explicit Apple platform scope')
+    pkg = context.get('pkgconf'); need(pkg is not None and decision.get('pkgconf_code_loading_reviewed') is True and decision.get('reviewed_pkgconf') == pkg, 'Explicit separately reviewed pkgconf loading and metadata scope required')
     protected[args.decision] = sha(raw)
     return decision
 
@@ -360,11 +361,11 @@ def execute(args, context, owned, started):
     contract = load(ROOT/'vendor/command_contract.py',CONTRACT_SHA,'census_original_terminal_reader')
     runner = context['driver'].Runner(output); runner.deadline = run_deadline
     allowed = dict(command_roster()); roster = decode(stable(ROOT/'API_ROSTER.json')); queries = roster['queries']; need(len(queries) == len({q['query'] for q in queries}) == 56, 'Complete56 API question roster required')
-    result = dict(format='atlas-compiler-census-api-result-v1',passed=False,diagnostic_collection_complete=False,compiler_color='UNEXECUTED',maximum_seconds=OUTER_SECONDS,return_seconds=RETURN_SECONDS,command_seconds_worst_case=2280,job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],source_manifest_sha256=args.packet_sha256,scope_decision_sha256=args.decision_sha256,actual_target_cells_accepted=0,whole_build_memory_qualified=False,retained_owner_attribution_implemented=False,source_provider_return_accepted=False,private_removed=False,finalization_errors=[],command_failures=[],command_contracts_accepted=False,compatibility_collection_complete=False,docs_selection_matches=False,docs_selection_observed=False)
+    result = dict(format='atlas-compiler-census-api-result-v1',passed=False,diagnostic_collection_complete=False,compiler_color='UNEXECUTED',maximum_seconds=OUTER_SECONDS,return_seconds=RETURN_SECONDS,command_seconds_worst_case=2310,job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],source_manifest_sha256=args.packet_sha256,scope_decision_sha256=args.decision_sha256,actual_target_cells_accepted=0,whole_build_memory_qualified=False,retained_owner_attribution_implemented=False,source_provider_return_accepted=False,private_removed=False,finalization_errors=[],command_failures=[],command_contracts_accepted=False,compatibility_collection_complete=False,docs_selection_matches=False,docs_selection_observed=False)
     private = None; original = None; expected = {}; cards = []; evidence = []; complete = False; admitted_commands = {}; proxy_config = None; working = None; private_identity = None
     def run(label, argv, env, *, expected_exit=0, lookup=False):
         seconds = allowed[label]; owned.check(); clock(run_deadline)
-        need(label not in admitted_commands and len(runner.records) < 123 and run_deadline-time.monotonic() >= seconds+1, 'Full unchanged command ceiling and return reserve required before launch')
+        need(label not in admitted_commands and len(runner.records) < 126 and run_deadline-time.monotonic() >= seconds+1, 'Full unchanged command ceiling and return reserve required before launch')
         count = len(runner.records); caught = None
         try:runner.run(label,list(map(str,argv)),cwd=project,environment=env,expected_exit=expected_exit,seconds=seconds)
         except BaseException as error:caught = error
@@ -376,7 +377,7 @@ def execute(args, context, owned, started):
         if caught is not None and not lookup:raise caught
         owned.check(); working_bound(private); return row,stdout,stderr
     try:
-        need(time.monotonic()-started <= PREPARATION_SECONDS and run_deadline-time.monotonic() >= 2280, 'Full2280 command seconds at entry plus180 return seconds required')
+        need(time.monotonic()-started <= PREPARATION_SECONDS and run_deadline-time.monotonic() >= 2310, 'Full2310 command seconds at entry plus180 return seconds required')
         private = output/'private'; private.mkdir(mode=0o700); private_identity = identity(private)[:3]; project = private/'compiler'; original = extract_project(project,min(started+PREPARATION_SECONDS,run_deadline)); expected = {k:{a:b for a,b in row.items() if a != 'physical_identity'} for k,row in original['files'].items()}
         (private/'home').mkdir(); (private/'cache').mkdir(); (private/'bin').mkdir(); (project/'census_probes').mkdir(); expected['census_probes'] = dict(path='census_probes',kind='directory',mode=stat.S_IMODE((project/'census_probes').lstat().st_mode))
         for name in PROBES:
@@ -385,18 +386,24 @@ def execute(args, context, owned, started):
         original = physical_tree(project,expected,run_deadline)
         wrapper = context['paths']['compiler_wrapper']; backend = context['paths']['compiler_backend']; python = Path(sys.executable).resolve(); stdlib = Path((args.sdk_evidence/'brew-prefix.stdout.txt').read_text().strip())/'share/agent-crystal/src'
         env = {k:v for k,v in os.environ.items() if k in ('TMPDIR','SDKROOT','DEVELOPER_DIR')}
+        pkg = context['pkgconf']; pkg_helper = load(ROOT/'pkgconf_provider.py',sha(stable(ROOT/'pkgconf_provider.py')),'census_qualified_pkgconf_launcher'); pkg_helper.validate(type('SourceHash',(),{'sha':staticmethod(sha)})(),pkg)
+        pkg_proxy = private/'bin/pkg-config'; pkg_proxy.write_bytes(pkg_helper.launcher(type('SourceHash',(),{'sha':staticmethod(sha)})(),pkg,python)); pkg_proxy.chmod(0o755)
+        pkg_input = stable(owned.root/'PKGCONF_INPUTS.json',16*2**20)
+        env.update(pkg_helper.environment(pkg))
         env.update(HOME=str(private/'home'),PATH=str(private/'bin')+os.pathsep+'/usr/bin:/bin',CRYSTAL_PATH=str(project/'lib')+os.pathsep+str(project/'src'),CRYSTAL_WORKERS='1',CRYSTAL_CACHE_DIR=str(private/'cache'),CRYSTAL_HAS_WRAPPER='1',CRYSTAL_CONFIG_BUILD_COMMIT=COMPILER_COMMIT,LLVM_CONFIG=context['llvm_config']['declared_path'],LLVM_VERSION='21.1.8',LLVM_TARGETS='AArch64',LLVM_LDFLAGS=context['native_policy']['llvm_library'],LC_ALL='C',NO_COLOR='1',PYTHONDONTWRITEBYTECODE='1')
         proxy = private/'bin/crystal-alpha'; proxy_raw = ('#!'+str(python)+'\n').encode()+stable(ROOT/'compiler_proxy.py'); need(' ' not in str(python), 'Exact shebang-compatible admitted Python path required'); proxy.write_bytes(proxy_raw); proxy.chmod(0o755)
         journal = private/'PROXY_COMMANDS.jsonl'; journal.write_bytes(b'')
         fixed_environment = {k:v for k,v in env.items() if k != 'CRYSTAL_CACHE_DIR'}
-        providers = [dict(path=str(path),sha256=sha(stable(path,256*2**20))) for path in (python,wrapper,backend,proxy)]
+        providers = [dict(path=str(path),sha256=sha(stable(path,256*2**20))) for path in (python,wrapper,backend,proxy,pkg_proxy,Path(pkg['resolved_path']),Path(pkg['pcfile']['path']))]
         config = dict(format='atlas-census-compiler-proxy-v1',backend=str(backend),project=str(project),private=str(private),private_identity=private_identity,stdlib=str(stdlib),environment=fixed_environment,providers=providers,journal=str(journal),journal_identity=identity(journal)[:3])
         proxy_config = private/'PROXY_CONFIG.json'; proxy_config.write_bytes(canonical(config)); env.update(ATLAS_CENSUS_PROXY_CONFIG=str(proxy_config),ATLAS_CENSUS_PROXY_CONFIG_SHA256=sha(stable(proxy_config)))
         proxy_before = {path:sha(stable(path,256*2**20)) for path in (proxy,proxy_config)}
-        owned.json('ADMISSION.json',dict(SDK=context['admitted'],tools=context['tools'],native_policy=context['native_policy'],decision=context['decision'],proxy=config,source_archive_sha256=ARCHIVE_SHA,source_commit=COMPILER_COMMIT,context=CONTEXT,llvm_config=context['llvm_config']))
+        owned.json('ADMISSION.json',dict(SDK=context['admitted'],tools=context['tools'],native_policy=context['native_policy'],decision=context['decision'],proxy=config,source_archive_sha256=ARCHIVE_SHA,source_commit=COMPILER_COMMIT,context=CONTEXT,llvm_config=context['llvm_config'],pkgconf=pkg,pkgconf_observation_sha256=sha(pkg_input)))
         for name,path in [('SCOPE_DECISION.json',args.decision),('NATIVE_POLICY.json',args.native_policy),('POLICY_RESULT.json',args.policy_result),('TOOL_POLICY.json',args.tool_policy),('PROOF_TOOLS.json',args.proof_tools)]:owned.write(name,stable(path,2**20))
         owned.write('API_ROSTER.json',stable(ROOT/'API_ROSTER.json'))
-        need(time.monotonic()-started <= PREPARATION_SECONDS and run_deadline-time.monotonic() >= 2280, 'All original command seconds must remain after complete source projection')
+        need(time.monotonic()-started <= PREPARATION_SECONDS and run_deadline-time.monotonic() >= 2310, 'All original command seconds must remain after complete source projection')
+        for label,arguments,pkg_expected_output in [('pkg-config-version',['--version'],pkg['package_version']),('pkg-config-bdw-gc-version',['--modversion','bdw-gc'],pkg['pc_version']),('pkg-config-bdw-gc-pcfiledir',['--variable=pcfiledir','bdw-gc'],pkg['pcfiledir'])]:
+            row,stdout,stderr = run(label,[pkg_proxy,*arguments],env); need(stdout == pkg_expected_output+'\n' and not stderr,'Actual reviewed pkgconf/GC metadata behavior required')
         row,stdout,stderr = run('llvm-config-version',[context['llvm_config']['declared_path'],'--version'],env); need(stdout == '21.1.8\n' and not stderr, 'Actual selected reviewed LLVM config version required')
         for label,key,version in [('amber-lsp-version','amber_lsp','2.0.7'),('ameba-version','ameba','1.7.0-dev')]:
             row,stdout,stderr = run(label,[context['tools']['tools'][key]['path'],'--version'],env); need(version in stdout and not stderr, 'Admitted released analysis-tool version required')

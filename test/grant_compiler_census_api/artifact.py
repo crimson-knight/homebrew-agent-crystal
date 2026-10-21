@@ -9,7 +9,7 @@ import stat
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC_HELPER_SHA = 'eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed'
-FIXED = ('DOCS_SELECTION.json','DOCS_CONFIGURATION.json','TRANSFER_CLEANUP.json','LLVM_STATIC_PARTIAL.json','LLVM_STATIC_INPUTS.json','METADATA_ADMISSION.json','SCOPE_DECISION.json','NATIVE_POLICY.json','POLICY_RESULT.json','TOOL_POLICY.json','PROOF_TOOLS.json','API_ROSTER.json','ADMISSION_REFUSAL.json','CENSUS_PROVIDER_CANDIDATE.json','ADMISSION.json','API_CARDS.json','COMMAND_EVIDENCE.jsonl','SOURCE_RETURN.json','PROXY_CONFIG.json','PROXY_COMMANDS.jsonl','RESULT.json')
+FIXED = ('PKGCONF_INPUTS.json','PKGCONF_REFUSAL.json','PKGCONF_PARTIAL.json','DOCS_SELECTION.json','DOCS_CONFIGURATION.json','TRANSFER_CLEANUP.json','LLVM_STATIC_PARTIAL.json','LLVM_STATIC_INPUTS.json','METADATA_ADMISSION.json','SCOPE_DECISION.json','NATIVE_POLICY.json','POLICY_RESULT.json','TOOL_POLICY.json','PROOF_TOOLS.json','API_ROSTER.json','ADMISSION_REFUSAL.json','CENSUS_PROVIDER_CANDIDATE.json','ADMISSION.json','API_CARDS.json','COMMAND_EVIDENCE.jsonl','SOURCE_RETURN.json','PROXY_CONFIG.json','PROXY_COMMANDS.jsonl','RESULT.json')
 
 def need(value, message):
     if not value:raise RuntimeError(message)
@@ -47,7 +47,7 @@ def selection(source, model):
     commands = source/'COMMAND_EVIDENCE.jsonl'
     if commands.exists():
         rows = [model.decode(raw) for raw in model.stable(commands,64*2**20).splitlines()]
-        need(len(rows) <= 123, 'Original bounded command roster required')
+        need(len(rows) <= 126, 'Original bounded command roster required')
         for row in rows:
             label = row['record']['label']; need(label in dict(model.command_roster()), 'Explicit command source roster required')
             names += [label+'.stdout.txt',label+'.stderr.txt']
@@ -115,14 +115,16 @@ def replay(root, expected):
         if metadata['native_receipt']['format'] == 'atlas-census-api-only-static-observation-v1':
             raw_static = model.stable(root/'LLVM_STATIC_INPUTS.json',16*2**20)
             helper_api = model.load(ROOT/'api_provider.py',model.sha(model.stable(ROOT/'api_provider.py')),'independent_census_api_static_reader')
+            raw_pkg=model.stable(root/'PKGCONF_INPUTS.json',16*2**20); pkg_observed=helper_api.validate_observation(model,model.decode(raw_pkg),expected)
             observed = helper_api.validate_observation(model,model.decode(raw_static),expected)
             need(sha(raw_static) == metadata['native_receipt']['receipt_sha256'] and observed['SDK'] == metadata['SDK'] and observed['inputs']['stable_view_sha256'] == candidate['native_stable_view_sha256'] and observed['inputs']['llvm_config'] == candidate['llvm_config'] and observed['inputs']['llvm_config_physical'] == candidate['llvm_config_physical'], 'Complete exact additional LLVM observation/metadata/SDK/provider join required')
+        if metadata['native_receipt']['format']=='atlas-census-api-only-static-observation-v1':need(pkg_observed['passed'] is True and pkg_observed['SDK']==observed['SDK'] and pkg_observed['inputs']==observed['inputs'],'Exact separately observed pkgconf source/job/profile/native return join required')
         need(set(physical(root)) == set(paths), 'Exact physical metadata projection return required'); byte_return(); model.manifest(ROOT,expected)
         return dict(passed=True,scope='read-only additional LLVM-config input observation',execution_admitted=False,actual_target_cells_accepted=0)
     result = model.decode(model.stable(root/'RESULT.json',2**20)); admission = model.decode(model.stable(root/'ADMISSION.json',4*2**20)); cards = model.decode(model.stable(root/'API_CARDS.json',16*2**20))
     need(result['format'] == 'atlas-compiler-census-api-result-v1' and result['source_manifest_sha256'] == expected and result['passed'] is True and result['diagnostic_collection_complete'] is True and result['compiler_color'] == 'GREEN' and result['finalization_errors'] == [], 'Actual successful complete GREEN API compatibility result required')
     for key in ('writers_confirmed_retired','source_provider_return_accepted','private_removed','required_API_cards_accepted'):need(result[key] is True, 'Complete source/provider/return/API acceptance required')
-    need(all(type(result[key]) is int for key in ('maximum_seconds','return_seconds','command_seconds_worst_case')) and result['maximum_seconds'] == model.OUTER_SECONDS and result['return_seconds'] == model.RETURN_SECONDS and result['command_seconds_worst_case'] == 2280 and model.finite(result['elapsed_seconds'],0,model.OUTER_SECONDS), 'Exact complete finite API horizon required')
+    need(all(type(result[key]) is int for key in ('maximum_seconds','return_seconds','command_seconds_worst_case')) and result['maximum_seconds'] == model.OUTER_SECONDS and result['return_seconds'] == model.RETURN_SECONDS and result['command_seconds_worst_case'] == 2310 and model.finite(result['elapsed_seconds'],0,model.OUTER_SECONDS), 'Exact complete finite API horizon required')
     need(result['actual_target_cells_accepted'] == 0 and type(result['actual_target_cells_accepted']) is int and result['whole_build_memory_qualified'] is False and result['retained_owner_attribution_implemented'] is False, 'API proof and retained-memory/full Grant boundaries remain separate')
     need(result['job_identity'] == admission['SDK']['job_identity'] and result['compiler_profile_sha256'] == admission['SDK']['observed_profile_sha256'] and result['compiler_backend_sha256'] == admission['SDK']['providers']['compiler_backend']['sha256'], 'Fresh actual SDK/job/backend joins required')
     decision_raw = model.stable(root/'SCOPE_DECISION.json',2**20); need(sha(decision_raw) == result['scope_decision_sha256'], 'Exact externally selected census decision bytes required'); decision = model.decode(decision_raw)
@@ -131,6 +133,9 @@ def replay(root, expected):
     if material['format'] == 'atlas-census-api-only-policy-materialization-v1':
         helper_api = model.load(ROOT/'api_provider.py',model.sha(model.stable(ROOT/'api_provider.py')),'independent_executed_census_static_inputs')
         static_receipt = helper_api.validate_observation(model,model.decode(model.stable(root/'LLVM_STATIC_INPUTS.json',16*2**20)),expected)
+        raw_pkg=model.stable(root/'PKGCONF_INPUTS.json',16*2**20); need(sha(raw_pkg)==admission['pkgconf_observation_sha256'],'Exact executed separately observed pkgconf receipt hash required')
+        pkg_observed=helper_api.validate_observation(model,model.decode(raw_pkg),expected)
+        need(pkg_observed['passed'] is True and pkg_observed['SDK']==static_receipt['SDK'] and pkg_observed['inputs']==static_receipt['inputs'],'Exact prior pkgconf and fresh executed metadata joins required')
         need(static_receipt['passed'] is True and static_receipt['SDK'] == admission['SDK'] and static_receipt['inputs']['stable_view'] == decision['reviewed_api_only_static_view'], 'Every fresh executed provider/physical/SDK input must join the complete independently reviewed stable metadata')
         policy = model.decode(model.stable(root/'NATIVE_POLICY.json',2**20))
         need(material['scope'] == policy['scope'] == decision['scope'] == 'compiler-census-api-and-concrete-receiver-only' and material['source_manifest_sha256'] == expected and material['compiler_backend_sha256'] == result['compiler_backend_sha256'] and material['scope_decision_sha256'] == policy['scope_decision_sha256'] == result['scope_decision_sha256'], 'Exact separate current-job API-only provider materialization required')
@@ -146,7 +151,7 @@ def replay(root, expected):
     query_rows = model.decode(model.stable(ROOT/'API_ROSTER.json'))['queries']; need(len(cards) == len(query_rows) == 56, 'All56 API questions must be retained')
     contract = model.load(ROOT/'vendor/command_contract.py',model.CONTRACT_SHA,'census_public_original_terminal')
     commands = [model.decode(raw) for raw in model.stable(root/'COMMAND_EVIDENCE.jsonl',64*2**20).splitlines()]
-    need(type(result['commands']) is int and result['commands'] == len(commands) == len(result['original_groups']) and 67 <= len(commands) <= 123, 'Complete67..123 actual original command/group roster required')
+    need(type(result['commands']) is int and result['commands'] == len(commands) == len(result['original_groups']) and 70 <= len(commands) <= 126, 'Complete70..126 actual original command/group roster required')
     position = 0; planned = dict(model.command_roster()); project = admission['proxy']['project']; wrapper = admission['SDK']['providers']['compiler_wrapper']['path']; tools = admission['tools']['tools']; executable = str(Path(admission['proxy']['private'])/'bin/crystal-alpha')
     def take(label, argv, lookup=False, expected_exit=0):
         nonlocal position
@@ -155,6 +160,12 @@ def replay(root, expected):
         stdout,stderr = model.validate_terminal(contract,row,planned[label],root,group,lookup=lookup,expected=expected_exit)
         need(stdout == item['stdout'] and stderr == item['stderr'], 'Exact lossless command/raw output join required')
         return row,stdout,stderr
+    pkg=admission['pkgconf']; pkg_helper=model.load(ROOT/'pkgconf_provider.py',sha(model.stable(ROOT/'pkgconf_provider.py')),'public_pkgconf_metadata_reader'); pkg_helper.validate(model,pkg)
+    need(decision.get('pkgconf_code_loading_reviewed') is True and decision.get('reviewed_pkgconf')==pkg,'Exact external pkgconf loading/alias/metadata decision required')
+    if material['format']=='atlas-census-api-only-policy-materialization-v1':need(policy['pkgconf']==pkg==decision['reviewed_api_only_static_view']['pkgconf'],'Exact fresh policy/pkgconf/source join required')
+    pkg_executable=str(Path(admission['proxy']['private'])/'bin/pkg-config')
+    for label,arguments,expected_output in [('pkg-config-version',['--version'],pkg['package_version']),('pkg-config-bdw-gc-version',['--modversion','bdw-gc'],pkg['pc_version']),('pkg-config-bdw-gc-pcfiledir',['--variable=pcfiledir','bdw-gc'],pkg['pcfiledir'])]:
+        row,stdout,stderr=take(label,[pkg_executable,*arguments]); need(stdout==expected_output+'\n' and not stderr,'Exact source-selected pkgconf/GC metadata behavior required')
     row,stdout,stderr = take('llvm-config-version',[admission['proxy']['environment']['LLVM_CONFIG'],'--version']); need(stdout == '21.1.8\n' and not stderr, 'Exact actual reviewed LLVM version required')
     row,stdout,stderr = take('amber-lsp-version',[tools['amber_lsp']['path'],'--version']); need('2.0.7' in stdout and not stderr, 'Exact actual Amber LSP version behavior required')
     row,stdout,stderr = take('ameba-version',[tools['ameba']['path'],'--version']); need('1.7.0-dev' in stdout and not stderr, 'Exact actual Ameba version behavior required')
@@ -172,7 +183,7 @@ def replay(root, expected):
             row,stdout,stderr = take('api-verify-'+str(index),argv+['--verify'],True); answer = model.card(stdout,method,row['exit_code'],True); answer['stderr'] = stderr; attempts.append(answer)
         need(kept == dict(query=method,required=question['required'],attempts=attempts,accepted=answer['accepted']), 'Exact raw API card/unknown/verification replay required')
         need(answer['accepted'] or not question['required'], 'Every required API card must be actually resolved')
-    need(position == len(commands), 'Exact complete123-ceiling command sequence required')
+    need(position == len(commands), 'Exact complete126-ceiling command sequence required')
     returned = model.decode(model.stable(root/'SOURCE_RETURN.json',4*2**20)); original = model.archive_rows()['files']; need(set(returned['files']) == {row['path'] for row in original}|{'census_probes'}|{'census_probes/'+name+'.cr' for name in model.PROBES}|{'.amber-lsp','.amber-lsp/api',model.DOCS_CARD_PATH}, 'Complete canonical3190-source return with exact four probes required')
     docs = model.decode(model.stable(root/'DOCS_CONFIGURATION.json',4096)); expected_docs = dict(format='atlas-full-compiler-docs-selection-v1',configuration_path=model.DOCS_CARD_PATH,configuration_sha256=model.CONTEXT['docs_selection']['card_sha256'],docs_entry=model.DOCS_ENTRY,docs_entry_sha256=model.DOCS_ENTRY_SHA,CLI_source_commit='faed4b205063a84650b00e2dc02f01793f373527',selection_scope='one canonical full-compiler entrypoint',actual_hosted_completion_qualified=False)
     need(docs == expected_docs and returned['files'][model.DOCS_CARD_PATH]['sha256'] == docs['configuration_sha256'] and returned['files'][model.DOCS_CARD_PATH]['bytes'] == len(model.stable(ROOT/'inputs/CENSUS_DOCS_CARD.yml',4096)), 'Exact full-compiler docs configuration source and final return required')

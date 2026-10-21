@@ -20,7 +20,7 @@ import artifact
 import launch_census as entry
 
 class CensusControls(unittest.TestCase):
-    def setUp(self):
+    def _setUp_v104(self):
         parent = Path(os.environ['ATLAS_FIXTURE_ROOT']).resolve(); self.temp = tempfile.TemporaryDirectory(prefix='census source fixture with spaces ',dir=parent); self.addCleanup(self.temp.cleanup); self.root = Path(self.temp.name)
         self.stack = ExitStack(); self.addCleanup(self.stack.close); self.calls = []
         def guarded(*args,**kwargs):self.calls.append('external'); raise AssertionError('Guarded source fixture requires an authored provider')
@@ -49,6 +49,9 @@ class CensusControls(unittest.TestCase):
             def __init__(runner,output):runner.output=output; runner.records=[]; runner.group_observations=[]; runner.writers_confirmed_retired=True; runner.deadline=0; outer.runners.append(runner)
             def run(runner,label,argv,*,cwd,environment,expected_exit=0,seconds=300):
                 stdout = ''; stderr = ''; code = expected_exit
+                if label == 'pkg-config-version':stdout='3.0.10\n'
+                if label == 'pkg-config-bdw-gc-version':stdout='8.2.12\n'
+                if label == 'pkg-config-bdw-gc-pcfiledir':stdout=environment['PKG_CONFIG_LIBDIR']+'\n'
                 if label == 'llvm-config-version':stdout = '21.1.8\n'
                 if label == 'amber-lsp-version':stdout = 'amber-lsp 2.0.7\n'
                 if label == 'ameba-version':stdout = 'Ameba 1.7.0-dev\n'
@@ -84,6 +87,16 @@ class CensusControls(unittest.TestCase):
             if self.scenario == 'record-return':self.runners[-1].records[0]['arguments'].append('SYNTHETIC changed argv')
         self.context = dict(driver=SimpleNamespace(Runner=Runner),paths=dict(compiler_wrapper=self.wrapper,compiler_backend=self.backend),tools=dict(tools=self.tools),admitted=self.admission,native_policy=self.native_policy,llvm_config=self.llvm_identity,check=check,decision=self.decision,protected={},probe=SimpleNamespace(native_policy=lambda *args:(self.native_policy,{},{})))
         self.context['metadata_native_receipt']=dict(format='atlas-native-buffer-provider-observation-v1',passed=True,complete=True,source_provider_return_accepted=True,job_identity=self.admission['job_identity'],compiler_profile_sha256=self.admission['observed_profile_sha256'],stable_view_sha256=self.material['stable_view_sha256'],source_manifest_sha256='81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693',receipt_sha256='f'*64)
+    def setUp(self):
+        self._setUp_v104()
+        import fixture_v105
+        self.pkg=fixture_v105.descriptor(subject,self.root/'pkgconf fixture')
+        self.context['pkgconf']=self.pkg
+        self.decision.update(reviewed_pkgconf=self.pkg,pkgconf_code_loading_reviewed=True)
+        self.seal_decision()
+        self.args.pkgconf_observation=self.root/'PKGCONF_INPUTS.original.json'
+        self.args.pkgconf_observation.write_bytes(subject.canonical(dict(SYNTHETIC='direct controller native-policy fixture')))
+        self.args.pkgconf_observation_sha256=subject.sha(self.args.pkgconf_observation.read_bytes())
     def seal_decision(self):
         self.args.decision.write_bytes(subject.canonical(self.decision)); self.args.decision_sha256=subject.sha(self.args.decision.read_bytes())
     def synthetic_project(self,project,deadline):
@@ -91,13 +104,13 @@ class CensusControls(unittest.TestCase):
         rows={'src':dict(path='src',kind='directory',mode=stat_mode(project/'src')),'src/fixture.cr':dict(path='src/fixture.cr',kind='file',mode=0o644,bytes=path.stat().st_size,sha256=subject.sha(path.read_bytes()))}
         return subject.physical_tree(project,rows,deadline)
     def perform(self,real_archive=False,started=None):
-        owned=subject.Owned(self.args.output)
+        owned=subject.Owned(self.args.output); owned.write('PKGCONF_INPUTS.json',subject.stable(self.args.pkgconf_observation,16*2**20))
         with (mock.patch.object(subject,'extract_project',side_effect=self.synthetic_project) if not real_archive else ExitStack()):code=subject.execute(self.args,self.context,owned,time.monotonic() if started is None else started)
         return code,json.loads((self.args.output/'RESULT.json').read_bytes())
     def test_real_complete_archive_and_canonical_gc_source(self):
         project=self.root/'complete project'; before=subject.extract_project(project,time.monotonic()+60); rows={name:{k:v for k,v in row.items() if k!='physical_identity'} for name,row in before['files'].items()}; self.assertEqual(len(rows),3190); self.assertEqual(sum(row['kind']=='file' for row in rows.values()),2752); self.assertEqual(subject.physical_tree(project,rows,time.monotonic()+60),before); self.assertEqual(subject.sha((project/'src/gc/boehm.cr').read_bytes()),subject.CANONICAL_GC_SHA)
     def test_positive_actual_controller_body(self):
-        code,result=self.perform(); self.assertEqual(code,0); self.assertEqual(result['commands'],67); self.assertEqual(result['compiler_color'],'GREEN'); self.assertTrue(result['source_provider_return_accepted']); self.assertTrue(result['private_removed']); self.assertFalse((self.args.output/'private').exists())
+        code,result=self.perform(); self.assertEqual(code,0); self.assertEqual(result['commands'],70); self.assertEqual(result['compiler_color'],'GREEN'); self.assertTrue(result['source_provider_return_accepted']); self.assertTrue(result['private_removed']); self.assertFalse((self.args.output/'private').exists())
     def test_real_archive_producer_stager_reader_and_resealed_damage(self):
         code,result=self.perform(real_archive=True); self.assertEqual(code,0); public=self.root/'public'; artifact.stage(self.args.output,public,self.args.packet_sha256); self.assertTrue(artifact.replay(public,self.args.packet_sha256)['passed'])
         original=(public/'RESULT.json').read_bytes(); stage_original=(public/'PUBLIC_STAGE.json').read_bytes()
@@ -233,13 +246,13 @@ class CensusControls(unittest.TestCase):
         with mock.patch.object(subject,'llvm_config_identity',return_value=self.llvm_identity):
             with self.assertRaises(RuntimeError):subject.admit_decision(self.args,self.context,{})
     def test_every_unknown_takes_actual_verify_path(self):
-        self.scenario='all-unknown'; code,result=self.perform(); self.assertEqual(code,0); self.assertEqual(result['commands'],123); self.assertEqual(sum(row['label'].startswith('api-verify-') for row in self.runners[-1].records),56)
+        self.scenario='all-unknown'; code,result=self.perform(); self.assertEqual(code,0); self.assertEqual(result['commands'],126); self.assertEqual(sum(row['label'].startswith('api-verify-') for row in self.runners[-1].records),56)
     def test_unavailable_retains_every_card_and_concrete_probe(self):
-        self.scenario='unavailable'; code,result=self.perform(); self.assertEqual(code,2); self.assertTrue(result['diagnostic_collection_complete']); self.assertEqual(result['commands'],123); self.assertFalse(result['required_API_cards_accepted']); self.assertEqual(len(json.loads((self.args.output/'API_CARDS.json').read_bytes())),56)
+        self.scenario='unavailable'; code,result=self.perform(); self.assertEqual(code,2); self.assertTrue(result['diagnostic_collection_complete']); self.assertEqual(result['commands'],126); self.assertFalse(result['required_API_cards_accepted']); self.assertEqual(len(json.loads((self.args.output/'API_CARDS.json').read_bytes())),56)
     def test_absent_keeps_remaining_card_evidence(self):
-        self.scenario='absent'; code,result=self.perform(); self.assertEqual(code,2); self.assertTrue(result['diagnostic_collection_complete']); self.assertEqual(result['commands'],67)
+        self.scenario='absent'; code,result=self.perform(); self.assertEqual(code,2); self.assertTrue(result['diagnostic_collection_complete']); self.assertEqual(result['commands'],70)
     def test_original_command_budget_and_complete_phase(self):
-        rows=subject.command_roster(); self.assertEqual(len(rows),123); self.assertEqual(sum(seconds for _,seconds in rows),2280); self.assertLessEqual(120+2280+180,2700); self.assertEqual(dict(rows)['api-0'],120); self.assertEqual(dict(rows)['compatibility-gc_stats_wrong_type'],60)
+        rows=subject.command_roster(); self.assertEqual(len(rows),126); self.assertEqual(sum(seconds for _,seconds in rows),2310); self.assertLessEqual(120+2310+180,2700); self.assertEqual(dict(rows)['api-0'],120); self.assertEqual(dict(rows)['compatibility-gc_stats_wrong_type'],60)
     def test_insufficient_complete_reservation_launches_zero_commands(self):
         code,result=self.perform(started=time.monotonic()-121); self.assertEqual(code,2); self.assertEqual(result['commands'],0)
     def test_preexisting_output_is_untouched(self):
@@ -251,10 +264,10 @@ class CensusControls(unittest.TestCase):
         with self.assertRaises(RuntimeError):subject.main(self.args)
         self.assertEqual(list(target.iterdir()),[])
     def test_owned_output_replacement_refuses_write(self):
-        owned=subject.Owned(self.args.output); moved=self.root/'moved'; self.args.output.rename(moved); self.args.output.mkdir()
+        owned=subject.Owned(self.args.output); owned.write('PKGCONF_INPUTS.json',subject.stable(self.args.pkgconf_observation,16*2**20)); moved=self.root/'moved'; self.args.output.rename(moved); self.args.output.mkdir()
         with self.assertRaises(RuntimeError):owned.json('RESULT.json',{})
     def test_owned_file_alias_refuses_write(self):
-        owned=subject.Owned(self.args.output); (self.args.output/'RESULT.json').symlink_to(self.args.native_policy)
+        owned=subject.Owned(self.args.output); owned.write('PKGCONF_INPUTS.json',subject.stable(self.args.pkgconf_observation,16*2**20)); (self.args.output/'RESULT.json').symlink_to(self.args.native_policy)
         with self.assertRaises(RuntimeError):owned.json('RESULT.json',{})
     def test_source_manifest_changed_refuses_before_import(self):
         with self.assertRaises(RuntimeError):subject.manifest(ROOT,'0'*64)
@@ -311,7 +324,7 @@ class ProxyControls(unittest.TestCase):
     def test_actual_relative_docs_entrypoint_is_supported(self):
         result=proxy.derive(['docs','--format=json','--project-name=crystal','--project-version=1','src/compiler/crystal.cr'],'/owned/project','/installed/src'); self.assertIn('src/compiler/crystal.cr',result)
     def test_docs_retains_metadata_scope_and_target_flags(self):
-        result=proxy.derive(['docs','--format=json','src/docs_main.cr'],'/owned/project','/installed/src'); self.assertEqual(result[-8:],['-D','without_mt','-D','without_libxml2','-D','without_openssl','-D','without_zlib'])
+        result=proxy.derive(['docs','--format=json','src/docs_main.cr'],'/owned/project','/installed/src'); self.assertEqual(result[-14:],[part for flag in proxy.DOCS_DEFINES for part in ('-D',flag)]+['--error-on-warnings','--no-color'])
     def test_codegen_build_refuses(self):
         with self.assertRaises(RuntimeError):proxy.derive(['build','/owned/project/probe.cr'],'/owned/project','/installed/src')
     def test_changed_compiler_flags_refuse(self):

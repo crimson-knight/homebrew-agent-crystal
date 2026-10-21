@@ -1,0 +1,74 @@
+{
+  "API_command_seconds": 2310,
+  "API_commands_maximum": 126,
+  "API_maximum_seconds": 2700,
+  "API_preparation_seconds": 120,
+  "API_return_seconds": 180,
+  "API_slack_seconds": 90,
+  "format": "atlas-census-host-pkgconf-workflow-v105",
+  "full_C_header_and_native_buffer_scope_separate": true,
+  "full_Grant_target_cells_accepted": 0,
+  "initial_execution_admitted": false,
+  "maximum_minutes": 151,
+  "maximum_seconds": 9060,
+  "original_all_phase_ceilings_preserved": true,
+  "phases": [
+    [
+      "installation",
+      2700
+    ],
+    [
+      "source",
+      180
+    ],
+    [
+      "SDK",
+      840
+    ],
+    [
+      "transfer",
+      180
+    ],
+    [
+      "analysis_native",
+      120
+    ],
+    [
+      "pkgconf_static_metadata",
+      180
+    ],
+    [
+      "LLVM_static_metadata",
+      180
+    ],
+    [
+      "external_review_fetch_reserve",
+      900
+    ],
+    [
+      "API_policy_preparation",
+      120
+    ],
+    [
+      "API",
+      2700
+    ],
+    [
+      "stage",
+      180
+    ],
+    [
+      "return",
+      120
+    ],
+    [
+      "uploads",
+      360
+    ],
+    [
+      "slack",
+      300
+    ]
+  ],
+  "source_tests_maximum_seconds": 180
+}

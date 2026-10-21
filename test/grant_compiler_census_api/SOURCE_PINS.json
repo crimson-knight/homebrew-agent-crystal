@@ -19,28 +19,28 @@
       "sha256": "cd6b425de0d53edf73dc01e6103f897a778c08092293d3e87360a55269cd86db"
     },
     {
-      "bytes": 4676,
+      "bytes": 4759,
       "mode": 420,
       "path": "README.md",
-      "sha256": "27dc0acc596c83712f18b909ca3ec3f6ef4487a5a2e849934b5f3ee488ce2f58"
+      "sha256": "3b186bd795008a87ca01be0b11515e31f044ef3807b59dad3f55195f3a3be2bd"
     },
     {
-      "bytes": 27367,
+      "bytes": 28776,
       "mode": 420,
       "path": "api_provider.py",
-      "sha256": "07d99e57b5eb64498386d0f33a9edcc8e359a92f3ad10fb0d69236af9f33f1e7"
+      "sha256": "24f756a6b6b3447bf9ab47b0052911cab72ddc5af0d9366b451464b5bb97ce4f"
     },
     {
-      "bytes": 31899,
+      "bytes": 34011,
       "mode": 420,
       "path": "artifact.py",
-      "sha256": "b66c9a6da09a29dfaaaa3dd00b04f139f3604c486f0d7d0cd5eb09083081365c"
+      "sha256": "522f4d037c3420f244a216b94219c544433d76434932687f144381fadf6e0131"
     },
     {
-      "bytes": 7464,
+      "bytes": 7722,
       "mode": 420,
       "path": "compiler_proxy.py",
-      "sha256": "52d6336058c80781e58facaa8ce286a14aeb878964a81506cb47f55594eafc8c"
+      "sha256": "5ce75dd310af3ce1663dee83f758d03de8ba47cf1645fbe6d24b31cd58a879a1"
     },
     {
       "bytes": 14900,
@@ -529,6 +529,12 @@
       "sha256": "22913454db7547b8415b89184b1b5fac40ef1db410180755c3b29a2ed4d6a501"
     },
     {
+      "bytes": 1161,
+      "mode": 420,
+      "path": "fixture_v105.py",
+      "sha256": "ee186eb2dbe6a4f4ce52abdebd356fbdaa5984d008ca5428e35b6a0c472b8cc6"
+    },
+    {
       "bytes": 2615,
       "mode": 420,
       "path": "inputs/ACTUAL_TOOL_NATIVE_ACCEPTANCE.json",
@@ -595,6 +601,12 @@
       "sha256": "d1685ca2d01399f93564d74e47c11d1a827a578c994aae61286fe054d48f209a"
     },
     {
+      "bytes": 5581,
+      "mode": 420,
+      "path": "inputs/HOST_PROFILE_SOURCE.v105.json",
+      "sha256": "570a349f9a980b40af97f4a3e453c4cd944ec766efd00d79ec8324109f94cadf"
+    },
+    {
       "bytes": 4150,
       "mode": 420,
       "path": "inputs/PROVIDER_DEPENDENCY.json",
@@ -611,6 +623,18 @@
       "mode": 420,
       "path": "inputs/ROOT_ANALYSIS_SOURCE_DECISION.json",
       "sha256": "c422d3625f7efe657d3c2dbdd575ed3b0f60bfe3ee7f8fde57b3462de9355a4f"
+    },
+    {
+      "bytes": 302406,
+      "mode": 420,
+      "path": "inputs/V104_EXECUTABLE_ANCESTRY.json",
+      "sha256": "056cb57399b61d043b384700b4d1d7e9399fe70ea4b4849a8cd60addcb37aa7c"
+    },
+    {
+      "bytes": 1166,
+      "mode": 420,
+      "path": "inputs/WORKFLOW_COMPOSITION.v105.json",
+      "sha256": "eaadf670482bc3cd8aa019c929a11ebbaebd8f7f79dda41881505f68f9966861"
     },
     {
       "bytes": 367162,
@@ -661,10 +685,10 @@
       "sha256": "18416e29c5c97ccb33818c3049c338d965bc8e06469ee2dc42abf209c030e5e9"
     },
     {
-      "bytes": 5983,
+      "bytes": 7229,
       "mode": 420,
       "path": "launch_api.py",
-      "sha256": "bb3ef76f19d815df139eadd686b72f2b2089ea61a21a9407c57ae8684c2f198b"
+      "sha256": "42064e0dfd9f406f7a275c838202f2bcf54c08dc8683a9bb27999f721a680126"
     },
     {
       "bytes": 6495,
@@ -673,28 +697,40 @@
       "sha256": "144f606bb23057e9512d6983999ab3e73658518d243fedca768b6be81a71c23e"
     },
     {
-      "bytes": 49781,
+      "bytes": 8014,
+      "mode": 420,
+      "path": "pkgconf_provider.py",
+      "sha256": "1689daf98089acdc6bfc5dfaa9c9805bae165d263009b8544c60cbb5f0d13056"
+    },
+    {
+      "bytes": 51854,
       "mode": 420,
       "path": "run_census.py",
-      "sha256": "705b139db5a2184ecc2e212db4e63e6f5b2d6999b763c97176bc9eb2dadc4f1d"
+      "sha256": "4c80a72e1bf77dfec2ae1a148af00724b43a27e7e682116fd8e3dff5a215094f"
     },
     {
-      "bytes": 20009,
+      "bytes": 21747,
       "mode": 420,
       "path": "test_api_only.py",
-      "sha256": "36658a743d143785494337d5f10f6c0d781fcab1679f7f24cf252decae67a5dd"
+      "sha256": "c22c3819ed949ccb4b0eff4f2cf16ceb1460b753b15310841e4d43affc6b0135"
     },
     {
-      "bytes": 42924,
+      "bytes": 44084,
       "mode": 420,
       "path": "test_census.py",
-      "sha256": "51ada1e68769af7a3ec0f3032e4b7af9ce2128240c1f745f844ab3092b9b45b9"
+      "sha256": "e22d7e9daefe9118d96f4b3c5cb4838fc793e771d35f11209d13610c5e138591"
     },
     {
-      "bytes": 15825,
+      "bytes": 15962,
       "mode": 420,
       "path": "test_v104.py",
-      "sha256": "c3cd25aa3f7be7f4c6ceda02ccf38d2d2c40b1612f90ede404f5ff9efb753df4"
+      "sha256": "9e0324fa47d434fcdfd557114a00f82c3c3a88b6b734790c1e19262e0a3acc2e"
+    },
+    {
+      "bytes": 17482,
+      "mode": 420,
+      "path": "test_v105.py",
+      "sha256": "af0138307ce55d94a980ca824bf4411e3178cc73c01b032a681787715db2b423"
     },
     {
       "bytes": 4295,
@@ -708,6 +744,5 @@
       "path": "vendor/public_bytes.py",
       "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
     }
-  ],
-  "format": "atlas-compiler-census-api-source-pins-v1"
+  ]
 }

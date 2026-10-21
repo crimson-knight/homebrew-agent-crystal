@@ -8,7 +8,8 @@ import sys
 
 MAX_CALLS = 1024
 MAX_JOURNAL = 4 * 2**20
-FLAGS = ['--threads', '1', '-Dwithout_mt', '-Dwithout_libxml2', '-Dwithout_openssl', '-Dwithout_zlib', '--error-on-warnings', '--no-color']
+FLAGS = ['--threads','1','--release','--no-debug','-Dstrict_multi_assign','-Dpreview_overload_order','-Dwithout_libxml2','-Dwithout_openssl','-Dwithout_zlib','--error-on-warnings','--no-color']
+DOCS_DEFINES = ['strict_multi_assign','preview_overload_order','without_libxml2','without_openssl','without_zlib','release']
 
 def need(value, message):
     if not value:
@@ -41,18 +42,18 @@ def derive(arguments, project, stdlib, cwd=None):
         need(all(a == sources[0] or a == '--no-codegen' for a in arguments[1:]), 'Exact original build verifier syntax required')
         return arguments + FLAGS
     need(command == 'docs' and '--format=json' in arguments, 'Supported metadata/docs/no-codegen compiler entrypoint required')
-    sources = []; index = 1
+    sources = []; normalized = [command]; index = 1
     while index < len(arguments):
         value = arguments[index]
         if value == '-D':
             need(index + 1 < len(arguments) and arguments[index + 1] in ('without_mt','without_libxml2','without_openssl','without_zlib'), 'Reviewed docs feature context required'); index += 2; continue
         if value == '--format=json' or value.startswith('--project-name=') or value.startswith('--project-version='):
-            index += 1; continue
+            normalized.append(value); index += 1; continue
         path = Path(value)
         need(value.endswith('.cr') and ((cwd/path).resolve().is_relative_to(Path(project)) or (cwd/path).resolve().is_relative_to(Path(stdlib))), 'Contained project or admitted installed stdlib docs entrypoint required')
-        sources.append(value); index += 1
+        sources.append(value); normalized.append(value); index += 1
     need(sources, 'Actual docs source entrypoint required')
-    return arguments + ['-D', 'without_mt', '-D', 'without_libxml2', '-D', 'without_openssl', '-D', 'without_zlib']
+    return normalized + [part for flag in DOCS_DEFINES for part in ('-D',flag)] + ['--error-on-warnings','--no-color']
 
 def launch(arguments, environment=None):
     environment = dict(os.environ if environment is None else environment)

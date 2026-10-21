@@ -1,0 +1,160 @@
+{
+  "GC_metadata_branch": "GC8.2.12 stack-bottom API branch replaces missing-pkg-config fallback0.0.0; direct profiler-field behavior remains pending",
+  "Grant_application_defines": [
+    "without_mt"
+  ],
+  "MT_branch": "Formula+Makefile default multi-thread-supported branch; full actual make argv is truncated",
+  "actual_new_host_profile_qualified": false,
+  "bootstrap": "1.20.0-1",
+  "canonical_GC_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+  "docs_command_source": {
+    "bytes": 4919,
+    "path": "src/compiler/crystal/command/docs.cr",
+    "selected_lines": [
+      {
+        "line": 9,
+        "text": "  private def docs"
+      },
+      {
+        "line": 28,
+        "text": "      opts.on(\"--project-name=NAME\", \"Set project name\") do |value|"
+      },
+      {
+        "line": 32,
+        "text": "      opts.on(\"--project-version=VERSION\", \"Set project version\") do |value|"
+      },
+      {
+        "line": 36,
+        "text": "      opts.on(\"--source-refname=REFNAME\", \"Set source refname (e.g. git tag, commit hash)\") do |value|"
+      },
+      {
+        "line": 40,
+        "text": "      opts.on(\"--source-url-pattern=REFNAME\", \"Set URL pattern for source code links\") do |value|"
+      },
+      {
+        "line": 44,
+        "text": "      opts.on(\"--output=DIR\", \"-o DIR\", \"Set the output directory (default: #{output_directory})\") do |value|"
+      },
+      {
+        "line": 47,
+        "text": "      opts.on(\"--format=FORMAT\", \"-f FORMAT\", \"Set the output format [#{VALID_OUTPUT_FORMATS.join(\", \")}] (default: #{output_format})\") do |value|"
+      },
+      {
+        "line": 55,
+        "text": "      opts.on(\"--json-config-url=URL\", \"Set the URL pointing to a config file (used for discovering versions)\") do |value|"
+      },
+      {
+        "line": 59,
+        "text": "      opts.on(\"--canonical-base-url=URL\", %(Indicate the preferred URL with rel=\"canonical\" link element)) do |value|"
+      },
+      {
+        "line": 63,
+        "text": "      opts.on(\"--base-path=PATH\", \"Set the base path - must be absolute for finding assets on the 404 page\") do |value|"
+      },
+      {
+        "line": 67,
+        "text": "      opts.on(\"--sitemap-base-url=URL\", \"-b URL\", \"Set the sitemap base URL and generates sitemap\") do |value|"
+      },
+      {
+        "line": 71,
+        "text": "      opts.on(\"--sitemap-priority=PRIO\", \"Set the sitemap priority (default: 1.0)\") do |value|"
+      },
+      {
+        "line": 75,
+        "text": "      opts.on(\"--sitemap-changefreq=FREQ\", \"Set the sitemap changefreq (default: never)\") do |value|"
+      },
+      {
+        "line": 79,
+        "text": "      opts.on(\"-D FLAG\", \"--define FLAG\", \"Define a compile-time flag\") do |flag|"
+      },
+      {
+        "line": 80,
+        "text": "        compiler.flags << flag"
+      },
+      {
+        "line": 83,
+        "text": "      opts.on(\"--error-trace\", \"Show full error trace\") do"
+      },
+      {
+        "line": 87,
+        "text": "      opts.on(\"--no-color\", \"Disable colored output\") do"
+      },
+      {
+        "line": 92,
+        "text": "      opts.on(\"--prelude \", \"Use given file as prelude\") do |prelude|"
+      },
+      {
+        "line": 96,
+        "text": "      opts.on(\"-s\", \"--stats\", \"Enable statistics output\") do"
+      },
+      {
+        "line": 100,
+        "text": "      opts.on(\"-p\", \"--progress\", \"Enable progress output\") do"
+      },
+      {
+        "line": 104,
+        "text": "      opts.on(\"-t\", \"--time\", \"Enable execution time output\") do"
+      },
+      {
+        "line": 108,
+        "text": "      opts.on(\"-h\", \"--help\", \"Show this message\") do"
+      },
+      {
+        "line": 113,
+        "text": "      setup_compiler_warning_options(opts, compiler)"
+      },
+      {
+        "line": 145,
+        "text": "    compiler.flags << \"docs\""
+      }
+    ],
+    "sha256": "587db897d2653f6d0f4420c383e9efbfb126ff6b1d4fb568799d8d46001d08da"
+  },
+  "docs_define_form": [
+    "strict_multi_assign",
+    "preview_overload_order",
+    "without_libxml2",
+    "without_openssl",
+    "without_zlib",
+    "release"
+  ],
+  "docs_semantic_profile": {
+    "command_source_sha256": "587db897d2653f6d0f4420c383e9efbfb126ff6b1d4fb568799d8d46001d08da",
+    "compiler_concurrency_qualified": false,
+    "debug_metadata_generation_qualified": false,
+    "feature_context": "supported -D flags including release",
+    "machine_code_generation_qualified": false,
+    "scope": "documentation semantic analysis only"
+  },
+  "format": "atlas-census-recipe-derived-host-profile-v105",
+  "formula_build": [
+    "make",
+    "crystal",
+    "release=true",
+    "FLAGS=--no-debug",
+    "interpreter=true"
+  ],
+  "formula_sha256": "dfb16338b328960bd0e822c2d98eac8b7774d1303e972a5dba09ba1ddf9ab7df",
+  "host_build_options": [
+    "--threads",
+    "1",
+    "--release",
+    "--no-debug"
+  ],
+  "host_defines": [
+    "strict_multi_assign",
+    "preview_overload_order",
+    "without_libxml2",
+    "without_openssl",
+    "without_zlib"
+  ],
+  "makefile_sha256": "e0744f9355e841157e85808e2a7260a361212f4d68b70c7fe053a7258ce9f51f",
+  "original_without_mt_host_context_retained": true,
+  "selected_compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "source_audit_primary_sha256": "824575374d4ac6fa0f7ad955d2be1f610008e016d4363e9422289c05f06b9dc4",
+  "source_audit_receipt_sha256": "efa77b8481b89ef908055e463dbeddb3c338f6f22ed411ca381a9ef1b451c345",
+  "warnings": [
+    "--error-on-warnings",
+    "--no-color"
+  ]
+}

@@ -1,8 +1,26 @@
-name: Grant API-only provider observation and compiler census
+name: Experimental census provider metadata and compiler census
 
 on:
   workflow_dispatch:
     inputs:
+      qualification_mode:
+        description: Experimental source route; full behavior qualification remains separate
+        required: true
+        default: provider-static
+        type: choice
+        options: [provider-static, census]
+      static_admission_json:
+        description: Independently reviewed finite zero-calibration admission JSON
+        required: false
+        type: string
+      static_admission_sha256:
+        description: Independently selected admission SHA-256
+        required: false
+        type: string
+      static_nonce:
+        description: Externally selected fresh invocation nonce
+        required: false
+        type: string
       census_mode:
         type: choice
         options: [observe, execute]
@@ -24,7 +42,7 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ATLAS_PROVIDER_PACKET_SHA256: 81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693
-  ATLAS_CENSUS_PACKET_SHA256: 976f12db7c9ba930ec2da67d831c2461de3224e0f8fa353a888f124b1bf7ecd0
+  ATLAS_CENSUS_PACKET_SHA256: 8cfe4d4cf0e4648f36e1b3abfc0ac09d61930117bf6a6ab7938ba136e299cdc0
   ATLAS_CENSUS_MODE: ${{ inputs.census_mode }}
   ATLAS_CENSUS_DECISION_URL: ${{ inputs.census_decision_url }}
   ATLAS_CENSUS_DECISION_SHA256: ${{ inputs.census_decision_sha256 }}
@@ -32,10 +50,118 @@ env:
   ATLAS_GRANT_PACKET_SHA256: e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e
 
 jobs:
+  census-provider-static:
+    if: ${{ inputs.qualification_mode == 'provider-static' }}
+    runs-on: macos-26
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Read-only static provider observation with finite original-group return
+        timeout-minutes: 6
+        env:
+          STATIC_ADMISSION_JSON: ${{ inputs.static_admission_json }}
+          STATIC_ADMISSION_SHA256: ${{ inputs.static_admission_sha256 }}
+          STATIC_NONCE: ${{ inputs.static_nonce }}
+        run: |
+          python3 -I -S -B - <<'STATIC_PROVIDER'
+          import hashlib, importlib.util, json, os, pathlib, sys, time
+          root = pathlib.Path.cwd().resolve()
+          python = pathlib.Path(sys.executable).resolve()
+          if hashlib.sha256(python.read_bytes()).hexdigest() != '1955899cb535256cfa477d926d016819e52e747984722c44f76e39a4950fee0e':
+              raise RuntimeError('Exact selected historical Python bootstrap required')
+          source = root / 'test/grant_census_provider_static'
+          raw = (source / 'SOURCE_PINS.json').read_bytes()
+          if hashlib.sha256(raw).hexdigest() != 'b2f7d8e644a9188c3e954552b6a15a6f5e6447734a12714c589ebe32607570ab':
+              raise RuntimeError('Exact static observer manifest required before imports')
+          for row in json.loads(raw)['files']:
+              path = root / row['path']
+              if path.is_symlink() or path.resolve(strict=True) != path or len(path.read_bytes()) != row['bytes'] or hashlib.sha256(path.read_bytes()).hexdigest() != row['sha256']:
+                  raise RuntimeError('Exact physical static observation source required')
+          driver = root / 'test/sdk_install_qualification.py'
+          if hashlib.sha256(driver.read_bytes()).hexdigest() != 'dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797':
+              raise RuntimeError('Exact original Runner required')
+          admission = os.environ['STATIC_ADMISSION_JSON'].encode()
+          if hashlib.sha256(admission).hexdigest() != os.environ['STATIC_ADMISSION_SHA256']:
+              raise RuntimeError('Exact selected static admission JSON bytes required')
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'census-static-provider-control'
+          output.mkdir(mode=0o700)
+          admission_path = output / 'ADMISSION.json'
+          admission_path.write_bytes(admission)
+          spec = importlib.util.spec_from_file_location('original_static_metadata_Runner', driver)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          helper_path = root / 'test/grant_compiler_census_api/vendor/public_bytes.py'
+          if hashlib.sha256(helper_path.read_bytes()).hexdigest() != 'eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed':
+              raise RuntimeError('Exact original publication content policy required')
+          helper_spec = importlib.util.spec_from_file_location('static_artifact_public_policy', helper_path)
+          helper = importlib.util.module_from_spec(helper_spec)
+          helper_spec.loader.exec_module(helper)
+          runner = module.Runner(output)
+          runner.deadline = time.monotonic() + 360
+          try:
+              runner.run('zero-calibration-provider', [str(python), '-I', '-S', '-B', str(source / 'observe_static.py'),
+                  '--shared-root', str(root / 'test/grant_source_qualification_shared'), '--shared-manifest-sha256', '4be477796e248c7ca3a145e8733da0f2d8fbf2b3d5545ce4668a123e215b284f',
+                  '--public-helper', str(root / 'test/grant_compiler_census_api/vendor/public_bytes.py'),
+                  '--admission', str(admission_path), '--admission-sha256', os.environ['STATIC_ADMISSION_SHA256'],
+                  '--nonce', os.environ['STATIC_NONCE'], '--output', str(output / 'metadata')], cwd=root, seconds=300)
+          finally:
+              returned = (json.dumps(dict(commands=runner.records, groups=runner.group_observations,
+                  writers_confirmed_retired=runner.writers_confirmed_retired), sort_keys=True) + '\n').encode()
+              helper.inspect_public_bytes('COMMAND_RETURN.json', returned)
+              (output / 'COMMAND_RETURN.json').write_bytes(returned)
+              if runner.writers_confirmed_retired:
+                  for name in ['zero-calibration-provider.stdout.txt', 'zero-calibration-provider.stderr.txt']:
+                      helper.inspect_public_bytes(name, (output / name).read_bytes())
+              else:
+                  raise RuntimeError('Retired writers required before public raw stream retention')
+              for row in json.loads(raw)['files']:
+                  if hashlib.sha256((root / row['path']).read_bytes()).hexdigest() != row['sha256']:
+                      raise RuntimeError('Every original observer source returned exact')
+              if hashlib.sha256(driver.read_bytes()).hexdigest() != 'dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797':
+                  raise RuntimeError('Original Runner source returned exact')
+              selected = []
+              for name, path in [('OBSERVATION_RESULT.json', output / 'metadata/OBSERVATION_RESULT.json'),
+                  ('STATIC_PROFILE.json', output / 'metadata/STATIC_PROFILE.json'), ('PUBLIC_STAGE.json', output / 'metadata/PUBLIC_STAGE.json'),
+                  ('COMMAND_RETURN.json', output / 'COMMAND_RETURN.json'), ('zero-calibration-provider.stdout.txt', output / 'zero-calibration-provider.stdout.txt'),
+                  ('zero-calibration-provider.stderr.txt', output / 'zero-calibration-provider.stderr.txt')]:
+                  if path.exists():
+                      if path.is_symlink() or not path.is_file() or path.resolve(strict=True) != path:
+                          raise RuntimeError('Exact physical public metadata member required')
+                      body = path.read_bytes()
+                      helper.inspect_public_bytes(name, body)
+                      selected.append((name, body))
+              if sum(len(body) for name, body in selected) > 24 * 2**20:
+                  raise RuntimeError('Complete24MiB public metadata ceiling required')
+              public = output / 'public'
+              public.mkdir(mode=0o700)
+              for name, body in selected:
+                  (public / name).write_bytes(body)
+          if not runner.writers_confirmed_retired or any(g['status'] != 'absent' for g in runner.group_observations):
+              raise RuntimeError('Complete original metadata group return required')
+          STATIC_PROVIDER
+      - name: Retain fixed value-free static metadata
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        timeout-minutes: 2
+        with:
+          name: census-zero-calibration-provider
+          path: |
+            ${{ runner.temp }}/census-static-provider-control/public/OBSERVATION_RESULT.json
+            ${{ runner.temp }}/census-static-provider-control/public/STATIC_PROFILE.json
+            ${{ runner.temp }}/census-static-provider-control/public/PUBLIC_STAGE.json
+            ${{ runner.temp }}/census-static-provider-control/public/COMMAND_RETURN.json
+            ${{ runner.temp }}/census-static-provider-control/public/zero-calibration-provider.stdout.txt
+            ${{ runner.temp }}/census-static-provider-control/public/zero-calibration-provider.stderr.txt
+          include-hidden-files: false
+          if-no-files-found: error
+          retention-days: 1
   grant-dirty-transition-mac:
+    if: ${{ inputs.qualification_mode == 'census' }}
     name: Exact compiler API cards and concrete receiver proof
     runs-on: macos-26
-    timeout-minutes: 148
+    timeout-minutes: 151
     steps:
       - name: Check out reviewed tap source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -147,7 +273,7 @@ jobs:
               path = root / row["path"]
               if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
                   raise SystemExit("Exact census control source required before import")
-          for filename in ("test_census.py", "test_api_only.py", "test_v104.py"):
+          for filename in ("test_census.py", "test_api_only.py", "test_v104.py", "test_v105.py"):
               sys.argv = [str(root / filename)]
               try:
                   runpy.run_path(sys.argv[0], run_name="__main__")
@@ -165,7 +291,7 @@ jobs:
               path = root / row["path"]
               if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
                   raise SystemExit("Exact census control source required before import")
-          for filename in ("test_census.py", "test_api_only.py", "test_v104.py"):
+          for filename in ("test_census.py", "test_api_only.py", "test_v104.py", "test_v105.py"):
               sys.argv = [str(root / filename)]
               try:
                   runpy.run_path(sys.argv[0], run_name="__main__")
@@ -361,6 +487,38 @@ jobs:
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
+      - name: Observe source-selected pkgconf and GC metadata before execution
+        id: pkgconf_observation
+        if: ${{ steps.tool_admission.outcome == 'success' }}
+        timeout-minutes: 3
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_compiler_census_api").resolve()
+          raw = (root / "SOURCE_PINS.json").read_bytes()
+          expected = os.environ["ATLAS_CENSUS_PACKET_SHA256"]
+          if hashlib.sha256(raw).hexdigest() != expected:
+              raise SystemExit("Exact census source manifest required before import")
+          for row in json.loads(raw)["files"]:
+              path = root / row["path"]
+              if path.resolve(strict=True) != path or not stat.S_ISREG(path.lstat().st_mode):
+                  raise SystemExit("Physical census executable source required")
+              body = path.read_bytes()
+              if len(body) != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact census executable source required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          argv = [str(root / "launch_api.py"), "observe-pkgconf", "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--policies", str(temporary / "census-provider-policies"),
+              "--packet-sha256", expected, "--output", str(temporary / "pkgconf-observation")]
+          sys.argv = argv
+          runpy.run_path(str(root / "launch_api.py"), run_name="__main__")
+          PYTHON
+
+
       - name: Fetch independently pinned separate census decision
         id: census_review
         if: ${{ inputs.census_mode == 'execute' }}
@@ -393,7 +551,7 @@ jobs:
 
       - name: Observe or qualify separately admitted compiler census APIs
         id: census
-        if: ${{ steps.tool_admission.outcome == 'success' && (inputs.census_mode == 'observe' || steps.census_review.outcome == 'success') }}
+        if: ${{ always() && steps.tool_admission.outcome == 'success' && (steps.pkgconf_observation.outcome == 'failure' || inputs.census_mode == 'observe' || steps.census_review.outcome == 'success') }}
         timeout-minutes: 45
         env:
           TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
@@ -418,6 +576,8 @@ jobs:
               "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
               "--policies", str(temporary / "census-provider-policies"),
               "--packet-sha256", expected, "--output", str(temporary / "compiler-census-result")]
+          pkg = temporary / "pkgconf-observation/LLVM_STATIC_INPUTS.json"
+          argv += ["--pkgconf-observation", str(pkg), "--pkgconf-observation-sha256", hashlib.sha256(pkg.read_bytes()).hexdigest() if pkg.is_file() and not pkg.is_symlink() else "0" * 64]
           if os.environ["ATLAS_CENSUS_MODE"] == "execute":
               argv += ["--decision", str(temporary / "census-review-decision/DECISION.json"), "--decision-sha256", os.environ["ATLAS_CENSUS_DECISION_SHA256"]]
           sys.argv = argv
@@ -500,6 +660,8 @@ jobs:
               except SystemExit as status:
                   if type(status.code) is not int or status.code != 0:
                       raise
+          pkg = temporary / "pkgconf-observation/LLVM_STATIC_INPUTS.json"
+          common += ["--pkgconf-observation", str(pkg), "--pkgconf-observation-sha256", hashlib.sha256(pkg.read_bytes()).hexdigest() if pkg.is_file() and not pkg.is_symlink() else "0" * 64]
           if os.environ.get("CENSUS_ATTEMPTED") == "true":
               extra = ["--output", str(temporary / "unused-api-return"), "--source", str(temporary / "compiler-census-result")]
               if os.environ["ATLAS_CENSUS_MODE"] == "execute":

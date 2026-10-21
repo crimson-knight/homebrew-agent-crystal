@@ -22,6 +22,12 @@ def need(value, message):
     if not value:raise RuntimeError(message)
 
 
+def pkg_helper(model):
+    rows=model.decode(model.stable(ROOT/'SOURCE_PINS.json',2**20))['files']
+    expected=next(row['sha256'] for row in rows if row['path']=='pkgconf_provider.py')
+    return model.load(ROOT/'pkgconf_provider.py',expected,'census_source_bound_pkgconf_metadata')
+
+
 def provider(model):
     dependency = model.decode(model.stable(ROOT/'inputs/PROVIDER_DEPENDENCY.json'))
     path = ROOT/'dependencies/provider_v101'
@@ -76,7 +82,9 @@ def collect(model, args, context, deadline):
         read(prefix/'opt'/name/'INSTALL_RECEIPT.json','package-receipt')
         stable_receipt = dict(source={k:v for k,v in value['source'].items() if k in ('versions','spec','tap','tap_git_head')},arch=value['arch'],compiler=value.get('compiler'),poured_from_bottle=value.get('poured_from_bottle'),runtime_dependencies=value.get('runtime_dependencies',[]))
         packages[str(physical)] = dict(name=name,version=version,physical_prefix=str(physical),formula_sha256=formula['sha256'],receipt_sha256=receipt['sha256'],stable_receipt=stable_receipt)
-    pending = [str(config),str(library)]; visited = set()
+    pkg_executable=prefix/'bin/pkg-config'; pcfile=prefix/'opt/bdw-gc/lib/pkgconfig/bdw-gc.pc'; gc_library=prefix/'opt/bdw-gc/lib/libgc.1.dylib'
+    pc_row,pc_raw=read(pcfile,'pkg-config-metadata'); need(len(pc_raw)<=65536,'Finite selected GC pcfile metadata required'); package(pc_row['path'])
+    pending = [str(config),str(library),str(pkg_executable),str(gc_library)]; visited = set()
     while pending:
         lexical = pending.pop(0); row, raw = read(lexical,'native-image'); physical = row['path']; package(physical)
         if physical in visited:continue
@@ -120,7 +128,8 @@ def collect(model, args, context, deadline):
         if row['kind'] == 'package-receipt':
             receipt = model.decode(model.stable(row['path'],MAX_FILE))
             row.pop('sha256'); row.pop('bytes'); row['stable_receipt'] = dict(source={k:v for k,v in receipt['source'].items() if k in ('versions','spec','tap','tap_git_head')},arch=receipt['arch'],compiler=receipt.get('compiler'),poured_from_bottle=receipt.get('poured_from_bottle'),runtime_dependencies=receipt.get('runtime_dependencies',[]))
-    view = dict(format='atlas-census-api-only-stable-inputs-v1',source_manifest_sha256=args.packet_sha256,analysis_stable_sha256=model.STABLE_TOOLS_SHA,tool_native=context['transfer'].policy_view(context['tool_native']),selected=dict(llvm_config=str(config),llvm_library=selected_library['resolved_path']),packages=stable_packages,files=stable_files,lexical=[dict(declared_path=r['declared_path'],resolved_path=r['resolved_path'],links=[dict(path=x['path'],target=x['target']) for x in r['links']]) for _,r in sorted(resolutions.items())],images=[{k:r[k] for k in ('path','bytes','sha256','mode','imports','rpaths')} for r in images],Apple_imports=sorted(apple),unresolved=unresolved,frontier=pending,llvm_config=descriptor,dyld_shared_cache_bytes_qualified=False,C_shim_and_headers_qualified=False,whole_build_memory_qualified=False)
+    pkg=pkg_helper(model).descriptor(model,prefix,list(rows.values()),list(resolutions.values()),list(packages.values()),images,pc_raw,unresolved)
+    view = dict(pkgconf=pkg,format='atlas-census-api-only-stable-inputs-v1',source_manifest_sha256=args.packet_sha256,analysis_stable_sha256=model.STABLE_TOOLS_SHA,tool_native=context['transfer'].policy_view(context['tool_native']),selected=dict(llvm_config=str(config),llvm_library=selected_library['resolved_path']),packages=stable_packages,files=stable_files,lexical=[dict(declared_path=r['declared_path'],resolved_path=r['resolved_path'],links=[dict(path=x['path'],target=x['target']) for x in r['links']]) for _,r in sorted(resolutions.items())],images=[{k:r[k] for k in ('path','bytes','sha256','mode','imports','rpaths')} for r in images],Apple_imports=sorted(apple),unresolved=unresolved,frontier=pending,llvm_config=descriptor,dyld_shared_cache_bytes_qualified=False,C_shim_and_headers_qualified=False,whole_build_memory_qualified=False)
     physical = dict(files=[r for _,r in sorted(rows.items())],resolutions=[r for _,r in sorted(resolutions.items())],packages=[r for _,r in sorted(packages.items())],total_bytes=total,llvm_config=physical_descriptor)
     model.clock(deadline)
     return dict(stable_view=view,stable_view_sha256=model.sha(model.canonical(view)),physical=physical,llvm_config=descriptor,llvm_config_physical=physical_descriptor,complete=not unresolved and not pending and descriptor['native_file_closure_covered'])
@@ -150,6 +159,8 @@ def validate_observation(model, observation, expected):
     need({r['path'] for r in view['images']} == {r['path'] for r in files if r['kind'] == 'native-image'}, 'Complete selected native image roster required')
     for row in view['images']:need(all(row[k] == by_path[row['path']][k] for k in ('bytes','sha256','mode')) and len(row['imports']) <= 128 and len(row['rpaths']) <= 64, 'Exact finite image/physical import metadata join required')
     need(model.sha(model.canonical(view['tool_native'])) == model.STABLE_TOOLS_SHA, 'Exact independently accepted8855/rootc422 tool-native static authority required')
+    pkg_helper(model).validate(model,view['pkgconf'],by_path)
+    need(view['pkgconf']['native_file_closure_covered'] is (not view['unresolved'] and not view['frontier']),'Exact pkgconf loading closure status required')
     sdk = observation['SDK']; need(observation['job_identity'] == sdk['job_identity'] and observation['compiler_profile_sha256'] == sdk['observed_profile_sha256'] and observation['compiler_backend_sha256'] == sdk['providers']['compiler_backend']['sha256'], 'Fresh actual metadata SDK/job/profile/backend join required')
     need(0 < len(view['images']) <= MAX_IMAGES and 0 < len(observed['physical']['resolutions']) <= MAX_ALIASES and observed['physical']['total_bytes'] <= MAX_TOTAL, 'Exact finite provider-image/alias/byte bounds required')
     return observation
@@ -158,12 +169,14 @@ def validate_observation(model, observation, expected):
 def fresh(model, args, seconds):
     started = time.monotonic(); deadline = started+seconds; context = base(model,args,deadline); args._api_observation_context = context; context['phase_deadline'] = deadline; context['base_check'] = context['check']
     observed = collect(model,args,context,deadline)
+    retained_pkg = None if args.operation=='observe-pkgconf' else pkg_helper(model).retained(model,args,context,observed,validate_observation)
     original_check = context['check']
     def check():
         end = min(time.monotonic()+60,context['phase_deadline']); model.clock(end); original_check(end)
         need(collect(model,args,context,end) == observed, 'Complete original LLVM/native/package/alias/physical source return required')
+        if retained_pkg is not None:need(model.stable(args.pkgconf_observation,16*2**20)==retained_pkg,'Original separately observed pkgconf receipt must return')
         model.manifest(ROOT,args.packet_sha256); model.clock(end)
-    context.update(check=check,llvm_config=observed['llvm_config'],llvm_config_physical=observed['llvm_config_physical'],static_inputs=observed,paths={k:Path(v['path']) for k,v in context['admitted']['providers'].items()})
+    context.update(pkgconf=observed['stable_view']['pkgconf'],pkgconf_observation_raw=retained_pkg,check=check,llvm_config=observed['llvm_config'],llvm_config_physical=observed['llvm_config_physical'],static_inputs=observed,paths={k:Path(v['path']) for k,v in context['admitted']['providers'].items()})
     return started,deadline,context
 
 
@@ -207,7 +220,7 @@ def admit(model, args, *, returning=False, maximum_seconds=POLICY_SECONDS):
     tools = context['transfer'].registry(args.tool_workspace/'tools',tool_policy,context['tool_native'])
     proof_path = args.transfer_packet/'dirty_proof.py'; proof_sha = context['protected'][proof_path]
     proof = model.load(proof_path,proof_sha,'census_api_only_original_proof_tool_reader')
-    native_policy = dict(format='atlas-census-api-only-provider-policy-v1',scope=SCOPE,execution_admitted=True,llvm_library=context['selected_llvm_library'],llvm_config=context['llvm_config'],stable_view_sha256=context['static_inputs']['stable_view_sha256'],job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],scope_decision_sha256=args.decision_sha256,C_shim_and_headers_qualified=False,whole_build_memory_qualified=False,actual_target_cells_accepted=0)
+    native_policy = dict(pkgconf=context['pkgconf'],format='atlas-census-api-only-provider-policy-v1',scope=SCOPE,execution_admitted=True,llvm_library=context['selected_llvm_library'],llvm_config=context['llvm_config'],stable_view_sha256=context['static_inputs']['stable_view_sha256'],job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],scope_decision_sha256=args.decision_sha256,C_shim_and_headers_qualified=False,whole_build_memory_qualified=False,actual_target_cells_accepted=0)
     values = {'PROOF_TOOLS.json':tools,'TOOL_POLICY.json':tool_policy,'NATIVE_POLICY.json':native_policy}
     encoded = {name:model.canonical(value) for name,value in values.items()}
     material = dict(format='atlas-census-api-only-policy-materialization-v1',passed=True,execution_admitted=True,scope=SCOPE,finalization_errors=[],job_identity=context['admitted']['job_identity'],compiler_profile_sha256=context['admitted']['observed_profile_sha256'],compiler_backend_sha256=context['admitted']['providers']['compiler_backend']['sha256'],stable_view_sha256=context['static_inputs']['stable_view_sha256'],policies={name:model.sha(body) for name,body in encoded.items()},scope_decision_sha256=args.decision_sha256,source_manifest_sha256=args.packet_sha256)

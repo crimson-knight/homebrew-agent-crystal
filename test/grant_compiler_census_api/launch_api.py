@@ -47,6 +47,17 @@ def main(args):
         model.manifest(ROOT,args.packet_sha256); model.clock(started+60); return 0
     owned = model.Owned(args.output)
     if args.operation == 'cleanup':return helper.cleanup(model,args,owned)
+    if args.operation == 'observe-pkgconf':return helper.observe(model,args,owned)
+    if args.operation in ('observe','execute'):
+        try:
+            raw=model.stable(args.pkgconf_observation,16*2**20); model.need(model.sha(raw)==args.pkgconf_observation_sha256,'Exact independently observed pkgconf receipt before census admission required'); owned.write('PKGCONF_INPUTS.json',raw)
+        except BaseException as error:
+            if args.pkgconf_observation is not None:
+                refusal=args.pkgconf_observation.parent/'ADMISSION_REFUSAL.json'
+                if refusal.is_file() and not refusal.is_symlink():owned.write('PKGCONF_REFUSAL.json',model.stable(refusal,2**20))
+                partial=args.pkgconf_observation.parent/'LLVM_STATIC_PARTIAL.json'
+                if partial.is_file() and not partial.is_symlink():owned.write('PKGCONF_PARTIAL.json',model.stable(partial,16*2**20))
+            owned.json('ADMISSION_REFUSAL.json',dict(format='atlas-census-pkgconf-prerequisite-refusal-v105',passed=False,error=type(error).__name__+': '+str(error),actual_target_cells_accepted=0)); return 2
     if args.operation == 'observe':return helper.observe(model,args,owned)
     try:
         context = helper.admit(model,args); context['phase_deadline'] = started+model.OUTER_SECONDS
@@ -61,7 +72,8 @@ def main(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('operation',choices=('observe','execute','stage','return','cleanup'))
+    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('operation',choices=('observe-pkgconf','observe','execute','stage','return','cleanup'))
     for name in ('repository','sdk-evidence','transfer-packet','tool-workspace','policies','output'):parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--pkgconf-observation',type=Path); parser.add_argument('--pkgconf-observation-sha256')
     parser.add_argument('--packet-sha256',required=True); parser.add_argument('--decision',type=Path); parser.add_argument('--decision-sha256'); parser.add_argument('--source',type=Path)
     raise SystemExit(main(parser.parse_args()))
