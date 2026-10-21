@@ -140,10 +140,10 @@ jobs:
           python3 -I -S -B test/grant_dirty_transition/test_assignment_cost.py
           python3 -I -S -B test/grant_dirty_transition/test_same_job_policy.py
           python3 -I -S -B test/grant_dirty_transition/test_causal_only.py
-          python3 -I -S -B test/grant_dirty_transition/test_timing_profile.py
-          python3 -O -I -S -B test/grant_dirty_transition/test_timing_profile.py
-          python3 -I -S -B test/grant_dirty_transition/test_workflow_layout.py
-          python3 -O -I -S -B test/grant_dirty_transition/test_workflow_layout.py
+          python3 -I -S -B test/grant_dirty_transition/test_timing_profile.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+          python3 -O -I -S -B test/grant_dirty_transition/test_timing_profile.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+          python3 -I -S -B test/grant_dirty_transition/test_workflow_layout.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
+          python3 -O -I -S -B test/grant_dirty_transition/test_workflow_layout.py --workflow-fixture test/grant_dirty_transition/grant-causal-mac.proposed.yml
           python3 -I -S -B test/grant_dirty_transition/test_dirty_transition.py
           python3 -O -I -S -B test/grant_dirty_transition/test_dirty_transition.py
           python3 -I -S -B test/grant_dirty_transition/test_dirty_prerequisites.py
