@@ -34,7 +34,7 @@
       "bytes": 325,
       "mode": 420,
       "path": "inputs/COUPLING.json",
-      "sha256": "464915c7325e46dc08813cb432b695ad9a07d43e4048b429fa9c6f8891570096"
+      "sha256": "54029d3a7510287d3377720a9344262aedba02289a43c5188680bd6ba6e838a9"
     },
     {
       "bytes": 14900,
@@ -91,10 +91,10 @@
       "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
     },
     {
-      "bytes": 7881,
+      "bytes": 8481,
       "mode": 420,
       "path": "launch.py",
-      "sha256": "52f8dc988f2f959eb777e9e90c8fe329780a9b5fa44cc9a41d78899d1a5c4744"
+      "sha256": "38e5781a4aba8b8fd3f74063d3d405fc8a9f38eac8160ff1282bb5ba9bb1b2e0"
     },
     {
       "bytes": 8937,
@@ -103,10 +103,16 @@
       "sha256": "ea299e6ec8789d0251d79b8af9364946a628679f11c8081a78988881df56308f"
     },
     {
-      "bytes": 62384,
+      "bytes": 65177,
       "mode": 420,
       "path": "provider_observation.py",
-      "sha256": "1d809790efc2988fe8ff4788953a50a049b32e325fd49a61fdf130632a7e38d8"
+      "sha256": "55b531471cacdf6733d87b8f61783e88a5b4362b1f089d045afc4f388fdde602"
+    },
+    {
+      "bytes": 6999,
+      "mode": 420,
+      "path": "sdk_sysroot.py",
+      "sha256": "564108b0928c2cd6cdb5cea486162f8692ef5a37fdbf537b8763528d012788f5"
     },
     {
       "bytes": 3079,
@@ -127,10 +133,22 @@
       "sha256": "9234aa96e8915a4d4016fb2f3a4a79e08c6160d891b7d18d1df1c84d7e1d1a7f"
     },
     {
+      "bytes": 6578,
+      "mode": 420,
+      "path": "test_mechanical_derivation.py",
+      "sha256": "dc01ebe2f125197ff2f02e44336fbc3499574d047c9b566446f3f4debfeb12b0"
+    },
+    {
       "bytes": 31811,
       "mode": 420,
       "path": "test_provider_observation.py",
       "sha256": "22913454db7547b8415b89184b1b5fac40ef1db410180755c3b29a2ed4d6a501"
+    },
+    {
+      "bytes": 11822,
+      "mode": 420,
+      "path": "test_sdk_sysroot.py",
+      "sha256": "5553bb716e644ed13b6ddd7c6804a873874eaf921afd5a2e345d00c077278bd6"
     },
     {
       "bytes": 15490,

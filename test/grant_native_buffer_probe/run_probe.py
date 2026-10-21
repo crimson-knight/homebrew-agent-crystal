@@ -98,6 +98,13 @@ def aliases(rows):
         result.append(dict(row))
     return result
 
+def observed_sdk_contract():
+    path=ROOT/'sdk_sysroot.py'
+    need(digest(path)=='564108b0928c2cd6cdb5cea486162f8692ef5a37fdbf537b8763528d012788f5','Exact observed SDK contract source required before import')
+    spec=importlib.util.spec_from_file_location('probe_observed_sdk_contract',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return module
+
 def native_policy(path, expected, admitted, absolute_deadline=None):
     if absolute_deadline is not None:need(time.monotonic()<=absolute_deadline,'Complete native policy phase deadline required before reading')
     identity,raw=stable(path,2**20)
@@ -113,6 +120,7 @@ def native_policy(path, expected, admitted, absolute_deadline=None):
     need(policy['llvm_version'] == '21.1.8' and policy['llvm_source_commit'] == '2078da43e25a4623cab2d0d60decddf709aaea28', 'Exact reviewed LLVM source/version required')
     need(policy['selected_native_closure_reviewed'] is True, 'Selected native image/alias closure review required')
     need(policy['compiler_driver_search_policy_reviewed'] is True, 'Compiler driver/header/linker/native search review required')
+    if 'sdk_sysroot' in policy.get('shim_compile_context',{}):need(policy.get('sdk_sysroot')==policy['shim_compile_context']['sdk_sysroot'],'Complete observed SDK native policy binding required')
     rows = policy['native_files']
     need(1 <= len(rows) <= 64 and len({r['path'] for r in rows}) == len(rows), 'Finite unique native file roster required')
     header_rows = policy.get('auxiliary_header_files', [])
@@ -132,6 +140,9 @@ def native_policy(path, expected, admitted, absolute_deadline=None):
         need(set(image_evidence)=={r['path'] for r in streaming if r['image_format']=='macho-header-v1'},'Complete policy selected-architecture evidence required')
     native_deadline=time.monotonic()+RETURN_SECONDS
     if absolute_deadline is not None:native_deadline=min(native_deadline,absolute_deadline)
+    if 'sdk_sysroot' in policy:
+        sdk=observed_sdk_contract();sdk.verify(policy['sdk_sysroot'],native_deadline)
+        need(policy.get('shim_compile_context',{}).get('sdk_sysroot')==policy['sdk_sysroot'],'Exact observed SDK and shim context policy join required')
     rows = list(rows) + header_rows
     total, observed = 0, {}
     for row in rows:
@@ -156,6 +167,9 @@ def native_policy(path, expected, admitted, absolute_deadline=None):
     for key in ('cc', 'llvm_library'):
         need(policy[key] in observed, 'Named native provider missing from reviewed closure: ' + key)
     need(observed[policy['cc']]['mode'] & 0o100, 'Executable reviewed C compiler required')
+    if 'sdk_sysroot' in policy:
+        setting=policy['sdk_sysroot']['settings'];need(setting['path'] in observed and all(observed[setting['path']][k]==setting[k] for k in ('bytes','sha256','mode')),'Selected SDK settings belong to the reviewed native source roster')
+        sdk.verify(policy['sdk_sysroot'],native_deadline)
     return policy, observed, aliases(policy['aliases'])
 
 def source_gates(path, expected, native, job_identity, raw_root=None):
@@ -382,15 +396,20 @@ def environment(private, cc):
                   CRYSTAL_WORKERS='1', LC_ALL='C', NO_COLOR='1', CC=shlex.quote(cc))
     return result
 
-def verify_shim_context(policy, argv, env, private):
+def verify_shim_context(policy, argv, env, private, absolute_deadline=None):
     if 'shim_compile_context' not in policy:return None
     expected = policy['shim_compile_context']
+    sdk=observed_sdk_contract()
+    if 'sdk_sysroot' in policy:
+        deadline=time.monotonic()+30 if absolute_deadline is None else absolute_deadline
+        sdk.verify(policy['sdk_sysroot'],deadline)
+        need(expected.get('sdk_sysroot')==policy['sdk_sysroot'] and argv[1:3]==['-isysroot',policy['sdk_sysroot']['path']],'Exact selected SDK compile flag and source context required')
     semantic = {k:('$OWNED_PRIVATE/home' if k=='HOME' else '$OWNED_PRIVATE/cache' if k=='CRYSTAL_CACHE_DIR' else '$CURRENT_JOB_TMPDIR' if k=='TMPDIR' else v) for k,v in env.items()}
     need(expected['format']=='atlas-native-buffer-shim-compile-context-v1' and
          expected['original_argv']==argv and expected['semantic_environment']==semantic and
          expected['planned_private']==str(private) and expected['probe_source_sha256']==digest(Path(__file__)),
          'Exact reviewed planned shim argv/environment/source context required')
-    need(expected['environment']==env and expected['preprocessing_argv']==[v for v in argv[:-2] if v!='-c']+['-E','-M'],
+    need(expected['environment']==env and expected['preprocessing_argv']==sdk.preprocessing_argv(argv),
          'Complete same-context narrowly transformed header observation required')
     return dict(expected)
 
@@ -440,9 +459,10 @@ def execute(args, driver, context, protected):
         fixture = private/'known.bin'; fixture.write_bytes(b'Q'*262144)
         object_path = output/'buffer_shim.o'
         cc_argv = [policy['cc'],'-std=c11','-Wall','-Wextra','-Werror','-O2','-c',str(ROOT/'buffer_shim.c'),'-o',str(object_path)]
-        result['shim_compile_context']=verify_shim_context(policy,cc_argv,env,private)
+        if 'sdk_sysroot' in policy:cc_argv[:] = observed_sdk_contract().compile_argv(cc_argv,policy['sdk_sysroot'])
+        result['shim_compile_context']=verify_shim_context(policy,cc_argv,env,private,runner.deadline)
         command(runner,'build-shim',cc_argv,private,env,30,output)
-        verify_shim_context(policy,cc_argv,environment(private,policy['cc']),private)
+        verify_shim_context(policy,cc_argv,environment(private,policy['cc']),private,started+OUTER_SECONDS)
         result['shim_object']=stable(object_path,8*2**20)[0]
         need(not (output/'build-shim.stdout.txt').read_bytes() and not (output/'build-shim.stderr.txt').read_bytes(), 'GREEN C shim build required')
         remaining = 3*BUILD_SECONDS + 6*RUN_SECONDS + 45
@@ -496,7 +516,7 @@ def execute(args, driver, context, protected):
             if policy is not None:
                 _,after,alias_after=native_policy(args.native_policy,args.native_policy_sha256,context['admitted'],absolute_deadline=started+OUTER_SECONDS)
                 need(after==native_before and alias_after==aliases_before,'Exact native input/alias return required')
-                if 'shim_compile_context' in policy:verify_shim_context(policy,cc_argv,environment(private,policy['cc']),private)
+                if 'shim_compile_context' in policy:verify_shim_context(policy,cc_argv,environment(private,policy['cc']),private,started+OUTER_SECONDS)
                 write(output/'NATIVE_AFTER.json',{'files':after,'aliases':alias_after})
                 if (output/'SOURCE_GATES.json').exists():
                     source_gates(args.source_gates,args.source_gates_sha256,policy,context['admitted']['job_identity'])

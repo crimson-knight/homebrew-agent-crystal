@@ -23,7 +23,7 @@ permissions:
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
-  ATLAS_PROVIDER_PACKET_SHA256: 0107519e8936b6e91d6ac87b87b576ec29a91069a646c381c8cb55d8ecdaed0a
+  ATLAS_PROVIDER_PACKET_SHA256: 695c4c0cee216e42baa647e75148060f49319f521a760cfb000bf68c70f0b586
   ATLAS_PROVIDER_MODE: ${{ inputs.mode }}
   ATLAS_PROVIDER_DECISION_URL: ${{ inputs.decision_url }}
   ATLAS_PROVIDER_DECISION_SHA256: ${{ inputs.decision_sha256 }}
@@ -241,7 +241,7 @@ jobs:
               "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
           argv += ["--output", str(temporary / "unused-controls-output")]
-          for operation in ("controls", "stream-controls"):
+          for operation in ("controls", "stream-controls", "sdk-controls", "mechanical-controls"):
               sys.argv = list(argv)
               sys.argv[1] = operation
               try:
@@ -270,7 +270,7 @@ jobs:
               "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
               "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
           argv += ["--output", str(temporary / "unused-controls-output")]
-          for operation in ("controls", "stream-controls"):
+          for operation in ("controls", "stream-controls", "sdk-controls", "mechanical-controls"):
               sys.argv = list(argv)
               sys.argv[1] = operation
               try:

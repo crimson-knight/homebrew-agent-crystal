@@ -84,7 +84,7 @@ def write_bytes(path,raw):
         before=os.fstat(stream.fileno());need(stat.S_ISREG(before.st_mode) and before.st_nlink==1,'Ordinary single-link owned output required');stream.write(raw);stream.flush();after=os.fstat(stream.fileno())
     owned_root(root);need(identity(path)[:3]==[after.st_dev,after.st_ino,after.st_mode] and after.st_size==len(raw),'Exact owned output write return required');OWNED_FILES[path]=identity(path)[:3]
 
-def shim_compile_context(probe,cc,private,object_path):
+def shim_compile_context(probe,cc,private,object_path,sdk_binding=None,absolute_deadline=1e30):
     """Derive all compiler context directly from the exact admitted actual compile expression."""
     source=Path(probe.__file__);tree=ast.parse(source.read_bytes());assignments=[n.value for n in ast.walk(tree) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='cc_argv' for t in n.targets)]
     need(len(assignments)==1 and isinstance(assignments[0],ast.List),'Unique exact planned C shim compile argv required')
@@ -95,10 +95,14 @@ def shim_compile_context(probe,cc,private,object_path):
         need(expression in choices,'Reviewed static actual C shim argv expression required');return choices[expression]
     original=[value(node) for node in assignments[0].elts]
     need(original[0]==cc and original.count('-c')==1 and original.count('-o')==1 and original[-2:]==['-o',str(object_path)] and original[-3]==str(probe.ROOT/'buffer_shim.c'),'Exact compile/source/output tuple required')
-    transformed=[argument for index,argument in enumerate(original[:-2]) if argument!='-c']+['-E','-M']
+    sdk=load(ROOT/'sdk_sysroot.py','564108b0928c2cd6cdb5cea486162f8692ef5a37fdbf537b8763528d012788f5','header_observed_sdk_sysroot',absolute_deadline)
+    if sdk_binding is not None:original=sdk.compile_argv(original,sdk_binding)
+    transformed=sdk.preprocessing_argv(original)
     environment=probe.environment(private,cc)
     semantic={k:('$OWNED_PRIVATE/home' if k=='HOME' else '$OWNED_PRIVATE/cache' if k=='CRYSTAL_CACHE_DIR' else '$CURRENT_JOB_TMPDIR' if k=='TMPDIR' else v) for k,v in environment.items()}
-    return dict(format='atlas-native-buffer-shim-compile-context-v1',original_argv=original,preprocessing_argv=transformed,environment=environment,semantic_environment=semantic,planned_private=str(private),probe_source_sha256=sha(source.read_bytes()))
+    result=dict(format='atlas-native-buffer-shim-compile-context-v1',original_argv=original,preprocessing_argv=transformed,environment=environment,semantic_environment=semantic,planned_private=str(private),probe_source_sha256=sha(source.read_bytes()))
+    if sdk_binding is not None:result['sdk_sysroot']=sdk_binding
+    return result
 
 def link_trace(stdout,stderr,temporary,linker):
     """Give one proven cc1-output/linker-input scratch token a stable role."""
@@ -116,7 +120,9 @@ def link_trace(stdout,stderr,temporary,linker):
 def stable_shim_context(context):
     result={k:v for k,v in context.items() if k!='environment'};source=context['original_argv'][-3];target=context['original_argv'][-1]
     result['original_argv']=['$PROBE_SOURCE/buffer_shim.c' if value==source else '$PROBE_OUTPUT/buffer_shim.o' if value==target else value for value in context['original_argv']]
-    result['preprocessing_argv']=['$PROBE_SOURCE/buffer_shim.c' if value==source else value for value in context['preprocessing_argv']];result['planned_private']='$PROBE_OUTPUT/private';return result
+    result['preprocessing_argv']=['$PROBE_SOURCE/buffer_shim.c' if value==source else value for value in context['preprocessing_argv']];result['planned_private']='$PROBE_OUTPUT/private'
+    if 'sdk_sysroot' in result:result['sdk_sysroot']=load(ROOT/'sdk_sysroot.py','564108b0928c2cd6cdb5cea486162f8692ef5a37fdbf537b8763528d012788f5','stable_observed_sdk_sysroot',1e30).metadata(result['sdk_sysroot'])
+    return result
 def stable(path,deadline,maximum=MAX_FILE):
     clock(deadline);p=Path(path);before=identity(p)
     need(stat.S_ISREG(before[2]) and 0<=before[3]<=maximum,'Bounded physical regular input required: '+str(p))
@@ -355,17 +361,20 @@ def execute_observation(args,context,started):
             prefix=Path(row['physical_prefix']);census.file(str(prefix/'INSTALL_RECEIPT.json'),'analysis-package-receipt');census.file(str(prefix/'.brew'/(row['name']+'.rb')),'analysis-package-formula')
         metadata_paths=context.get('metadata_paths',dict(xcrun='/usr/bin/xcrun',xcode_select='/usr/bin/xcode-select',codesign='/usr/bin/codesign',platform='/System/Library/CoreServices/SystemVersion.plist'))
         xcrun=metadata_paths['xcrun'];developer=run('developer',[metadata_paths['xcode_select'],'-p'])[0].strip()
-        sdk=run('sdk',[xcrun,'--show-sdk-path'])[0].strip();cc=run('cc-path',[xcrun,'--find','clang'])[0].strip();ld=run('ld-path',[xcrun,'--find','ld'])[0].strip()
+        sdk=run('sdk',[xcrun,'--sdk','macosx','--show-sdk-path'])[0].strip();cc=run('cc-path',[xcrun,'--find','clang'])[0].strip();ld=run('ld-path',[xcrun,'--find','ld'])[0].strip()
         sdk_version=run('sdk-version',[xcrun,'--sdk','macosx','--show-sdk-version'])[0].strip();sdk_build=run('sdk-build',[xcrun,'--sdk','macosx','--show-sdk-build-version'])[0].strip()
         need(all(Path(p).is_absolute() for p in (developer,sdk,cc,ld)) and sdk_version and sdk_build,'Exact selected Xcode SDK/compiler/linker metadata required')
         cc_version=run('cc-version',[cc,'--version']);resource=run('cc-resource',[cc,'-print-resource-dir'])[0].strip()
         need(Path(resource).is_absolute(),'Absolute actual C builtin-header path required')
         shim=args.probe_packet/'buffer_shim.c';planned_output=output.parent/'native-buffer-probe'
-        shim_context=shim_compile_context(context['probe'],str(Path(cc).resolve(strict=True)),planned_output/'private',planned_output/'buffer_shim.o')
+        census.file(str(Path(sdk)/'SDKSettings.json'),'sdk-settings')
+        sdk_module=load(ROOT/'sdk_sysroot.py','564108b0928c2cd6cdb5cea486162f8692ef5a37fdbf537b8763528d012788f5','capture_observed_sdk_sysroot',work_deadline)
+        sdk_binding=sdk_module.capture(sdk,sdk_version,sdk_build,work_deadline);result['sdk_sysroot']=sdk_binding
+        shim_context=shim_compile_context(context['probe'],str(Path(cc).resolve(strict=True)),planned_output/'private',planned_output/'buffer_shim.o',sdk_binding,work_deadline)
         result['shim_compile_context']=shim_context
         deps=run('headers',shim_context['preprocessing_argv'],shim_context['environment'])[0]
         compile_search=run('cc-search',shim_context['original_argv']+['-###'],shim_context['environment'])
-        link_search=run('link-search',[cc,'-###','-x','c','/dev/null','-o','/dev/null'],shim_context['environment'])
+        link_search=run('link-search',[cc,'-isysroot',sdk,'-###','-x','c','/dev/null','-o','/dev/null'],shim_context['environment'])
         prefix=Path((args.sdk_evidence/'brew-root.stdout.txt').read_text().strip());llvm=prefix/'opt/llvm@21';config=llvm/'bin/llvm-config'
         need(run('llvm-version',[str(config),'--version'])[0]=='21.1.8\n','Exact selected LLVM21.1.8 required')
         library=run('llvm-library',[str(config),'--link-shared','--libfiles'])[0].strip();need('\n' not in library and Path(library).is_absolute() and library.endswith('.dylib'),'One exact actual shared LLVM image required')
@@ -404,7 +413,7 @@ def execute_observation(args,context,started):
             for record,observation in zip(runner.records,runner.group_observations):context['contract'].terminal(record,expected[record['label']],output=output,observation=observation)
         except BaseException as error:result['finalization_errors'].append(type(error).__name__+': '+str(error));result['passed']=False
         returned=True
-        for label,check in [('source/SDK/tools',lambda:context['check'](deadline)),('native/header/alias/snapshots',census.verify),('raw aggregate',lambda:need(sum(p.stat().st_size for p in output.glob('*.txt'))<=MAX_RAW,'Aggregate8-MiB metadata raw ceiling required')),('shim compile environment',lambda:need('shim_compile_context' not in result or result['shim_compile_context']==shim_compile_context(context['probe'],result['shim_compile_context']['original_argv'][0],Path(result['shim_compile_context']['planned_private']),Path(result['shim_compile_context']['original_argv'][-1])),'Original planned shim compile/environment return required'))]:
+        for label,check in [('source/SDK/tools',lambda:context['check'](deadline)),('native/header/alias/snapshots',census.verify),('observed SDK directory/settings',lambda:sdk_module.verify(result['sdk_sysroot'],deadline) if 'sdk_sysroot' in result else None),('raw aggregate',lambda:need(sum(p.stat().st_size for p in output.glob('*.txt'))<=MAX_RAW,'Aggregate8-MiB metadata raw ceiling required')),('shim compile environment',lambda:need('shim_compile_context' not in result or result['shim_compile_context']==shim_compile_context(context['probe'],result['shim_compile_context']['original_argv'][0],Path(result['shim_compile_context']['planned_private']),Path(result['shim_compile_context']['original_argv'][-1]),result.get('sdk_sysroot'),deadline),'Original planned shim compile/environment return required'))]:
             try:check()
             except BaseException as error:returned=False;result['finalization_errors'].append(label+': '+type(error).__name__+': '+str(error));result['passed']=False
         result['source_provider_return_accepted']=returned
@@ -446,6 +455,12 @@ def admit_observation(root,expected,absolute_deadline=None,private_snapshots=Tru
     raw=stable(root/'OBSERVATION.json',deadline,8*2**20)[1];need(sha(raw)==expected,'Exact externally selected observation receipt required');value=decode(raw)
     need(value['format'] in ('atlas-native-buffer-provider-observation-v1','atlas-native-buffer-provider-observation-v2') and value['passed'] is True and value['complete'] is True and value['execution_admitted'] is False and value['source_provider_return_accepted'] is True and value['writers_confirmed_retired'] is True and value['finalization_errors']==[],'Complete returned observation-only receipt required')
     need(type(value['elapsed_seconds']) in (int,float) and math.isfinite(value['elapsed_seconds']) and 0<=value['elapsed_seconds']<=OBSERVE_SECONDS,'Original finite observation return horizon required')
+    sdk=load(ROOT/'sdk_sysroot.py','564108b0928c2cd6cdb5cea486162f8692ef5a37fdbf537b8763528d012788f5','read_observed_sdk_sysroot',deadline);sdk.metadata(value['sdk_sysroot'])
+    binding=value['sdk_sysroot'];need(binding['path']==(root/'sdk.stdout.txt').read_text().strip() and binding['version']==(root/'sdk-version.stdout.txt').read_text().strip() and binding['build']==(root/'sdk-build.stdout.txt').read_text().strip(),'Exact raw observed SDK path/version/build join required')
+    settings=[row for row in value['census']['files'] if row['path']==binding['settings']['path']];need(len(settings)==1 and all(settings[0][key]==binding['settings'][key] for key in ('bytes','sha256','mode','physical_identity')),'Exact observed SDK settings census join required')
+    need(value['shim_compile_context'].get('sdk_sysroot')==binding and value['shim_compile_context']['original_argv'][1:3]==['-isysroot',binding['path']],'Exact observed SDK and C compile context receipt join required')
+    need(value['shim_compile_context']['preprocessing_argv']==sdk.preprocessing_argv(value['shim_compile_context']['original_argv']),'Complete mechanically derived observed header argv required')
+    records={row['label']:row for row in value['commands']};need(records['headers']['arguments']==value['shim_compile_context']['preprocessing_argv'] and records['cc-search']['arguments']==value['shim_compile_context']['original_argv']+['-###'] and records['link-search']['arguments']==[(root/'cc-path.stdout.txt').read_text().strip(),'-isysroot',binding['path'],'-###','-x','c','/dev/null','-o','/dev/null'],'Exact observed SDK header/compile/link-search command joins required')
     need(value['stable_view']==stable_view(value) and value['stable_view_sha256']==sha(canonical(value['stable_view'])),'Exact complete stable review view required')
     need([r['label'] for r in value['commands']]==[r[0] for r in COMMANDS] and len(value['groups'])==len(COMMANDS),'Complete20-command observation roster required')
     contract=load(ROOT/'inputs/command_contract.py','33418b91a8ed01e0d3b442781fb5c7ebdbfbb32927e5caecb9747251d9dd52c9','provider_observation_terminal_reader',deadline)
@@ -535,6 +550,7 @@ def materialize(args,context,started):
     need(len(aliases)<=MAX_ALIASES,'Original128-alias policy ceiling required')
     admission=context['admitted'];policy=dict(format='atlas-native-buffer-provider-policy-v1',execution_admitted=True,scope='native-buffer-ownership-probe-only',compiler_profile_sha256=admission['observed_profile_sha256'],compiler_wrapper_sha256=admission['providers']['compiler_wrapper']['sha256'],compiler_backend_sha256=admission['providers']['compiler_backend']['sha256'],llvm_version='21.1.8',llvm_source_commit='2078da43e25a4623cab2d0d60decddf709aaea28',selected_native_closure_reviewed=True,compiler_driver_search_policy_reviewed=True,native_files=native,auxiliary_header_files=headers,aliases=list(aliases.values()),cc=current['selected']['cc'],llvm_library=current['selected']['llvm_library'],independent_decision_sha256=args.decision_sha256,current_observation_sha256=args.observation_sha256,job_identity=admission['job_identity'],full_native_provider_acceptance=False,whole_build_memory_qualified=False)
     policy['shim_compile_context']=current['shim_compile_context']
+    policy['sdk_sysroot']=current['sdk_sysroot']
     if census.stream_images:policy['streamed_native_files']=current['census']['streamed_files'];policy['native_header_evidence']=current['census']['image_evidence']
     tool_policy=dict(format='atlas-grant-analysis-native-policy-v1',execution_admitted=True,independent_review_sha256=decision['independent_review_sha256'],expected_native=context['transfer'].policy_view(context['tool_native']),Apple_platform_code_loading_reviewed=True)
     result=dict(format='atlas-native-buffer-policy-materialization-v1',passed=False,maximum_seconds=POLICY_SECONDS,execution_admitted=False,origin_observation_sha256=decision['origin_observation_sha256'],current_observation_sha256=args.observation_sha256,reviewer_decision_sha256=args.decision_sha256,stable_view_sha256=current['stable_view_sha256'],job_identity=admission['job_identity'],compiler_profile_sha256=admission['observed_profile_sha256'],compiler_backend_sha256=admission['providers']['compiler_backend']['sha256'],sdk_binding_sha256=digest(args.sdk_evidence/'SAME_JOB_BINDING.json',deadline),finalization_errors=[],actual_target_cells_accepted=0)
