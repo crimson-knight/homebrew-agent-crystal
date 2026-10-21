@@ -1,0 +1,30 @@
+{
+  "files": {
+    "metadata_supervisor.py": {
+      "bytes": 49665,
+      "sha256": "f6b709e32790ad89a160910afac03beeffa5f160d7b06af4027ceae9f98da396"
+    },
+    "run_capacity_controls.py": {
+      "bytes": 7955,
+      "sha256": "7822b36291956e1443ec1d0a015b818175125db323587647f520e78654543ea3"
+    },
+    "tarfile.cpython-3.15.0.py.txt": {
+      "bytes": 121716,
+      "sha256": "0b443116a6f406012ebe06455bb472d659fee6e402e0f0ed44b2da8b33de8d61"
+    },
+    "test_archive_capacity.py": {
+      "bytes": 9127,
+      "sha256": "a638b146243631be2768de4628c8e66713a42764ec489b932235ae96f3706cbb"
+    },
+    "test_portable_route.py": {
+      "bytes": 21640,
+      "sha256": "aededcc1ce218e36607d1e07dbc543b97a6a9bd562ff25f8ffd70daecd7c08f9"
+    },
+    "test_provider_admission.py": {
+      "bytes": 3260,
+      "sha256": "123fe8967051f7f8d78e8f19f8c2a987f1f0a74c97721f92d0832ca9e81cbea4"
+    }
+  },
+  "format": "ordinary-public-route-portable-source-v114",
+  "route_manifest_sha256": "6f6275d2448a67e8a89f4ab201ccb255c1097e8b316e018976c85a4023fad5f1"
+}

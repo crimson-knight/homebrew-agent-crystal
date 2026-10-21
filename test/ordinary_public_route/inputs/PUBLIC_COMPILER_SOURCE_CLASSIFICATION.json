@@ -1,0 +1,69 @@
+{
+  "actual_Mac_offending_archive_member_or_rule_retained": false,
+  "actual_local_workload_jobs": 0,
+  "original_default_recipe_version_content_unchanged": true,
+  "public_pinned_source_matches": [
+    {
+      "actual_Mac_refused_member_identity_proven": false,
+      "archive_member": "crystal-1.21.0-incremental-1/src/compiler/crystal/tools/playground/server.cr",
+      "bytes": 14952,
+      "installed_source_relative_path": "compiler/crystal/tools/playground/server.cr",
+      "occurrences": [
+        {
+          "line": 534,
+          "origin_classification": "public source string template with interpolation",
+          "pattern_category": "credential-bearing-HTTP-URL-shape"
+        },
+        {
+          "line": 534,
+          "origin_classification": "public source string template with interpolation",
+          "pattern_category": "credential-bearing-HTTP-URL-shape"
+        }
+      ],
+      "public_origin": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/compiler/crystal/tools/playground/server.cr",
+      "sha256": "8be7fb5d9070c090378451e3151ecaa4683b77752fd241fcf32a41c4b0dd3650",
+      "source_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+      "source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+      "source_path": "src/compiler/crystal/tools/playground/server.cr",
+      "source_release": "v1.21.0-incremental-1",
+      "strict_screening_refusal_reproduced": "Public evidence credential-shaped content refused"
+    },
+    {
+      "actual_Mac_refused_member_identity_proven": false,
+      "archive_member": "crystal-1.21.0-incremental-1/src/uri.cr",
+      "bytes": 22520,
+      "installed_source_relative_path": "uri.cr",
+      "occurrences": [
+        {
+          "line": 147,
+          "origin_classification": "public documentation/example source line",
+          "pattern_category": "credential-bearing-HTTP-URL-shape"
+        },
+        {
+          "line": 159,
+          "origin_classification": "public documentation/example source line",
+          "pattern_category": "credential-bearing-HTTP-URL-shape"
+        },
+        {
+          "line": 319,
+          "origin_classification": "public documentation/example source line",
+          "pattern_category": "credential-bearing-HTTP-URL-shape"
+        },
+        {
+          "line": 588,
+          "origin_classification": "public documentation/example source line",
+          "pattern_category": "credential-bearing-HTTP-URL-shape"
+        }
+      ],
+      "public_origin": "https://github.com/crimson-knight/crystal/blob/9c1e8ec64f6be6343e90d3979bc9536c4b050292/src/uri.cr",
+      "sha256": "8dd0444a0ed5798aa7910f33464b8811146d96c85da40f37b19f6b37bd0de051",
+      "source_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+      "source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+      "source_path": "src/uri.cr",
+      "source_release": "v1.21.0-incremental-1",
+      "strict_screening_refusal_reproduced": "Public evidence credential-shaped content refused"
+    }
+  ],
+  "public_review_content": "Paths, categories, checksums and source provenance; matched credential-shaped text omitted",
+  "recommended_policy": "If parent chooses a source-bound publication successor, recognize only exact expected ordinary bottle stdlib paths with exact public-pinned source size/SHA as reviewed public source. Preserve all other credential checks and retain safe member/rule/hash refusal metadata plus clean screened evidence on any other match. Actual bottle content/source mapping and any binary or private match remain fresh hosted review gates."
+}

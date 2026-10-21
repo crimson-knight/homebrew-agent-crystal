@@ -1,0 +1,179 @@
+name: Ordinary public tap metadata and setup return
+on:
+  workflow_dispatch:
+permissions: {}
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  PYTHONDONTWRITEBYTECODE: 1
+  ROUTE_SOURCE: test/ordinary_public_route
+  ATLAS_ROUTE_PACKET_SHA256: 6f6275d2448a67e8a89f4ab201ccb255c1097e8b316e018976c85a4023fad5f1
+  ATLAS_ROUTE_LAUNCH_SHA256: 809cceb5b85bdad8458052a839cc14a66aebd8aeb4d84b8cbf50b65e60d00513
+  CAPACITY_SOURCE: test/ordinary_public_route_capacity
+  ATLAS_CAPACITY_PACKET_SHA256: 96d5efaff42f5e6067e6d855e1c1adedf6ef59410ba732fd8e474f51b75870c1
+  ATLAS_CAPACITY_DRIVER_SHA256: 7822b36291956e1443ec1d0a015b818175125db323587647f520e78654543ea3
+jobs:
+  observe-public-tap:
+    name: Observe ordinary source metadata on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, ubuntu-24.04]
+    steps:
+      - name: Check out the reviewed metadata observation
+        timeout-minutes: 2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Set up Homebrew
+        timeout-minutes: 5
+        id: homebrew_setup
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+      - name: Verify the bounded source packet and fixture controls
+        id: source_controls
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, os, pathlib, runpy, sys
+          root = pathlib.Path(os.environ['ROUTE_SOURCE']).resolve()
+          launch = root / 'launch.py'
+          if launch.is_symlink() or hashlib.sha256(launch.read_bytes()).hexdigest() != os.environ['ATLAS_ROUTE_LAUNCH_SHA256']:
+              raise SystemExit('Reviewed bootstrap launcher differs')
+          ruby = pathlib.Path('/usr/bin/ruby').resolve()
+          if not ruby.is_file():
+              raise SystemExit('Actual supported Ruby launcher unavailable')
+          python = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(launch), '--entrypoint', 'run_source_controls.py', '--packet-sha256', os.environ['ATLAS_ROUTE_PACKET_SHA256'],
+              '--output', str(pathlib.Path(os.environ['RUNNER_TEMP']) / 'ordinary-source-controls'),
+              '--python', str(python), '--python-sha256', hashlib.sha256(python.read_bytes()).hexdigest(),
+              '--ruby', str(ruby), '--ruby-sha256', hashlib.sha256(ruby.read_bytes()).hexdigest()]
+          runpy.run_path(str(launch), run_name='__main__')
+          PYTHON
+      - name: Verify finite archive metadata capacity controls
+        id: capacity_controls
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, os, pathlib, runpy, sys
+          root = pathlib.Path(os.environ['CAPACITY_SOURCE']).resolve()
+          driver = root / 'run_capacity_controls.py'
+          if driver.is_symlink() or hashlib.sha256(driver.read_bytes()).hexdigest() != os.environ['ATLAS_CAPACITY_DRIVER_SHA256']:
+              raise SystemExit('Exact capacity metadata entrypoint required')
+          python = pathlib.Path(sys.executable).resolve()
+          sys.argv = [str(driver), '--packet-sha256', os.environ['ATLAS_CAPACITY_PACKET_SHA256'],
+              '--route-packet-sha256', os.environ['ATLAS_ROUTE_PACKET_SHA256'],
+              '--python', str(python), '--python-sha256', hashlib.sha256(python.read_bytes()).hexdigest(),
+              '--output', str(pathlib.Path(os.environ['RUNNER_TEMP']) / 'ordinary-capacity-controls')]
+          runpy.run_path(str(driver), run_name='__main__')
+          PYTHON
+      - name: Detach only the verified current-job setup checkout link
+        id: ci_detach
+        timeout-minutes: 6
+        env:
+          SETUP_TAP_NAME: ${{ steps.homebrew_setup.outputs.tap-name }}
+          SETUP_REPOSITORY_PATH: ${{ steps.homebrew_setup.outputs.repository-path }}
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action detach-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation"
+      - name: Observe the ordinary clone and each pinned source member
+        id: observation
+        timeout-minutes: 7
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action tap-metadata --output "$RUNNER_TEMP/ordinary-tap-observation"
+      - name: Stage fixed metadata and complete source evidence
+        id: result_stage
+        if: ${{ always() && steps.observation.outcome != 'skipped' }}
+        timeout-minutes: 2
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint stage_results.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --source "$RUNNER_TEMP/ordinary-tap-observation" --output "$RUNNER_TEMP/ordinary-tap-observation-artifact" --retain-clean-refusals
+      - name: Return exact ordinary tap metadata and source evidence
+        timeout-minutes: 3
+        if: ${{ always() && steps.result_stage.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ordinary-tap-observation-preparation-${{ matrix.os }}
+          path: ${{ runner.temp }}/ordinary-tap-observation-artifact
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 30
+      - name: Require complete screening after preserving the clean projection
+        id: result_screen
+        if: ${{ always() && steps.result_stage.outcome == 'success' }}
+        timeout-minutes: 1
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint stage_results.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --source "$RUNNER_TEMP/ordinary-tap-observation-artifact" --require-complete
+      - name: Preserve the returned public clone and restore the setup post-action link
+        id: ci_restore
+        if: ${{ always() && steps.ci_detach.outcome != 'skipped' }}
+        timeout-minutes: 6
+        env:
+          SETUP_TAP_NAME: ${{ steps.homebrew_setup.outputs.tap-name }}
+          SETUP_REPOSITORY_PATH: ${{ steps.homebrew_setup.outputs.repository-path }}
+          ROUTE_STEP_OUTCOMES: '{"observation":"${{ steps.observation.outcome }}","preparation":"skipped","consumer":"skipped"}'
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint hosted_entry.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --action restore-ci-tap --setup-tap-name "$SETUP_TAP_NAME" --setup-repository-path "$SETUP_REPOSITORY_PATH" --output "$RUNNER_TEMP/ordinary-ci-preparation" --route-output "$RUNNER_TEMP/ordinary-tap-observation" --route-step-outcomes "$ROUTE_STEP_OUTCOMES" --preserve-unaccepted-public-clone
+      - name: Stage the fixed CI transition and original return metadata
+        id: ci_stage
+        if: ${{ always() && steps.ci_detach.outcome != 'skipped' }}
+        timeout-minutes: 1
+        run: |
+          python3 -I -S -B "$ROUTE_SOURCE/launch.py" --entrypoint prepare_ci_checkout.py --packet-sha256 "$ATLAS_ROUTE_PACKET_SHA256" --mode stage --output "$RUNNER_TEMP/ordinary-ci-preparation" --stage "$RUNNER_TEMP/ordinary-ci-artifact"
+      - name: Return separately attributable CI setup transition evidence
+        timeout-minutes: 3
+        if: ${{ always() && steps.ci_stage.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ordinary-CI-transition-${{ matrix.os }}
+          path: ${{ runner.temp }}/ordinary-ci-artifact
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 30
+      - name: Preserve the exact bounded source-control receipt
+        timeout-minutes: 3
+        if: ${{ always() && steps.source_controls.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ordinary-source-controls-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/ordinary-source-controls/SOURCE_CONTROL_RESULT.json
+            ${{ runner.temp }}/ordinary-source-controls/COMMANDS.json
+            ${{ runner.temp }}/ordinary-source-controls/Python-ordinary.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Python-ordinary.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/Python-optimized.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Python-optimized.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-ordinary.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-ordinary.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-optimized.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/CI-Python-optimized.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-provider.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-provider.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-writer.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/Ruby-writer.stderr.txt
+            ${{ runner.temp }}/ordinary-source-controls/fetch-public-source-fixtures.stdout.txt
+            ${{ runner.temp }}/ordinary-source-controls/fetch-public-source-fixtures.stderr.txt
+          if-no-files-found: warn
+          include-hidden-files: false
+          retention-days: 30
+
+      - name: Preserve the exact bounded archive capacity receipt
+        timeout-minutes: 3
+        if: ${{ always() && steps.capacity_controls.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ordinary-capacity-controls-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/ordinary-capacity-controls/CAPACITY_CONTROL_RESULT.json
+            ${{ runner.temp }}/ordinary-capacity-controls/COMMANDS.json
+            ${{ runner.temp }}/ordinary-capacity-controls/archive-capacity-ordinary.stdout.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/archive-capacity-ordinary.stderr.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/archive-capacity-optimized.stdout.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/archive-capacity-optimized.stderr.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/provider-admission-ordinary.stdout.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/provider-admission-ordinary.stderr.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/provider-admission-optimized.stdout.txt
+            ${{ runner.temp }}/ordinary-capacity-controls/provider-admission-optimized.stderr.txt
+          if-no-files-found: warn
+          include-hidden-files: false
+          retention-days: 30

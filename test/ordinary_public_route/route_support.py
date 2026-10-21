@@ -5,8 +5,10 @@ import json
 import math
 import os
 from pathlib import Path, PurePosixPath
+import re
 import stat
 import tarfile
+import time
 
 ROOT=Path(__file__).resolve().parent
 LIMIT=64*2**20
@@ -28,7 +30,7 @@ def stable(path,maximum=LIMIT):
 def source_packet(expected):
     manifest=ROOT/'SOURCE_PINS.json';row,raw=stable(manifest,1024*1024)
     need(row['sha256']==expected,'Exact externally selected route manifest required')
-    rows=json.loads(raw)['files'];need(1<=len(rows)<=40 and len({r['path'] for r in rows})==len(rows),'Finite unique route source roster required')
+    rows=json.loads(raw)['files'];need(1<=len(rows)<=48 and len({r['path'] for r in rows})==len(rows),'Finite unique route source roster required')
     protected={str(manifest):expected}
     for row in rows:
         name=PurePosixPath(row['path']);need(str(name)==row['path'] and not name.is_absolute() and '..' not in name.parts,'Contained source path required')
@@ -37,6 +39,7 @@ def source_packet(expected):
     return protected
 
 def revalidate(protected):
+    for invocation in getattr(protected,'invocations',[]):verify_invocation(invocation)
     for path,expected in protected.items():need(stable(path)[0]['sha256']==expected,'Pinned source/provider changed: '+path)
 
 def load_driver(bottle=False):
@@ -56,12 +59,60 @@ def inventory(root,maximum_files=512):
         need(len(rows)<=maximum_files,'Finite physical file roster required')
     return rows
 
-def catalog(cache):
-    root=cache/'api';rows={}
+CATALOG_MEMBER_BYTES=64*2**20
+CATALOG_TOTAL_BYTES=3*CATALOG_MEMBER_BYTES
+CATALOG_DIRECTORY_ENTRIES=64
+CATALOG_SECONDS=5
+
+def catalog_name(name):
+    return type(name) is str and (name in ('formula.jws.json','formula.json') or re.fullmatch(r'internal/packages\.[A-Za-z0-9_]+\.jws\.json',name) is not None)
+
+def catalog_at_root(root):
+    """Retain legacy catalogs and one unambiguous platform package catalog."""
+    root=Path(root);deadline=time.monotonic()+CATALOG_SECONDS;names=[];internal=root/'internal';directory_identity=None;root_identity=None
+    if root.exists() or root.is_symlink():
+        state=root.lstat();need(stat.S_ISDIR(state.st_mode),'Physical ordinary catalog root required');root_identity=physical_fields(state)
     for name in ('formula.jws.json','formula.json'):
         path=root/name
-        if path.exists() or path.is_symlink():rows[name]=stable(path)[0]
+        if path.exists() or path.is_symlink():names.append(name)
+    if internal.exists() or internal.is_symlink():
+        state=internal.lstat();need(stat.S_ISDIR(state.st_mode),'Physical ordinary internal catalog directory required')
+        directory_identity=physical_fields(state);candidates=[]
+        with os.scandir(internal) as entries:
+            for index,entry in enumerate(entries):
+                need(index<CATALOG_DIRECTORY_ENTRIES and time.monotonic()<=deadline,'Finite internal catalog directory census required')
+                name='internal/'+entry.name
+                if catalog_name(name):candidates.append(name)
+        need(len(candidates)<=1,'One unambiguous current platform package catalog required')
+        names.extend(candidates)
+    rows={};total=0
+    for name in sorted(names):
+        need(time.monotonic()<=deadline and catalog_name(name),'Finite exact catalog member required')
+        path=root/name;state=path.lstat()
+        need(stat.S_ISREG(state.st_mode) and 0<=state.st_size<=CATALOG_MEMBER_BYTES,'Bounded ordinary catalog member required')
+        total+=state.st_size;need(total<=CATALOG_TOTAL_BYTES,'Finite complete catalog byte allowance required')
+        rows[name]=stable(path,CATALOG_MEMBER_BYTES)[0]
+    if directory_identity is not None:need(physical_fields(internal.lstat())==directory_identity,'Exact internal catalog directory return required')
+    if root_identity is not None:need(physical_fields(root.lstat())==root_identity,'Exact catalog root directory return required')
+    need(time.monotonic()<=deadline,'Complete catalog observation deadline required')
     return rows
+
+def catalog(cache):
+    return catalog_at_root(Path(cache)/'api')
+
+def retain_catalog(snapshot,destination):
+    need(type(snapshot) is dict and len(snapshot)<=3 and all(catalog_name(name) for name in snapshot),'Finite exact retained catalog roster required')
+    for name,row in snapshot.items():
+        current,raw=stable(row['path'],CATALOG_MEMBER_BYTES);need(current==row,'Exact resolved API bytes required')
+        path=Path(destination)/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);path.chmod(row['mode'])
+
+def staged_catalog(source):
+    root=Path(source)/'resolved-catalog';rows=catalog_at_root(root)
+    before=read(Path(source)/'CATALOG_BEFORE.json')['API'] if (Path(source)/'CATALOG_BEFORE.json').exists() else {}
+    if any(name.startswith('internal/') for name in rows) or any(name.startswith('internal/') for name in before):
+        need(set(before)==set(rows) and all(catalog_name(name) for name in before),'Exact declared internal catalog staging roster required')
+        for name,row in rows.items():need(all(row[key]==before[name][key] for key in ('bytes','sha256','mode')),'Complete declared catalog staging bytes and mode required')
+    return ['resolved-catalog/'+name for name in sorted(rows)]
 
 def verify_commands(commands,group_observations,successful=True):
     need(len(commands)<=96 and len(commands)==len(group_observations),'Finite exact command/group journal required')
@@ -81,7 +132,7 @@ def command_maximum(label):
     if label in ('alias-acrystal','alias-agent-crystal','alias-crystal-alpha'):return 30
     if label in ('ci-formula-absence-before','ci-brew-root','ci-tap-location','ci-checkout-before','ci-tree-before','ci-checkout-origin','ci-checkout-after','ci-tree-after','ci-formula-absence-after','ci-checkout-restore-before','ci-tree-restore-before','ci-preserved-source','ci-preserved-origin','ci-checkout-restore-after','ci-tree-restore-after'):return 15
     if label=='ci-untap-owned-checkout':return 30
-    limits={**dict.fromkeys(('initial-formula-absence','initial-tap-location','public-default-main','homebrew-version','homebrew-config','homebrew-repository','homebrew-source','homebrew-source-return','homebrew-core-return','homebrew-cache','actual-installed-prefix','homebrew-core-source','consumer-install-bundle','consumer-profile'),30),
+    limits={**dict.fromkeys(('initial-formula-absence','initial-tap-location','public-default-main','homebrew-version','homebrew-config','homebrew-prefix','homebrew-invocation-prefix','homebrew-invocation-repository','homebrew-repository','homebrew-source','homebrew-source-return','homebrew-core-return','homebrew-cache','actual-installed-prefix','homebrew-core-source','consumer-install-bundle','consumer-profile'),30),
         **dict.fromkeys(('observed-git-version','observed-curl-version','observed-bash-version','observed-python-version','consumer-lock-check'),15),
         'download-public-installer':45,'ordinary-default-install':2700,'installed-formula-tests':120,'installed-dependency-metadata':60,
         'tap-public-default':120,'build-for-normal-bottle':2700,'create-bottle':300,'download-public-SDK':60,'download-reviewed-minecart':45,'consumer-write-lock':600,'consumer-frozen-install':600,'consumer-budget-spec':120,'download-reviewed-admission':20,'native-candidate':60,'Git-candidate':60,'profile-inspection':15}
@@ -107,3 +158,37 @@ def extract_provider(archive,destination,descriptor):
     for name,(raw,mode) in payload.items():
         path=destination/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);path.chmod(mode)
     return inventory(destination)
+
+
+class ProviderProtection(dict):
+    """Return the physical source ledger together with exact invocation identities."""
+    def __init__(self,values,invocations):super().__init__(values);self.invocations=invocations
+
+def physical_fields(info):return [info.st_dev,info.st_ino,info.st_mode,info.st_size,info.st_mtime_ns,info.st_ctime_ns]
+
+def observe_invocation(lexical):
+    """Resolve every lexical component while retaining bounded link/body identities."""
+    lexical=Path(lexical);need(lexical.is_absolute() and '..' not in lexical.parts,'Absolute canonical lexical provider required')
+    pending=list(lexical.parts[1:]);current=Path('/');links=[];directories=[];steps=0
+    while pending:
+        steps+=1;need(steps<=128 and len(links)<=32,'Finite complete provider alias chain required')
+        part=pending.pop(0)
+        if part in ('','.'):continue
+        if part=='..':current=current.parent;continue
+        candidate=current/part;before=candidate.lstat()
+        if stat.S_ISLNK(before.st_mode):
+            target=os.readlink(candidate);need(target and len(target.encode())<=4096,'Bounded complete provider alias target required')
+            need(physical_fields(before)==physical_fields(candidate.lstat()),'Provider alias must remain stable during observation')
+            links.append({'path':str(candidate),'target':target,'identity':physical_fields(before),'uid':before.st_uid,'gid':before.st_gid})
+            target_path=Path(target);pending=list(target_path.parts[1:] if target_path.is_absolute() else target_path.parts)+pending
+            if target_path.is_absolute():current=Path('/')
+        else:
+            current=candidate
+            if pending:
+                need(stat.S_ISDIR(before.st_mode),'Ordinary provider traversal directory required');directories.append({'path':str(current),'identity':[before.st_dev,before.st_ino,before.st_mode,before.st_uid,before.st_gid]})
+            else:need(stat.S_ISREG(before.st_mode),'Ordinary physical provider body required')
+    row,_=stable(current);info=current.lstat();need(current==lexical.resolve(strict=True),'Complete lexical provider resolution must join actual physical body')
+    return {'lexical':str(lexical),'physical':row,'physical_identity':physical_fields(info),'aliases':links,'directories':directories}
+
+def verify_invocation(value):
+    need(observe_invocation(value['lexical'])==value,'Exact lexical alias chain and complete physical provider return required')

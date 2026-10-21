@@ -17,12 +17,14 @@ ROOT=Path(__file__).resolve().parent;sys.path.insert(0,str(ROOT))
 import route_support as support
 import prepare_ci_checkout as ci
 import run_route as route
+import source_modes
 GUARD_CALLS=[]
 
 class CICheckoutControls(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='owned CI checkout controls with spaces ');self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name).resolve()
         self.guards=ExitStack();self.addCleanup(self.guards.close)
+        self.guards.enter_context(mock.patch.object(source_modes,'DEFAULT_POLICY',source_modes.HISTORICAL_POLICY))
         def guard(*a,**k):GUARD_CALLS.append('external');raise AssertionError('Authored source fixture process provider required')
         for target in ('subprocess.Popen','os.system','os.fork','os.posix_spawn','os.posix_spawnp','os.kill','os.killpg'):self.guards.enter_context(mock.patch(target,side_effect=guard))
         self.addCleanup(lambda:self.assertEqual(GUARD_CALLS,[]))
@@ -428,4 +430,8 @@ class CICheckoutControls(unittest.TestCase):
         self.assertEqual(hosted_entry.ENTRIES['tap-metadata'],('run_route.py',['--mode','tap-metadata']));self.assertNotIn('bottle',hosted_entry.ENTRIES['tap-metadata'][1])
 
 if __name__=='__main__':
-    result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(CICheckoutControls));print(json.dumps({'tests_run':result.testsRun,'errors':len(result.errors),'failures':len(result.failures),'skips':len(result.skipped),'actual_guard_calls':len(GUARD_CALLS)},sort_keys=True));raise SystemExit(0 if result.wasSuccessful() and not GUARD_CALLS else 2)
+    from publication_controls import PublicationControls,GUARD_CALLS as PUBLICATION_GUARDS
+    from mode_controls import SourceModeControls,GUARD_CALLS as MODE_GUARDS
+    from archive_controls import ArchiveMetadataControls,GUARD_CALLS as ARCHIVE_GUARDS
+    suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(CICheckoutControls),unittest.defaultTestLoader.loadTestsFromTestCase(PublicationControls),unittest.defaultTestLoader.loadTestsFromTestCase(SourceModeControls),unittest.defaultTestLoader.loadTestsFromTestCase(ArchiveMetadataControls)])
+    result=unittest.TextTestRunner(verbosity=2).run(suite);GUARD_CALLS.extend(PUBLICATION_GUARDS);GUARD_CALLS.extend(MODE_GUARDS);GUARD_CALLS.extend(ARCHIVE_GUARDS);print(json.dumps({'tests_run':result.testsRun,'errors':len(result.errors),'failures':len(result.failures),'skips':len(result.skipped),'actual_guard_calls':len(GUARD_CALLS)},sort_keys=True));raise SystemExit(0 if result.wasSuccessful() and not GUARD_CALLS else 2)

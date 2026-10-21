@@ -6,6 +6,16 @@
       "sha256": "a2f0958320f4b524f23f3f3f5a8730d7b23783fe939b116a894ff1139b2cf5dc"
     },
     {
+      "bytes": 10675,
+      "path": "archive_controls.py",
+      "sha256": "75518eafb176c4ca8a35ad00bc551904d2cced96c7e92c5956867761a3bec347"
+    },
+    {
+      "bytes": 14618,
+      "path": "bottle_source_screen.py",
+      "sha256": "1f966b3878c28ab97af5bbf23d065fd4314fbceff5a11c6e8bd9db5ae7ad2e6e"
+    },
+    {
       "bytes": 6565,
       "path": "bottle_vendor/Formula/agent-crystal.rb",
       "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67"
@@ -21,9 +31,9 @@
       "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f"
     },
     {
-      "bytes": 10582,
+      "bytes": 10534,
       "path": "build_bottle.py",
-      "sha256": "983bee284abf8bd39aea96dc5318fd01907c60df954eb14fa7649bdf50c29754"
+      "sha256": "8e7cc70a1ad7224aa2316d05973f60c510c373c5ddf3c7d182decd071ae9dc71"
     },
     {
       "bytes": 234,
@@ -36,9 +46,9 @@
       "sha256": "9626b64cfd6deb0457434641fcb83363775f1fcdebad1ecf3775883e81c9684c"
     },
     {
-      "bytes": 2191,
+      "bytes": 2461,
       "path": "fetch_fixtures.py",
-      "sha256": "8366e537368c49ff31edc8cbd5097c16dad7a46c20baa81866607b373cdd059c"
+      "sha256": "0c7c7fee002a3fc1234224477db5f7ad9984a59b25b42c02efc9e5358592cb3f"
     },
     {
       "bytes": 8373,
@@ -46,9 +56,14 @@
       "sha256": "b01dfc86f927d30755dec9f45faf7a06da2aeccb277b79b4e3523e82e7396767"
     },
     {
-      "bytes": 3933,
+      "bytes": 4193,
       "path": "hosted_entry.py",
-      "sha256": "43dc98348257c22071fb623f3d20477f4b80e388815b1aed7a06340b7993153f"
+      "sha256": "66c7aeddc4b3c542ca39f046d847789e3bc0cdfc083dc4d17803779381d79acc"
+    },
+    {
+      "bytes": 25543,
+      "path": "inputs/ACTUAL_V108_MODE_EVIDENCE.json",
+      "sha256": "3a8c72f19ea64cea81edc7da313ddc2fdb73c4f76d33d215f9c45f6301d2750e"
     },
     {
       "bytes": 5800,
@@ -69,6 +84,16 @@
       "bytes": 9667,
       "path": "inputs/PREDECESSOR_V106_PINS.json",
       "sha256": "d8f114cc7106390cebaa1f97cb17bea053e6cd0ad71e1554bf33c948af100a72"
+    },
+    {
+      "bytes": 1788,
+      "path": "inputs/PRIMARY_GIT_MODE_CONTRACT.json",
+      "sha256": "a2a848adcfa846705dab476b3f8b9e950b2f5fc1068af221511de72608dad711"
+    },
+    {
+      "bytes": 3666,
+      "path": "inputs/PUBLIC_COMPILER_SOURCE_CLASSIFICATION.json",
+      "sha256": "c074e277c6cfbd17536ef8aed7c82ef4d0358376428ec8917a4a13f6d2496839"
     },
     {
       "bytes": 5389,
@@ -118,12 +143,17 @@
     {
       "bytes": 1648,
       "path": "launch.py",
-      "sha256": "b23df85c36237cfc0c36c75f857671d51429b2fce95d52324bddd8178f0f37ff"
+      "sha256": "809cceb5b85bdad8458052a839cc14a66aebd8aeb4d84b8cbf50b65e60d00513"
     },
     {
-      "bytes": 26217,
+      "bytes": 10732,
+      "path": "mode_controls.py",
+      "sha256": "8674d7ccf993b8d6a7f3187166ba4a41539d598a03800cca7eb2a0502ddb94b9"
+    },
+    {
+      "bytes": 33357,
       "path": "prepare_ci_checkout.py",
-      "sha256": "f4e45ea9350fd3d385bda6c3bb3adc6198e453fcef76e4db3138d4a2bf8032ae"
+      "sha256": "7098adf3f64d03bb3c8b36da81da62c1e68a2af7df0c24a1f9c8716faf508fb6"
     },
     {
       "bytes": 8867,
@@ -131,29 +161,39 @@
       "sha256": "6e7463fd5d113c0c0dfed119c41894f7deb9a1916a6681b502187ce441b4ea12"
     },
     {
-      "bytes": 8408,
+      "bytes": 14483,
+      "path": "publication_controls.py",
+      "sha256": "26bd9c4f8e5ccb0f6fbc1bb5c7814edcaa3be1ed60af0c7fa3bc1c6afffc0290"
+    },
+    {
+      "bytes": 14543,
       "path": "route_support.py",
-      "sha256": "a496f0fea9a73c3f4d0486687b3b7e90aa3610d76b32cb6498841ed6d7603206"
+      "sha256": "8c9172a9899a1284ab3c71670c3213fab61a3db91d73a7d2b84b7cabb3e3dcbd"
     },
     {
-      "bytes": 34129,
+      "bytes": 37906,
       "path": "run_route.py",
-      "sha256": "9379c4bd8fe2b812cb2d86075e55063e05fae7a2807e94c3a7315d014195b77f"
+      "sha256": "a16a54349fb98d2c8caf73441be72bf6ff5bb8ba1f0361b9e0a50f3b2a05be3a"
     },
     {
-      "bytes": 5533,
+      "bytes": 5534,
       "path": "run_source_controls.py",
-      "sha256": "8429e0ffc6250b69b9d60a248b2c9f630b968015c88c2d208cef44beab09f72c"
+      "sha256": "3dffdfb28b6ad47cad2a9ac3fa82a9e5ea0f52b09cbc67371b09dec97a97823d"
     },
     {
-      "bytes": 7493,
+      "bytes": 2012,
+      "path": "source_modes.py",
+      "sha256": "7800efd86ad2fddcf57dc382e32ad0438829e6bf57f4a2141c6d50d367d25615"
+    },
+    {
+      "bytes": 16747,
       "path": "stage_results.py",
-      "sha256": "62036848ee59c7128533065b6642fd1f6f4631b4d82922cd26e39aa92cfa1ed0"
+      "sha256": "bc049f5e85a6851b58c0a9dd1e8c739b89bf77497d1e50c324a98b217f7fb382"
     },
     {
-      "bytes": 45782,
+      "bytes": 46528,
       "path": "test_ci_checkout.py",
-      "sha256": "a6f8e5bbf79986d34ce28573b6c4b63085a816a97b04201cc54c7901df8b2d87"
+      "sha256": "bf2ab42696692cf289a1e4f27d6922577223508d04aa4844301a4bf3b1a4925c"
     },
     {
       "bytes": 5213,

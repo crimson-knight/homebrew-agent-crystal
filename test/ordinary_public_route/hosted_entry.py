@@ -5,7 +5,7 @@ from pathlib import Path
 import runpy
 import shutil
 import sys
-from route_support import ROOT,need,stable,source_packet,revalidate,write
+from route_support import ROOT,need,stable,source_packet,revalidate,write,observe_invocation,verify_invocation
 
 ENTRIES={'tap-metadata':('run_route.py',['--mode','tap-metadata']),'detach-ci-tap':('prepare_ci_checkout.py',['--mode','detach']),'restore-ci-tap':('prepare_ci_checkout.py',['--mode','restore']),'observe':('run_route.py',['--mode','observe']),'prepare':('prepare_retained.py',[]),'wait':('wait_resume.py',[]),'bottle':('build_bottle.py',[])}
 
@@ -20,8 +20,9 @@ def provider_arguments(environment=None,which=shutil.which):
         else:candidate=which(name)
         need(candidate is not None,'Actual hosted metadata provider unavailable: '+name)
         physical=Path(candidate).resolve(strict=True);result[name]=stable(physical)[0]
+        if name=='brew':result[name]['invocation']=observe_invocation(Path(candidate).absolute())
     argv=[]
-    for name,row in result.items():argv+=['--'+name,row['path'],'--'+name+'-sha256',row['sha256']]
+    for name,row in result.items():argv+=['--'+name,row.get('invocation',{}).get('lexical',row['path']),'--'+name+'-sha256',row['sha256']]
     return argv,result
 
 
@@ -45,7 +46,9 @@ def main(args):
     try:sys.argv=argv;runpy.run_path(str(ROOT/name),run_name='__main__')
     finally:
         sys.argv=previous;revalidate(protected)
-        for row in providers.values():need(stable(row['path'])[0]['sha256']==row['sha256'],'Original hosted provider changed on return')
+        for row in providers.values():
+            need(stable(row['path'])[0]['sha256']==row['sha256'],'Original hosted provider changed on return')
+            if 'invocation' in row:verify_invocation(row['invocation'])
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--action',choices=ENTRIES,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--packet-sha256',required=True);p.add_argument('--review-branch');p.add_argument('--setup-tap-name');p.add_argument('--setup-repository-path');p.add_argument('--route-output',type=Path);p.add_argument('--route-step-outcomes');p.add_argument('--preserve-unaccepted-public-clone',action='store_true');p.add_argument('--sdk-mode',choices=['source','bottle'],default='source');p.add_argument('--bottle-acceptance',type=Path);p.add_argument('--bottle-acceptance-sha256');main(p.parse_args())

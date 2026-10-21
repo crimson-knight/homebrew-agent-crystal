@@ -9,7 +9,7 @@ import time
 from route_support import ROOT,need,read,write,stable,source_packet,revalidate,load_driver
 
 PYTHON_CASES=37
-CI_CASES=93
+CI_CASES=190
 RUBY_CASES=7
 RUBY_ASSERTIONS=27
 
@@ -21,7 +21,7 @@ def controls(args):
         path=Path(getattr(args,key)).resolve(strict=True);row,_=stable(path);need(row['sha256']==getattr(args,key+'_sha256'),'Exact actual source-fixture provider required');providers[key]=row;protected[str(path)]=row['sha256']
     need(providers['python']['path']==str(Path(sys.executable).resolve()),'Same actual Python source-fixture provider required')
     driver=load_driver();runner=driver.Runner(output);started=time.monotonic();runner.deadline=started+240
-    result={'format':'ordinary-public-route-source-controls-v108','passed':False,'actual_compiler_native_container_SSH_jobs':0,'providers':providers,'observed_clock':{'protocol':'POSIX_CLOCK_MONOTONIC','common_seconds':time.clock_gettime(time.CLOCK_MONOTONIC),'Runner_local_seconds':time.monotonic(),'local_clock_implementation':time.get_clock_info('monotonic').implementation},'finalization_errors':[]}
+    result={'format':'ordinary-public-route-source-controls-v111','passed':False,'actual_compiler_native_container_SSH_jobs':0,'providers':providers,'observed_clock':{'protocol':'POSIX_CLOCK_MONOTONIC','common_seconds':time.clock_gettime(time.CLOCK_MONOTONIC),'Runner_local_seconds':time.monotonic(),'local_clock_implementation':time.get_clock_info('monotonic').implementation},'finalization_errors':[]}
     env={k:v for k,v in os.environ.items() if k in ('PATH','HOME','TMPDIR','LANG','LC_ALL')};env.update(PYTHONDONTWRITEBYTECODE='1',NO_COLOR='1')
     try:
         fixtures=args.fixtures.resolve(strict=True) if args.fixtures else output/'fixtures'
