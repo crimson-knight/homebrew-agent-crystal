@@ -1,0 +1,15 @@
+{
+  "image_os": "macos26",
+  "image_version": "20261013.0424.1",
+  "machine": "arm64",
+  "private_directory": "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa",
+  "python_path": "/opt/homebrew/opt/python@3.15/bin/python3.15",
+  "python_sha256": "1955899cb535256cfa477d926d016819e52e747984722c44f76e39a4950fee0e",
+  "qualification_script_sha256": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797",
+  "release": "25.6.0",
+  "run_attempt": "1",
+  "run_id": "39476052235",
+  "source_commit": "ba5d7a4635970f36037c709708b1c80ca2620a9c",
+  "source_lock_sha256": "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4",
+  "system": "Darwin"
+}

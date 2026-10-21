@@ -1,0 +1,133 @@
+require "./fixture"
+
+# Runs inside the physically projected, default-feature Grant source tree.
+def require_contract(value : Bool, label : String)
+  raise "Dirty contract: #{label}" unless value
+end
+
+{% if flag?(:dirty_carrier) %}
+  def compare_assignment_values(previous, current)
+    captured = Grant::Dirty::CapturedColumnAssignment.new("value", previous, current, nil, nil)
+    require_contract(typeof(captured.previous_database_value) == Grant::Base::DirtyValue, "fixed previous getter")
+    require_contract(typeof(captured.current_database_value) == Grant::Base::DirtyValue, "fixed current getter")
+    require_contract(Grant::Dirty.has_different_assignment_values?(captured) == (previous != current), "literal narrow != parity")
+    require_contract(Grant::Dirty.has_equal_assignment_values?(captured) == (previous == current), "literal narrow == parity")
+  end
+
+  compare_assignment_values(1_i32, 1_i64)
+  compare_assignment_values(1_i64, 2_i32)
+  compare_assignment_values(1_f32, 1_f64)
+  compare_assignment_values(Float64::NAN, Float64::NAN)
+  compare_assignment_values(nil, nil)
+  compare_assignment_values(nil, 1_i32)
+  compare_assignment_values(1_i64, nil)
+  compare_assignment_values(true, false)
+  compare_assignment_values("a", "a")
+  compare_assignment_values([1_i16], [1_i16])
+  compare_assignment_values([1_i16], [1_i32])
+  compare_assignment_values([1_i32], [2_i32])
+  compare_assignment_values([1_i64], [1_i64])
+  compare_assignment_values([1_f32], [1_f32])
+  compare_assignment_values([1_f64], [2_f64])
+  compare_assignment_values([Float64::NAN], [Float64::NAN])
+  compare_assignment_values([true], [false])
+  compare_assignment_values(["a"], ["a"])
+  compare_assignment_values(Bytes[1, 2], Bytes[1, 2])
+  compare_assignment_values(Time.utc(2026, 1, 1), Time.utc(2026, 1, 1))
+  compare_assignment_values(UUID.empty, UUID.empty)
+  compare_assignment_values([UUID.empty], [UUID.empty])
+  compare_assignment_values([Time.utc(2026, 1, 1)], [Time.utc(2026, 1, 1)])
+
+  {% if flag?(:dirty_full_transition) %}
+    alias OriginalValues = Hash(String, Grant::Base::DirtyValue)
+    alias PendingChanges = Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue))
+
+    originals = OriginalValues.new
+    pending = PendingChanges.new
+    originals["value"] = nil
+    originals["unrelated"] = "preserved"
+    pending["unrelated"] = {"old", "new"}
+    first = Grant::Dirty.record_column_assignment(Grant::Dirty::CapturedColumnAssignment.new("value", nil, 1_i32, originals, pending))
+    originals["value"] = "corrupted baseline" if ENV["GRANT_DIRTY_INJECT_INVALID_BASELINE"]? == "1"
+    require_contract(first.collection_of_original_attribute_values == originals, "original state")
+    if returned_originals = first.collection_of_original_attribute_values
+      require_contract(returned_originals.same?(originals), "original reference identity")
+    else
+      raise "Dirty contract: original reference required"
+    end
+    if returned_pending = first.collection_of_pending_attribute_changes
+      require_contract(returned_pending.same?(pending), "pending reference identity")
+    else
+      raise "Dirty contract: pending reference required"
+    end
+    require_contract(originals.has_key?("value") && originals["value"].nil?, "present nil baseline")
+    require_contract(pending["value"] == {nil, 1_i32}, "original nil captured")
+    second = Grant::Dirty.record_column_assignment(Grant::Dirty::CapturedColumnAssignment.new("value", 1_i32, nil, originals, pending))
+    if returned_pending = second.collection_of_pending_attribute_changes
+      require_contract(returned_pending.same?(pending), "empty/reverted pending reference retained")
+    else
+      raise "Dirty contract: reverted pending reference required"
+    end
+    require_contract(!pending.has_key?("value") && pending["unrelated"] == {"old", "new"}, "only reverted key removed")
+    require_contract(originals["unrelated"] == "preserved", "unrelated original preserved")
+    lazy = Grant::Dirty.record_column_assignment(Grant::Dirty::CapturedColumnAssignment.new("value", nil, nil, nil, nil))
+    require_contract(lazy.collection_of_original_attribute_values.nil? && lazy.collection_of_pending_attribute_changes.nil?, "unchanged lazy nil state")
+    empty_pending = PendingChanges.new
+    unchanged = Grant::Dirty.record_column_assignment(Grant::Dirty::CapturedColumnAssignment.new("value", 1_i32, 1_i32, originals, empty_pending))
+    if returned_pending = unchanged.collection_of_pending_attribute_changes
+      require_contract(returned_pending.same?(empty_pending), "unchanged empty hash identity")
+    else
+      raise "Dirty contract: empty pending reference required"
+    end
+    list_of_values = ["a"]
+    array_originals = OriginalValues.new
+    array_originals["value"] = list_of_values
+    array_pending = PendingChanges.new
+    Grant::Dirty.record_column_assignment(Grant::Dirty::CapturedColumnAssignment.new("value", list_of_values, ["b"], array_originals, array_pending))
+    retained_value = array_originals["value"]
+    require_contract(retained_value.is_a?(Array(String)) && retained_value.same?(list_of_values), "array baseline alias retained")
+  {% end %}
+
+  GC.collect
+  allocated_before = GC.stats.total_bytes
+  literal_count = 0
+  100_000.times do |index|
+    literal_count += 1 if index.to_i32 != (index + 1).to_i64
+  end
+  literal_allocated_bytes = GC.stats.total_bytes - allocated_before
+  GC.collect
+  allocated_before = GC.stats.total_bytes
+  carrier_count = 0
+  100_000.times do |index|
+    captured = Grant::Dirty::CapturedColumnAssignment.new("value", index.to_i32, (index + 1).to_i64, nil, nil)
+    carrier_count += 1 if Grant::Dirty.has_different_assignment_values?(captured)
+  end
+  carrier_allocated_bytes = GC.stats.total_bytes - allocated_before
+  require_contract(literal_count == 100_000 && carrier_count == literal_count, "allocation loop work retained")
+  puts "GRANT_DIRTY_LAYOUT captured_size_bytes=#{sizeof(Grant::Dirty::CapturedColumnAssignment)} literal_allocated_bytes=#{literal_allocated_bytes} carrier_allocated_bytes=#{carrier_allocated_bytes} iterations=100000"
+  {% if flag?(:dirty_full_transition) %}
+    puts "GRANT_DIRTY_RESULT_LAYOUT recorded_size_bytes=#{sizeof(Grant::Dirty::RecordedColumnAssignment)}"
+  {% end %}
+{% end %}
+
+person = AcceptancePerson0000.where(sequence_number: 0_i64).all.to_a.first
+other_person = AcceptancePerson0001.where(sequence_number: 1_i64).all.to_a.first
+100.times do |index|
+  person.first_name = index.even? ? "warm-a" : "warm-b"
+  other_person.rating = index.even? ? nil : index
+end
+work_checksum = 0_i64
+started = Time.monotonic
+previous_tally = Fiber.current.allocation_tally
+10_000.times do |index|
+  returned_first_name = person.first_name = index.even? ? "warm-a" : "warm-b"
+  returned_rating = other_person.rating = index.even? ? nil : index
+  require_contract(typeof(returned_first_name) == String, "typed string setter return")
+  require_contract(typeof(returned_rating) == Int32?, "typed nullable setter return")
+  work_checksum += person.first_name.bytesize
+end
+current_tally = Fiber.current.allocation_tally - previous_tally
+elapsed_nanoseconds = (Time.monotonic - started).total_nanoseconds.to_i64
+require_contract(work_checksum == 60_000, "warmed setter work retained")
+puts "GRANT_DIRTY_SETTERS allocation_calls=#{current_tally.calls} requested_bytes=#{current_tally.requested_bytes} elapsed_nanoseconds=#{elapsed_nanoseconds} iterations=10000 checksum=#{work_checksum}"
+puts "GRANT_DIRTY_CONTRACT=PASS"

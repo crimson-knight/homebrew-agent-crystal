@@ -1,0 +1,71 @@
+{
+  "run_id": "39501577847",
+  "actual_time_sha256": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a",
+  "original_rich10_build_exit": 0,
+  "original_rich10_Runner_seconds": 32.506737625,
+  "build_stderr_bytes": 697,
+  "build_footer_lines": 16,
+  "unavailable_hardware_fields": [
+    "instructions retired",
+    "cycles elapsed"
+  ],
+  "candidate_restored_behavior_owner_executed": false,
+  "target_cells_accepted": 0,
+  "files": [
+    {
+      "path": "RUN_TERMINAL.json",
+      "bytes": 15384,
+      "sha256": "bdbc2837e22ee8a9cc6b1120314ae5c80c4065080640de15faa750dd5995c5ef"
+    },
+    {
+      "path": "JOBS_TERMINAL.json",
+      "bytes": 4786,
+      "sha256": "3fe183c64ed52eb4c62ab1a6b5628e22eabc1a85509a02c71554252eae81f376"
+    },
+    {
+      "path": "ARTIFACTS_TERMINAL.json",
+      "bytes": 1921,
+      "sha256": "23b8bd71da7b8f62373b99dbb2bc9997953f4e99048a8dc0243edb3167a0ca88"
+    },
+    {
+      "path": "GRANT_EXTRACTION_RECEIPT.json",
+      "bytes": 9209,
+      "sha256": "d66e3e507d0834f37f677044dd0a69018c74b32e2dc98bbe547b260642a917f6"
+    },
+    {
+      "path": "FOOTER_REFUSAL.ordinary.json",
+      "bytes": 2470,
+      "sha256": "4abbe9e484665b2c5d2e20ed93f4ba515ec60808a68150f35bd82a9d2d1a0c70"
+    },
+    {
+      "path": "FOOTER_REFUSAL.optimized.json",
+      "bytes": 2471,
+      "sha256": "fdb9f8893800c3e495756073cb03fd5ef9d48897943a2f4d26bd46e271a3e296"
+    },
+    {
+      "path": "GRANT_EVIDENCE/CAUSAL_ONLY_RESULT.json",
+      "bytes": 195492,
+      "sha256": "33ff07fbcd857e95921d34f0d629de02f97eb611b2e82fbf5a94d94d32669241"
+    },
+    {
+      "path": "GRANT_EVIDENCE/results/triplet10/COMPARISON_RESULT.json",
+      "bytes": 199292,
+      "sha256": "b11cf070877deae1a44fe58ebccc39e0a1eea1ff3aafb428d3ff7144a24f7243"
+    },
+    {
+      "path": "GRANT_EVIDENCE/results/triplet10/original/COMMANDS.json",
+      "bytes": 3337,
+      "sha256": "9aea1d42842a31f29bb99c870f47765310dc70b394b07687357ad21d3a24158f"
+    },
+    {
+      "path": "GRANT_EVIDENCE/results/triplet10/original/build.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "GRANT_EVIDENCE/results/triplet10/original/build.stderr.txt",
+      "bytes": 697,
+      "sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0"
+    }
+  ]
+}

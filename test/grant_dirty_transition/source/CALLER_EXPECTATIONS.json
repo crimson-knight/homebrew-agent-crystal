@@ -1,0 +1,28 @@
+{
+  "id": "caller",
+  "describe": "Grant::Columns#assign_mass_assignment_column",
+  "titles": [
+    "converts numeric text and preserves its raw value and typed dirty pair",
+    "retains an unsupported Boolean as raw input and a conversion error",
+    "retains invalid numeric text and leaves the typed column unchanged",
+    "keeps nullable Boolean nil conversion at the actual column boundary",
+    "keeps nullable Boolean text conversion at the actual column boundary",
+    "accepts nil for a nullable integer without conversion errors",
+    "preserves the input order of two different invalid fields",
+    "clears converted raw input when the typed setter writes a new value",
+    "preserves the separate public assign attributes caller",
+    "preserves the separate named constructor caller",
+    "proves both validation overloads return concrete Boolean results",
+    "uses the same declared conversion on another concrete model"
+  ],
+  "expected_examples": 12,
+  "owner_expectations": [],
+  "canaries": [],
+  "source_sha256": "4b39ad5dde1bae657bae9ba9f88506656826747e2c28c51085f35a3b4fe3c92f",
+  "canary_titles": {
+    "typed_value": "converts numeric text and preserves its raw value and typed dirty pair",
+    "error_class": "retains an unsupported Boolean as raw input and a conversion error",
+    "raw_input": "retains invalid numeric text and leaves the typed column unchanged",
+    "dirty_state": "clears converted raw input when the typed setter writes a new value"
+  }
+}

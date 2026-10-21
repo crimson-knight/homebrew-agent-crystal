@@ -1,0 +1,56 @@
+{
+  "format": "atlas-grant-installed-mac-diagnostic-successor-receipt-v102",
+  "source_pins": {
+    "path": "SOURCE_PINS.json",
+    "bytes": 24664,
+    "sha256": "cc8502505b38ca78ca7346246d612512d3d7c25b1ced1a3e1344f2be6f4e11e4"
+  },
+  "source_tests": {
+    "path": "SOURCE_TESTS.json",
+    "bytes": 9519,
+    "sha256": "8542b4c550895e432ed4391b2e9e2feceded353e684187a7156c2fec9c2c7e23"
+  },
+  "workflow": {
+    "path": "grant-installed-mac.proposed.yml",
+    "bytes": 6244,
+    "sha256": "8756f0049b32dc9b117edb3cb57df08569a866ffa1ea1069cc4f2fb87bf781ef"
+  },
+  "readme": {
+    "path": "README.md",
+    "bytes": 7379,
+    "sha256": "62d93158339e8196ab3152d3c2e61ff33ae13e953d3af5e869150a3ae9060dd3"
+  },
+  "source_rows": 140,
+  "predecessor_rows_unchanged": {
+    "grant_assignment_cost_v100": 88,
+    "grant_assignment_cost_v101": 136
+  },
+  "ordinary_tests": 37,
+  "optimized_tests": 37,
+  "hosted_execution_admitted": false,
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "target_cells_accepted": 0,
+  "required_target_cells": 144,
+  "scope": "Narrow strict SDK command/group metadata and exceptional Runner return correction; same original300 then rich10 O/C/R diagnostic",
+  "repairs": [
+    "Exact positive integer PID/original_group/terminal/result group identity joins",
+    "Exact expected exit, finite original per-label command maximum and terminal elapsed within it",
+    "Complete bounded matching terminal group/deadline/sample observations",
+    "Actual terminal Runner writer/group state retained even before command record creation and required by serial continuation"
+  ],
+  "unchanged_limits": {
+    "serial_seconds": 6600,
+    "baseline_seconds": 1500,
+    "triplet_seconds": 4800,
+    "each_arm_seconds": 1500,
+    "build_seconds": 900,
+    "each_runtime_seconds": 120
+  },
+  "owned_branch": "feature/grant-installed-memory-diagnostic",
+  "first_push_executes": true,
+  "pending": [
+    "Independent v102 source/workflow review",
+    "Parent integration and actual hosted run",
+    "Qualified native/whole-build coverage, compatible default behavior, direct runtime/copy evidence and all144 target cells"
+  ]
+}

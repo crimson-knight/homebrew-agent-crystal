@@ -1,0 +1,15 @@
+module Grant::Dirty
+  # Returns the original and pending references after one assignment transition.
+  #
+  # :nodoc:
+  struct RecordedColumnAssignment
+    getter collection_of_original_attribute_values : Hash(String, Grant::Base::DirtyValue)?
+    getter collection_of_pending_attribute_changes : Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue))?
+
+    def initialize(
+      @collection_of_original_attribute_values : Hash(String, Grant::Base::DirtyValue)?,
+      @collection_of_pending_attribute_changes : Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue))?,
+    )
+    end
+  end
+end

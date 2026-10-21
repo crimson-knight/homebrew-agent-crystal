@@ -1,0 +1,74 @@
+--- a/src/grant/columns.cr
++++ b/src/grant/columns.cr
+@@ -20,6 +20,21 @@
+ module Grant::Columns
+   alias SupportedArrayTypes = Array(String) | Array(Int16) | Array(Int32) | Array(Int64) | Array(Float32) | Array(Float64) | Array(Bool) | Array(UUID) | Array(Time) | Array(BigDecimal)
+   alias Type = DB::Any | SupportedArrayTypes | UUID | BigDecimal | Int8 | Int16
++
++  # Keeps column input and its original conversion diagnostics together.
++  #
++  # :nodoc:
++  struct MassAssignmentValue
++    getter value : Type
++
++    def initialize(@value : Type, @converted_type_name_reader : Proc(String, String)? = nil)
++    end
++
++    def converted_type_name(column_name : String) : String
++      reader = @converted_type_name_reader || raise ArgumentError.new("Column conversion type reader is unavailable")
++      reader.call(column_name)
++    end
++  end
+ 
+   # Virtual attributes can participate in model mass assignment without
+   # becoming database columns. Encrypted attributes register their setters
+@@ -795,6 +810,40 @@
+   # assignment. Keeping this at the column boundary applies both the declared
+   # conversion and the generated dirty-tracking setter.
+   def assign_mass_assignment_column(attribute_name : String, value : Grant::Columns::Type) : Nil
++    assignment_value = MassAssignmentValue.new(value, build_mass_assignment_converted_type_name_reader(value))
++    assign_canonical_mass_assignment_column(attribute_name, assignment_value)
++  end
++
++  private def build_mass_assignment_converted_type_name_reader(value : T) : Proc(String, String) forall T
++    ->(column_name : String) do
++      {% begin %}
++        case column_name
++        {% for column in @type.instance_vars.select(&.annotation(Grant::Column)) %}
++          {% ann = column.annotation(Grant::Column) %}
++          when {{column.name.stringify}}
++            {% if ann[:nilable] == true %}
++              {% setter_type = column.type %}
++            {% else %}
++              {% setter_type = ann[:setter_type] %}
++            {% end %}
++            "#{typeof(begin
++              converted_value = Grant::Type.convert_type(value, {{setter_type}})
++              if converted_value.is_a?({{setter_type}})
++                raise ArgumentError.new("A converted value has no rejection type")
++              else
++                converted_value
++              end
++            end)}"
++        {% end %}
++        else
++          raise ArgumentError.new("Column conversion type is unavailable for #{column_name}")
++        end
++      {% end %}
++    end
++  end
++
++  private def assign_canonical_mass_assignment_column(attribute_name : String, assignment_value : MassAssignmentValue) : Nil
++    value = assignment_value.value
+     attribute_name = self.class.resolve_attribute_alias(attribute_name)
+     return if Grant::Columns::VirtualAttributeRegistry.assign(self, attribute_name, value)
+ 
+@@ -815,7 +864,7 @@
+             self.{{column.name.id}} = converted_value
+             capture_before_type_cast({{column.name.stringify}}, value) if value != converted_value
+           else
+-            errors << Grant::ConversionError.new({{column.name.stringify}}, "Expected {{column.name.id}} to be {{setter_type}} but got #{typeof(converted_value)}.")
++            errors << Grant::ConversionError.new({{column.name.stringify}}, "Expected {{column.name.id}} to be {{setter_type}} but got #{assignment_value.converted_type_name({{column.name.stringify}})}.")
+             __record_unconvertible_input({{column.name.stringify}}, value)
+           end
+         rescue ex : ArgumentError

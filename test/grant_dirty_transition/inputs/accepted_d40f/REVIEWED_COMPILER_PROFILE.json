@@ -1,0 +1,10 @@
+{
+  "compiler_sha256": "00a66c333eb58a354d57f00f1733ea971ccb6b0fb7098f4af9f1596c153e28a3",
+  "counter_protocol": 1,
+  "profile": "ordinary-alpha-sdk-readiness-darwin",
+  "ruby_launcher_sha256": "a53f08545808a4588c9f7f6ac2f865ea4ba852a64f71f45bf8d61e114428f42d",
+  "ruby_sha256": "a53f08545808a4588c9f7f6ac2f865ea4ba852a64f71f45bf8d61e114428f42d",
+  "schema_version": 1,
+  "stdlib_sha256": "6f24303c59170478d3153f9d6fc3f1e4d61cc50b24528b8ff4a46be8fbe7f6ab",
+  "wrapper_sha256": "5597f8891468ec305a55c8d7a910c392c4cd5b923fba475ba061b0221b8763a0"
+}

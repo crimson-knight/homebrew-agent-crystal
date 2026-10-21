@@ -1,0 +1,60 @@
+{
+  "cli_source_commit": "faed4b205063a84650b00e2dc02f01793f373527",
+  "cli_tag": "v2.0.7",
+  "archive": {
+    "digest": "sha256:0a9fb1227af6574c689eae3d2f4d83281cc3edfab3d40799079d470bb2c7ce61",
+    "name": "amber_cli-darwin-arm64.tar.gz",
+    "size": 2933426,
+    "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-darwin-arm64.tar.gz"
+  },
+  "rows": [
+    {
+      "path": "amber",
+      "mode": "0o755",
+      "bytes": 3896584,
+      "kind": "regular",
+      "sha256": "24af3c92bb156240d4f042a12b065907d007bf4bf47c37d8d9bcdeda2f57051c"
+    },
+    {
+      "path": "amber-lsp",
+      "mode": "0o755",
+      "bytes": 3590088,
+      "kind": "regular",
+      "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a"
+    },
+    {
+      "path": "checksums.txt",
+      "mode": "0o644",
+      "bytes": 148,
+      "kind": "regular",
+      "sha256": "302966242be20777f269ff5e43dc65b658548c170803bd2655b18cc11457df70"
+    },
+    {
+      "path": "share",
+      "mode": "0o755",
+      "bytes": 0,
+      "kind": "directory"
+    },
+    {
+      "path": "share/amber_cli",
+      "mode": "0o755",
+      "bytes": 0,
+      "kind": "directory"
+    },
+    {
+      "path": "share/amber_cli/api",
+      "mode": "0o755",
+      "bytes": 0,
+      "kind": "directory"
+    },
+    {
+      "path": "share/amber_cli/api/crystal.yml",
+      "mode": "0o644",
+      "bytes": 9858,
+      "kind": "regular",
+      "sha256": "80bf5dff1c453a94d91da83c0f99a093a2997f8070b6a04af4b02b8c03cd454d"
+    }
+  ],
+  "actual_executable_jobs": 0,
+  "scope": "Exact released archive and contained source/binary identities; runtime API/lint proof remains pending."
+}

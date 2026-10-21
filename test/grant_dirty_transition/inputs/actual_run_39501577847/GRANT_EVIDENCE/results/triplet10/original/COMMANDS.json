@@ -1,0 +1,101 @@
+[
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+      "tool",
+      "format",
+      "--check",
+      "--no-color",
+      "/Users/runner/work/_temp/grant-causal/private-source/grant/src/grant/columns.cr",
+      "/Users/runner/work/_temp/grant-causal/private-source/grant/performance/results/compile-acceptance/assignment-value-original-10-r1/fixture.cr"
+    ],
+    "elapsed_seconds": 0.2351608750000196,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "format",
+    "maximum_seconds": 30,
+    "original_group": 26762,
+    "pid": 26762,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1015.710855125,
+      "elapsed_seconds": 9.620800005905039e-05,
+      "group": 26762,
+      "initial_sample": {
+        "elapsed_seconds": 1.683300001786847e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1040.475865833,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.683300001786847e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.683300001786847e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/usr/bin/time",
+      "-l",
+      "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+      "build",
+      "--no-color",
+      "--error-on-warnings",
+      "-Dwithout_mt",
+      "--threads",
+      "1",
+      "/Users/runner/work/_temp/grant-causal/private-source/grant/performance/results/compile-acceptance/assignment-value-original-10-r1/fixture.cr",
+      "-o",
+      "/Users/runner/work/_temp/grant-causal/private-source/grant/performance/results/compile-acceptance/assignment-value-original-10-r1/fixture"
+    ],
+    "elapsed_seconds": 32.50673762500003,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "build",
+    "maximum_seconds": 900,
+    "original_group": 26797,
+    "pid": 26797,
+    "refusal": null,
+    "stderr_sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 1048.217062291,
+      "elapsed_seconds": 0.0008999589999802993,
+      "group": 26797,
+      "initial_sample": {
+        "elapsed_seconds": 0.000240542000028654,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 1910.711891458,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 0.000240542000028654,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 0.000240542000028654,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "format": "atlas-grant-dirty-transition-experiment-design-v100",
+  "mission": "memory-budget-experiment",
+  "status": "Source design and retained metadata; implementation and runtime admission pending",
+  "actual_compiler_native_container_ssh_workload_jobs": 0,
+  "accepted_target_cells": 0,
+  "required_target_cells": 144,
+  "base_commit": "d78418566d90e61d6876a4a2a8abd93bb74f1ba1",
+  "source_inventory_sha256": "edeb868d76119f67dacdd829a0113ba0b0637583f0ee2fcbd87078a6cbee9d8a",
+  "assignment_arm_parent_status": {"run_id": "39501577847", "source_revision": "126cd160", "status": "Live per parent update; outcome pending"},
+  "fixture_sha256": {
+    "2": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3",
+    "10": "40390d65591532feb37d622367f8968d6a8f585f851604828bbce6bcdd6bfcf4"
+  },
+  "proposed_patch_paths": [
+    "src/grant/columns.cr",
+    "src/grant/dirty.cr",
+    "src/grant/dirty/captured_column_assignment.cr",
+    "src/grant/dirty/recorded_column_assignment.cr"
+  ],
+  "perimeter": {
+    "capture_type": "Grant::Dirty::CapturedColumnAssignment",
+    "returned_type": "Grant::Dirty::RecordedColumnAssignment",
+    "computation": "Grant::Dirty.record_column_assignment",
+    "shared_comparison": "Grant::Dirty.has_equal_assignment_values? with one CapturedColumnAssignment argument in both candidate arms",
+    "fixed_fields": {
+      "attribute_name": "String",
+      "previous_database_value": "Grant::Base::DirtyValue",
+      "current_database_value": "Grant::Base::DirtyValue",
+      "collection_of_original_attribute_values": "Hash(String, Grant::Base::DirtyValue)?",
+      "collection_of_pending_attribute_changes": "Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue))?"
+    },
+    "type_specific_work_retained": [
+      "readonly guard",
+      "normalization and scale hook",
+      "typed converter to_db",
+      "dirty-tracking suspension branch",
+      "before-type-cast cleanup",
+      "typed column store",
+      "after-assignment hook",
+      "typed setter return"
+    ],
+    "shared_work": [
+      "compare previous and current database values",
+      "create original hash lazily on a change",
+      "record first original with has_key? semantics",
+      "compare original and current database values",
+      "delete a reverted pending change",
+      "create pending hash lazily and record original/current pair"
+    ]
+  },
+  "stage_one": {
+    "models": 2,
+    "arms": ["original", "fixed-carrier-comparison-only", "same-carrier-full-transition", "restored-original"],
+    "comparison_control": "Both original comparison sites use the same fixed-field carrier comparator as the full-transition arm; per-field hash transition stays in the setter",
+    "discrimination": {"original_to_comparison_only": "Effect of widening/canonicalizing comparisons through typed carrier fields", "comparison_only_to_full_transition": "Effect of sharing the repeated hash transition with the same canonical comparison owner"},
+    "arm_reservation_seconds": 6000,
+    "admission": "Parent assigns separately bounded preparation/return overhead and a new reviewed four-arm deadline; existing triplet admission is insufficient",
+    "build": "Complete debug SQLite build under the parent's exact admitted ordinary-GC profile",
+    "behaviors_per_arm": ["normal", "same-binary field corruption", "same-binary association corruption"],
+    "required_behavior_roster": {"fields": 32, "operations": 6, "association_edges": 6},
+    "source_restoration": "Exact complete inventory including removal of new files and complete original-group return",
+    "mechanism_predicates": [
+      "The same single canonical comparator owner in both candidate arms",
+      "One heavy inferred and lowered dirty-transition owner across models and narrow scalar input shapes",
+      "The comparison-only arm retains the per-model/field hash transition",
+      "Every original typed model/column setter remains reachable",
+      "Concrete owner, signature, source origin and actual call-site proof",
+      "Complete definitions retained with unclassified bodies",
+      "Compiler phase state and process metrics preserve their individual scopes"
+    ],
+    "interpretation": "Four-arm mechanism contrast with zero final target cells; stable memory saving awaits repetitions"
+  },
+  "behavior_guards": [
+    "direct typed and dynamic mass assignment",
+    "unchanged assignment and suspended constructor lazy hashes",
+    "first and repeated changes",
+    "reversion to original",
+    "present nil original and nullable transitions",
+    "scalar, numeric and array comparison behavior",
+    "forced and in-place mutations",
+    "partial updates",
+    "serialized and converter-backed columns",
+    "normalization, enum and readonly behavior",
+    "before-type-cast state",
+    "callbacks, save and transaction rollback",
+    "inherited and added STI columns",
+    "ordinary and named query materialization",
+    "concrete lazy and eager associations"
+  ],
+  "runtime_guards": [
+    "Calibrate identical warmed setter sequences on original source",
+    "Observe allocation calls, requested bytes, elapsed time and stack/copy behavior",
+    "Preserve the existing separate query and SQLite cache budgets"
+  ],
+  "promotion": {
+    "gate": "Mechanism and behavior pass, then repeatable actual memory reduction on unchanged rich2/rich10 fixtures",
+    "cold_repetitions": 3,
+    "next_counts": [2, 10, 200],
+    "final_counts": [300, 500],
+    "final_strict_limit_bytes": 2000000000,
+    "required_final_metrics": ["compiler peak RSS", "audited simultaneous complete-build memory"],
+    "interaction_if_assignment_also_passes": ["original", "assignment", "dirty", "assignment-plus-dirty"]
+  },
+  "falsification": [
+    "Heavy body remains specialized by model or caller input shape",
+    "Relevant repeated compiler phase or RSS observations grow",
+    "Behavior or compatibility oracle fails",
+    "Runtime cost exceeds calibrated original budget"
+  ],
+  "pending_api_and_compiler_probes": [
+    "Actual-root Hash#has_key?, Hash#[], Hash#[]=, Hash#delete and Hash.new signatures",
+    "Generated carrier getter/constructor API and fixed DirtyValue ivar types",
+    "Exact nullable hash input/output and typed setter return compatibility",
+    "Concrete two-model narrow scalar, nil and array owner convergence after carrier construction",
+    "Converter-to-DB and STI receiver compatibility",
+    "Compiler, formatter, lint, LSP, specs, runtime behavior and allocation/copy checks"
+  ],
+  "parent_owned": ["multi-file overlay implementation and review", "actual-root API lookup and Crystal gates", "runtime admission and provider qualification", "public integration"]
+}

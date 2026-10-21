@@ -1,0 +1,31 @@
+--- a/src/grant/columns.cr
++++ b/src/grant/columns.cr
+@@ -20,6 +20,16 @@
+ module Grant::Columns
+   alias SupportedArrayTypes = Array(String) | Array(Int16) | Array(Int32) | Array(Int64) | Array(Float32) | Array(Float64) | Array(Bool) | Array(UUID) | Array(Time) | Array(BigDecimal)
+   alias Type = DB::Any | SupportedArrayTypes | UUID | BigDecimal | Int8 | Int16
++
++  # Keeps dynamic column assignment on one value shape across callers.
++  #
++  # :nodoc:
++  struct MassAssignmentValue
++    getter value : Type
++
++    def initialize(@value : Type)
++    end
++  end
+ 
+   # Virtual attributes can participate in model mass assignment without
+   # becoming database columns. Encrypted attributes register their setters
+@@ -795,6 +805,11 @@
+   # assignment. Keeping this at the column boundary applies both the declared
+   # conversion and the generated dirty-tracking setter.
+   def assign_mass_assignment_column(attribute_name : String, value : Grant::Columns::Type) : Nil
++    assign_canonical_mass_assignment_column(attribute_name, MassAssignmentValue.new(value))
++  end
++
++  private def assign_canonical_mass_assignment_column(attribute_name : String, assignment_value : MassAssignmentValue) : Nil
++    value = assignment_value.value
+     attribute_name = self.class.resolve_attribute_alias(attribute_name)
+     return if Grant::Columns::VirtualAttributeRegistry.assign(self, attribute_name, value)
+ 

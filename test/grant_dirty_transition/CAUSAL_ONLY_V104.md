@@ -1,0 +1,27 @@
+# Rich10 causal-only successor with an explicit outer deadline
+
+This packet adds a separate launcher for one unchanged rich10 original/candidate/restored triplet. Exactly139 of140 v102 source rows remain byte-for-byte identical. The one explicitly changed inherited helper is `run_hosted_contrast.py`: its `qualify(args, absolute_deadline=None)` interface now accepts a finite positive numeric absolute monotonic deadline. Existing callers that omit it retain the original4800-second triplet or1500-second baseline horizon and every original arm/command limit. The same-job ordinary SDK policy, staging/preparation helpers, source restoration, behavior/corruption controls, full return guard, and positive artifact copier retain their reviewed v102 bytes.
+
+The separate `run_causal_only.py` declares its absolute outer deadline at entry plus4800seconds. Its source staging and plan preparation consume that same interval. Before invoking the qualifier it requires all4500seconds for the three original arms. The qualifier independently clamps its effective deadline to `min(its_actual_started + original_maximum, supplied_absolute_deadline)` and again requires all4500arm seconds after its own source/provider preparation, before constructing a Runner. Each Runner receives the earlier of that exact effective bound and its original1500-second arm bound. The original900-second build,120-second normal/field/association controls, and all existing remaining-time refusals stay active. Final outer elapsed over4800 refuses completion. The supplied/effective deadline and original maximum are retained in the child result; Python and timing provider hashes are retained in the top-level result.
+
+The former v103 GLOBAL_SECONDS context is preserved in its frozen directory and copied predecessor source. Its independent refusal is `inputs/PREDECESSOR_V103_PEER_REFUSAL.json`: a99-second delay between the context and qualifier entry produced an actual inherited deadline4899 against an outer4800. V104 supplies the absolute bound directly; it never mutates GLOBAL_SECONDS. Default compatibility, delayed entry, earlier/later bounds, invalid types/nonfinite/nonpositive values, post-preparation4500 admission, exhausted overhead, and exceptional source cleanup have source-only mocked coverage through the actual qualifier.
+
+Run39493843606 remains a failed unchanged300 feasibility baseline. Its build reached the900-second limit, exited-9 after900.1589905seconds, and original-group absence was unverifiable with EPERM. Both build streams were empty, so no peak-memory observation is available. Its serial controller refused rich10. Exact historical JSON, command records, empty streams, and artifact extraction receipt remain under `inputs/historical_run_39493843606`; `HISTORICAL_300_FAILURE.json` indexes their hashes. The current causal-only experiment records300 as unexecuted. Full300/500-model behavior, default-feature compatibility, all fields/queries/association edges, and every144-cell acceptance requirement remain unchanged.
+
+The generated complete plan and rich10 fixture are unchanged. The inherited qualifier selects exactly original/candidate/restored for models10/repetition1, regenerates the complete plan, requires cold caches, retains emitted-owner definitions, checks every required behavior, and executes both same-binary corruption controls. The canonical-value-container candidate is a cost-isolation arm. Shipping compatibility, runtime budgets, compiler/whole-build/native qualification, and memory-savings acceptance remain separate.
+
+`CAUSAL_ONLY_RESULT.json` is saved before launch and at final return. It names the historical300 failure, the current unexecuted300 baseline, supplied and physically observed Python and `/usr/bin/time` hashes, exact same-job SDK admission, error/finalization status, and diagnostic scope. Whole-build/native/shipping/memory-savings acceptance stay false, and accepted target cells stay0/144. The new artifact wrapper selects that result, the historical failure/raw records, complete child/command evidence, source pins, and exact source/plan inputs through the original bounded credential-screened positive copier. Private source and compiled binary retention boundaries stay unchanged; independent binary replay remains pending.
+
+Replace the existing public `.github/workflows/grant-installed-mac.yml` with `grant-causal-mac.proposed.yml` on the owned revision1/e48 Grant diagnostic branch. Its source is the actual published6bbe workflow, preserving `persist-credentials: false`, staged-result success gating, explicit hidden-file exclusion, full-SHA Actions, and the owned-branch push trigger. One ordinary supported installer invocation and the unchanged same-job SDK qualification precede the causal-only launcher. The separate Linux revision2 formula has its own installation/profile boundary.
+
+```sh
+python3 -I -S -B test/grant_assignment_cost/run_causal_only.py \
+  --driver "$PWD/test/sdk_install_qualification.py" \
+  --sdk-evidence "$RUNNER_TEMP/grant-sdk-readiness" \
+  --packet-sha256 "$ATLAS_GRANT_PACKET_SHA256" \
+  --python-sha256 "$ACTUALLY_OBSERVED_PYTHON_SHA256" \
+  --time-sha256 "$ACTUALLY_OBSERVED_TIME_SHA256" \
+  --output "$RUNNER_TEMP/grant-causal"
+```
+
+The proposed workflow derives those hashes from the actual providers before delegation. Parent owns integration, commit, and dispatch. Actual local compiler/native-consumer/container/SSH workloads remain0. Hosted validation and Grant target acceptance remain pending.

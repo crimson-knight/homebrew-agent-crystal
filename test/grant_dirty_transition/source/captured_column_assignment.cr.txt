@@ -1,0 +1,21 @@
+module Grant::Dirty
+  # Captures database values and lazy dirty-state references at the typed perimeter.
+  #
+  # :nodoc:
+  struct CapturedColumnAssignment
+    getter attribute_name : String
+    getter previous_database_value : Grant::Base::DirtyValue
+    getter current_database_value : Grant::Base::DirtyValue
+    getter collection_of_original_attribute_values : Hash(String, Grant::Base::DirtyValue)?
+    getter collection_of_pending_attribute_changes : Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue))?
+
+    def initialize(
+      @attribute_name : String,
+      @previous_database_value : Grant::Base::DirtyValue,
+      @current_database_value : Grant::Base::DirtyValue,
+      @collection_of_original_attribute_values : Hash(String, Grant::Base::DirtyValue)?,
+      @collection_of_pending_attribute_changes : Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue))?,
+    )
+    end
+  end
+end

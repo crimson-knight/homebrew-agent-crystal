@@ -1,0 +1,2 @@
+grant_dirty_transition/proposal_v100/candidate.patch.txt whitespace=-blank-at-eol,-blank-at-eof
+grant_dirty_transition/compatible_proposal_v102/candidate.patch.txt whitespace=-blank-at-eol,-blank-at-eof

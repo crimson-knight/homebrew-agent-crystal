@@ -1,0 +1,1 @@
+Installed hash-verified memory_budget 0.1.1 in /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/ordinary consumer with spaces

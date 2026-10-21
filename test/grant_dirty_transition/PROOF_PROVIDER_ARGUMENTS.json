@@ -1,0 +1,35 @@
+{
+  "format": "atlas-grant-proof-provider-arguments-v1",
+  "execution_admitted": false,
+  "preflight_argv": ["<exact same-job Python>", "-I", "-S", "-B", "<packet>/preflight_dirty_tools.py", "--proof-tools", "<absolute parent-reviewed registry>", "--proof-tools-sha256", "<literal reviewed registry SHA-256>"],
+  "controller_additional_argv": ["--proof-tools", "<absolute parent-reviewed registry>", "--proof-tools-sha256", "<literal reviewed registry SHA-256>"],
+  "registry_format": "atlas-grant-hosted-proof-tools-v1",
+  "registry_requires_execution_admitted": true,
+  "tool_fields": {
+    "amber_lsp": {
+      "path": "<exact absolute physical hosted amber-lsp executable>",
+      "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a",
+      "bytes": 3590088,
+      "mode": "0755",
+      "api_corpus_path": "<the same extracted archive root>/share/amber_cli/api/crystal.yml",
+      "api_corpus_sha256": "80bf5dff1c453a94d91da83c0f99a093a2997f8070b6a04af4b02b8c03cd454d",
+      "version": "2.0.7",
+      "source_commit": "faed4b205063a84650b00e2dc02f01793f373527",
+      "release_archive_url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-darwin-arm64.tar.gz",
+      "release_archive_bytes": 2933426,
+      "release_archive_sha256": "0a9fb1227af6574c689eae3d2f4d83281cc3edfab3d40799079d470bb2c7ce61",
+      "source_archive_sha256": "6e90f3cdba3ed87cefbf7443ab93da627af314fac5960a4b9288ae80e31f591f"
+    },
+    "ameba": {
+      "path": "<exact absolute physical hosted ameba executable>",
+      "sha256": "<literal reviewed executable SHA-256>",
+      "version": "1.7.0-dev",
+      "source_commit": "cdd58b34b0d8a9c785d67183a7a8f07541549e55",
+      "source_git_tree_sha1": "5fe9fbff073fc9a41923f19d8a43b9b35a528ac8",
+      "source_archive_url": "https://codeload.github.com/crystal-ameba/ameba/tar.gz/cdd58b34b0d8a9c785d67183a7a8f07541549e55",
+      "source_archive_bytes": 200372,
+      "source_archive_sha256": "a0e91d582e0617b15c1bd3448c2d0db60c86454aa4d19887fcb6ee08d4ddf259"
+    }
+  },
+  "remaining_admission": "Parent installs checksum-verified released Amber CLI/LSP and the standing pinned Ameba, reviews exact hosted executable identities and the source-to-binary derivation, publishes the admitted registry as fresh pinned source, and runs the preflight before dispatch. Compiler/formatter/API/lint/spec/behavior/owner gates remain executed acceptance requirements."
+}

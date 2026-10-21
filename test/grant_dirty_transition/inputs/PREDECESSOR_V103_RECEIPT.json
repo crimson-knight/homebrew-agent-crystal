@@ -1,0 +1,29 @@
+{
+  "accepted_target_cells": 0,
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "arm_seconds": 1500,
+  "build_seconds": 900,
+  "causal_launcher_sha256": "588b8e862e7c3df42fc9028348281f20563421cad72d1d10d7d87b2c380da267",
+  "causal_stager_sha256": "6201ace1c9569b7155fc32fd75ea96fcb1b316231bb7dde897c98c1315b66150",
+  "control_seconds": 120,
+  "format": "atlas-grant-causal-source-receipt-v103",
+  "full_target_model_counts": [
+    300,
+    500
+  ],
+  "historical300_sha256": "454dce37bafc11d755781ab31b9b97409dc0aa6d91fdfd0dbc1f2e5fcbeeac33",
+  "minimum_triplet_admission_seconds": 4500,
+  "new_tests_sha256": "c21536c97a8f16b292b98f05f25bfaf60e6c476519aa594b8c4495bfe0098750",
+  "predecessor140_rows_unchanged": true,
+  "predecessor_receipt_sha256": "e01825ddf10a977b32d17166b79dc2733d51381fcfd4104b8ec7e3be9b23558a",
+  "predecessor_source_manifest_sha256": "cc8502505b38ca78ca7346246d612512d3d7c25b1ced1a3e1344f2be6f4e11e4",
+  "proposal_sha256": "23f135b32dc482439ca35a23a01331694eddb26dc1d1159518ca4a73d9f86e74",
+  "required_target_matrix_size": 144,
+  "scope": "Source/mocked causal-only successor; actual hosted compiler and behavior acceptance pending",
+  "source_manifest_sha256": "261bd182b5a0ce76f783a07c30136c92f4ef144477a19b6f00cba8599ef955a5",
+  "source_rows": 155,
+  "source_tests_sha256": "e1b297147606c76be7f67efa14195043b895337e487b982cb649cfba7ce0828f",
+  "tests_each_mode": 54,
+  "total_seconds": 4800,
+  "workflow_sha256": "a2a1e66701402e4569fecbe9ada40b7f1d4260b37652fd670e88230a8b95712a"
+}

@@ -1,0 +1,248 @@
+require "spec"
+require "../../src/grant"
+require "../../src/adapter/sqlite"
+
+module AtlasCheckedConversionCaller
+  alias ObservedScalar = Bool | Int32 | String | Nil
+
+  struct Settings
+    getter canary : String?
+
+    def initialize(@canary : String? = nil)
+    end
+  end
+
+  class Entry < Grant::Base
+    column id : Int64, primary: true
+    column first_name : String?
+    column age : Int32?
+    column active : Bool?
+  end
+
+  class AlternateEntry < Grant::Base
+    column id : Int64, primary: true
+    column first_name : String?
+    column age : Int32?
+    column active : Bool?
+  end
+
+  struct ErrorObservation
+    include JSON::Serializable
+
+    getter field : String = ""
+    getter error_class : String = ""
+    @[JSON::Field(emit_null: true)]
+    getter message : String? = nil
+    @[JSON::Field(emit_null: true)]
+    getter error_type : Symbol? = nil
+
+    def initialize(error : Grant::Error)
+      @field = "#{error.field}"
+      @error_class = "#{error.class}"
+      @message = error.message
+      @error_type = error.type
+    end
+  end
+
+  struct Observation
+    include JSON::Serializable
+
+    getter case_id : String = ""
+    @[JSON::Field(emit_null: true)]
+    getter first_name : String? = nil
+    @[JSON::Field(emit_null: true)]
+    getter age : Int32? = nil
+    @[JSON::Field(emit_null: true)]
+    getter active : Bool? = nil
+    @[JSON::Field(emit_null: true)]
+    getter raw_age : ObservedScalar = nil
+    @[JSON::Field(emit_null: true)]
+    getter age_change : Tuple(ObservedScalar, ObservedScalar)? = nil
+    getter list_of_errors : Array(ErrorObservation) = [] of ErrorObservation
+
+    def initialize(@case_id : String, @first_name : String?, @age : Int32?, @active : Bool?,
+                   @raw_age : ObservedScalar, @age_change : Tuple(ObservedScalar, ObservedScalar)?,
+                   @list_of_errors : Array(ErrorObservation))
+    end
+  end
+
+  struct Report
+    include JSON::Serializable
+
+    getter schema_version : Int32 = 1
+    getter list_of_observations : Array(Observation) = [] of Observation
+
+    def initialize(@list_of_observations : Array(Observation))
+    end
+  end
+
+  def self.observed_scalar(value : Grant::Base::DirtyValue | Grant::Columns::Type) : ObservedScalar
+    if value.is_a?(ObservedScalar)
+      value
+    else
+      raise "Fixture observes only its declared scalar column values"
+    end
+  end
+
+  # Captures the two concrete fixture receivers for an internal parity check.
+  # :nodoc:
+  def self.observe(case_id : String, entry : T) : Observation forall T
+    # This explicit restriction proves the unresolved inherited receiver API.
+    changes : Hash(String, Tuple(Grant::Base::DirtyValue, Grant::Base::DirtyValue)) = entry.changes
+    age_change = if pair = changes["age"]?
+                   {observed_scalar(pair[0]), observed_scalar(pair[1])}
+                 end
+    Observation.new(case_id, entry.first_name, entry.age, entry.active,
+      observed_scalar(entry.attribute_before_type_cast("age")), age_change,
+      entry.errors.map { |error| ErrorObservation.new(error) })
+  end
+
+  # Exercises the broad input union on each concrete fixture model.
+  # :nodoc:
+  def self.assign_column_input(entry : T, attribute_name : String, value : Grant::Columns::Type) : Nil forall T
+    # Hash lookup preserves the canonical broad incoming union at this boundary.
+    payload = {attribute_name => value} of String => Grant::Columns::Type
+    entry.assign_mass_assignment_column(attribute_name, payload[attribute_name])
+  end
+end
+
+settings = AtlasCheckedConversionCaller::Settings.new(ENV["ATLAS_CHECKED_CONVERSION_CANARY"]?)
+list_of_observations = [] of AtlasCheckedConversionCaller::Observation
+
+describe "Grant::Columns#assign_mass_assignment_column" do
+  it "converts numeric text and preserves its raw value and typed dirty pair" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", "42")
+    observation = AtlasCheckedConversionCaller.observe("numeric_string", entry)
+    list_of_observations << observation
+    entry.age.should eq(settings.canary == "typed_value" ? 41 : 42)
+    observation.raw_age.should eq("42")
+    observation.age_change.should eq({nil, 42})
+    observation.list_of_errors.should be_empty
+  end
+
+  it "retains an unsupported Boolean as raw input and a conversion error" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", false)
+    observation = AtlasCheckedConversionCaller.observe("unsupported_boolean", entry)
+    list_of_observations << observation
+    entry.age.should be_nil
+    observation.raw_age.should be_false
+    observation.list_of_errors.map(&.field).should eq(["age"])
+    expected_class = settings.canary == "error_class" ? "WrongError" : "Grant::ConversionError"
+    observation.list_of_errors.map(&.error_class).should eq([expected_class])
+  end
+
+  it "retains invalid numeric text and leaves the typed column unchanged" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", "many")
+    observation = AtlasCheckedConversionCaller.observe("invalid_numeric_string", entry)
+    list_of_observations << observation
+    entry.age.should be_nil
+    observation.raw_age.should eq(settings.canary == "raw_input" ? "changed" : "many")
+    observation.list_of_errors.map(&.field).should eq(["age"])
+    observation.list_of_errors.map(&.error_class).should eq(["Grant::ConversionError"])
+  end
+
+  it "keeps nullable Boolean nil conversion at the actual column boundary" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "active", nil)
+    list_of_observations << AtlasCheckedConversionCaller.observe("nullable_boolean_nil", entry)
+    entry.active.should be_false
+    entry.attribute_before_type_cast("active").should be_nil
+    entry.errors.should be_empty
+  end
+
+  it "keeps nullable Boolean text conversion at the actual column boundary" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "active", "yes")
+    list_of_observations << AtlasCheckedConversionCaller.observe("nullable_boolean_text", entry)
+    entry.active.should be_true
+    entry.attribute_before_type_cast("active").should eq("yes")
+    entry.errors.should be_empty
+  end
+
+  it "accepts nil for a nullable integer without conversion errors" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", nil)
+    observation = AtlasCheckedConversionCaller.observe("nullable_integer_nil", entry)
+    list_of_observations << observation
+    entry.age.should be_nil
+    observation.raw_age.should be_nil
+    observation.list_of_errors.should be_empty
+  end
+
+  it "preserves the input order of two different invalid fields" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "first_name", true)
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", "many")
+    observation = AtlasCheckedConversionCaller.observe("multiple_invalid_fields", entry)
+    list_of_observations << observation
+    entry.first_name.should be_nil
+    entry.age.should be_nil
+    entry.attribute_before_type_cast("first_name").should be_true
+    observation.list_of_errors.map(&.field).should eq(["first_name", "age"])
+    observation.list_of_errors.map(&.error_class).should eq(["Grant::ConversionError", "Grant::ConversionError"])
+  end
+
+  it "clears converted raw input when the typed setter writes a new value" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", "42")
+    entry.age = 43
+    observation = AtlasCheckedConversionCaller.observe("typed_setter_raw_reset", entry)
+    list_of_observations << observation
+    entry.age.should eq(43)
+    observation.raw_age.should eq(43)
+    expected_age = settings.canary == "dirty_state" ? 44 : 43
+    observation.age_change.should eq({nil, expected_age})
+    observation.list_of_errors.should be_empty
+  end
+
+  it "preserves the separate public assign attributes caller" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    payload = {"age" => "44"} of String => Grant::Columns::Type
+    entry.assign_attributes(payload)
+    observation = AtlasCheckedConversionCaller.observe("separate_assign_attributes", entry)
+    list_of_observations << observation
+    entry.age.should eq(44)
+    observation.raw_age.should eq("44")
+    observation.list_of_errors.should be_empty
+  end
+
+  it "preserves the separate named constructor caller" do
+    entry = AtlasCheckedConversionCaller::Entry.new(age: "45")
+    observation = AtlasCheckedConversionCaller.observe("separate_named_constructor", entry)
+    list_of_observations << observation
+    entry.age.should eq(45)
+    observation.raw_age.should eq("45")
+    observation.list_of_errors.should be_empty
+  end
+
+  it "proves both validation overloads return concrete Boolean results" do
+    entry = AtlasCheckedConversionCaller::Entry.new
+    valid : Bool = entry.valid?
+    contextual : Bool = entry.valid?(:create)
+    valid.should be_true
+    contextual.should be_true
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", false)
+    invalid : Bool = entry.valid?
+    contextual_invalid : Bool = entry.valid?(:create)
+    list_of_observations << AtlasCheckedConversionCaller.observe("concrete_validator_receivers", entry)
+    invalid.should be_false
+    contextual_invalid.should be_false
+  end
+
+  it "uses the same declared conversion on another concrete model" do
+    entry = AtlasCheckedConversionCaller::AlternateEntry.new
+    AtlasCheckedConversionCaller.assign_column_input(entry, "age", "46")
+    observation = AtlasCheckedConversionCaller.observe("second_model_receiver", entry)
+    list_of_observations << observation
+    entry.age.should eq(46)
+    observation.raw_age.should eq("46")
+    observation.list_of_errors.should be_empty
+  end
+end
+
+Spec.after_suite do
+  STDOUT.puts("ATLAS_CHECKED_CALLER_OBSERVATIONS=" + AtlasCheckedConversionCaller::Report.new(list_of_observations).to_json)
+end

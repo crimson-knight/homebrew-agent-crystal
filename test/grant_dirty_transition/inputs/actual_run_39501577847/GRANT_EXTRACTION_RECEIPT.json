@@ -1,0 +1,247 @@
+{
+  "artifact_id": 12302647285,
+  "bytes": 342017,
+  "confidentiality_accepted": true,
+  "credential_values_in_report": false,
+  "expanded_bytes": 1216778,
+  "expected_success_members": 59,
+  "files": [
+    {
+      "bytes": 7111,
+      "path": "ARTIFACT_SNAPSHOT.json",
+      "retained_mode": "0600",
+      "sha256": "a94a77556f4b2f873755f0c2f8d6ed8e9ac342fa6d22abf903865c8ed7878bce",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 195492,
+      "path": "CAUSAL_ONLY_RESULT.json",
+      "retained_mode": "0600",
+      "sha256": "33ff07fbcd857e95921d34f0d629de02f97eb611b2e82fbf5a94d94d32669241",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 1946,
+      "path": "HISTORICAL_300_FAILURE.json",
+      "retained_mode": "0600",
+      "sha256": "454dce37bafc11d755781ab31b9b97409dc0aa6d91fdfd0dbc1f2e5fcbeeac33",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 1946,
+      "path": "packet/HISTORICAL_300_FAILURE.json",
+      "retained_mode": "0600",
+      "sha256": "454dce37bafc11d755781ab31b9b97409dc0aa6d91fdfd0dbc1f2e5fcbeeac33",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 28710,
+      "path": "packet/SOURCE_PINS.json",
+      "retained_mode": "0600",
+      "sha256": "e12d2f20a6433d81ced0c920f1ff09c9b9c9424278172d923f3b7d1f913670b8",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 16057,
+      "path": "packet/INPUT_PINS.json",
+      "retained_mode": "0600",
+      "sha256": "a41210fedea7074a2c17008586315cd5cf105e3b689d080cb3460f2f3753de36",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 24664,
+      "path": "packet/inputs/PREDECESSOR_V102_SOURCE_PINS.json",
+      "retained_mode": "0600",
+      "sha256": "cc8502505b38ca78ca7346246d612512d3d7c25b1ced1a3e1344f2be6f4e11e4",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 274754,
+      "path": "packet/inputs/SOURCE_INPUTS.json",
+      "retained_mode": "0600",
+      "sha256": "08beb028d471b200f5ae7580c4d07db17cb9eb4f46981d903f0d0e11bf9262d5",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 1116,
+      "path": "packet/inputs/historical_run_39493843606/GRANT_EVIDENCE/SERIAL_RESULT.json",
+      "retained_mode": "0600",
+      "sha256": "7438aaedb2ca785665c207417883e83a4637599216c24453729458e7bfea44d7",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 201776,
+      "path": "packet/inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/COMPARISON_RESULT.json",
+      "retained_mode": "0600",
+      "sha256": "443bfac24d2c27233aa62e1d0b5e5a053f06ccd6a579ff1a54973102460e6e9e",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 3935,
+      "path": "packet/inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/original/COMMANDS.json",
+      "retained_mode": "0600",
+      "sha256": "abfc8c5264128d8bcd13938f84aa96b5da2faa4839b481213aaecb4be36fa071",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 0,
+      "path": "packet/inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/original/build.stderr.txt",
+      "retained_mode": "0600",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 0,
+      "path": "packet/inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/original/build.stdout.txt",
+      "retained_mode": "0600",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 4247,
+      "path": "packet/inputs/historical_run_39493843606/GRANT_EXTRACTION_RECEIPT.json",
+      "retained_mode": "0600",
+      "sha256": "4709dfc9cedcdac74075c8409ba642ff401a877b993f3cdf48f9f5b2ddc85d59",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 7987,
+      "path": "packet/run_causal_only.py",
+      "retained_mode": "0600",
+      "sha256": "b16172041c075fb57dd34af012a7a1483242f130e3f267dacbb9d8582fc8ee52",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 1729,
+      "path": "packet/stage_causal_result_artifact.py",
+      "retained_mode": "0600",
+      "sha256": "6201ace1c9569b7155fc32fd75ea96fcb1b316231bb7dde897c98c1315b66150",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 3337,
+      "path": "results/triplet10/original/COMMANDS.json",
+      "retained_mode": "0600",
+      "sha256": "9aea1d42842a31f29bb99c870f47765310dc70b394b07687357ad21d3a24158f",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 697,
+      "path": "results/triplet10/original/build.stderr.txt",
+      "retained_mode": "0600",
+      "sha256": "bf33c6ab9b6308ed954495d131b3b89a3d70266128775a9ef1c2334edca67df0",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 199292,
+      "path": "results/triplet10/COMPARISON_RESULT.json",
+      "retained_mode": "0600",
+      "sha256": "b11cf070877deae1a44fe58ebccc39e0a1eea1ff3aafb428d3ff7144a24f7243",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 0,
+      "path": "results/triplet10/original/build.stdout.txt",
+      "retained_mode": "0600",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 0,
+      "path": "results/triplet10/original/format.stderr.txt",
+      "retained_mode": "0600",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 0,
+      "path": "results/triplet10/original/format.stdout.txt",
+      "retained_mode": "0600",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 40019,
+      "path": "triplet-plan/COMPARISON_PLAN.json",
+      "retained_mode": "0600",
+      "sha256": "7b8771a152e7aedc2668b64ff75639165433a7ac178b772d513713f32ee5174a",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 69957,
+      "path": "triplet-plan/FIXTURE_10.cr.txt",
+      "retained_mode": "0600",
+      "sha256": "40390d65591532feb37d622367f8968d6a8f585f851604828bbce6bcdd6bfcf4",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 10897,
+      "path": "triplet-plan/FIXTURE_10.json",
+      "retained_mode": "0600",
+      "sha256": "00c5b13a5e1fe1076490f479df690a828cc14b527172cfb352ca5c4591a83ae0",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 40669,
+      "path": "triplet-plan/candidate.columns.cr.txt",
+      "retained_mode": "0600",
+      "sha256": "988ef625b76588443b51f7881d6812eaf69bdfa27071ba02f8c8b5b9dfd88f23",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 40220,
+      "path": "triplet-plan/original.columns.cr.txt",
+      "retained_mode": "0600",
+      "sha256": "eebf80691fb9caf87755697c0758ded0ab1e99c5fbcb1750034bed4b86d6c2bb",
+      "zip_mode": "0o100644"
+    },
+    {
+      "bytes": 40220,
+      "path": "triplet-plan/restored.columns.cr.txt",
+      "retained_mode": "0600",
+      "sha256": "eebf80691fb9caf87755697c0758ded0ab1e99c5fbcb1750034bed4b86d6c2bb",
+      "zip_mode": "0o100644"
+    }
+  ],
+  "label": "GRANT",
+  "local_compiler_container_native_SSH_jobs": 0,
+  "missing_success_members": [
+    "results/triplet10/candidate/COMMANDS.json",
+    "results/triplet10/candidate/DEFINED_TEXT_SYMBOLS.json",
+    "results/triplet10/candidate/association-canary.stderr.txt",
+    "results/triplet10/candidate/association-canary.stdout.txt",
+    "results/triplet10/candidate/build.stderr.txt",
+    "results/triplet10/candidate/build.stdout.txt",
+    "results/triplet10/candidate/field-canary.stderr.txt",
+    "results/triplet10/candidate/field-canary.stdout.txt",
+    "results/triplet10/candidate/format.stderr.txt",
+    "results/triplet10/candidate/format.stdout.txt",
+    "results/triplet10/candidate/normal.stderr.txt",
+    "results/triplet10/candidate/normal.stdout.txt",
+    "results/triplet10/original/DEFINED_TEXT_SYMBOLS.json",
+    "results/triplet10/original/association-canary.stderr.txt",
+    "results/triplet10/original/association-canary.stdout.txt",
+    "results/triplet10/original/field-canary.stderr.txt",
+    "results/triplet10/original/field-canary.stdout.txt",
+    "results/triplet10/original/normal.stderr.txt",
+    "results/triplet10/original/normal.stdout.txt",
+    "results/triplet10/restored/COMMANDS.json",
+    "results/triplet10/restored/DEFINED_TEXT_SYMBOLS.json",
+    "results/triplet10/restored/association-canary.stderr.txt",
+    "results/triplet10/restored/association-canary.stdout.txt",
+    "results/triplet10/restored/build.stderr.txt",
+    "results/triplet10/restored/build.stdout.txt",
+    "results/triplet10/restored/field-canary.stderr.txt",
+    "results/triplet10/restored/field-canary.stdout.txt",
+    "results/triplet10/restored/format.stderr.txt",
+    "results/triplet10/restored/format.stdout.txt",
+    "results/triplet10/restored/normal.stderr.txt",
+    "results/triplet10/restored/normal.stdout.txt"
+  ],
+  "mission": "memory-budget-experiment",
+  "sanitized_findings": [],
+  "sanitized_roster_errors": [],
+  "scope": "Exact positive regular-file roster, metadata-path and bounded credential-shaped byte screening; SDK nested archive is the exact pinned public source archive",
+  "sha256": "e44a34c0ce7edfad2df8362c04bee5b7c0b9c97cc39ae77a92f8e4a07d85ba9f",
+  "zip": "GRANT.zip"
+}

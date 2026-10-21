@@ -1,0 +1,17 @@
+F
+
+Failures:
+
+  1) A record construction memory expectation preserves the record and rejects an actual allocation regression
+     Failure/Error: fail "#{policy.scenario_name}: #{verdict.verdict_status}: #{verdict.list_of_violations.join("; ")}" unless verdict.passed?
+
+       construct_record: exceeded: crystal_allocation_calls: 2 > 1; crystal_requested_bytes: 136 > 8
+
+     # src/memory_budget/spec_expectations.cr:19
+
+Finished in 435 microseconds
+1 examples, 1 failures, 0 errors, 0 pending
+
+Failed examples:
+
+crystal spec docs/0.1.1/examples/fiber_budget_spec.cr:5 # A record construction memory expectation preserves the record and rejects an actual allocation regression

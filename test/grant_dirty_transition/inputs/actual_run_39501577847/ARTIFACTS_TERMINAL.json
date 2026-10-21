@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 12303082120,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMwMzA4MjEyMA==",
+      "name": "grant-ordinary-mac-sdk-readiness",
+      "size_in_bytes": 269759,
+      "url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/actions/artifacts/12303082120",
+      "archive_download_url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/actions/artifacts/12303082120/zip",
+      "expired": false,
+      "digest": "sha256:712c627a00905f94887e61d842b8e718cfebbc69def4247f10928651a872947c",
+      "created_at": "2026-10-20T21:51:43Z",
+      "updated_at": "2026-10-20T21:51:43Z",
+      "expires_at": "2026-11-19T21:51:41Z",
+      "workflow_run": {
+        "id": 39501577847,
+        "repository_id": 1160154953,
+        "head_repository_id": 1160154953,
+        "head_branch": "feature/grant-installed-memory-diagnostic",
+        "head_sha": "126cd1601bcb8e4d5230454cd8548eedf2f7fc93"
+      }
+    },
+    {
+      "id": 12302647285,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMwMjY0NzI4NQ==",
+      "name": "grant-mac-rich10-causal-only-diagnostic",
+      "size_in_bytes": 342017,
+      "url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/actions/artifacts/12302647285",
+      "archive_download_url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/actions/artifacts/12302647285/zip",
+      "expired": false,
+      "digest": "sha256:e44a34c0ce7edfad2df8362c04bee5b7c0b9c97cc39ae77a92f8e4a07d85ba9f",
+      "created_at": "2026-10-20T21:51:44Z",
+      "updated_at": "2026-10-20T21:51:44Z",
+      "expires_at": "2026-11-19T21:51:43Z",
+      "workflow_run": {
+        "id": 39501577847,
+        "repository_id": 1160154953,
+        "head_repository_id": 1160154953,
+        "head_branch": "feature/grant-installed-memory-diagnostic",
+        "head_sha": "126cd1601bcb8e4d5230454cd8548eedf2f7fc93"
+      }
+    }
+  ]
+}

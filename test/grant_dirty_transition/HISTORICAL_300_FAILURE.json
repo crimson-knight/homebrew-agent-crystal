@@ -1,0 +1,47 @@
+{
+  "actual_target_cells_accepted": 0,
+  "artifact_zip_sha256": "112712503c40b1447f7759d7d0ab360bc37d2d5eaea158aa4084050bf92b8bb3",
+  "build_elapsed_seconds": 900.1589905,
+  "build_exit_code": -9,
+  "build_limit_seconds": 900,
+  "build_original_group_error": "PermissionError: [Errno 1] Operation not permitted",
+  "build_original_group_status": "unverifiable",
+  "build_streams_empty": true,
+  "format": "atlas-grant-historical-original300-failure-v1",
+  "peak_memory_available": false,
+  "retained_files": [
+    {
+      "bytes": 4247,
+      "path": "inputs/historical_run_39493843606/GRANT_EXTRACTION_RECEIPT.json",
+      "sha256": "4709dfc9cedcdac74075c8409ba642ff401a877b993f3cdf48f9f5b2ddc85d59"
+    },
+    {
+      "bytes": 1116,
+      "path": "inputs/historical_run_39493843606/GRANT_EVIDENCE/SERIAL_RESULT.json",
+      "sha256": "7438aaedb2ca785665c207417883e83a4637599216c24453729458e7bfea44d7"
+    },
+    {
+      "bytes": 201776,
+      "path": "inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/COMPARISON_RESULT.json",
+      "sha256": "443bfac24d2c27233aa62e1d0b5e5a053f06ccd6a579ff1a54973102460e6e9e"
+    },
+    {
+      "bytes": 3935,
+      "path": "inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/original/COMMANDS.json",
+      "sha256": "abfc8c5264128d8bcd13938f84aa96b5da2faa4839b481213aaecb4be36fa071"
+    },
+    {
+      "bytes": 0,
+      "path": "inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/original/build.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "inputs/historical_run_39493843606/GRANT_EVIDENCE/results/baseline300/original/build.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "run_id": "39493843606",
+  "serial_rich10_executed": false,
+  "source_commit": "6bbe1da4323183faaed6b7e4d2fb6150ee0aa601"
+}

@@ -1,0 +1,225 @@
+{
+  "formulae": [
+    {
+      "name": "agent-crystal",
+      "full_name": "crimson-knight/agent-crystal/agent-crystal",
+      "tap": "crimson-knight/agent-crystal",
+      "oldnames": [],
+      "aliases": [],
+      "versioned_formulae": [],
+      "desc": "AgentC-enhanced Crystal compiler with incremental compilation and WASM support",
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/crimson-knight/crystal/tree/incremental-compilation",
+      "versions": {
+        "stable": "1.21.0-incremental-1",
+        "head": "HEAD",
+        "bottle": false
+      },
+      "urls": {
+        "stable": {
+          "url": "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-1.tar.gz",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05"
+        },
+        "head": {
+          "url": "https://github.com/crimson-knight/crystal.git",
+          "branch": "incremental-compilation",
+          "using": null
+        }
+      },
+      "patches": [],
+      "local_patch_checksums": {},
+      "revision": 1,
+      "version_scheme": 0,
+      "compatibility_version": null,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {},
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [
+        "bdw-gc",
+        "gmp",
+        "libevent",
+        "libyaml",
+        "llvm@21",
+        "openssl@3",
+        "pcre2",
+        "pkgconf"
+      ],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "no_linkage_dependencies": [],
+      "uses_from_macos": [
+        "libffi"
+      ],
+      "uses_from_macos_bounds": [
+        {}
+      ],
+      "requirements": [],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [],
+      "caveats": null,
+      "installed": [
+        {
+          "sbom": "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/sbom.spdx.json",
+          "version": "1.21.0-incremental-1_1",
+          "used_options": [],
+          "built_as_bottle": false,
+          "poured_from_bottle": false,
+          "time": 1792526320,
+          "runtime_dependencies": [
+            {
+              "full_name": "bdw-gc",
+              "version": "8.2.12",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "8.2.12",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "gmp",
+              "version": "6.3.0",
+              "revision": 0,
+              "bottle_rebuild": 1,
+              "pkg_version": "6.3.0",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "ca-certificates",
+              "version": "2026-10-20",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "2026-10-20",
+              "declared_directly": false,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "openssl@4",
+              "version": "4.0.3",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "4.0.3",
+              "declared_directly": false
+            },
+            {
+              "full_name": "libevent",
+              "version": "2.1.13",
+              "revision": 1,
+              "bottle_rebuild": 0,
+              "pkg_version": "2.1.13_1",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "libyaml",
+              "version": "0.2.5",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "0.2.5",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "lz4",
+              "version": "1.10.0",
+              "revision": 0,
+              "bottle_rebuild": 3,
+              "pkg_version": "1.10.0",
+              "declared_directly": false
+            },
+            {
+              "full_name": "xz",
+              "version": "5.8.4",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "5.8.4",
+              "declared_directly": false,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "zstd",
+              "version": "1.5.7",
+              "revision": 1,
+              "bottle_rebuild": 0,
+              "pkg_version": "1.5.7_1",
+              "declared_directly": false,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "llvm@21",
+              "version": "21.1.8",
+              "revision": 1,
+              "bottle_rebuild": 0,
+              "pkg_version": "21.1.8_1",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "openssl@3",
+              "version": "3.5.9",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "3.5.9",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "pcre2",
+              "version": "10.49",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "10.49",
+              "declared_directly": true,
+              "compatibility_version": 1
+            },
+            {
+              "full_name": "pkgconf",
+              "version": "3.0.10",
+              "revision": 0,
+              "bottle_rebuild": 0,
+              "pkg_version": "3.0.10",
+              "declared_directly": true,
+              "compatibility_version": 2
+            }
+          ],
+          "installed_on_request": true
+        }
+      ],
+      "linked_keg": "1.21.0-incremental-1_1",
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "1bd718a6e65ae1cf4f7a5f15f0ed4e72081d1792",
+      "ruby_source_path": "Formula/agent-crystal.rb",
+      "ruby_source_checksum": {
+        "sha256": "dfb16338b328960bd0e822c2d98eac8b7774d1303e972a5dba09ba1ddf9ab7df"
+      }
+    }
+  ],
+  "casks": []
+}

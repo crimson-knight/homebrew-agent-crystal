@@ -1,0 +1,195 @@
+{
+  "actual_compiler_color": "UNEXECUTED",
+  "actual_local_compiler_native_container_ssh_workload_jobs": 0,
+  "actual_lookup_executed": false,
+  "api_card_acceptance": {
+    "api_card_errors": [],
+    "exact_query": true,
+    "failure_reason": null,
+    "freshness": "fresh",
+    "nonempty_signatures": true,
+    "statuses": [
+      "found",
+      "present"
+    ]
+  },
+  "expected_base_integration": "6a825b91ccbefd1343bb14bc33afbb6f96dabcfc",
+  "format": "atlas-grant-dirty-api-hook-prerequisites-v1",
+  "fresh_sdk_source_contract": "Frozen v106 source lock/driver,68 installed bundle files, fresh same-job nonce and individually observed backend bytes; latest SDK58c is a separate source contract requiring a reviewed successor policy",
+  "hooks": {
+    "actual_callback_verified": false,
+    "adapter": {
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/tooling/codex_crystal_feedback-1.0.29.rb",
+      "sha256": "cbb09db5b1d69e960dd1dc93bf0c7e21df6360ef9fd6d357d20829bf14b3fa1c"
+    },
+    "configuration": {
+      "path": "/Users/crimsonknight/.codex/hooks.json",
+      "sha256": "ba66dadc78bfc66536ba47b1ac888d31a58ad5d701b63149a8c7b0f6822e364e"
+    },
+    "source_artifacts_are_application_checkout": false
+  },
+  "lookup_argv": [
+    "<reviewed amber-lsp>",
+    "lookup",
+    "<method>",
+    "--root",
+    "<actual projected Grant>",
+    "--json"
+  ],
+  "method_count": 39,
+  "method_inventory": [
+    "Hash.new",
+    "Hash#has_key?",
+    "Hash#[]",
+    "Hash#[]=",
+    "Hash#delete",
+    "Reference#same?",
+    "Int32#!=",
+    "Int64#==",
+    "Float64#!=",
+    "Array#==",
+    "Slice#==",
+    "Time#==",
+    "UUID#==",
+    "GC.collect",
+    "GC.stats",
+    "GC::Stats#total_bytes",
+    "Grant::Dirty::CapturedColumnAssignment.new",
+    "Grant::Dirty::CapturedColumnAssignment#previous_database_value",
+    "Grant::Dirty::CapturedColumnAssignment#current_database_value",
+    "Grant::Dirty::RecordedColumnAssignment.new",
+    "Grant::Dirty.record_column_assignment",
+    "Grant::Dirty::CapturedColumnAssignment#attribute_name",
+    "Grant::Dirty::CapturedColumnAssignment#collection_of_original_attribute_values",
+    "Grant::Dirty::CapturedColumnAssignment#collection_of_pending_attribute_changes",
+    "Grant::Dirty::RecordedColumnAssignment#collection_of_original_attribute_values",
+    "Grant::Dirty::RecordedColumnAssignment#collection_of_pending_attribute_changes",
+    "Time.utc",
+    "UUID.empty",
+    "Int32#to_i32",
+    "Int32#to_i64",
+    "Fiber.current",
+    "Fiber#allocation_tally",
+    "Fiber::AllocationTally#-",
+    "Fiber::AllocationTally#calls",
+    "Fiber::AllocationTally#requested_bytes",
+    "Time.monotonic",
+    "Time::Span#total_nanoseconds",
+    "Int32#even?",
+    "String#bytesize"
+  ],
+  "mission": "memory-budget-experiment",
+  "original_source": {
+    "commit": "d78418566d90e61d6876a4a2a8abd93bb74f1ba1",
+    "logical_rows": 1554,
+    "sha256": "edeb868d76119f67dacdd829a0113ba0b0637583f0ee2fcbd87078a6cbee9d8a"
+  },
+  "original_spec_groups": [
+    {
+      "path": "spec/grant/dirty/dirty_tracking_spec.cr",
+      "sha256": "efccb39af6edf7d7b5a1ea82b4dda8ba1f8c3ffaceb8a57d52654c658fba4fde"
+    },
+    {
+      "path": "spec/grant/dirty/dirty_control_spec.cr",
+      "sha256": "17756b8e2f8e4c73b28c885bd1fe95c2b46a474e058f40e9f9fb47d86816211a"
+    },
+    {
+      "path": "spec/grant/dirty/changes_to_save_spec.cr",
+      "sha256": "bab0accb8af91c9a66c66a247f9b85e8f544840cfbd72ba064522ace856a540c"
+    },
+    {
+      "path": "spec/grant/dirty/saved_changes_spec.cr",
+      "sha256": "f56c4d5aef0b099a5261fbb9aaccab07c12d80a7551cdf8ba6932a6de34d74a7"
+    },
+    {
+      "path": "spec/grant/dirty/mutation_detection_spec.cr",
+      "sha256": "7093da6fa70e877315286307d92bf0ed97cf9bf0d33bd1b76414c0c2f44166ac"
+    },
+    {
+      "path": "spec/grant/dirty/w6_mutation_watch_spec.cr",
+      "sha256": "4566ae4d276fb97fd83903a05d9820b007c7baf803c76d066aa0daeccab15ac8"
+    },
+    {
+      "path": "spec/grant/perf/w6_lazy_dirty_spec.cr",
+      "sha256": "bcc4ccaf6be5d6cb2b3f311f9958ae8d4de7e2450e02bbe8e317711c1c8ca608"
+    },
+    {
+      "path": "spec/grant/normalization_spec.cr",
+      "sha256": "91df5825c313a054e69a97857ee586bfcd6a048e04710d9967369d3f38738475"
+    },
+    {
+      "path": "spec/grant/attributes/normalizes_spec.cr",
+      "sha256": "1c4bb40f8da8d46e6ed0eb371ce90c93255b4fceae6aeedfc4bf581779574291"
+    },
+    {
+      "path": "spec/grant/attributes/before_type_cast_spec.cr",
+      "sha256": "2cb35d26474632e58d09ec6a6499352e195447cf1d1e782a3a0e71906f12ccb1"
+    },
+    {
+      "path": "spec/grant/persistence/readonly_attribute_spec.cr",
+      "sha256": "b7c8f7419ab82db75d7011a19edf6f331f076ebbbb0857b18fca37e387d03684"
+    },
+    {
+      "path": "spec/grant/persistence/w6_dirty_typed_spec.cr",
+      "sha256": "ad001cd080b678fdc29388ec18d75b232fadc0fe9afb13c23efc231d19e2757b"
+    },
+    {
+      "path": "spec/grant/serialized_column_spec.cr",
+      "sha256": "efaf436373c5072ea4d914bd99b4999ccb3df31b99cffe3bbed9081e6caa73d4"
+    },
+    {
+      "path": "spec/grant/sti/sti_personas_spec.cr",
+      "sha256": "a9b00de90d0aea0a9dda77670b951073270e0536a49abd7dbaa8011c08a87d74"
+    },
+    {
+      "path": "spec/grant/sti/sti_behavior_spec.cr",
+      "sha256": "be251abeceafc5d220b37f45f18eab495c8b5b01d2f3e75947368c884ac81970"
+    },
+    {
+      "path": "spec/grant/sti/sti_validation_callback_inheritance_spec.cr",
+      "sha256": "9579a6969afe40d63646bdf127d228b5d55100f92ed3414fa228980a7308ac6f"
+    },
+    {
+      "path": "spec/grant/transaction_atomicity_spec.cr",
+      "sha256": "61ff17765bee6bb50294f590197210091ed2771e1f640f6b61683af2bbfb2973"
+    },
+    {
+      "path": "spec/grant/persistence/transaction_lifecycle_spec.cr",
+      "sha256": "77975e4eeb685b9feb4cb2c9bd83dcea6235b50f5de0a20c8bc2c9495432e728"
+    }
+  ],
+  "pending_gate": "Exact hosted tool registry, real hook callback, actual-root cards, GREEN compile/format/lint/spec/type/equality/runtime/owner proof and complete original-group/source/provider return",
+  "sdk_driver_sha256": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797",
+  "sdk_lock_sha256": "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4",
+  "separate_lint_configuration": {
+    "git_source": "Grant d78418566d90e61d6876a4a2a8abd93bb74f1ba1:.ameba.yml",
+    "path": "inputs/AMEBA_D784.yml",
+    "scope": "Pinned original lint configuration passed explicitly; default timed source roster remains1554 rows",
+    "sha256": "af97d5e168f69b96fd303f037c18eb88eb7ccc4b1f3f24f4351b1b7d705809c7"
+  },
+  "source_scope": "Source inventory and local file metadata; hosted execution pending",
+  "tool_origin_ledger": {
+    "path": "inputs/INSTALL_PATH_MAP_V104.json",
+    "sha256": "accf79da675af2bc1dad6c434fe06eb661cbb4b99410a9f4946d7f597254f540"
+  },
+  "unknown_lookup_exit_code": 4,
+  "unknown_retry": [
+    "--verify"
+  ],
+  "v101_executable_prerequisites": {
+    "actual_callback_verified": false,
+    "callback_probe": "source/hook_callback_probe.cr.txt",
+    "callback_reader": "hook_callback.py",
+    "callback_source_preparer": "prepare_dirty_callback_source.py",
+    "candidate_helper_lookups_before_behavior_compilation": true,
+    "host_portability_boundary": "Normal hosted execution depends on supported compiler/SDK/API/lint tools. Machine-specific global Codex hooks remain a local application-edit prerequisite.",
+    "hosted_execution_context": "execution_context.py; exact current GitHub run/attempt/source/job/runner/OS/architecture, sealed SDK nonce, retained successful SDK driver/lock/profile/provider identities and unchanged actual Grant root",
+    "initial_receipt": "CALLBACK_PENDING.json",
+    "lookup_method_count": 41,
+    "maximum_commands": 113,
+    "proof_horizon_seconds": 6600,
+    "real_callback_scope": "Local Codex application edits after setup reload require the real global callback. The generic strict callback reader and its source fixtures are retained as separately unadmitted evidence. Ordinary hosted fixture materialization derives its context from the exact current GitHub/same-job SDK authority and keeps local application-edit admission false.",
+    "standard_library_lookups_before_first_overlay": true,
+    "worst_case_command_seconds": 6540
+  }
+}

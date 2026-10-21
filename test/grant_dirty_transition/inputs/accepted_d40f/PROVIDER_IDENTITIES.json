@@ -1,0 +1,22 @@
+{
+  "compiler_backend": {
+    "bytes": 13787256,
+    "path": "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/libexec/agent-crystal-bin",
+    "sha256": "00a66c333eb58a354d57f00f1733ea971ccb6b0fb7098f4af9f1596c153e28a3"
+  },
+  "compiler_wrapper": {
+    "bytes": 210,
+    "path": "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+    "sha256": "5597f8891468ec305a55c8d7a910c392c4cd5b923fba475ba061b0221b8763a0"
+  },
+  "ruby_backend": {
+    "bytes": 33968,
+    "path": "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+    "sha256": "a53f08545808a4588c9f7f6ac2f865ea4ba852a64f71f45bf8d61e114428f42d"
+  },
+  "ruby_launcher": {
+    "bytes": 33968,
+    "path": "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+    "sha256": "a53f08545808a4588c9f7f6ac2f865ea4ba852a64f71f45bf8d61e114428f42d"
+  }
+}

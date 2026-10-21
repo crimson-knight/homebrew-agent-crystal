@@ -1,0 +1,34 @@
+{
+  "actual_target_cells_accepted": 0,
+  "elapsed_seconds": 904.4088540419999,
+  "error": "RuntimeError: Actual Runner terminal writers and original groups must be verified absent before the next experiment",
+  "finalization_errors": [],
+  "format": "atlas-grant-serial-diagnostic-v1",
+  "maximum_seconds": 6600,
+  "native_loader_closure_qualified": false,
+  "ordered_experiments": [
+    "original300-feasibility-baseline",
+    "cost-isolation-rich10-original-candidate-restored"
+  ],
+  "outcomes": [
+    {
+      "diagnostic_complete": false,
+      "exit_code": 2,
+      "experiment": "baseline300"
+    }
+  ],
+  "passed": false,
+  "required_target_cells": 144,
+  "source_projection": {
+    "actual_compiler_jobs": 0,
+    "aliases": 5,
+    "archive_sha256": "d2c90cc3110109337c92f567fdf533dadf475b3f468602b8fcb5e2ed21426ff5",
+    "execution_admitted": false,
+    "passed": true,
+    "physical_regular_bytes": 7454171,
+    "source_rows": 1554,
+    "source_tree_sha256": "edeb868d76119f67dacdd829a0113ba0b0637583f0ee2fcbd87078a6cbee9d8a",
+    "target_cells_accepted": 0
+  },
+  "whole_build_provider_qualified": false
+}

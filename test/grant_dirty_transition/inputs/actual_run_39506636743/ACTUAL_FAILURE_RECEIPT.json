@@ -1,0 +1,211 @@
+{
+  "accepted_full300_500_target_cells": 0,
+  "actual_artifacts": 0,
+  "actual_causal_diagnostic_accepted": false,
+  "actual_conclusion": "failure",
+  "actual_current_runtime_qualification": false,
+  "actual_local_compiler_native_container_ssh_workload_jobs": 0,
+  "actual_local_time_true_probe_jobs": 0,
+  "actual_steps": [
+    {
+      "conclusion": "success",
+      "name": "Set up job",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Check out reviewed tap source",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Set up Homebrew",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "name": "Check source-only installer and SDK controls",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Install the ordinary formula through the installer",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Qualify the exact SDK in this job and seal its observed compiler",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Run one rich10 original candidate restored causal triplet",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Snapshot the explicit result artifact roster",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Preserve original SDK and same-job readiness evidence",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Preserve diagnostic results and complete raw command output",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Set up Homebrew",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Check out reviewed tap source",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job",
+      "status": "completed"
+    }
+  ],
+  "earliest_concrete_failure": {
+    "actual_installed_workflow": ".github/workflows/grant-installed-mac.yml",
+    "actual_missing_path": "/Users/runner/work/homebrew-agent-crystal/homebrew-agent-crystal/test/grant_assignment_cost/grant-causal-mac.proposed.yml",
+    "classification": "Source-test fixture/installed-repository layout mismatch",
+    "error_class": "FileNotFoundError",
+    "log_lines": [
+      1071,
+      1074,
+      1075,
+      1082,
+      1085,
+      1087,
+      1088
+    ],
+    "optimized_new_suite_reached": false,
+    "ordinary_errors": 1,
+    "ordinary_new_suite_tests": 38,
+    "physically_reproduced_ordinary_and_optimized": true,
+    "source_line": 451,
+    "source_operation": "ROOT / grant-causal-mac.proposed.yml",
+    "stage": "Check source-only installer and SDK controls",
+    "test": "CausalCalibrationControls.test_active_workflow_opt_in_and_exact_original_deadlines_remain_explicit"
+  },
+  "evidence": [
+    {
+      "bytes": 674,
+      "path": "RUN_BINDING.json",
+      "sha256": "c4425fc3076bfa4884b86880edfd53bcbc0cff79eaa11ef48d7650037cb759e4"
+    },
+    {
+      "bytes": 1332,
+      "path": "AUTHORITATIVE_READBACK.json",
+      "sha256": "39b99d4092faebe14cd12f337cd6dc0e22a04eab5a7a084936a1f1017998fa47"
+    },
+    {
+      "bytes": 14043,
+      "path": "RUN_TERMINAL.json",
+      "sha256": "f3ee80762966df2c8ef80233b5f2e8f4e0ca627f5a239f2831f43a8341fda5e0"
+    },
+    {
+      "bytes": 3386,
+      "path": "JOBS_TERMINAL.json",
+      "sha256": "7ca3cea766ee6c9fb36f9b3edae582f30edee5695c84f080af4101fb0622a5fc"
+    },
+    {
+      "bytes": 32,
+      "path": "ARTIFACTS_TERMINAL.json",
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "bytes": 100511,
+      "path": "ACTUAL_JOB_LOG.txt",
+      "sha256": "6caab7b6546d81d71cecc28773981d38c9c7bbe55ffa98ec154ab825f0dd85b0"
+    },
+    {
+      "bytes": 1259,
+      "path": "PUBLIC_COMMIT.json",
+      "sha256": "a3133baf761e389ac89012e916e3f748452254f90619ae5d2be1bde91aa92365"
+    },
+    {
+      "bytes": 69467,
+      "path": "PUBLIC_TREE.json",
+      "sha256": "1c88fbee7accedbf771ade8447497fec7f29843a4f888d856656c6a3b508186a"
+    },
+    {
+      "bytes": 3776599,
+      "path": "PUBLIC_SOURCE.tar.gz",
+      "sha256": "b239f990c8cccf712378377e921632bba9c26af32a928058026dc0ff4b8e51e9"
+    },
+    {
+      "bytes": 62521,
+      "path": "EXACT_PUBLIC_SOURCE.json",
+      "sha256": "3962ce86e94259ab4c6a73e0da803b3424422e42e07986b9fd72955c8cc5390b"
+    },
+    {
+      "bytes": 2285,
+      "path": "LAYOUT_FAILURE_REPRODUCTION.json",
+      "sha256": "581c5e443262794f58ff02e208ad75c846e638b1ea0b00fc6b4962e5515eb25b"
+    },
+    {
+      "bytes": 1553,
+      "path": "reproduce_layout_failure.py",
+      "sha256": "16f0dd8e235a0986e60880e91294885d5b1754f14023a3de204eefe79daa0d33"
+    },
+    {
+      "bytes": 3004,
+      "path": "HISTORICAL_INPUTS.json",
+      "sha256": "d1e7de9ff224e254afcfdc7749b21a8be2121236bf1cf883dc88f0c446a8784f"
+    },
+    {
+      "bytes": 14130,
+      "path": "frozen_v104/ACTUAL_FAILURE_REVIEW.json",
+      "sha256": "13417f65d16fe12e126f0deb4a47c8acf402750eabd5d9c41a7cf5b15f40a8cc"
+    }
+  ],
+  "format": "atlas-grant-v105-actual-terminal-failure-review",
+  "group_and_restoration_boundary": "No current SDK/calibration/compiler group or source-overlay action was launched. Prior v104 complete-return observations remain historical evidence.",
+  "historical_v104": {
+    "receipt_sha256": "13417f65d16fe12e126f0deb4a47c8acf402750eabd5d9c41a7cf5b15f40a8cc",
+    "run_id": 39501577847,
+    "scope": "Original rich10 exit0 and16-line footer refusal; candidate/restored/owners/behavior unexecuted"
+  },
+  "job_id": 118917087585,
+  "memory_savings_accepted": false,
+  "mission": "memory-budget-experiment",
+  "native_loader_closure_qualified": false,
+  "public_mutation_owner": "parent",
+  "required_target_cells": 144,
+  "run_attempt": 1,
+  "run_id": 39506636743,
+  "run_url": "https://github.com/crimson-knight/homebrew-agent-crystal/actions/runs/39506636743",
+  "runner_name": "GitHub Actions 1000019238",
+  "smallest_correction": "Resolve the actual repository workflow path for installed tests, accept an explicit proposal fixture for packet-only tests, and exercise complete suites in both physical layouts with changed/missing installed-workflow refusals.",
+  "source_and_mocked_v105_acceptance_scope": "Prior98+98 local controls remain source acceptance; this actual installed-layout failure limits portability acceptance.",
+  "source_commit": "fdaa43cc1db51cbe0f0f89add4abe894827c0d26",
+  "source_origin": {
+    "complete_anonymous_public_tree_files": 215,
+    "git_blob_joins_replayed": true,
+    "manifest_rows": 194,
+    "manifest_sha256": "1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49",
+    "physical_files_sha256_replayed": true,
+    "workflow_sha256": "651885061ed34e3345ceb220cbc8115faf57a5513f087ab7e690cdad2f1b374d"
+  },
+  "strict_memory_objective_bytes": 2000000000,
+  "timing_provider_boundary": "This run retained no actual timing profile or provider admission. Physical local source/log bytes are independently hashed; historical v104 provider/profile hashes retain their original source-attested remote scope.",
+  "unexecuted": {
+    "build_owner_runtime_controls": true,
+    "candidate_Grant_arm": true,
+    "ordinary_formula_install": true,
+    "original_Grant_arm": true,
+    "restored_Grant_arm": true,
+    "same_job_SDK_qualification": true,
+    "timing_calibration_probe": true
+  },
+  "whole_build_provider_qualified": false
+}

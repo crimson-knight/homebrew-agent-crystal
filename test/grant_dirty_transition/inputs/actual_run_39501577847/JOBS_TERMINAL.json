@@ -1,0 +1,137 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 118900108493,
+      "run_id": 39501577847,
+      "workflow_name": "Grant installed Mac causal diagnostic",
+      "head_branch": "feature/grant-installed-memory-diagnostic",
+      "run_url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/actions/runs/39501577847",
+      "run_attempt": 1,
+      "node_id": "CR_kwDORSaPSc8AAAAbrv-szQ",
+      "head_sha": "126cd1601bcb8e4d5230454cd8548eedf2f7fc93",
+      "url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/actions/jobs/118900108493",
+      "html_url": "https://github.com/crimson-knight/homebrew-agent-crystal/actions/runs/39501577847/job/118900108493",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-20T21:35:21Z",
+      "started_at": "2026-10-20T21:35:25Z",
+      "completed_at": "2026-10-20T21:51:51Z",
+      "name": "One rich10 causal triplet",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-20T21:35:25Z",
+          "completed_at": "2026-10-20T21:35:27Z"
+        },
+        {
+          "name": "Check out reviewed tap source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-20T21:35:27Z",
+          "completed_at": "2026-10-20T21:35:30Z"
+        },
+        {
+          "name": "Set up Homebrew",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-20T21:35:30Z",
+          "completed_at": "2026-10-20T21:35:42Z"
+        },
+        {
+          "name": "Check source-only installer and SDK controls",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-20T21:35:42Z",
+          "completed_at": "2026-10-20T21:35:52Z"
+        },
+        {
+          "name": "Install the ordinary formula through the installer",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-20T21:35:52Z",
+          "completed_at": "2026-10-20T21:50:45Z"
+        },
+        {
+          "name": "Qualify the exact SDK in this job and seal its observed compiler",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-20T21:50:45Z",
+          "completed_at": "2026-10-20T21:51:05Z"
+        },
+        {
+          "name": "Run one rich10 original candidate restored causal triplet",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-10-20T21:51:05Z",
+          "completed_at": "2026-10-20T21:51:40Z"
+        },
+        {
+          "name": "Snapshot the explicit result artifact roster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-20T21:51:40Z",
+          "completed_at": "2026-10-20T21:51:40Z"
+        },
+        {
+          "name": "Preserve original SDK and same-job readiness evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-20T21:51:40Z",
+          "completed_at": "2026-10-20T21:51:42Z"
+        },
+        {
+          "name": "Preserve diagnostic results and complete raw command output",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-20T21:51:42Z",
+          "completed_at": "2026-10-20T21:51:44Z"
+        },
+        {
+          "name": "Post Set up Homebrew",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-20T21:51:44Z",
+          "completed_at": "2026-10-20T21:51:44Z"
+        },
+        {
+          "name": "Post Check out reviewed tap source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-20T21:51:44Z",
+          "completed_at": "2026-10-20T21:51:44Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-20T21:51:44Z",
+          "completed_at": "2026-10-20T21:51:49Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/crimson-knight/homebrew-agent-crystal/check-runs/118900108493",
+      "labels": [
+        "macos-26"
+      ],
+      "runner_id": 1000019237,
+      "runner_name": "GitHub Actions 1000019237",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

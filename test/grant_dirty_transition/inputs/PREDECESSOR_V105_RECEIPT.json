@@ -1,0 +1,116 @@
+{
+  "accepted_scope": "Frozen source proposal, retained actual failure/format replay, guarded mocked behavior, physical source/publication integrity",
+  "actual_failed_run": {
+    "Runner_seconds": 32.506737625,
+    "candidate_restored_owner_behavior_executed": false,
+    "hardware_pair_available": false,
+    "maximum_resident_set_size_bytes": 2257960960,
+    "original_build_exit": 0,
+    "peak_memory_footprint_bytes": 2222036352,
+    "rounded_footer_real_seconds": 32.43,
+    "run_id": "39501577847",
+    "stderr_bytes": 697,
+    "stdout_bytes": 0
+  },
+  "all165_frozen_v104_rows_reverified": true,
+  "boundaries": {
+    "actual_300_500_qualified_target_cells": 0,
+    "actual_local_compiler_native_container_ssh_jobs": 0,
+    "actual_local_time_true_probe_jobs": 0,
+    "actual_rerun_executed": false,
+    "actual_same_job_calibration_executed": false,
+    "memory_savings_accepted": false,
+    "native_loader_closure_qualified": false,
+    "required_target_cells": 144,
+    "shipping_compatibility_accepted": false,
+    "whole_build_provider_qualified": false
+  },
+  "explicit_changed_v104_rows": 3,
+  "format": "atlas-grant-timing-profile-source-receipt-v105",
+  "important_sources": [
+    {
+      "bytes": 10116,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/run_causal_only.py",
+      "sha256": "c81839b1a02ae9a9c5ac813cc8f11db4fa5f44301b6706cfef6028376c4ffc8a"
+    },
+    {
+      "bytes": 21816,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/run_hosted_contrast.py",
+      "sha256": "177c6951612f517036b1d1fcf9e88c1901b8e7157d6c43d1d3736fc6094ead6a"
+    },
+    {
+      "bytes": 15914,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/timing_profile.py",
+      "sha256": "2b649a2a7fc7b47d7b44a3a021dca3f004ac064055a6f14f777dce5d5efb517e"
+    },
+    {
+      "bytes": 2200,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/stage_causal_result_artifact.py",
+      "sha256": "2ef67c25dec13605df345ea74f0241512ccaddb132d6d262477f8d84ac5bf704"
+    },
+    {
+      "bytes": 29154,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/test_timing_profile.py",
+      "sha256": "6882dd809e438df857cbbe34faf9cbc9331c4eb91b7f044fdda28e075acc36c7"
+    },
+    {
+      "bytes": 1316,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/START_HERE_V105.md",
+      "sha256": "15af90f31506592174683898afce90dfc136e0cb5d72e6959e2ccfcc33384dde"
+    },
+    {
+      "bytes": 3738,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/TIMING_PROFILE_V105.md",
+      "sha256": "30156a5d5ba920a86133628b3d4d203cee8cc68ad1592994c7efaa05caa34be3"
+    },
+    {
+      "bytes": 2349,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/ACTUAL_FOOTER_FAILURE.json",
+      "sha256": "8875027f5a84eeac5af4fa4e3902b46bbe8478a53c8e5b6f5bcc4cdbed0699ff"
+    },
+    {
+      "bytes": 1233,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/fixtures/timing/PROVENANCE.json",
+      "sha256": "f61d74d550cd4d5aa8b56f4c203e2f1b18c6a1098ee8fa76d175580fba93895a"
+    }
+  ],
+  "integration_proposal": {
+    "bytes": 3621,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/INTEGRATION_PROPOSAL.json",
+    "sha256": "745bd28ca284c0453f9441c265bf7437128190fb05f8b356f5e429f1c971d5c3"
+  },
+  "mission": "memory-budget-experiment",
+  "modes": [
+    "ordinary",
+    "optimized"
+  ],
+  "next_action": "Independent source review of exact pins, then parent-owned hosted same-job calibration and complete three-arm diagnostic. Preserve all full300/500 gates.",
+  "original_three_test_files_byte_identical": true,
+  "preservation": {
+    "bytes": 30071,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/PRESERVATION_RECEIPT.json",
+    "sha256": "76f81c3161f42d3313269eedcf309a895e0469c8acb62e1693be9d84dca5ce77"
+  },
+  "preserved_v104_manifest_rows": 162,
+  "source_manifest": {
+    "bytes": 34009,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/SOURCE_PINS.json",
+    "sha256": "1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49"
+  },
+  "source_readback": {
+    "bytes": 2473,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105_validation/SOURCE_READBACK.json",
+    "sha256": "302b128c420b1888c960a352622ae8587c25cbf5cf536a122502993ed64942a8"
+  },
+  "source_tests": {
+    "bytes": 3903,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/SOURCE_TESTS.json",
+    "sha256": "83d56e02bf636de7f942671a513028d6b93582e04aa26dc485386c34b978e9b9"
+  },
+  "tests_per_mode": 98,
+  "workflow": {
+    "bytes": 6775,
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/grant-causal-mac.proposed.yml",
+    "sha256": "651885061ed34e3345ceb220cbc8115faf57a5513f087ab7e690cdad2f1b374d"
+  }
+}

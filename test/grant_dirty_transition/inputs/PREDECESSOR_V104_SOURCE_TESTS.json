@@ -1,0 +1,29 @@
+{
+  "actual_local_compiler_native_container_ssh_jobs": 0,
+  "command_journal_sha256": "720ba5ca96ee6379343bff52f5ebc8078677f9a954c36dea2944383cb2a74f35",
+  "explicit_changed_inherited_helper": "run_hosted_contrast.py",
+  "format": "atlas-grant-causal-source-tests-v104",
+  "inherited_v102_rows_exact": 139,
+  "manifest_sha256": "e12d2f20a6433d81ced0c920f1ff09c9b9c9424278172d923f3b7d1f913670b8",
+  "modes": [
+    {
+      "exit_code": 0,
+      "mode": "ordinary",
+      "stderr_sha256": "5c2488b7b7e3833be289eccb024fedfbff6986d133c41ff3eb7e85a3aa3af625",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 60
+    },
+    {
+      "exit_code": 0,
+      "mode": "optimized",
+      "stderr_sha256": "5d2bbb41876852da2b3537b71c1e1dad9761f1e6aaaada4228b1fcea4e5d4b80",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 60
+    }
+  ],
+  "new_cases_per_mode": 23,
+  "original_cases_per_mode": 37,
+  "raw_evidence_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v104_validation",
+  "target_cells_accepted": 0,
+  "v102_and_v103_physical_rows_unchanged": true
+}

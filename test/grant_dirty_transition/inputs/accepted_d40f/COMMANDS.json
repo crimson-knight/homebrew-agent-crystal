@@ -1,0 +1,479 @@
+[
+  {
+    "arguments": [
+      "/opt/homebrew/bin/brew",
+      "--prefix",
+      "agent-crystal"
+    ],
+    "elapsed_seconds": 0.1372011250000469,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "brew-prefix",
+    "maximum_seconds": 45,
+    "original_group": 54881,
+    "pid": 54881,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "ed762435da3fe4a5f6cdececa4a2bab64a45db2a77fb801422a0fe1f6a3862a5",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2096.185620791,
+      "elapsed_seconds": 0.00021574999982476584,
+      "group": 54881,
+      "initial_sample": {
+        "elapsed_seconds": 3.829199977190001e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2136.048817083,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.829199977190001e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.829199977190001e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/bin/brew",
+      "--prefix"
+    ],
+    "elapsed_seconds": 0.13137254200000825,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "brew-root",
+    "maximum_seconds": 45,
+    "original_group": 54888,
+    "pid": 54888,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "bd3ecf0e11bd78939fa0357ce45c709ff3921d3af528f00798ba1eab246fc718",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2096.318408166,
+      "elapsed_seconds": 0.00018512499991629738,
+      "group": 54888,
+      "initial_sample": {
+        "elapsed_seconds": 2.6917000013781944e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2136.187451041,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.6917000013781944e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.6917000013781944e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/bin/brew",
+      "info",
+      "--json=v2",
+      "agent-crystal"
+    ],
+    "elapsed_seconds": 1.1162872919999245,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "brew-receipt",
+    "maximum_seconds": 45,
+    "original_group": 54894,
+    "pid": 54894,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e64ccfb6bab3c3f15d54a37e8883689c921afab4a2b4c7126042160ef44c4e21",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2097.435573708,
+      "elapsed_seconds": 0.0001748750000842847,
+      "group": 54894,
+      "initial_sample": {
+        "elapsed_seconds": 2.366699982303544e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2136.319582041,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.366699982303544e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.366699982303544e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+      "--version"
+    ],
+    "elapsed_seconds": 0.17144025000015972,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "alpha-version",
+    "maximum_seconds": 30,
+    "original_group": 54977,
+    "pid": 54977,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "61c72b8111e0028eeaa1eb398b3b3aa01b64abbb6b0ed2ad36367e18fb74e218",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2097.802530916,
+      "elapsed_seconds": 0.00017458399997849483,
+      "group": 54977,
+      "initial_sample": {
+        "elapsed_seconds": 2.6750000415631803e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2122.631375083,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.6750000415631803e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.6750000415631803e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "-rjson",
+      "-rrbconfig",
+      "-e",
+      "puts JSON.generate({\"path\" => File.realpath(RbConfig.ruby), \"version\" => RUBY_DESCRIPTION})"
+    ],
+    "elapsed_seconds": 0.24614670799974192,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "ruby-identity",
+    "maximum_seconds": 30,
+    "original_group": 54980,
+    "pid": 54980,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "9bdf85d908c688d656084a280f6e1d4563988d1618701e771be49b0e15898cd5",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2098.049562041,
+      "elapsed_seconds": 0.00017624999964027666,
+      "group": 54980,
+      "initial_sample": {
+        "elapsed_seconds": 3.033399980267859e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2122.80370725,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.033399980267859e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.033399980267859e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/public SDK source/scripts/install_bundle.rb",
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/ordinary consumer with spaces"
+    ],
+    "elapsed_seconds": 0.1282449580003231,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "install-bundle",
+    "maximum_seconds": 30,
+    "original_group": 54981,
+    "pid": 54981,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "012788722ba0342d62c710f7a553f55d4eaa9431f232728f2c5f2234e0200a45",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2098.202009375,
+      "elapsed_seconds": 0.00013937499988969648,
+      "group": 54981,
+      "initial_sample": {
+        "elapsed_seconds": 2.195799970650114e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2123.074002125,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.195799970650114e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.195799970650114e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/ordinary consumer with spaces/performance/vendor/memory_budget/scripts/budget.rb",
+      "spec",
+      "-Dfiber_allocation_tally"
+    ],
+    "elapsed_seconds": 8.988935958000184,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "default-specs",
+    "maximum_seconds": 300,
+    "original_group": 54982,
+    "pid": 54982,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "1e3f16418e7ad821f11c5605cdebccb1b39cf99cc7d74a5ea99cff42fbc43812",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2107.195256125,
+      "elapsed_seconds": 0.000765875000070082,
+      "group": 54982,
+      "initial_sample": {
+        "elapsed_seconds": 0.00022687499995299731,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2393.207559208,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 0.00022687499995299731,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 0.00022687499995299731,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/ordinary consumer with spaces/performance/vendor/memory_budget/scripts/budget.rb",
+      "spec",
+      "-Dfiber_allocation_tally",
+      "-Dwithout_mt"
+    ],
+    "elapsed_seconds": 6.593364750000092,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "without-mt-specs",
+    "maximum_seconds": 300,
+    "original_group": 55311,
+    "pid": 55311,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "d55d881313f7e82c79e0ecdb6901a3baba101acc849960326fb9d5680c6e1029",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2113.794798625,
+      "elapsed_seconds": 0.0002965829999084235,
+      "group": 55311,
+      "initial_sample": {
+        "elapsed_seconds": 6.0165999911987456e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2402.201917583,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 6.0165999911987456e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 6.0165999911987456e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/ordinary consumer with spaces/performance/vendor/memory_budget/scripts/budget.rb",
+      "build",
+      "docs/0.1.1/examples/fiber_budget_spec.cr",
+      "-Dfiber_allocation_tally",
+      "-o",
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/fiber-budget-example"
+    ],
+    "elapsed_seconds": 5.398807042000044,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "tutorial-build",
+    "maximum_seconds": 300,
+    "original_group": 55365,
+    "pid": 55365,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2119.1951735,
+      "elapsed_seconds": 0.00017937500024345354,
+      "group": 55365,
+      "initial_sample": {
+        "elapsed_seconds": 2.6791000436787726e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2408.796662958,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.6791000436787726e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.6791000436787726e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/fiber-budget-example"
+    ],
+    "elapsed_seconds": 0.2557442920001449,
+    "exit_code": 0,
+    "expected_exit": 0,
+    "label": "tutorial-normal",
+    "maximum_seconds": 30,
+    "original_group": 55582,
+    "pid": 55582,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "06792bdaf6b2e799d4b7c88521119d1fe0db290dd1776c85df8a9f817e534a0a",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2119.453975583,
+      "elapsed_seconds": 0.0004497919999266742,
+      "group": 55582,
+      "initial_sample": {
+        "elapsed_seconds": 0.00010924999969574856,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2144.199007166,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 0.00010924999969574856,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 0.00010924999969574856,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  },
+  {
+    "arguments": [
+      "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/alpha-sdk-readiness-xfaq0ppa/fiber-budget-example"
+    ],
+    "elapsed_seconds": 0.2409532919996309,
+    "exit_code": 1,
+    "expected_exit": 1,
+    "label": "tutorial-regression",
+    "maximum_seconds": 30,
+    "original_group": 55583,
+    "pid": 55583,
+    "refusal": null,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "05d154af2438dfe897a2186a47dc9094ab2ddd11821f9070cb9c35cf68443f34",
+    "terminal_group_observation": {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 2119.699565916,
+      "elapsed_seconds": 0.0003046669999093865,
+      "group": 55583,
+      "initial_sample": {
+        "elapsed_seconds": 5.9499999679246685e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 2144.459160833,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 5.9499999679246685e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 5.9499999679246685e-05,
+        "status": "absent"
+      }
+    },
+    "writers_confirmed_retired": true
+  }
+]

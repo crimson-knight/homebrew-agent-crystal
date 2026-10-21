@@ -1,0 +1,20 @@
+test_active_workflow_opt_in_and_exact_original_deadlines_remain_explicit (actual_v105_installed_timing_tests.CausalCalibrationControls) ... ERROR
+
+======================================================================
+ERROR: test_active_workflow_opt_in_and_exact_original_deadlines_remain_explicit (actual_v105_installed_timing_tests.CausalCalibrationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_timing_actual_review_v105/exact public source/test/grant_assignment_cost/test_timing_profile.py", line 451, in test_active_workflow_opt_in_and_exact_original_deadlines_remain_explicit
+    raw = (ROOT / 'grant-causal-mac.proposed.yml').read_text()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_timing_actual_review_v105/exact public source/test/grant_assignment_cost/grant-causal-mac.proposed.yml'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)

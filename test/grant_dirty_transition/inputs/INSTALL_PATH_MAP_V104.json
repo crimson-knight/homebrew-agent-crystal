@@ -1,0 +1,397 @@
+{
+  "actual_local_compiler_native_container_ssh_workloads": 0,
+  "alpha_compiler_source": {
+    "attached_release_assets_distinct": [
+      {
+        "digest": "sha256:24267ea035cecc25828d7255275a89656f8cd977cd5e311a6f17a8449d830661",
+        "name": "crystal-alpha-1.21.0-incremental.tar.gz",
+        "size": 4432081,
+        "url": "https://github.com/crimson-knight/crystal/releases/download/v1.21.0-incremental-1/crystal-alpha-1.21.0-incremental.tar.gz"
+      }
+    ],
+    "commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+    "formula_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+    "formula_archive_url": "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-1.tar.gz",
+    "repo": "crimson-knight/crystal",
+    "runtime_counter_strategy": "SDK four-file stdlib overlay; first-class Alpha runtime source merge is separate",
+    "tag": "v1.21.0-incremental-1"
+  },
+  "assembled_utc": "2026-10-20T22:58:38.277301+00:00",
+  "format": "normal-installation-release-path-v104",
+  "grant_target_cells_accepted": 0,
+  "minecart_release_assets": [
+    {
+      "digest": "sha256:60e01c2c0839b158eab3450a7c952cf66658c0dff97e30df63ae1f3bad12882d",
+      "name": "minecart-linux-x86_64.tar.gz",
+      "size": 2586420,
+      "url": "https://github.com/crimson-knight/shards/releases/download/v2025.11.25.8/minecart-linux-x86_64.tar.gz"
+    },
+    {
+      "digest": "sha256:15c7c0af5f29dbd5d651fbfe90bfe1c0cd614a5e72a55ccacc2c246c6e1ed38f",
+      "name": "minecart-source-2025.11.25.8.tar.gz",
+      "size": 419008,
+      "url": "https://github.com/crimson-knight/shards/releases/download/v2025.11.25.8/minecart-source-2025.11.25.8.tar.gz"
+    },
+    {
+      "digest": "sha256:4ddda4dc8914956b77f99a7522dac393468478abff7e803ea67587210cfe1808",
+      "name": "minecart-source-2025.11.25.8.tar.gz.sha256",
+      "size": 102,
+      "url": "https://github.com/crimson-knight/shards/releases/download/v2025.11.25.8/minecart-source-2025.11.25.8.tar.gz.sha256"
+    },
+    {
+      "digest": "sha256:d1f956e89b5ef2e6eecca6c97826b89db6756a251cc2c6d8ea55fce01739d399",
+      "name": "SHA256SUMS",
+      "size": 197,
+      "url": "https://github.com/crimson-knight/shards/releases/download/v2025.11.25.8/SHA256SUMS"
+    },
+    {
+      "digest": "sha256:1243466d866d641c8b10e707ef4f15c17c12314f63f073442b4a230b4df1b29f",
+      "name": "SOURCE_COMMIT.txt",
+      "size": 41,
+      "url": "https://github.com/crimson-knight/shards/releases/download/v2025.11.25.8/SOURCE_COMMIT.txt"
+    }
+  ],
+  "mission": "memory-budget-experiment",
+  "paths": [
+    {
+      "commands": [
+        "brew tap crimson-knight/agent-crystal",
+        "brew install agent-crystal"
+      ],
+      "compiler_version": "1.21.0-incremental-1",
+      "corrected_source_selected": false,
+      "formula": {
+        "bytes": 5760,
+        "capture": "entrypoint-capture/source/crimson-knight/homebrew-agent-crystal/fd12452398cceb561f87cbab17774821e470158f/Formula/agent-crystal.rb",
+        "commit": "fd12452398cceb561f87cbab17774821e470158f",
+        "file": "Formula/agent-crystal.rb",
+        "git_blob": "2c3a4ca1c12457baf03ba2fd4725874a17cdcce6",
+        "repo": "crimson-knight/homebrew-agent-crystal",
+        "sha256": "7ce1726c8c792836ec6e84013a1906c800dfaefc30954e96f0974a6bf17ab5f7",
+        "url": "https://github.com/crimson-knight/homebrew-agent-crystal/blob/fd12452398cceb561f87cbab17774821e470158f/Formula/agent-crystal.rb"
+      },
+      "formula_revision": 0,
+      "id": "alpha-default-brew",
+      "observed_commit": "fd12452398cceb561f87cbab17774821e470158f",
+      "observed_ref": "main",
+      "ref_kind": "moving default branch",
+      "selected_repository": "crimson-knight/homebrew-agent-crystal",
+      "selection": "prefix/lib-only Linux runtime wrapper; no SDK readiness job in this recipe",
+      "unfrozen_inputs": [
+        "Homebrew executable/catalog",
+        "Homebrew core commits and native dependency formula/bottle versions/hashes"
+      ]
+    },
+    {
+      "bootstrap_commit": "be041513824fd2666a0e93cf5c3b0ca3bb0eb4b6",
+      "bootstrap_sha256": "5f333bbe53bc490e51e7ccb1df8779b3dd6ee73a1a7379efda216edb08ccb148",
+      "commands": [
+        "bash install-agent-crystal.sh"
+      ],
+      "corrected_source_selected": false,
+      "default_ref": "main",
+      "default_tap": "crimson-knight/homebrew-agent-crystal",
+      "downloaded_script": {
+        "bytes": 3922,
+        "capture": "tooling-edges/source/crimson-knight/homebrew-agent-crystal/22cb077900945471d7281b8f3f60633bc9ebf08e/install.sh",
+        "commit": "22cb077900945471d7281b8f3f60633bc9ebf08e",
+        "file": "install.sh",
+        "git_blob": "fc295dc89973227376a4ebb775bbe83176ef18b6",
+        "repo": "crimson-knight/homebrew-agent-crystal",
+        "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb",
+        "url": "https://github.com/crimson-knight/homebrew-agent-crystal/blob/22cb077900945471d7281b8f3f60633bc9ebf08e/install.sh"
+      },
+      "id": "alpha-checksum-installer-default",
+      "observed_commit": "fd12452398cceb561f87cbab17774821e470158f",
+      "script_pins_core_catalog": false,
+      "script_pins_tap_commit": false
+    },
+    {
+      "branch": "feature/sdk-hosted-compiler-checks",
+      "ci_conclusion_observed": null,
+      "ci_run": 39510580982,
+      "ci_scope": "feature-checkout source build and same-install SDK qualification",
+      "ci_status_observed": "in_progress",
+      "commands": [
+        "brew tap --custom-remote crimson-knight/agent-crystal <exact-checkout>",
+        "brew install --build-from-source crimson-knight/agent-crystal/agent-crystal",
+        "AGENT_CRYSTAL_FORMULA_PATH=<exact-checkout>/Formula/agent-crystal.rb ./install.sh"
+      ],
+      "compiler_version": "1.21.0-incremental-1",
+      "corrected_source_selected": true,
+      "formula": {
+        "bytes": 6565,
+        "capture": "final-edges/source/crimson-knight/homebrew-agent-crystal/e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32/Formula/agent-crystal.rb",
+        "commit": "e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32",
+        "file": "Formula/agent-crystal.rb",
+        "git_blob": "8cdaf005f53418bebd71afad931a7ca7e1dbb511",
+        "repo": "crimson-knight/homebrew-agent-crystal",
+        "sha256": "a286961970e3d773b0881b50741cbcf53f26eb15d770f4863202216ecf0bec67",
+        "url": "https://github.com/crimson-knight/homebrew-agent-crystal/blob/e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32/Formula/agent-crystal.rb"
+      },
+      "formula_revision": 2,
+      "id": "alpha-feature-source-override",
+      "installed_package_version": "1.21.0-incremental-1_2",
+      "normal_default_route_accepted": false,
+      "observed_commit": "e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32",
+      "pull_request": 3,
+      "sdk_commit": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
+      "sdk_lock": {
+        "bytes": 41187,
+        "capture": "final-edges/source/crimson-knight/homebrew-agent-crystal/e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32/test/sdk_source_lock.json",
+        "commit": "e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32",
+        "file": "test/sdk_source_lock.json",
+        "git_blob": "25f1245e0ddd4885c986d20223d606d12d7133cc",
+        "repo": "crimson-knight/homebrew-agent-crystal",
+        "sha256": "be119c899d9a7fcdf2b606df1106f2377b31852f4afdc6528e22ee07c3078d6f",
+        "url": "https://github.com/crimson-knight/homebrew-agent-crystal/blob/e6f43d79a12a4e0d53ac9ac6281a2d3699b24f32/test/sdk_source_lock.json"
+      }
+    },
+    {
+      "commands": [
+        "git clone https://github.com/amberframework/memory_budget.git",
+        "shards-alpha install with an unpinned github: amberframework/memory_budget manifest"
+      ],
+      "corrected_source_selected": false,
+      "id": "sdk-default-github",
+      "normal_release_accepted": false,
+      "observed_commit": "a7e57b1559e0c2457d334a843bcc487fdbaeebb2",
+      "observed_default": "main",
+      "package_version_in_source": "0.1.1",
+      "public_github_releases_observed": [],
+      "public_tags_observed": [],
+      "repo": "amberframework/memory_budget"
+    },
+    {
+      "archive_bytes": 8369770,
+      "archive_headers": 174,
+      "archive_sha256": "3a6d9c982ece74ef3b72eea0e2569bbfe31cd1767b3c4c7e8723d8f5f6d4b9bf",
+      "commit": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
+      "corrected_source_selected": true,
+      "destination": "performance/vendor/memory_budget",
+      "id": "sdk-exact-candidate-archive",
+      "install_command": "ruby scripts/install_bundle.rb /absolute/consumer",
+      "native_frozen_device_acceptance": false,
+      "package_manifest": {
+        "bytes": 10171,
+        "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/sdk_wrapper_runtime_v103/checkout/PACKAGE_PINS.json",
+        "sha256": "7cde7c36e16a241153f6e12d88da2830c10cacec0ece46c5ff5e9712e15a19bd"
+      },
+      "payload_files": 68,
+      "physical_bundle_files": 69,
+      "repo": "amberframework/memory_budget",
+      "source_rows": 140,
+      "status": "UNRELEASED_SOURCE_CANDIDATE",
+      "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/58c20acfed71e27cbcf207014f29d7c7b53dab18",
+      "version": "0.1.1"
+    },
+    {
+      "budget_sdk_included": false,
+      "build_compiler": "Homebrew core crystal",
+      "cli_commit": "faed4b205063a84650b00e2dc02f01793f373527",
+      "cli_version": "2.0.7",
+      "commands": [
+        "brew trust --tap amberframework/amber_cli",
+        "brew tap amberframework/amber_cli",
+        "git -C <tap> checkout --detach add328ed517dfffc6b0b07293b85fe25ae140bdc",
+        "HOMEBREW_NO_AUTO_UPDATE=1 brew install amberframework/amber_cli/amber_cli"
+      ],
+      "executables": [
+        "amber",
+        "amber-lsp",
+        "minecart",
+        "shards-alpha"
+      ],
+      "formula": {
+        "bytes": 3328,
+        "capture": "tooling-edges/source/amberframework/homebrew-amber_cli/add328ed517dfffc6b0b07293b85fe25ae140bdc/Formula/amber_cli.rb",
+        "commit": "add328ed517dfffc6b0b07293b85fe25ae140bdc",
+        "file": "Formula/amber_cli.rb",
+        "git_blob": "623369fc4622ff0579e5a72ec8fbbecbde69fdc8",
+        "repo": "amberframework/homebrew-amber_cli",
+        "sha256": "e127275857579f8d2b5462fc15b76097fdf05d7a9ef940c378ba3a32def6dd08",
+        "url": "https://github.com/amberframework/homebrew-amber_cli/blob/add328ed517dfffc6b0b07293b85fe25ae140bdc/Formula/amber_cli.rb"
+      },
+      "id": "amber-cli-homebrew",
+      "minecart_commit": "0ffac921c68774ea143aeaa83c369d0a38c2d3e5",
+      "minecart_formula": {
+        "bytes": 792,
+        "capture": "tooling-edges/source/amberframework/homebrew-amber_cli/add328ed517dfffc6b0b07293b85fe25ae140bdc/Formula/minecart.rb",
+        "commit": "add328ed517dfffc6b0b07293b85fe25ae140bdc",
+        "file": "Formula/minecart.rb",
+        "git_blob": "d30a160baeb8ab5bc17e68f20c666a5fa323e45b",
+        "repo": "amberframework/homebrew-amber_cli",
+        "sha256": "ee4a9a4ce105ef2bbd8a0b7a3503285dee5b0033dd3a46a729dbaa66b3ab9c37",
+        "url": "https://github.com/amberframework/homebrew-amber_cli/blob/add328ed517dfffc6b0b07293b85fe25ae140bdc/Formula/minecart.rb"
+      },
+      "minecart_version": "2025.11.25.8",
+      "observed_main": "add328ed517dfffc6b0b07293b85fe25ae140bdc",
+      "repo": "amberframework/homebrew-amber_cli",
+      "unfrozen_inputs": [
+        "Homebrew/core catalog and bottle/tool/native identities"
+      ]
+    },
+    {
+      "additional_prerequisites": [
+        "Minecart",
+        "actual native runtime libraries",
+        "Alpha for budget consumers",
+        "reviewed platform/provider profiles"
+      ],
+      "assets": [
+        {
+          "digest": "sha256:0a9fb1227af6574c689eae3d2f4d83281cc3edfab3d40799079d470bb2c7ce61",
+          "name": "amber_cli-darwin-arm64.tar.gz",
+          "size": 2933426,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-darwin-arm64.tar.gz"
+        },
+        {
+          "digest": "sha256:dfa5fc0d110ef42c345f541ca3629fc497f00e8abb54401a264137f7dc94aef2",
+          "name": "amber_cli-darwin-arm64.tar.gz.sha256",
+          "size": 96,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-darwin-arm64.tar.gz.sha256"
+        },
+        {
+          "digest": "sha256:6b5aa8ad8b671c0f9df33850c452671925162aa794d83077684f60a0cfc8f9e4",
+          "name": "amber_cli-linux-arm64.tar.gz",
+          "size": 10158871,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-linux-arm64.tar.gz"
+        },
+        {
+          "digest": "sha256:c363024753b1df91e0e089e679d31aff9b037b165659d5a621db6531bc1d9b98",
+          "name": "amber_cli-linux-arm64.tar.gz.sha256",
+          "size": 95,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-linux-arm64.tar.gz.sha256"
+        },
+        {
+          "digest": "sha256:679b2a55b9b6ee22c73f644e41843eea2ae2ceb633ca72125620ae129133c4aa",
+          "name": "amber_cli-linux-x86_64.tar.gz",
+          "size": 10974155,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-linux-x86_64.tar.gz"
+        },
+        {
+          "digest": "sha256:2dff8db25a390cce64e734227d29900390934a2b317dbe334d00090b0b8bb4b5",
+          "name": "amber_cli-linux-x86_64.tar.gz.sha256",
+          "size": 96,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-linux-x86_64.tar.gz.sha256"
+        },
+        {
+          "digest": "sha256:6e90f3cdba3ed87cefbf7443ab93da627af314fac5960a4b9288ae80e31f591f",
+          "name": "amber_cli-source-2.0.7.tar.gz",
+          "size": 367162,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-source-2.0.7.tar.gz"
+        },
+        {
+          "digest": "sha256:7b5205517aeae6d2832836926642c3ecb98ea9992ba306e281d854e995924a56",
+          "name": "amber_cli-source-2.0.7.tar.gz.sha256",
+          "size": 96,
+          "url": "https://github.com/amberframework/amber_cli/releases/download/v2.0.7/amber_cli-source-2.0.7.tar.gz.sha256"
+        }
+      ],
+      "budget_sdk_included": false,
+      "commit": "faed4b205063a84650b00e2dc02f01793f373527",
+      "id": "amber-cli-release-binaries",
+      "repo": "amberframework/amber_cli",
+      "tag": "v2.0.7"
+    },
+    {
+      "adapters": {
+        "default": "SQLite0.23.0",
+        "mysql_commit": "c061324dcef89a200a7a3f86a59b2ebf03f83602",
+        "pg": "will/crystal-pg0.30.0"
+      },
+      "asset_pipeline": {
+        "repo": "amberframework/asset_pipeline",
+        "version": "0.37.0"
+      },
+      "cli_commit": "faed4b205063a84650b00e2dc02f01793f373527",
+      "command": "amber new NAME --type web -y",
+      "dependency_template": {
+        "bytes": 772,
+        "capture": "tooling-edges/source/amberframework/amber_cli/faed4b205063a84650b00e2dc02f01793f373527/src/amber_cli/templates/app/shard.yml.ecr",
+        "commit": "faed4b205063a84650b00e2dc02f01793f373527",
+        "file": "src/amber_cli/templates/app/shard.yml.ecr",
+        "git_blob": "e717355cdf1f3104745c61d8a30aaeb9ab84f183",
+        "repo": "amberframework/amber_cli",
+        "sha256": "a76476675bc1d05e7deb4e6cf510a987bb64c7d86b46a1644737c3ac1b906eb8",
+        "url": "https://github.com/amberframework/amber_cli/blob/faed4b205063a84650b00e2dc02f01793f373527/src/amber_cli/templates/app/shard.yml.ecr"
+      },
+      "framework": {
+        "commit": "76954f0e2edc10d568e7ffcea3faa94b2aa476d2",
+        "repo": "amberframework/amber",
+        "tag": "v2.0.0-beta.5"
+      },
+      "generated_writer": "minecart install --strict-pinning --skip-ai-docs",
+      "generator": {
+        "bytes": 35908,
+        "capture": "tooling-edges/source/amberframework/amber_cli/faed4b205063a84650b00e2dc02f01793f373527/src/amber_cli/commands/new_command.cr",
+        "commit": "faed4b205063a84650b00e2dc02f01793f373527",
+        "file": "src/amber_cli/commands/new_command.cr",
+        "git_blob": "5552508dfd80176497267f4a697c4bcf49ab2a0e",
+        "repo": "amberframework/amber_cli",
+        "sha256": "faefa6e8ec059198df6ec6383e071ee53cfe4b6257883675d8baf375d9b784fe",
+        "url": "https://github.com/amberframework/amber_cli/blob/faed4b205063a84650b00e2dc02f01793f373527/src/amber_cli/commands/new_command.cr"
+      },
+      "grant": {
+        "commit": "da1e06161148f156dbce262a4a4efcb39cba5ba4",
+        "db_version": "0.14.0",
+        "repo": "crimson-knight/grant"
+      },
+      "id": "amber-generated-web-consumer",
+      "lock": "newly written complete Git-tree checksums, then retained frozen install",
+      "memory_budget_in_manifest": false,
+      "minecart_selection": "inherits parent CRYSTAL; Minecart default is crystal",
+      "normal_sdk_integration_accepted": false
+    },
+    {
+      "attached_release_assets": [],
+      "consumer_source_pin": "complete generated/verified Minecart lock including peeled commit and source checksum",
+      "github_release_prerelease": true,
+      "id": "amber-framework-v2",
+      "legacy_default_branch": "master",
+      "legacy_default_commit": "b29f257d225f2f9e189f03a892047dd825a3f934",
+      "repo": "amberframework/amber",
+      "source_archive_sha256_published_in_release_assets": null,
+      "supported_branch": "v2-dev",
+      "supported_commit": "76954f0e2edc10d568e7ffcea3faa94b2aa476d2",
+      "tag": "v2.0.0-beta.5"
+    }
+  ],
+  "required_grant_target_cells": 144,
+  "retained_read_failure": [
+    {
+      "endpoint": "repos/amberframework/grant/contents/shard.yml",
+      "exit_code": 1,
+      "label": "grant-generator-pin-manifest",
+      "scope": "Incorrect repository endpoint; corrected to generated crimson-knight/grant source",
+      "status": 404
+    }
+  ],
+  "sdk_promotion_stack": [
+    {
+      "base_branch": "main",
+      "base_commit": "a7e57b1559e0c2457d334a843bcc487fdbaeebb2",
+      "draft": true,
+      "head_branch": "feature/native-environment-darwin-elf",
+      "head_commit": "08c30535c60b9097a5da664dc7072e89ec02cad7",
+      "number": 1
+    },
+    {
+      "base_branch": "feature/native-environment-darwin-elf",
+      "base_commit": "08c30535c60b9097a5da664dc7072e89ec02cad7",
+      "draft": true,
+      "head_branch": "feature/linux-kernel-budget-controls",
+      "head_commit": "8f19ce9b79895a328538dee2572e06ef232f5e4c",
+      "number": 2
+    },
+    {
+      "base_branch": "feature/linux-kernel-budget-controls",
+      "base_commit": "8f19ce9b79895a328538dee2572e06ef232f5e4c",
+      "draft": true,
+      "head_branch": "feature/agent-installation-guidance",
+      "head_commit": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
+      "number": 3
+    }
+  ],
+  "snapshot_scope": "Retained read-only public GitHub GET responses plus immutable local source/evidence"
+}

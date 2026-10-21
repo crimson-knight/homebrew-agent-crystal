@@ -1,0 +1,81 @@
+{
+  "actual_dispatch_admitted": false,
+  "actual_failed_run": "39501577847",
+  "actual_local_workload_jobs": 0,
+  "actual_time_sha256": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a",
+  "explicit_changed_inherited_sources": [
+    {
+      "path": "run_causal_only.py",
+      "predecessor": {
+        "bytes": 7987,
+        "path": "run_causal_only.py",
+        "sha256": "b16172041c075fb57dd34af012a7a1483242f130e3f267dacbb9d8582fc8ee52"
+      },
+      "successor": {
+        "bytes": 10116,
+        "path": "run_causal_only.py",
+        "sha256": "c81839b1a02ae9a9c5ac813cc8f11db4fa5f44301b6706cfef6028376c4ffc8a"
+      }
+    },
+    {
+      "path": "run_hosted_contrast.py",
+      "predecessor": {
+        "bytes": 20397,
+        "path": "run_hosted_contrast.py",
+        "sha256": "80a9dfd86944d8dade2b7975f0d252ffcda25fc40badbdff9f94cf973cd4f27d"
+      },
+      "successor": {
+        "bytes": 21816,
+        "path": "run_hosted_contrast.py",
+        "sha256": "177c6951612f517036b1d1fcf9e88c1901b8e7157d6c43d1d3736fc6094ead6a"
+      }
+    },
+    {
+      "path": "stage_causal_result_artifact.py",
+      "predecessor": {
+        "bytes": 1729,
+        "path": "stage_causal_result_artifact.py",
+        "sha256": "6201ace1c9569b7155fc32fd75ea96fcb1b316231bb7dde897c98c1315b66150"
+      },
+      "successor": {
+        "bytes": 2200,
+        "path": "stage_causal_result_artifact.py",
+        "sha256": "2ef67c25dec13605df345ea74f0241512ccaddb132d6d262477f8d84ac5bf704"
+      }
+    }
+  ],
+  "format": "atlas-grant-timing-profile-integration-v105",
+  "independent_review_pending": true,
+  "integration": "Copy all194 exact manifest rows and SOURCE_PINS.json at their relative paths. Replace the owned workflow with grant-causal-mac.proposed.yml. Read START_HERE_V105.md for current scope. Parent independently reviews, integrates and owns public commit/push and actual dispatch.",
+  "limits": {
+    "arm_seconds": 1500,
+    "build_seconds": 900,
+    "calibration_seconds": 30,
+    "outer_seconds": 4800,
+    "probe_seconds": 10,
+    "runtime_seconds": 120,
+    "three_arm_admission_seconds": 4500
+  },
+  "mission": "memory-budget-experiment",
+  "optional_interface": {
+    "controller_flag": "--timing-true-sha256",
+    "default": "Original strict18 timing parser remains exact when the optional profile is absent",
+    "parser_keyword": "timing_profile",
+    "qualifier_keyword": "timing_profile"
+  },
+  "ordinary_formula_revision": 1,
+  "ordinary_formula_sha256": "dfb16338b328960bd0e822c2d98eac8b7774d1303e972a5dba09ba1ddf9ab7df",
+  "preservation_receipt_sha256": "76f81c3161f42d3313269eedcf309a895e0469c8acb62e1693be9d84dca5ce77",
+  "public_packet_destination": "test/grant_assignment_cost",
+  "replace_workflow_destination": ".github/workflows/grant-installed-mac.yml",
+  "required_matrix_size": 144,
+  "required_sdk_driver_sha256": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797",
+  "required_sdk_lock_sha256": "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4",
+  "source_manifest_sha256": "1e1f0ef5581d8a6b4982bee219ea39ac926f306a1555908cc3eaa57e90ef4e49",
+  "source_root": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105",
+  "source_rows": 194,
+  "source_tests_sha256": "83d56e02bf636de7f942671a513028d6b93582e04aa26dc485386c34b978e9b9",
+  "whole_build_target_cells_accepted": 0,
+  "workflow_sha256": "651885061ed34e3345ceb220cbc8115faf57a5513f087ab7e690cdad2f1b374d",
+  "workflow_source": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_assignment_cost_v105/grant-causal-mac.proposed.yml"
+}
