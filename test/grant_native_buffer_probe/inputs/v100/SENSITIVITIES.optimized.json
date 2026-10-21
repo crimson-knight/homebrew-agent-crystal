@@ -1,0 +1,41 @@
+{
+  "actual_compiler_C_LLVMI_native_calls": 0,
+  "findings": [
+    {
+      "accepted": true,
+      "case": "native_after",
+      "native_probe_complete": true,
+      "staged_files": 85
+    },
+    {
+      "accepted": true,
+      "case": "source_return",
+      "native_probe_complete": true,
+      "staged_files": 85
+    },
+    {
+      "accepted": true,
+      "case": "stdlib_after",
+      "native_probe_complete": true,
+      "staged_files": 85
+    },
+    {
+      "accepted": true,
+      "case": "source_feedback",
+      "native_probe_complete": true,
+      "staged_files": 85
+    },
+    {
+      "accepted": true,
+      "case": "source_gate",
+      "native_probe_complete": true,
+      "staged_files": 85
+    },
+    {
+      "accepted": true,
+      "case": "zero_peak_with_known64MiB_outstanding"
+    }
+  ],
+  "format": "atlas-native-buffer-independent-sensitivities-v1",
+  "guard_calls": []
+}

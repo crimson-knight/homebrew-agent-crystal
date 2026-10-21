@@ -1,0 +1,706 @@
+{
+  "actual_compiler_native_container_browser_ssh_workload_jobs": 0,
+  "actual_native_API_calls": 0,
+  "base215_source_rows_exact": true,
+  "commands": [
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/source/test_probe.py"
+      ],
+      "elapsed_seconds": 0.9755640409999999,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "packet-ordinary",
+      "maximum_seconds": 60,
+      "original_group": 34454,
+      "pid": 34454,
+      "refusal": null,
+      "stderr_sha256": "48fd4f9c826c2aff35d2421e39a587317865944dfe174b67236c40a7651f847c",
+      "stdout_sha256": "21c78808dcda6bb4461da51e6f21518642b3fd69ab6c948680f42952cf5a8888",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 6.384369333,
+        "elapsed_seconds": 0.00012575000000003556,
+        "group": 34454,
+        "initial_sample": {
+          "elapsed_seconds": 1.6208000000128564e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 60.409055875,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.6208000000128564e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.6208000000128564e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/source/test_workflow.py",
+        "--workflow",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/grant-installed-mac.proposed.yml"
+      ],
+      "elapsed_seconds": 0.22287716700000004,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "packet-ordinary-workflow",
+      "maximum_seconds": 30,
+      "original_group": 34458,
+      "pid": 34458,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "03742af72ca6cf762a965389c13d1dd2f3d067004bc6e9eed1bff887248ff44c",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 6.608093,
+        "elapsed_seconds": 0.00016170800000003815,
+        "group": 34458,
+        "initial_sample": {
+          "elapsed_seconds": 1.6833000000104903e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 31.385507833,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.6833000000104903e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.6833000000104903e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/source/test_probe.py"
+      ],
+      "elapsed_seconds": 0.9727020829999999,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "packet-optimized",
+      "maximum_seconds": 60,
+      "original_group": 34459,
+      "pid": 34459,
+      "refusal": null,
+      "stderr_sha256": "e46623350c76eb440ab22e7ca752c229d43bba9d247c0285e58877c22933b5d0",
+      "stdout_sha256": "21c78808dcda6bb4461da51e6f21518642b3fd69ab6c948680f42952cf5a8888",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 7.582233458,
+        "elapsed_seconds": 0.0001453749999997811,
+        "group": 34459,
+        "initial_sample": {
+          "elapsed_seconds": 1.4583000000012447e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 61.609769583,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.4583000000012447e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.4583000000012447e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/source/test_workflow.py",
+        "--workflow",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/grant-installed-mac.proposed.yml"
+      ],
+      "elapsed_seconds": 0.21738612499999999,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "packet-optimized-workflow",
+      "maximum_seconds": 30,
+      "original_group": 34469,
+      "pid": 34469,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "03742af72ca6cf762a965389c13d1dd2f3d067004bc6e9eed1bff887248ff44c",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 7.800455749999999,
+        "elapsed_seconds": 0.00016154100000020932,
+        "group": 34469,
+        "initial_sample": {
+          "elapsed_seconds": 1.283299999998988e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 32.583351125,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.283299999998988e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.283299999998988e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/validation_final_v102/integrated checkout with spaces/test/grant_native_buffer_probe/test_probe.py"
+      ],
+      "elapsed_seconds": 0.9566177919999999,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "installed-ordinary",
+      "maximum_seconds": 60,
+      "original_group": 34471,
+      "pid": 34471,
+      "refusal": null,
+      "stderr_sha256": "91b7286b10e075ea4e6edddb4896c7c222124efb468f2baebc2d219d5c5494ca",
+      "stdout_sha256": "21c78808dcda6bb4461da51e6f21518642b3fd69ab6c948680f42952cf5a8888",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 8.758226666,
+        "elapsed_seconds": 0.0001382089999997227,
+        "group": 34471,
+        "initial_sample": {
+          "elapsed_seconds": 3.012499999988094e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 62.801852208,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 3.012499999988094e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 3.012499999988094e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/validation_final_v102/integrated checkout with spaces/test/grant_native_buffer_probe/test_workflow.py",
+        "--workflow",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/validation_final_v102/integrated checkout with spaces/.github/workflows/grant-installed-mac.yml"
+      ],
+      "elapsed_seconds": 0.2228103749999999,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "installed-ordinary-workflow",
+      "maximum_seconds": 30,
+      "original_group": 34479,
+      "pid": 34479,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "03742af72ca6cf762a965389c13d1dd2f3d067004bc6e9eed1bff887248ff44c",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 8.982234,
+        "elapsed_seconds": 0.0001928749999997592,
+        "group": 34479,
+        "initial_sample": {
+          "elapsed_seconds": 3.1791000000058744e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 33.759752041,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 3.1791000000058744e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 3.1791000000058744e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/validation_final_v102/integrated checkout with spaces/test/grant_native_buffer_probe/test_probe.py"
+      ],
+      "elapsed_seconds": 0.9762832080000003,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "installed-optimized",
+      "maximum_seconds": 60,
+      "original_group": 34481,
+      "pid": 34481,
+      "refusal": null,
+      "stderr_sha256": "6922914b06e2ef1595936ba7cec4be1160f563d2b1be3096246cdf58e49a3401",
+      "stdout_sha256": "21c78808dcda6bb4461da51e6f21518642b3fd69ab6c948680f42952cf5a8888",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 9.96005925,
+        "elapsed_seconds": 0.00011033300000029556,
+        "group": 34481,
+        "initial_sample": {
+          "elapsed_seconds": 1.5166000000732538e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 63.984005083,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.5166000000732538e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.5166000000732538e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    },
+    {
+      "arguments": [
+        "/usr/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/validation_final_v102/integrated checkout with spaces/test/grant_native_buffer_probe/test_workflow.py",
+        "--workflow",
+        "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_probe_v100/validation_final_v102/integrated checkout with spaces/.github/workflows/grant-installed-mac.yml"
+      ],
+      "elapsed_seconds": 0.21254520799999987,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "label": "installed-optimized-workflow",
+      "maximum_seconds": 30,
+      "original_group": 34531,
+      "pid": 34531,
+      "refusal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "03742af72ca6cf762a965389c13d1dd2f3d067004bc6e9eed1bff887248ff44c",
+      "terminal_group_observation": {
+        "bounded_drain_exhausted": false,
+        "drain_deadline": 10.173858791,
+        "elapsed_seconds": 0.00015454200000064588,
+        "group": 34531,
+        "initial_sample": {
+          "elapsed_seconds": 1.7375000000541263e-05,
+          "status": "absent"
+        },
+        "maximum_drain_seconds": 5.0,
+        "original_command_deadline": 34.961586125,
+        "phase": "direct_child_returned",
+        "samples": [
+          {
+            "elapsed_seconds": 1.7375000000541263e-05,
+            "status": "absent"
+          }
+        ],
+        "scope": "original POSIX process group",
+        "status": "absent",
+        "terminal_sample": {
+          "elapsed_seconds": 1.7375000000541263e-05,
+          "status": "absent"
+        }
+      },
+      "writers_confirmed_retired": true
+    }
+  ],
+  "format": "atlas-native-buffer-source-tests-v1",
+  "full_target_cells_accepted": 0,
+  "installed_fixture_return_exact": true,
+  "original_group_observations": [
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 6.384369333,
+      "elapsed_seconds": 0.00012575000000003556,
+      "group": 34454,
+      "initial_sample": {
+        "elapsed_seconds": 1.6208000000128564e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 60.409055875,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.6208000000128564e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.6208000000128564e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 6.608093,
+      "elapsed_seconds": 0.00016170800000003815,
+      "group": 34458,
+      "initial_sample": {
+        "elapsed_seconds": 1.6833000000104903e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 31.385507833,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.6833000000104903e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.6833000000104903e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 7.582233458,
+      "elapsed_seconds": 0.0001453749999997811,
+      "group": 34459,
+      "initial_sample": {
+        "elapsed_seconds": 1.4583000000012447e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 61.609769583,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.4583000000012447e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.4583000000012447e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 7.800455749999999,
+      "elapsed_seconds": 0.00016154100000020932,
+      "group": 34469,
+      "initial_sample": {
+        "elapsed_seconds": 1.283299999998988e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 32.583351125,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.283299999998988e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.283299999998988e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 8.758226666,
+      "elapsed_seconds": 0.0001382089999997227,
+      "group": 34471,
+      "initial_sample": {
+        "elapsed_seconds": 3.012499999988094e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 62.801852208,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.012499999988094e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.012499999988094e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 8.982234,
+      "elapsed_seconds": 0.0001928749999997592,
+      "group": 34479,
+      "initial_sample": {
+        "elapsed_seconds": 3.1791000000058744e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 33.759752041,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.1791000000058744e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.1791000000058744e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 9.96005925,
+      "elapsed_seconds": 0.00011033300000029556,
+      "group": 34481,
+      "initial_sample": {
+        "elapsed_seconds": 1.5166000000732538e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 63.984005083,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.5166000000732538e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.5166000000732538e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 10.173858791,
+      "elapsed_seconds": 0.00015454200000064588,
+      "group": 34531,
+      "initial_sample": {
+        "elapsed_seconds": 1.7375000000541263e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 34.961586125,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 1.7375000000541263e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 1.7375000000541263e-05,
+        "status": "absent"
+      }
+    }
+  ],
+  "python": {
+    "backend": "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+    "backend_sha256": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb",
+    "launcher": "/usr/bin/python3",
+    "launcher_sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818",
+    "version": "3.9.6 (default, May 22 2026, 11:13:45) \n[Clang 21.0.0 (clang-2100.1.1.101)]"
+  },
+  "runner": {
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_bootstrap_actual_v101/run-39518892906/independent_review_v100/public_source/test/sdk_install_qualification.py",
+    "sha256": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797"
+  },
+  "source_packet_sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf",
+  "source_return_exact": true,
+  "source_rows": 45,
+  "source_tests": [
+    {
+      "layout": "packet",
+      "mode": "ordinary",
+      "suite": {
+        "actual_compiler_native_container_browser_ssh_workload_jobs": 0,
+        "actual_external_guard_calls": 0,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests_run": 55
+      },
+      "workflow": {
+        "actual_workload_jobs": 0,
+        "inline_python_blocks_parsed": 3,
+        "packet_sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf",
+        "passed": true,
+        "workflow_sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e"
+      }
+    },
+    {
+      "layout": "packet",
+      "mode": "optimized",
+      "suite": {
+        "actual_compiler_native_container_browser_ssh_workload_jobs": 0,
+        "actual_external_guard_calls": 0,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests_run": 55
+      },
+      "workflow": {
+        "actual_workload_jobs": 0,
+        "inline_python_blocks_parsed": 3,
+        "packet_sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf",
+        "passed": true,
+        "workflow_sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e"
+      }
+    },
+    {
+      "layout": "installed",
+      "mode": "ordinary",
+      "suite": {
+        "actual_compiler_native_container_browser_ssh_workload_jobs": 0,
+        "actual_external_guard_calls": 0,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests_run": 55
+      },
+      "workflow": {
+        "actual_workload_jobs": 0,
+        "inline_python_blocks_parsed": 3,
+        "packet_sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf",
+        "passed": true,
+        "workflow_sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e"
+      }
+    },
+    {
+      "layout": "installed",
+      "mode": "optimized",
+      "suite": {
+        "actual_compiler_native_container_browser_ssh_workload_jobs": 0,
+        "actual_external_guard_calls": 0,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests_run": 55
+      },
+      "workflow": {
+        "actual_workload_jobs": 0,
+        "inline_python_blocks_parsed": 3,
+        "packet_sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf",
+        "passed": true,
+        "workflow_sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e"
+      }
+    }
+  ],
+  "unit_case_executions": 220,
+  "workflow_fragment_sha256": "d04b6b4a6def34a5e00a25e51c90d8059c656efd3626fc8af73d6e5a338eee14",
+  "workflow_sensitivity_controls": [
+    {
+      "label": "manifest",
+      "refused": true
+    },
+    {
+      "label": "horizon",
+      "refused": true
+    },
+    {
+      "label": "same-job-policy",
+      "refused": true
+    },
+    {
+      "label": "provider",
+      "refused": true
+    },
+    {
+      "label": "action",
+      "refused": true
+    },
+    {
+      "label": "missing-workflow",
+      "refused": true
+    }
+  ],
+  "workflow_sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e",
+  "workflow_source_executions": 4
+}

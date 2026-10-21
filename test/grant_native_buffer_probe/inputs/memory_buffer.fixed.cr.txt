@@ -1,0 +1,41 @@
+class LLVM::MemoryBuffer
+  def self.from_file(filename : String)
+    ret = LibLLVM.create_memory_buffer_with_contents_of_file(filename, out mem_buf, out msg)
+    if ret != 0 && msg
+      raise LLVM.string_and_dispose(msg)
+    end
+    new(mem_buf)
+  end
+
+  def initialize(@unwrap : LibLLVM::MemoryBufferRef)
+    @finalized = false
+  end
+
+  def to_slice
+    Slice.new(
+      LibLLVM.get_buffer_start(@unwrap),
+      LibLLVM.get_buffer_size(@unwrap),
+    )
+  end
+
+  def dispose
+    finalize
+  end
+
+  def finalize
+    return if @finalized
+    @finalized = true
+    LibLLVM.dispose_memory_buffer(@unwrap)
+  end
+
+  # Records native ownership transfer before a consuming LLVM call.
+  def release_ownership : LibLLVM::MemoryBufferRef
+    raise "Buffer ownership already retired" if @finalized
+    @finalized = true
+    @unwrap
+  end
+
+  def to_unsafe
+    @unwrap
+  end
+end

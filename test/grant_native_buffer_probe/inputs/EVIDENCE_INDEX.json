@@ -1,0 +1,526 @@
+{
+  "accepted_stdlib_roster_sha256": "91b26e52acc956731732ebf9ee3d3e21600ec836a8d5a2578afb42f9cdb4c143",
+  "actual_local_compiler_native_container_browser_ssh_workload_jobs": 0,
+  "actual_target_cells_accepted": 0,
+  "compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "compiler_source_archive_sha256": "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05",
+  "compiler_source_files": [
+    {
+      "bytes": 67428,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/compiler.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/compiler.cr",
+      "sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166"
+    },
+    {
+      "bytes": 30303,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/command.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/command.cr",
+      "sha256": "feb3414baaf4e92376066c22f20bdf126a7455f8f792e40380ca8a86d4535dad"
+    },
+    {
+      "bytes": 1716,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/progress_tracker.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/progress_tracker.cr",
+      "sha256": "e13b8285ab84d8eed452e048b7569dee6693a18051b40a0689da87ac9a2f934f"
+    },
+    {
+      "bytes": 28980,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/program.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/program.cr",
+      "sha256": "f30b348051698d9125bb790dc4f9d8782deaae385eb2a9bbd31341c4f0955c35"
+    },
+    {
+      "bytes": 97387,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/types.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/types.cr",
+      "sha256": "c6c457af8bc7c285f9b9419c96bc28624abfb7d8a4962afdbc8d0ec17c627ec6"
+    },
+    {
+      "bytes": 4527,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/semantic.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/semantic.cr",
+      "sha256": "47e5d1a58e888fa4212b213a5d8dd8d9c8d10df78727d9fa2a05c81babb0d674"
+    },
+    {
+      "bytes": 47543,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/semantic/call.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/semantic/call.cr",
+      "sha256": "aedb22dc62ed2585239bce7dbbd9a91bf411edf2d46656c468036a9c083d2830"
+    },
+    {
+      "bytes": 22303,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/semantic/ast.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/semantic/ast.cr",
+      "sha256": "88f5a973703371293a3b5b94be5675b9c7c1616e6c6c8dea21d461a311c5d978"
+    },
+    {
+      "bytes": 73618,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/syntax/ast.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/syntax/ast.cr",
+      "sha256": "4d66c0ea89fed790eae6955a810633c446ab9fc3a5e277785b6a83ee6582a912"
+    },
+    {
+      "bytes": 195350,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/syntax/parser.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/syntax/parser.cr",
+      "sha256": "547b3bf3e290716bd69938572bf02ad1534b4e2bd28701570fd0e547f5bde0b8"
+    },
+    {
+      "bytes": 551,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/syntax/visitor.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/syntax/visitor.cr",
+      "sha256": "17b62117097ae7ae1151dea4e01d55c784dd0f9f28928da45079adadc4b7d12b"
+    },
+    {
+      "bytes": 23762,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/incremental_cache.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/incremental_cache.cr",
+      "sha256": "eeb8fbe92bb4040715ce4bd4217961e2d18b0be6c0e52cd51a1ada4331ece247"
+    },
+    {
+      "bytes": 84444,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/codegen/codegen.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/codegen/codegen.cr",
+      "sha256": "4105b925f48098d45921f95987ab16b27ac2cf010a08cd83820b1b451f786a80"
+    },
+    {
+      "bytes": 18187,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/codegen/llvm_typer.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/codegen/llvm_typer.cr",
+      "sha256": "b08a2caaac16f5c8fa81d911bce6b31a383ba6f339d2d192ff3f323407a76c7d"
+    },
+    {
+      "bytes": 7892,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "string_pool.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/string_pool.cr",
+      "sha256": "2dca2cd8c63d605ab6bf50ba9ab58e619a4db35f468867d0d638eedb3a40d5ab"
+    },
+    {
+      "bytes": 4562,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "gc.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/gc.cr",
+      "sha256": "af4e874d6b4ba20d5a499dacbf923020ecef76c1652423cf9a12b50953724119"
+    },
+    {
+      "bytes": 18437,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "gc/boehm.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/gc/boehm.cr",
+      "sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307"
+    },
+    {
+      "bytes": 4667,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/context.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/context.cr",
+      "sha256": "754e3c6c56ace9a4a094f594b7f8c9484bbe546f3f4276bf0c8a09737f333999"
+    },
+    {
+      "bytes": 3347,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/module.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/module.cr",
+      "sha256": "741cad02a8836ba0a7a262a26df606006b31dc93a9695704e4799b4c0d61f7af"
+    },
+    {
+      "bytes": 671,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/memory_buffer.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/memory_buffer.cr",
+      "sha256": "78205f4cb4dbbb5c3639b89903234879449b61462165165b04376a8ce7fcaabc"
+    },
+    {
+      "bytes": 14719,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/builder.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/builder.cr",
+      "sha256": "27890d1a3b7ce969c18627e878a7c5faef190cc07847ddd6759d74b01b1ae608"
+    },
+    {
+      "bytes": 2080,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/target_machine.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/target_machine.cr",
+      "sha256": "0fb0ab60c5c6779f75d458a742bcd3a07f9c6b01df82d486c8d12b4ed2797b62"
+    },
+    {
+      "bytes": 831,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/target_data.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/target_data.cr",
+      "sha256": "0709d4165c51f209c6884387fb785ab344a20b96741638d31abc5d0839d7b9c6"
+    },
+    {
+      "bytes": 971,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/pass_builder_options.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/pass_builder_options.cr",
+      "sha256": "4bdf0802071ac5a9efc5dc2b5c255bec6c0aa7eb515b0dc6ad5eae4858da8d86"
+    },
+    {
+      "bytes": 413,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/module_pass_manager.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/module_pass_manager.cr",
+      "sha256": "cd756cf55ca01bab3028f7dfda19ffe2371d0d8b560ad7028d2f3edb30167aba"
+    },
+    {
+      "bytes": 3530,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/lib_llvm.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/lib_llvm.cr",
+      "sha256": "60a8ccaf210ae396c7b55199936acd6848d45d15295f7b2bad6fe40facce1f87"
+    },
+    {
+      "bytes": 156,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/lib_llvm/bit_reader.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/lib_llvm/bit_reader.cr",
+      "sha256": "757af5fcfa904937e9bb44a134fc753c5d2fb71235319e55391299cd19ffc061"
+    },
+    {
+      "bytes": 346,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/lib_llvm/bit_writer.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/lib_llvm/bit_writer.cr",
+      "sha256": "424d481f19adace43d4bc043d5e83a70c9c3ea170cf059b63b08afc338d394db"
+    },
+    {
+      "bytes": 186,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "llvm/lib_llvm/ir_reader.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/llvm/lib_llvm/ir_reader.cr",
+      "sha256": "30598eca8d3c168a4c9a49daecd0ee019a361ac347ed38bddcc1bbd42b415e63"
+    },
+    {
+      "bytes": 19621,
+      "matches_accepted_9c1_source_roster": true,
+      "path": "compiler/crystal/semantic/semantic_visitor.cr",
+      "physical_origin": "/opt/homebrew/opt/agent-crystal/share/agent-crystal/src/compiler/crystal/semantic/semantic_visitor.cr",
+      "sha256": "afb14bb81c227b0e72de1def60de4af7dd6c01ef48d2f8b7fce40d0920130742"
+    }
+  ],
+  "excluded_runtime_overlay": {
+    "bytes": 18894,
+    "expected_sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307",
+    "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-implementation/crystal-runtime/src/gc/boehm.cr",
+    "sha256": "342b192533eb2e3b5fd82d8ab7a74f35512fb12d69f8b49d2fc7de1fa2d9474b",
+    "used_as_canonical": false
+  },
+  "format": "atlas-grant-compiler-attribution-readiness-inputs",
+  "llvm_commit": "2078da43e25a4623cab2d0d60decddf709aaea28",
+  "llvm_primary_inputs": [
+    {
+      "bytes": 361,
+      "path": "llvm_primary/TAG_REF.json",
+      "sha256": "f4c8d29027b8ee0ba248fc082dbbb71b6d4a55958783607b44c6f0cd82db5d49",
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/ref/tags/llvmorg-21.1.8"
+    },
+    {
+      "bytes": 1390,
+      "path": "llvm_primary/TAG_OBJECT.json",
+      "sha256": "1ebcfed0e97c28d98eb36d6ece487e9b04be756702be1d4d0f734c9c0f4817ea",
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/tags/42befb84c672d78de430feb4c96710e6aa4fc774"
+    },
+    {
+      "bytes": 4849,
+      "path": "llvm_primary/llvm/lib/Bitcode/Reader/BitReader.cpp",
+      "sha256": "e43a53a6a37686ec8a3e45a1bd9dafce5a4062752568f8af3926ce1f41bd57af",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/lib/Bitcode/Reader/BitReader.cpp"
+    },
+    {
+      "bytes": 1476,
+      "path": "llvm_primary/llvm/lib/Bitcode/Writer/BitWriter.cpp",
+      "sha256": "ea7fc3d387988c11c62c13034bedc27c32c0c8fa4a59e4f0236f6659fa716b0c",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/lib/Bitcode/Writer/BitWriter.cpp"
+    },
+    {
+      "bytes": 5074,
+      "path": "llvm_primary/llvm/lib/IRReader/IRReader.cpp",
+      "sha256": "d21aa9e758fc08ff40ba21c1f10e921399a9c9b2bfeff338b750766997752a31",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/lib/IRReader/IRReader.cpp"
+    },
+    {
+      "bytes": 161689,
+      "path": "llvm_primary/llvm/lib/IR/Core.cpp",
+      "sha256": "7be081dc6fd2febf653de41594c42dd353514e07f48123cba5339c3142d01f00",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/lib/IR/Core.cpp"
+    },
+    {
+      "bytes": 7929,
+      "path": "llvm_primary/llvm/lib/IR/LLVMContextImpl.cpp",
+      "sha256": "978fefee84b0e8c0040c668649ad3ba670968fcb6023baae51ec448b141b8789",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/lib/IR/LLVMContextImpl.cpp"
+    },
+    {
+      "bytes": 1822,
+      "path": "llvm_primary/llvm/include/llvm-c/IRReader.h",
+      "sha256": "d9b2b3a017211c5993ed92fcb349e4fffddd076c6f94759b0b39084c66415c1a",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/include/llvm-c/IRReader.h"
+    }
+  ],
+  "llvm_release": "21.1.8",
+  "local_inputs": [
+    {
+      "bytes": 11147,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_compiler_attribution_v100/LEVER_LEDGER.md",
+      "sha256": "937f11eef096d65b68841ae649592687076fb2092b2c22260fa52a3735b10f59"
+    },
+    {
+      "bytes": 1397,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_compiler_attribution_v100/EVIDENCE_INDEX.json",
+      "sha256": "4d48742cf1304cdd9b72ac2e4535dffc1ec605bff7a5779bea14ecadf4d687e5"
+    },
+    {
+      "bytes": 180688,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_transition_v102/inputs/accepted_d40f/STDLIB_BEFORE.json",
+      "sha256": "91b26e52acc956731732ebf9ee3d3e21600ec836a8d5a2578afb42f9cdb4c143"
+    },
+    {
+      "bytes": 3797,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/FRONTEND_MATERIALIZATION.json",
+      "sha256": "b9bcbb0d20b8463133298471bf46f2e72ba16fea512216996c31c6533f823eba"
+    },
+    {
+      "bytes": 3980,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_transport_v102/README.md",
+      "sha256": "977050392987a2a686c99db87160b5f9b37b4176df254425323900b65665d0c0"
+    },
+    {
+      "bytes": 21070,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_transport_v102/worker.py",
+      "sha256": "f2138b95f5b0af05caaeb250dc4ddcc0eefa54887e1f35c729abc0453ff026df"
+    },
+    {
+      "bytes": 46989,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_transport_v102/SOURCE_PACKET.json",
+      "sha256": "982cf33d36d6ee109fd1d04d24bf01c9361f07a4af8aaa62a66f365a1326713f"
+    },
+    {
+      "bytes": 8909,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_transport_v102/validate_frontend.py",
+      "sha256": "a0d204070a0ed5d2b11353575180929f1375b9d6497e913359d52057a4e9133e"
+    },
+    {
+      "bytes": 12785,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_worker_v100/frontend_boundary.py",
+      "sha256": "ea2e11ba4404909183a90cf806b7f19f0f3e0a8bfb29db9adc74e67a0c9672fd"
+    },
+    {
+      "bytes": 2615,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_worker_v100/parse_semantic_stats.py",
+      "sha256": "211d62ab745312da1fb894d95955e628ddda01565f702f7af90885c5333873be"
+    },
+    {
+      "bytes": 2464,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_semantic_worker_v100/RESOURCE_PLAN.json",
+      "sha256": "15df56858388ceedb5f128329aa601a5a1a92840ec8c18e1ec2177cf549b2201"
+    },
+    {
+      "bytes": 661,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/payload/toolchain.mini-ci.json",
+      "sha256": "4d2acc5fa95190379a838b5c9dd5ab6f666656daa8861df766de37266ecde629"
+    },
+    {
+      "bytes": 15828,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/payload/NATIVE_COMPONENT.json",
+      "sha256": "ec68eb431dbb86efb55edf48feb9865d8d83c6efaa96af089ee3d49dc922cae7"
+    },
+    {
+      "bytes": 13793,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/payload/NATIVE_RECIPE.json",
+      "sha256": "5d08fe9c33345db9f74e36c586a601b643ca70bbe7b673c22053c5e9c02d6459"
+    },
+    {
+      "bytes": 7919930,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_representation_production_v100/actual-v100/representation/payload/HOST_CONTEXT.json",
+      "sha256": "c4598fbf97b5ee17bb04d592e8b84576cb9df9d41566dc350c692e4cfc34a8cd"
+    },
+    {
+      "bytes": 10422,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-program/grant/implementation-20261018/compiler-stage-stats-replay-v103/PHASE_SUMMARY.json",
+      "sha256": "cee24e1b3187335a0072e25b53a0504fb5df63c34298aab9fef1fef23bfb3860"
+    },
+    {
+      "bytes": 22287,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_memory_results_v106/REPORT.md",
+      "sha256": "54f03cb420d3149fa5365c4303a739be1f42b32b532bea45a0b3f864c14c4e3a"
+    },
+    {
+      "bytes": 32800,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_timing_actual_review_v106/ACTUAL_ACCEPTANCE_RECEIPT.json",
+      "sha256": "acb2d78bd8a7007f8899ea8b30d7ed14ea89906228a615232350915b485d878f"
+    },
+    {
+      "bytes": 208,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/library_floor.cr.txt",
+      "sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+    },
+    {
+      "bytes": 1164,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/library_floor.json",
+      "sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07"
+    },
+    {
+      "bytes": 1682,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/declarations.cr.txt",
+      "sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+    },
+    {
+      "bytes": 1549,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/declarations.json",
+      "sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0"
+    },
+    {
+      "bytes": 3297,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/new_empty.cr.txt",
+      "sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+    },
+    {
+      "bytes": 1862,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/new_empty.json",
+      "sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb"
+    },
+    {
+      "bytes": 9397,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/new_keywords.cr.txt",
+      "sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+    },
+    {
+      "bytes": 2925,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/new_keywords.json",
+      "sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d"
+    },
+    {
+      "bytes": 9781,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/new_broad_hash.cr.txt",
+      "sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+    },
+    {
+      "bytes": 2929,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/new_broad_hash.json",
+      "sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8"
+    },
+    {
+      "bytes": 16044,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/canonical_create.cr.txt",
+      "sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+    },
+    {
+      "bytes": 4935,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_frontend_materialization_v100/payload_source/canonical_create.json",
+      "sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797"
+    }
+  ],
+  "mission": "memory-budget-experiment",
+  "parent_ledger_sha256": "937f11eef096d65b68841ae649592687076fb2092b2c22260fa52a3735b10f59",
+  "required_target_cells": 144,
+  "route_sources": [
+    {
+      "declared_counts": {
+        "association_macros": 0,
+        "columns": 0,
+        "model_classes": 0,
+        "named_scope_macros": 0,
+        "source_bytes": 208,
+        "source_lines": 6
+      },
+      "model_count": 0,
+      "oracle_sha256": "1f96aef1e9ca26cf0e9013a5b98b0082d3c0a60f09428eb4f02dbd3a5d9d2e07",
+      "route": "library_floor",
+      "runtime_checks": 0,
+      "source_sha256": "53f30ec32473991292d8b8139751062982231f18443ec1a727d6e1a1eb9a8b98"
+    },
+    {
+      "declared_counts": {
+        "association_macros": 4,
+        "columns": 32,
+        "model_classes": 2,
+        "named_scope_macros": 2,
+        "source_bytes": 1682,
+        "source_lines": 54
+      },
+      "model_count": 2,
+      "oracle_sha256": "ef01dcd71e9cea3597a77f2d2ffdace0c03e7d4c22740fe50a7f349b46326cc0",
+      "route": "declarations",
+      "runtime_checks": 0,
+      "source_sha256": "c5b9369872d10f8fcbb41d8fa3ba876e7434800aa5d3946c892d6fd13d306218"
+    },
+    {
+      "declared_counts": {
+        "association_macros": 4,
+        "columns": 32,
+        "model_classes": 2,
+        "named_scope_macros": 2,
+        "source_bytes": 3297,
+        "source_lines": 73
+      },
+      "model_count": 2,
+      "oracle_sha256": "c53291e18e2cfc91820b6b3d0eb1d8a10b1a79810fb9967dc4832d8c389ba2eb",
+      "route": "new_empty",
+      "runtime_checks": 8,
+      "source_sha256": "52b27bd7a68b659238c62454c29f3c10c2b54f69cbd8cb68746acf2e79c7d8c6"
+    },
+    {
+      "declared_counts": {
+        "association_macros": 4,
+        "columns": 32,
+        "model_classes": 2,
+        "named_scope_macros": 2,
+        "source_bytes": 9397,
+        "source_lines": 159
+      },
+      "model_count": 2,
+      "oracle_sha256": "082db31c0d8b4bd51365e62329947e5bd84394f2ffe030c8acc3506840c6863d",
+      "route": "new_keywords",
+      "runtime_checks": 36,
+      "source_sha256": "1525f9879b639b91bc38138695f236f49b32f6b07dff6a7f617846545d72fac5"
+    },
+    {
+      "declared_counts": {
+        "association_macros": 4,
+        "columns": 32,
+        "model_classes": 2,
+        "named_scope_macros": 2,
+        "source_bytes": 9781,
+        "source_lines": 161
+      },
+      "model_count": 2,
+      "oracle_sha256": "df19c2f38d2ba55d68affc7e9e8bd9a71101db497fa8068a19d987acd417f0f8",
+      "route": "new_broad_hash",
+      "runtime_checks": 36,
+      "source_sha256": "2840c874a1fc24e82af25af695310a5de1a7006ef4bf998103374bdb9294a01f"
+    },
+    {
+      "declared_counts": {
+        "association_macros": 4,
+        "columns": 32,
+        "model_classes": 2,
+        "named_scope_macros": 2,
+        "source_bytes": 16044,
+        "source_lines": 275
+      },
+      "model_count": 2,
+      "oracle_sha256": "be294bc20667875308503436a141515aeb40d9e327371ce0212031ade6dd4797",
+      "route": "canonical_create",
+      "runtime_checks": 32,
+      "source_sha256": "a2fc694a59408b369fd96a9f62245879102287ace178a5de4d261bdd488b92c3"
+    }
+  ]
+}

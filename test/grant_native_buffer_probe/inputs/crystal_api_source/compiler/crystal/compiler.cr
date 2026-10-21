@@ -1,0 +1,1850 @@
+require "option_parser"
+require "file_utils"
+require "colorize"
+require "crystal/digest/md5"
+require "./incremental_cache"
+require "./tools/require_graph_discoverer"
+{% if flag?(:msvc) %}
+  require "./loader"
+{% end %}
+{% unless flag?(:without_mt) %}
+  require "wait_group"
+{% end %}
+
+module Crystal
+  # This exception describes an error in the compiler.
+  # It usually leads to an unsuccessful process exit.
+  class CompilerError < Exception
+    getter status
+
+    def self.new(message, exit : Command::Exit)
+      new message, status: exit.to_i
+    end
+
+    def initialize(message, *, @status : Int32 = 1)
+      super message
+    end
+  end
+
+  @[Flags]
+  enum Debug
+    LineNumbers
+    Variables
+    Default     = LineNumbers
+  end
+
+  enum FramePointers
+    Auto
+    Always
+    NonLeaf
+  end
+
+  # Main interface to the compiler.
+  #
+  # A Compiler parses source code, type checks it and
+  # optionally generates an executable.
+  class Compiler
+    DEFAULT_LINKER = ENV["CC"]? || {{ env("CRYSTAL_CONFIG_CC") || "cc" }}
+    MSVC_LINKER    = ENV["CC"]? || {{ env("CRYSTAL_CONFIG_CC") || "cl.exe" }}
+
+    # A source to the compiler: its filename and source code.
+    record Source,
+      filename : String,
+      code : String
+
+    # The result of a compilation: the program containing all
+    # the type and method definitions, and the parsed program
+    # as an ASTNode.
+    record Result,
+      program : Program,
+      node : ASTNode
+
+    # If `true`, doesn't generate an executable but instead
+    # creates a `.o` file and outputs a command line to link
+    # it in the target machine.
+    property? cross_compile = false
+
+    # If `true`, generates a shared library (.so/.dylib) instead
+    # of an executable. Passes `-shared -fPIC` to the linker and
+    # skips the `main` entry point.
+    property? shared = false
+
+    # Compiler flags. These will be true when checked in macro
+    # code by the `flag?(...)` macro method.
+    property flags = [] of String
+
+    # Controls generation of frame pointers.
+    property frame_pointers = FramePointers::Auto
+
+    # If `true`, the executable will be generated with debug code
+    # that can be understood by `gdb` and `lldb`.
+    property debug = Debug::Default
+
+    # If `true`, `.ll` files will be generated in the default cache
+    # directory for each generated LLVM module.
+    property? dump_ll = false
+
+    # Additional link flags to pass to the linker.
+    property link_flags : String?
+
+    # Sets the mcpu. Check LLVM docs to learn about this.
+    property mcpu : String?
+
+    # Sets the mattr (features). Check LLVM docs to learn about this.
+    property mattr : String?
+
+    # If `false`, color won't be used in output messages.
+    property? color = true
+
+    # If `true`, skip cleanup process on semantic analysis.
+    property? no_cleanup = false
+
+    # If `true`, no executable will be generated after compilation
+    # (useful to type-check a program)
+    property? no_codegen = false
+
+    # Maximum number of LLVM modules that are compiled in parallel
+    property n_threads : Int32 = {% if Fiber.has_constant?(:ExecutionContext) %}
+      Fiber::ExecutionContext.default_workers_count
+    {% elsif flag?(:win32) %}
+      1
+    {% else %}
+      8
+    {% end %}
+
+    # Default prelude file to use. This ends up adding a
+    # `require "prelude"` (or whatever name is set here) to
+    # the source file to compile.
+    property prelude = "prelude"
+
+    # Optimization mode
+    enum OptimizationMode
+      # [default] no optimization, fastest compilation, slowest runtime
+      O0 = 0
+
+      # low, compilation slower than O0, runtime faster than O0
+      O1 = 1
+
+      # middle, compilation slower than O1, runtime faster than O1
+      O2 = 2
+
+      # high, slowest compilation, fastest runtime
+      # enables with --release flag
+      O3 = 3
+
+      # optimize for size, enables most O2 optimizations but aims for smaller
+      # code size
+      Os
+
+      # optimize aggressively for size rather than speed
+      Oz
+
+      def suffix
+        ".#{to_s.downcase}"
+      end
+
+      def self.from_level?(level : String) : self?
+        case level
+        when "0" then O0
+        when "1" then O1
+        when "2" then O2
+        when "3" then O3
+        when "s" then Os
+        when "z" then Oz
+        end
+      end
+    end
+
+    # Sets the Optimization mode.
+    property optimization_mode = OptimizationMode::O0
+
+    # Sets the code model. Check LLVM docs to learn about this.
+    property mcmodel = LLVM::CodeModel::Default
+
+    # If `true`, generates a single LLVM module. By default
+    # one LLVM module is created for each type in a program.
+    # --release automatically enable this option
+    property? single_module = false
+
+    # A `ProgressTracker` object which tracks compilation progress.
+    property progress_tracker = ProgressTracker.new
+
+    # Codegen target to use in the compilation.
+    # If not set, asks LLVM the default one for the current machine.
+    property codegen_target = Config.host_target
+
+    # If `true`, prints the link command line that is performed
+    # to create the executable.
+    property? verbose = false
+
+    # If `true`, doc comments are attached to types and methods
+    # and can later be used to generate API docs.
+    property? wants_doc = false
+
+    # Warning settings and all detected warnings.
+    property warnings = WarningCollection.new
+
+    @[Flags]
+    enum EmitTarget
+      ASM
+      OBJ
+      LLVM_BC
+      LLVM_IR
+    end
+
+    # Can be set to a set of flags to emit other files other
+    # than the executable file:
+    # * asm: assembly files
+    # * llvm-bc: LLVM bitcode
+    # * llvm-ir: LLVM IR
+    # * obj: object file
+    property emit_targets : EmitTarget = EmitTarget::None
+
+    # Base filename to use for `emit` output.
+    property emit_base_filename : String?
+
+    # By default the compiler cleans up the default cache directory
+    # to keep the most recent 10 directories used. If this is set
+    # to `false` that cleanup is not performed.
+    property? cleanup = true
+
+    # Default standard output to use in a compilation.
+    property stdout : IO = STDOUT
+
+    # Default standard error to use in a compilation.
+    property stderr : IO = STDERR
+
+    # Whether to show error trace
+    property? show_error_trace = false
+
+    # Whether to link statically
+    property? static = false
+
+    property dependency_printer : DependencyPrinter? = nil
+
+    # In-memory cache of parsed ASTs for incremental compilation.
+    # Survives across compile() calls so the watch loop can skip
+    # re-parsing unchanged files.
+    property parse_cache : ParseCache = ParseCache.new
+
+    # If `true`, enables incremental compilation features:
+    # file fingerprinting, parse caching, and cache persistence.
+    property? incremental = false
+
+    # If `true`, cache files are never read during compilation (forces recompile of
+    # every module), but are still written. Mutually exclusive with `--incremental`.
+    property? no_cache = false
+
+    # Cached incremental data for the current compilation, loaded once.
+    # Nil when incremental is disabled, no_cache is set, or no prior cache exists.
+    @current_cached_data : IncrementalCacheData? = nil
+
+    # Module-to-source-file mapping from the last codegen pass.
+    # Used to save to the incremental cache for Phase 4 module skip optimization.
+    @last_module_source_files : Hash(String, Set(String))?
+
+    # Number of modules skipped in the last compilation (Phase 4).
+    @last_modules_skipped : Int32 = 0
+
+    # Total number of modules in the last compilation.
+    @last_modules_total : Int32 = 0
+
+    # Phase 6: Signature tracking results from the last compilation.
+    @last_body_only_count : Int32 = 0
+    @last_structural_count : Int32 = 0
+    @last_isolated_body_only_count : Int32 = 0
+    @last_file_signatures : Hash(String, FileTopLevelSignature)? = nil
+    # File contents read during signature extraction, shared with save_incremental_cache
+    # to avoid double file reads. Cleared after cache save completes.
+    @last_file_contents : Hash(String, String)? = nil
+
+    # Whether linking was skipped in the last compilation (all .o files reused).
+    @link_skipped : Bool = false
+
+    # Whether the entire compilation (semantic + codegen) was skipped because
+    # no source files changed and the output binary already exists.
+    @compilation_skipped : Bool = false
+
+    # Program that was created for the last compilation.
+    property! program : Program
+
+    # Compiles the given *source*, with *output_filename* as the name
+    # of the generated executable.
+    #
+    # Raises `Crystal::CodeError` if there's an error in the
+    # source code.
+    #
+    # Raises `InvalidByteSequenceError` if the source code is not
+    # valid UTF-8.
+    def compile(source : Source | Array(Source), output_filename : String) : Result
+      compile_configure_program(source, output_filename) { }
+    end
+
+    # :ditto:
+    #
+    # Yields a `Program` instance before compiling.
+    def compile_configure_program(source : Source | Array(Source), output_filename : String, & : Program -> Nil) : Result
+      source = [source] unless source.is_a?(Array)
+      program = new_program(source)
+      yield program
+
+      # Reset incremental state from previous compilation (watch mode)
+      @compilation_skipped = false
+      @link_skipped = false
+
+      node = parse program, source
+
+      # Load incremental cache data once for the entire compilation
+      if @incremental && !@no_cache
+        output_dir_for_cache = CacheDir.instance.directory_for(source)
+        @current_cached_data = IncrementalCache.load(
+          output_dir_for_cache, Config.version, @codegen_target.to_s, @flags, @prelude
+        )
+      else
+        @current_cached_data = nil
+      end
+
+      # Incremental optimization: detect if any source files changed since
+      # the last compilation. If nothing changed and the output binary exists,
+      # skip semantic analysis and codegen entirely — they would produce
+      # identical results.
+      #
+      # We check the cached file list directly (not program.requires) because
+      # program.requires is only fully populated after semantic analysis.
+      compilation_skipped = false
+      if @incremental && !@no_codegen
+        cached_data = @current_cached_data
+
+        if cached_data && !cached_data.file_fingerprints.empty?
+          any_changed = false
+
+          # Check every file from the previous compilation for changes
+          cached_data.file_fingerprints.each_value do |fp|
+            begin
+              info = File.info(fp.filename)
+              if info.modification_time.to_unix != fp.mtime_epoch || info.size != fp.byte_size
+                any_changed = true
+                break
+              end
+            rescue IO::Error
+              # File no longer exists — treat as changed
+              any_changed = true
+              break
+            end
+          end
+
+          unless any_changed
+            expanded_output = File.expand_path(output_filename)
+            if File.exists?(expanded_output)
+              compilation_skipped = true
+              @compilation_skipped = true
+            end
+          end
+        end
+      end
+
+      unless compilation_skipped
+        begin
+          node = program.semantic node, cleanup: !no_cleanup?
+        rescue ex : SkipMacroCodeCoverageException
+          program.macro_expansion_error_hook.try &.call(ex.cause)
+        end
+
+        units = codegen program, node, source, output_filename unless @no_codegen
+
+        if @incremental
+          @progress_tracker.stage("Signatures") do
+            extract_and_compare_signatures(program, source)
+          end
+          @progress_tracker.stage("Cache save") do
+            save_incremental_cache(program, source)
+          end
+        end
+      end
+
+      @progress_tracker.clear
+      print_macro_run_stats(program)
+      print_codegen_stats(units)
+      print_parse_cache_stats
+      print_signature_stats
+      print_compilation_skip_stats if compilation_skipped
+
+      @current_cached_data = nil
+
+      Result.new program, node
+    end
+
+    # Runs the semantic pass on the given source, without generating an
+    # executable nor analyzing methods. The returned `Program` in the result will
+    # contain all types and methods. This can be useful to generate
+    # API docs, analyze type relationships, etc.
+    #
+    # Raises `Crystal::CodeError` if there's an error in the
+    # source code.
+    #
+    # Raises `InvalidByteSequenceError` if the source code is not
+    # valid UTF-8.
+    def top_level_semantic(source : Source | Array(Source)) : Result
+      source = [source] unless source.is_a?(Array)
+      program = new_program(source)
+      node = parse program, source
+      node, _ = program.top_level_semantic(node)
+
+      @progress_tracker.clear
+      print_macro_run_stats(program)
+
+      Result.new program, node
+    end
+
+    # Set maximum level of optimization.
+    def release!
+      @optimization_mode = OptimizationMode::O3
+      @single_module = true
+    end
+
+    def release?
+      @optimization_mode.o3? && @single_module
+    end
+
+    private def new_program(sources)
+      @parse_cache.reset_stats if @incremental
+
+      @program = program = Program.new
+      program.compiler = self
+      program.filename = sources.first.filename
+      program.codegen_target = codegen_target
+      program.target_machine = create_target_machine
+      program.flags << "release" if release?
+      program.flags << "debug" unless debug.none?
+      program.flags << "static" if static?
+      program.flags << "shared" if shared?
+      program.flags.concat @flags
+      program.wants_doc = wants_doc?
+      program.color = color?
+      program.stdout = stdout
+      program.show_error_trace = show_error_trace?
+      program.progress_tracker = @progress_tracker
+      program.warnings = @warnings
+      program.optimization_mode = @optimization_mode
+
+      # Apply allocation hints from previous compilation
+      if @incremental
+        if hints = @current_cached_data.try(&.allocation_hints)
+          # Pre-size the string pool (add 25% headroom)
+          if hints.string_pool_capacity > 8
+            capacity = (hints.string_pool_capacity * 5 // 4).clamp(8, 1_000_000)
+            program.string_pool = StringPool.new(capacity)
+          end
+        end
+      end
+      program
+    end
+
+    private def parse(program, sources : Array)
+      @progress_tracker.stage("Parse") do
+        nodes = sources.map do |source|
+          # We add the source to the list of required file,
+          # so it can't be required again
+          program.requires.add source.filename
+          parse(program, source).as(ASTNode)
+        end
+        nodes = Expressions.from(nodes)
+
+        # Prepend the prelude to the parsed program
+        location = Location.new(program.filename, 1, 1)
+        nodes = Expressions.new([Require.new(prelude).at(location), nodes] of ASTNode)
+
+        # Discover require graph and parse files in parallel if enabled.
+        # Only runs in incremental mode — this double-parses the entire program
+        # to pre-populate the parse cache, which is wasteful for one-shot builds.
+        if @incremental && parallel_parse?
+          begin
+            discoverer = RequireGraphDiscoverer.new(program)
+            discovered_files = discoverer.discover(nodes, prelude)
+
+            unless discovered_files.empty?
+              pre_parsed = parallel_parse_files(program, discovered_files)
+              program.pre_parsed_files = pre_parsed unless pre_parsed.empty?
+            end
+          rescue ex
+            # If discovery or parallel parse fails, fall through to sequential.
+            # The semantic phase will parse files normally.
+            program.pre_parsed_files = nil
+          end
+        end
+
+        # And normalize
+        program.normalize(nodes)
+      end
+    end
+
+    private def parse(program, source : Source)
+      parser = program.new_parser(source.code)
+      parser.filename = source.filename
+      parser.wants_doc = wants_doc?
+      parser.parse
+    rescue ex : InvalidByteSequenceError
+      stderr.print colorize("Error: ").red.bold
+      stderr.print colorize("file '#{Crystal.relative_filename(source.filename)}' is not a valid Crystal source file: ").bold
+      stderr.puts ex.message
+      exit 1
+    end
+
+    # Returns true if parallel parsing is enabled.
+    # Disabled by setting CRYSTAL_PARALLEL_PARSE=0.
+    private def parallel_parse? : Bool
+      ENV["CRYSTAL_PARALLEL_PARSE"]? != "0"
+    end
+
+    # Parse an array of filenames in parallel (under preview_mt) or
+    # sequentially. Each thread gets its own StringPool since StringPool
+    # is not thread-safe. Returns a Hash mapping filename to parsed AST.
+    private def parallel_parse_files(program, filenames : Array(String)) : Hash(String, ASTNode)
+      result = {} of String => ASTNode
+
+      {% if flag?(:preview_mt) %}
+        n = {n_threads, filenames.size}.min
+
+        if n > 1
+          mutex = Mutex.new
+          channel = Channel(String).new(n * 2)
+          wg = WaitGroup.new
+
+          n.times do
+            wg.spawn do
+              local_pool = StringPool.new
+              while filename = channel.receive?
+                begin
+                  content = File.read(filename)
+                  parser = Parser.new(content, local_pool)
+                  parser.filename = filename
+                  parser.wants_doc = wants_doc?
+                  parsed = parser.parse
+                  mutex.synchronize { result[filename] = parsed }
+                rescue
+                  # Skip files that fail to parse -- semantic phase handles errors
+                end
+              end
+            end
+          end
+
+          filenames.each { |f| channel.send(f) }
+          channel.close
+          wg.wait
+        else
+          # Single thread -- parse sequentially
+          filenames.each do |filename|
+            begin
+              content = File.read(filename)
+              parser = program.new_parser(content)
+              parser.filename = filename
+              parser.wants_doc = wants_doc?
+              result[filename] = parser.parse
+            rescue
+              # Skip files that fail to parse
+            end
+          end
+        end
+      {% else %}
+        # Sequential fallback without preview_mt
+        filenames.each do |filename|
+          begin
+            content = File.read(filename)
+            parser = program.new_parser(content)
+            parser.filename = filename
+            parser.wants_doc = wants_doc?
+            result[filename] = parser.parse
+          rescue
+            # Skip files that fail to parse
+          end
+        end
+      {% end %}
+
+      result
+    end
+
+    private def bc_flags_changed?(output_dir)
+      bc_flags_changed = true
+      current_bc_flags = "#{@codegen_target}|#{@mcpu}|#{@mattr}|#{@link_flags}|#{@mcmodel}"
+      bc_flags_filename = "#{output_dir}/bc_flags#{optimization_mode.suffix}"
+      if File.file?(bc_flags_filename)
+        previous_bc_flags = File.read(bc_flags_filename).strip
+        bc_flags_changed = previous_bc_flags != current_bc_flags
+      end
+      File.write(bc_flags_filename, current_bc_flags)
+      bc_flags_changed
+    end
+
+    private def codegen(program, node : ASTNode, sources, output_filename)
+      {% if LibLLVM::IS_LT_130 %}
+        if @codegen_target.architecture == "aarch64"
+          stderr.puts "Error: Target #{@codegen_target} requires a Crystal compiler built with LLVM 13 or a later version."
+          exit 1
+        end
+      {% end %}
+
+      is_single_module = @single_module || @cross_compile || !@emit_targets.none? || program.has_flag?("wasm32")
+
+      llvm_modules, codegen_module_source_files = @progress_tracker.stage("Codegen (crystal)") do
+        program.codegen node, debug: debug, frame_pointers: frame_pointers,
+          single_module: is_single_module
+      end
+
+      output_dir = CacheDir.instance.directory_for(sources)
+
+      # Load cached data for module-level skip optimization (Phase 4).
+      # Only applicable in multi-module mode with incremental compilation enabled.
+      cached_data = (@incremental && !is_single_module) ? @current_cached_data : nil
+      cached_module_mapping = cached_data.try(&.module_file_mapping)
+
+      # Compute set of changed files from fingerprints (for module skip checks).
+      changed_files = if cached_data && cached_module_mapping
+                        current_files = Set(String).new
+                        program.requires.each { |f| current_files.add(f) }
+                        IncrementalCache.changed_files(cached_data, current_files)
+                      else
+                        nil
+                      end
+
+      # The module mapping only records files whose defs go through codegen_fun.
+      # Code can reach a module without that: top-level expressions, trivial
+      # method bodies inlined at call sites, macro-expanded code. A changed file
+      # that is not attributed to ANY module can therefore affect any module,
+      # and per-module skipping is unsound for this rebuild. Disable it and let
+      # the bitcode comparison in must_compile? decide object reuse instead.
+      if changed_files && cached_module_mapping
+        mapped_files = Set(String).new
+        cached_module_mapping.each_value { |files| mapped_files.concat(files) }
+        unless changed_files.all? { |f| mapped_files.includes?(f) }
+          changed_files = nil
+        end
+      end
+
+      bc_flags_changed = bc_flags_changed? output_dir
+      target_triple = target_machine.triple
+
+      modules_skipped = 0
+
+      units = llvm_modules.map do |type_name, info|
+        llvm_mod = info.mod
+        llvm_mod.target = target_triple
+
+        # Phase 4: Check if we can skip IR generation entirely for this module.
+        # A module can be skipped if:
+        #   1. Incremental caching is enabled and we have a cached module mapping
+        #   2. ALL source files contributing to this module are unchanged
+        #   3. The cached .o file exists and bc flags haven't changed
+        #   4. We're not in single-module mode
+        skip_codegen = false
+        if cached_module_mapping && changed_files && !bc_flags_changed
+          # Determine the compilation unit name for cache directory lookup
+          unit_name = type_name.empty? ? "_main" : type_name
+          safe_name = String.build do |str|
+            unit_name.each_char do |char|
+              case char
+              when 'a'..'z', '0'..'9', '_'
+                str << char
+              when 'A'..'Z'
+                str << char << '-'
+              else
+                str << char.ord
+              end
+            end
+          end
+          if safe_name.size > 50
+            safe_name = "#{safe_name[0..16]}-#{Crystal::Digest::MD5.hexdigest(safe_name)}"
+          end
+          safe_name = "#{safe_name}#{optimization_mode.suffix}"
+          object_ext = @codegen_target.object_extension
+          cached_obj_path = File.join(output_dir, "#{safe_name}#{object_ext}")
+
+          if (source_files = cached_module_mapping[type_name]?)
+            all_unchanged = source_files.all? { |f| !changed_files.includes?(f) }
+            if all_unchanged && File.exists?(cached_obj_path) && File.size(cached_obj_path) > 0
+              skip_codegen = true
+              modules_skipped += 1
+            end
+          end
+        end
+
+        CompilationUnit.new(self, program, type_name, llvm_mod, output_dir, bc_flags_changed, skip_codegen)
+      end
+
+      # Store module source files for later saving to incremental cache
+      @last_module_source_files = codegen_module_source_files unless is_single_module
+      @last_modules_skipped = modules_skipped
+      @last_modules_total = units.size
+
+      {% if LibLLVM::IS_LT_170 %}
+        # initialize the legacy pass manager once in the main thread/process
+        # before we start codegen in threads (MT) or processes (fork)
+        init_llvm_legacy_pass_manager unless optimization_mode.o0?
+      {% end %}
+
+      if @cross_compile
+        cross_compile program, units, output_filename
+      else
+        units = with_file_lock(output_dir) do
+          codegen program, units, output_filename, output_dir
+        end
+
+        {% if flag?(:darwin) %}
+          run_dsymutil(output_filename) unless debug.none? || @link_skipped
+        {% end %}
+
+        {% if flag?(:msvc) %}
+          copy_dlls(program, output_filename) unless static?
+        {% end %}
+      end
+
+      CacheDir.instance.cleanup if @cleanup
+
+      units
+    end
+
+    private def with_file_lock(output_dir, &)
+      File.open(File.join(output_dir, "compiler.lock"), "w") do |file|
+        file.flock_exclusive do
+          yield
+        end
+      end
+    end
+
+    private def run_dsymutil(filename)
+      dsymutil = Process.find_executable("dsymutil")
+      return unless dsymutil
+
+      @progress_tracker.stage("dsymutil") do
+        Process.run(dsymutil, ["--flat", filename])
+      end
+    end
+
+    private def copy_dlls(program, output_filename)
+      not_found = nil
+      output_directory = File.dirname(output_filename)
+
+      program.each_dll_path do |path, found|
+        if found
+          dest = File.join(output_directory, File.basename(path))
+          File.copy(path, dest) unless File.exists?(dest)
+        else
+          not_found ||= [] of String
+          not_found << path
+        end
+      end
+
+      if not_found
+        stderr << "Warning: The following DLLs are required at run time, but Crystal is unable to locate them in CRYSTAL_LIBRARY_PATH, the compiler's directory, or PATH: "
+        not_found.sort!.join(stderr, ", ")
+      end
+    end
+
+    private def cross_compile(program, units, output_filename)
+      unit = units.first
+      llvm_mod = unit.llvm_mod
+
+      @progress_tracker.stage("Codegen (bc+obj)") do
+        optimize llvm_mod, target_machine unless @optimization_mode.o0?
+
+        unit.emit(@emit_targets, emit_base_filename || output_filename)
+
+        target_machine.emit_obj_to_file llvm_mod, output_filename
+      end
+      object_names = [output_filename]
+      output_filename = output_filename.rchop(unit.object_extension)
+      _, command, args = linker_command(program, object_names, output_filename, nil)
+      print_command(command, args)
+    end
+
+    private def print_command(command, args)
+      stdout.puts command.sub(%("${@}"), args && Process.quote(args))
+    end
+
+    private def linker_command(program : Program, object_names, output_filename, output_dir, expand = false, source_dir : String? = nil)
+      if program.has_flag? "msvc"
+        lib_flags = program.lib_flags(@cross_compile)
+        lib_flags = expand_lib_flags(lib_flags) if expand
+
+        object_arg = Process.quote_windows(object_names)
+        output_arg = Process.quote_windows("/Fe#{output_filename}")
+
+        linker, link_args = program.msvc_compiler_and_flags
+        linker = Process.quote_windows(linker)
+        link_args.map! { |arg| Process.quote_windows(arg) }
+
+        link_args << "/DEBUG:FULL /PDBALTPATH:%_PDB%" unless debug.none?
+        link_args << "/INCREMENTAL:NO /STACK:0x800000"
+        link_args << lib_flags
+        @link_flags.try { |flags| link_args << flags }
+
+        {% if flag?(:msvc) %}
+          unless @cross_compile
+            extra_suffix = static? ? "-static" : "-dynamic"
+            search_result = Loader.search_libraries(Process.parse_arguments_windows(link_args.join(' ').gsub('\n', ' ')), extra_suffix: extra_suffix)
+            if not_found = search_result.not_found?
+              raise CompilerError.new("Cannot locate the .lib files for the following libraries: #{not_found.join(", ")}", :FAILURE)
+            end
+
+            link_args = search_result.remaining_args.concat(search_result.library_paths).map { |arg| Process.quote_windows(arg) }
+          end
+        {% end %}
+
+        args = %(/nologo #{object_arg} #{output_arg} /link #{link_args.join(' ')}).gsub("\n", " ")
+        cmd = "#{linker} #{args}"
+
+        if cmd.to_utf16.size > 32000
+          # The command line would be too big, pass the args through a UTF-16-encoded file instead.
+          # TODO: Use a proper way to write encoded text to a file when that's supported.
+          # The first character is the BOM; it will be converted in the same endianness as the rest.
+          args_16 = "\ufeff#{args}".to_utf16
+          args_bytes = args_16.to_unsafe_bytes
+
+          args_filename = "#{output_dir}/linker_args.txt"
+          File.write(args_filename, args_bytes)
+          cmd = "#{linker} #{Process.quote_windows("@" + args_filename)}"
+        end
+
+        {linker, cmd, nil}
+      elsif program.has_flag? "wasm32"
+        link_flags = @link_flags || ""
+        link_flags += " --stack-first -z stack-size=8388608"
+
+        link_flags += " --allow-undefined --allow-multiple-definition"
+
+        # WASM exception handling support:
+        # - __wasm_lpad_context is emitted directly by codegen (see initialize_wasm_exception_context)
+        # - __cpp_exception tag is auto-imported by LLVM (no object file needed)
+        # Note: asyncify_helper.wasm is merged AFTER the asyncify pass via
+        # wasm-merge (see run_wasm_opt) to avoid name collisions.
+
+        # NOTE: wasm-ld does not support --sysroot. WASI SDK sysroot library
+        # paths are added via -L flags in lib_flags_wasm (link.cr).
+
+        {"wasm-ld", %(wasm-ld "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} -lc -lwasi-emulated-mman -lwasi-emulated-process-clocks #{program.lib_flags(@cross_compile)}), object_names}
+      elsif program.has_flag? "avr"
+        link_flags = @link_flags || ""
+        link_flags += " --target=avr-unknown-unknown -mmcu=#{@mcpu} -Wl,--gc-sections"
+        {DEFAULT_LINKER, %(#{DEFAULT_LINKER} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags(@cross_compile)}), object_names}
+      elsif program.has_flag?("win32") && program.has_flag?("gnu")
+        link_flags = @link_flags || ""
+        link_flags += " -Wl,--stack,0x800000"
+        link_flags = use_modern_linker(link_flags)
+        lib_flags = program.lib_flags(@cross_compile)
+        lib_flags = expand_lib_flags(lib_flags) if expand
+        cmd = %(#{DEFAULT_LINKER} #{Process.quote_windows(object_names)} -o #{Process.quote_windows(output_filename)} #{link_flags} #{lib_flags}).gsub('\n', ' ')
+
+        if cmd.size > 32000
+          # The command line would be too big, pass the args through a file instead.
+          # GCC response file does not interpret those args as shell-escaped
+          # arguments, we must rebuild the whole command line
+          args_filename = "#{output_dir}/linker_args.txt"
+          File.open(args_filename, "w") do |f|
+            object_names.each do |object_name|
+              f << object_name.gsub(GCC_RESPONSE_FILE_TR) << ' '
+            end
+            f << "-o " << output_filename.gsub(GCC_RESPONSE_FILE_TR) << ' '
+            f << link_flags << ' ' << lib_flags
+          end
+          cmd = "#{DEFAULT_LINKER} #{Process.quote_windows("@" + args_filename)}"
+        end
+
+        {DEFAULT_LINKER, cmd, nil}
+      elsif program.has_flag? "ios"
+        link_flags = @link_flags || ""
+        link_flags += " -shared -fPIC" if shared?
+        sdk = program.codegen_target.ios_simulator? ? "iphonesimulator" : "iphoneos"
+        target_triple = program.codegen_target.to_s
+        link_flags += " -isysroot $(xcrun --sdk #{sdk} --show-sdk-path) -target #{target_triple}"
+
+        linker = "xcrun --sdk #{sdk} clang"
+        {linker, %(#{linker} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags(@cross_compile)}), object_names}
+      elsif program.has_flag? "android"
+        link_flags = @link_flags || ""
+        link_flags += " -shared -fPIC" if shared?
+        target_triple = program.codegen_target.to_s
+        # Extract API level from environment (e.g. "linux-android31" -> "31")
+        api_level = program.codegen_target.environment.scan(/android(\d+)/)[0]?.try(&.[1]) || "21"
+        ndk_arch_triple = "#{program.codegen_target.architecture}-linux-android#{api_level}"
+        link_flags += " --target=#{ndk_arch_triple}"
+
+        # Find NDK clang from ANDROID_NDK_HOME
+        ndk_home = ENV["ANDROID_NDK_HOME"]? || ENV["NDK_HOME"]? || ""
+        if ndk_home.empty?
+          linker = "clang"
+        else
+          # NDK prebuilt bin directory
+          prebuilt_glob = File.join(ndk_home, "toolchains", "llvm", "prebuilt", "*", "bin", "clang")
+          prebuilt_matches = Dir.glob(prebuilt_glob)
+          linker = prebuilt_matches.first? || "clang"
+        end
+
+        {linker, %(#{Process.quote_posix(linker)} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags(@cross_compile)}), object_names}
+      else
+        link_flags = @link_flags || ""
+        link_flags += shared? ? " -shared -fPIC" : " -rdynamic"
+
+        if program.has_flag?("freebsd") || program.has_flag?("openbsd")
+          # pkgs are installed to usr/local/lib but it's not in LIBRARY_PATH by
+          # default; we declare it to ease linking on these platforms:
+          link_flags += " -L/usr/local/lib"
+        end
+
+        link_flags = use_modern_linker(link_flags)
+
+        {DEFAULT_LINKER, %(#{DEFAULT_LINKER} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags(@cross_compile)}), object_names}
+      end
+    end
+
+    # Tests if `mold` or `lld` are available and prefers them as linkers over
+    # the default `ld`. Only works when `cc` is the linker driver and can be
+    # disabled with `--link-flags=-fuse-ld=bfd`.
+    private def use_modern_linker(link_flags)
+      return link_flags unless DEFAULT_LINKER == "cc"
+      return link_flags if link_flags.includes?("-fuse-ld=")
+
+      if Process.find_executable("mold")
+        link_flags + " -fuse-ld=mold"
+      elsif Process.find_executable("ld.lld")
+        link_flags + " -fuse-ld=lld"
+      else
+        link_flags
+      end
+    end
+
+    private GCC_RESPONSE_FILE_TR = {
+      " ":  %q(\ ),
+      "'":  %q(\'),
+      "\"": %q(\"),
+      "\\": "\\\\",
+    }
+
+    private def expand_lib_flags(lib_flags)
+      lib_flags.gsub(/`(.*?)`/) do
+        command = $1
+        begin
+          error_io = IO::Memory.new
+          output = Process.run(command, shell: true, output: :pipe, error: error_io) do |process|
+            process.output.gets_to_end
+          end
+          unless $?.success?
+            error_io.rewind
+            raise CompilerError.new("Error executing subcommand for linker flags: #{command.inspect}: #{error_io}", :FAILURE)
+          end
+          output.chomp
+        rescue exc
+          raise CompilerError.new("Error executing subcommand for linker flags: #{command.inspect}: #{exc}", :FAILURE)
+        end
+      end
+    end
+
+    private def codegen(program, units : Array(CompilationUnit), output_filename, output_dir)
+      object_names = units.map &.object_filename
+
+      @progress_tracker.stage("Codegen (bc+obj)") do
+        @progress_tracker.stage_progress_total = units.size
+
+        n_threads = @n_threads.clamp(1..units.size)
+
+        if n_threads == 1
+          sequential_codegen(units)
+        else
+          parallel_codegen(units, n_threads)
+        end
+
+        if units.size == 1
+          units.first.emit(@emit_targets, emit_base_filename || output_filename)
+        end
+      end
+
+      # We check again because maybe this directory was created in between (maybe with a macro run)
+      if Dir.exists?(output_filename)
+        raise CompilerError.new("can't use `#{output_filename}` as output filename because it's a directory", :USAGE_ERROR)
+      end
+
+      output_filename = File.expand_path(output_filename)
+
+      # Incremental optimization: skip linking when all .o files were reused
+      # from cache and the output binary already exists. The linker inputs are
+      # identical, so the output would be byte-for-byte the same.
+      all_reused = @incremental && !@no_cache && units.all?(&.reused_previous_compilation?)
+      @link_skipped = all_reused && File.exists?(output_filename)
+
+      if @link_skipped
+        @progress_tracker.stage("Codegen (linking)") { }
+      else
+        @progress_tracker.stage("Codegen (linking)") do
+          # Save source directory before changing to output_dir so CRYSTAL_PATH
+          # relative entries (e.g. "src:lib") resolve correctly in linker_command
+          src_dir = Dir.current
+          Dir.cd(output_dir) do
+            run_linker *linker_command(program, object_names, output_filename, output_dir, expand: true, source_dir: src_dir)
+          end
+        end
+      end
+
+      if program.has_flag?("wasm32")
+        @progress_tracker.stage("Codegen (wasm-opt)") do
+          run_wasm_opt(output_filename, release?)
+        end
+      end
+
+      units
+    end
+
+    private def sequential_codegen(units)
+      units.each do |unit|
+        unit.compile
+        @progress_tracker.stage_progress += 1
+      end
+    end
+
+    private def parallel_codegen(units, n_threads)
+      {% if !flag?(:without_mt) %}
+        raise "LLVM isn't multithreaded and cannot fork compiler in multithread mode." unless LLVM.multithreaded?
+        mt_codegen(units, n_threads)
+      {% elsif LibC.has_method?("fork") %}
+        fork_codegen(units, n_threads)
+      {% else %}
+        raise "Cannot fork compiler. `Crystal::System::Process.fork` is not implemented on this system."
+      {% end %}
+    end
+
+    private def mt_codegen(units, n_threads)
+      channel = Channel(CompilationUnit).new(n_threads * 2)
+      wg = WaitGroup.new
+      mutex = Sync::Mutex.new
+
+      n_threads.times do
+        wg.spawn do
+          while unit = channel.receive?
+            unit.compile(isolate_context: true)
+            mutex.synchronize { @progress_tracker.stage_progress += 1 }
+          end
+        end
+      end
+
+      units.each do |unit|
+        # We generate the bitcode in the main thread because LLVM contexts
+        # must be unique per compilation unit, but we share different contexts
+        # across many modules (or rely on the global context); trying to
+        # codegen in parallel would segfault!
+        #
+        # Luckily generating the bitcode is quick and once the bitcode is
+        # generated we don't need the global LLVM contexts anymore but can
+        # parse the bitcode in an isolated context and we can parallelize the
+        # slowest part: the optimization pass & compiling the object file.
+        unit.generate_bitcode
+
+        channel.send(unit)
+      end
+      channel.close
+
+      wg.wait
+    end
+
+    private def fork_codegen(units, n_threads)
+      workers = fork_workers(n_threads) do |input, output|
+        while i = input.gets(chomp: true).presence
+          unit = units[i.to_i]
+          unit.compile
+          result = {name: unit.name, reused: unit.reused_previous_compilation?}
+          output.puts result.to_json
+        end
+      rescue ex
+        result = {exception: {name: ex.class.name, message: ex.message, backtrace: ex.backtrace}}
+        output.puts result.to_json
+      end
+
+      overqueue = 1
+      indexes = Atomic(Int32).new(0)
+      channel = Channel(String).new(n_threads)
+      completed = Channel(Nil).new(n_threads)
+
+      workers.each do |pid, input, output|
+        spawn do
+          overqueued = 0
+
+          overqueue.times do
+            if (index = indexes.add(1)) < units.size
+              input.puts index
+              overqueued += 1
+            end
+          end
+
+          while (index = indexes.add(1)) < units.size
+            input.puts index
+
+            if response = output.gets(chomp: true)
+              channel.send response
+            else
+              Crystal::System.print_error "\nBUG: a codegen process failed\n"
+              exit 1
+            end
+          end
+
+          overqueued.times do
+            if response = output.gets(chomp: true)
+              channel.send response
+            else
+              Crystal::System.print_error "\nBUG: a codegen process failed\n"
+              exit 1
+            end
+          end
+
+          input << '\n'
+          input.close
+          output.close
+
+          Process.new(Crystal::System::Process.new(pid)).wait
+          completed.send(nil)
+        end
+      end
+
+      spawn do
+        n_threads.times { completed.receive }
+        channel.close
+      end
+
+      while response = channel.receive?
+        result = JSON.parse(response)
+
+        if ex = result["exception"]?
+          Crystal::System.print_error "\nBUG: a codegen process failed: %s (%s)\n", ex["message"].as_s, ex["name"].as_s
+          ex["backtrace"].as_a?.try(&.each { |frame| Crystal::System.print_error "  from %s\n", frame })
+          exit 1
+        end
+
+        # Always sync the child's reuse flag to the parent unit: the link-skip
+        # decision (units.all?(&.reused_previous_compilation?)) depends on it,
+        # not just the --stats output.
+        if result["reused"].as_bool
+          name = result["name"].as_s
+          unit = units.find! { |unit| unit.name == name }
+          unit.reused_previous_compilation = true
+        end
+        @progress_tracker.stage_progress += 1
+      end
+    end
+
+    private def fork_workers(n_threads, &)
+      workers = [] of {Int32, IO::FileDescriptor, IO::FileDescriptor}
+
+      n_threads.times do
+        iread, iwrite = IO.pipe
+        oread, owrite = IO.pipe
+
+        iwrite.flush_on_newline = true
+        owrite.flush_on_newline = true
+
+        pid = Crystal::System::Process.fork do
+          iwrite.close
+          oread.close
+
+          yield iread, owrite
+
+          iread.close
+          owrite.close
+          exit 0
+        end
+
+        iread.close
+        owrite.close
+
+        workers << {pid, iwrite, oread}
+      end
+
+      workers
+    end
+
+    private def print_macro_run_stats(program)
+      return unless @progress_tracker.stats?
+      return if program.compiled_macros_cache.empty?
+
+      puts
+      puts "Macro runs:"
+      program.compiled_macros_cache.each do |filename, compiled_macro_run|
+        print " - "
+        print filename
+        print ": "
+        if compiled_macro_run.reused
+          print "reused previous compilation (#{compiled_macro_run.elapsed})"
+        else
+          print compiled_macro_run.elapsed
+        end
+        puts
+      end
+    end
+
+    private def print_codegen_stats(units)
+      return unless @progress_tracker.stats?
+      return unless units
+
+      reused = units.count(&.reused_previous_compilation?)
+
+      puts
+      puts "Codegen (bc+obj):"
+      case reused
+      when units.size
+        puts " - all previous .o files were reused"
+      when .zero?
+        puts " - no previous .o files were reused"
+      else
+        puts " - #{reused}/#{units.size} .o files were reused"
+        puts
+        puts "These modules were not reused:"
+        units.each do |unit|
+          next if unit.reused_previous_compilation?
+          puts " - #{unit.original_name} (#{unit.name}.bc)"
+        end
+      end
+
+      # Phase 4: Report modules skipped via source-file-level caching
+      skipped = @last_modules_skipped
+      total = @last_modules_total
+      if skipped > 0
+        puts " - Modules skipped: #{skipped} of #{total} (cached)"
+      end
+
+      if @link_skipped
+        puts " - Linking skipped (all .o files reused, binary unchanged)"
+      end
+    end
+
+    private def print_parse_cache_stats
+      return unless @progress_tracker.stats?
+      return unless @incremental
+
+      cache = @parse_cache
+      total = cache.total_lookups
+      return if total == 0
+
+      puts
+      puts "Parse cache:"
+      puts " - hits: #{cache.hits}, misses: #{cache.misses} (#{sprintf("%.1f", cache.hit_rate)}% hit rate)"
+    end
+
+    private def print_signature_stats
+      return unless @progress_tracker.stats?
+      return unless @incremental
+
+      body_only = @last_body_only_count
+      structural = @last_structural_count
+      isolated = @last_isolated_body_only_count
+      return if body_only == 0 && structural == 0
+
+      puts
+      puts "Signature tracking:"
+      puts " - Files with body-only changes: #{body_only}"
+      puts " - Files with structural changes: #{structural}"
+      if isolated > 0
+        puts " - Body-only changes with no dependents (safe to skip): #{isolated}"
+      end
+    end
+
+    private def print_compilation_skip_stats
+      return unless @progress_tracker.stats?
+      puts
+      puts "Incremental compilation:"
+      puts " - No source changes detected, semantic + codegen skipped"
+      puts " - Output binary is unchanged"
+    end
+
+    # Phase 6: Extract top-level signatures from all required files and
+    # compare with cached signatures to classify changes.
+    private def extract_and_compare_signatures(program, sources)
+      @last_body_only_count = 0
+      @last_structural_count = 0
+      @last_isolated_body_only_count = 0
+
+      new_signatures, file_contents = extract_file_signatures(program)
+      @last_file_signatures = new_signatures
+      @last_file_contents = file_contents
+
+      return if new_signatures.empty?
+
+      # Load old signatures from cache
+      cached_data = @current_cached_data
+      old_signatures = cached_data.try(&.file_signatures)
+
+      # Compute changed files
+      current_files = Set(String).new
+      program.requires.each { |f| current_files.add(f) }
+
+      if cached_data
+        changed = IncrementalCache.changed_files(cached_data, current_files)
+      else
+        # No cached data -- all files are "new" / structural
+        changed = current_files
+      end
+
+      return if changed.empty?
+
+      # Classify changes
+      body_only, structural = IncrementalCache.classify_changes(
+        changed, old_signatures, new_signatures
+      )
+
+      # Use file dependency graph from previous build for smarter invalidation.
+      # Body-only changes in files with no dependents are truly isolated:
+      # no other file calls into them, so semantic analysis results are unchanged.
+      if (deps = cached_data.try(&.file_dependencies))
+        # Build reverse dependency map: provider_file => [user_files that depend on it]
+        reverse_deps = Hash(String, Array(String)).new { |h, k| h[k] = [] of String }
+        deps.each do |user_file, provider_files|
+          provider_files.each { |p| reverse_deps[p] << user_file }
+        end
+
+        # Separate body-only changes into those with and without dependents
+        isolated_body_only = Set(String).new
+        body_only.each do |file|
+          if reverse_deps[file]?.nil? || reverse_deps[file].empty?
+            isolated_body_only.add(file)
+          end
+        end
+
+        @last_body_only_count = body_only.size
+        @last_structural_count = structural.size
+        @last_isolated_body_only_count = isolated_body_only.size
+      else
+        @last_body_only_count = body_only.size
+        @last_structural_count = structural.size
+        @last_isolated_body_only_count = 0
+      end
+    end
+
+    # Extract FileTopLevelSignature for each required file by parsing it
+    # and running the SignatureExtractor visitor.
+    private def extract_file_signatures(program) : {Hash(String, FileTopLevelSignature), Hash(String, String)}
+      all_signatures = {} of String => FileTopLevelSignature
+      all_contents = {} of String => String
+
+      program.requires.each do |filename|
+        begin
+          content = File.read(filename)
+          all_contents[filename] = content
+          content_hash = Crystal::Digest::MD5.hexdigest(content)
+
+          # Reuse cached AST from the parse stage if available (avoids re-parsing)
+          parsed = if @incremental && (cached_ast = @parse_cache.get(filename, content_hash))
+                     cached_ast
+                   else
+                     parser = Parser.new(content, program.string_pool)
+                     parser.filename = filename
+                     parser.parse
+                   end
+
+          extractor = SignatureExtractor.new
+          parsed.accept(extractor)
+          file_sigs = extractor.build_signatures
+
+          # The extractor may produce signatures for the file and for other
+          # files referenced by location. We only take the one for this file.
+          if sig = file_sigs[filename]?
+            all_signatures[filename] = sig
+          else
+            # File had no top-level declarations -- store an empty signature
+            all_signatures[filename] = FileTopLevelSignature.new(
+              type_declarations: [] of TypeDeclarationSig,
+              method_signatures: [] of MethodSig,
+              mixins: [] of String,
+              constants: [] of String,
+              has_top_level_macro_calls: false,
+            )
+          end
+        rescue
+          # If a file can't be read/parsed, skip it.
+          # This is best-effort; the main compilation already succeeded.
+        end
+      end
+
+      {all_signatures, all_contents}
+    end
+
+    private def save_incremental_cache(program, sources)
+      output_dir = CacheDir.instance.directory_for(sources)
+
+      fingerprints = {} of String => FileFingerprint
+      cold_build = @current_cached_data.nil?
+      pre_read = @last_file_contents
+      program.requires.each do |filename|
+        begin
+          if !cold_build && pre_read && (content = pre_read[filename]?)
+            # Reuse content already read during signature extraction
+            info = File.info(filename)
+            content_hash = Crystal::Digest::MD5.hexdigest(content)
+            fingerprints[filename] = FileFingerprint.new(
+              filename: filename,
+              mtime_epoch: info.modification_time.to_unix,
+              content_hash: content_hash,
+              byte_size: info.size,
+            )
+          elsif cold_build
+            fingerprints[filename] = IncrementalCache.fingerprint_fast(filename)
+          else
+            fingerprints[filename] = IncrementalCache.fingerprint(filename)
+          end
+        rescue IO::Error
+          # File may have been deleted between compilation and cache save
+        end
+      end
+
+      # Convert module_source_files (Set) to Array for JSON serialization
+      module_mapping = if msf = @last_module_source_files
+                         result = {} of String => Array(String)
+                         msf.each do |mod_name, file_set|
+                           result[mod_name] = file_set.to_a.sort
+                         end
+                         result
+                       else
+                         nil
+                       end
+
+      # Capture allocation sizing hints from the current compilation
+      hints = AllocationHints.new(
+        string_pool_capacity: program.string_pool.size,
+        unions_capacity: program.unions.size,
+        total_types_count: count_all_types(program),
+        total_defs_count: count_all_defs(program),
+        module_count: @last_modules_total || 1,
+      )
+
+      # Capture file-level dependencies (convert Set to sorted Array for JSON)
+      file_deps = unless program.file_dependencies.empty?
+                    result = {} of String => Array(String)
+                    program.file_dependencies.each do |user_file, provider_set|
+                      result[user_file] = provider_set.to_a.sort
+                    end
+                    result
+                  end
+
+      data = IncrementalCacheData.new(
+        compiler_version: Config.version,
+        codegen_target: @codegen_target.to_s,
+        flags: @flags.dup,
+        prelude: @prelude,
+        file_fingerprints: fingerprints,
+        module_file_mapping: module_mapping,
+        file_signatures: @last_file_signatures,
+        allocation_hints: hints,
+        file_dependencies: file_deps,
+      )
+
+      IncrementalCache.save(output_dir, data)
+      @last_file_contents = nil
+    end
+
+    private def count_all_types(program : Program) : Int32
+      count = 0
+      program.types.each_value { |_| count += 1 }
+      count
+    end
+
+    private def count_all_defs(program : Program) : Int32
+      count = 0
+      program.types.each_value do |type|
+        if type.responds_to?(:def_instances)
+          count += type.def_instances.size
+        end
+      end
+      count
+    end
+
+    getter(target_machine : LLVM::TargetMachine) do
+      create_target_machine
+    end
+
+    def create_target_machine
+      @codegen_target.to_target_machine(@mcpu || "", @mattr || "", @optimization_mode, @mcmodel)
+    rescue ex : ArgumentError
+      stderr.print colorize("Error: ").red.bold
+      stderr.print "llc: "
+      stderr.puts ex.message
+      exit 1
+    end
+
+    {% if LibLLVM::IS_LT_170 %}
+      property! pass_manager_builder : LLVM::PassManagerBuilder
+
+      private def init_llvm_legacy_pass_manager
+        registry = LLVM::PassRegistry.instance
+        registry.initialize_all
+
+        builder = LLVM::PassManagerBuilder.new
+        builder.size_level = 0
+
+        case optimization_mode
+        in .o3?
+          builder.opt_level = 3
+          builder.use_inliner_with_threshold = 275
+        in .o2?
+          builder.opt_level = 2
+          builder.use_inliner_with_threshold = 275
+        in .o1?
+          builder.opt_level = 1
+          builder.use_inliner_with_threshold = 150
+        in .o0?
+          # default behaviour, no optimizations
+        in .os?
+          builder.opt_level = 2
+          builder.size_level = 1
+          builder.use_inliner_with_threshold = 50
+        in .oz?
+          builder.opt_level = 2
+          builder.size_level = 2
+          builder.use_inliner_with_threshold = 5
+        end
+
+        @pass_manager_builder = builder
+      end
+
+      private def optimize_with_pass_manager(llvm_mod)
+        fun_pass_manager = llvm_mod.new_function_pass_manager
+        pass_manager_builder.populate fun_pass_manager
+        fun_pass_manager.run llvm_mod
+
+        module_pass_manager = LLVM::ModulePassManager.new
+        pass_manager_builder.populate module_pass_manager
+        module_pass_manager.run llvm_mod
+      end
+    {% end %}
+
+    protected def optimize(llvm_mod, target_machine)
+      {% if LibLLVM::IS_LT_130 %}
+        optimize_with_pass_manager(llvm_mod)
+      {% else %}
+        optimization_mode = @optimization_mode
+        optimization_mode = OptimizationMode::O2 if optimization_mode.os? || optimization_mode.oz?
+
+        LLVM::PassBuilderOptions.new do |options|
+          LLVM.run_passes(llvm_mod, "default<#{optimization_mode}>", target_machine, options)
+        end
+      {% end %}
+    end
+
+    private def run_linker(linker_name, command, args)
+      print_command(command, args) if verbose?
+
+      begin
+        Process.run(command, args, shell: true,
+          input: Process::Redirect::Close, output: Process::Redirect::Inherit, error: Process::Redirect::Pipe) do |process|
+          process.error.each_line(chomp: false) do |line|
+            hint_string = colorize("(this usually means you need to install the development package for lib\\1)").yellow.bold
+            line = line.gsub(/cannot find -l(\S+)\b/, "cannot find -l\\1 #{hint_string}")
+            line = line.gsub(/unable to find library -l(\S+)\b/, "unable to find library -l\\1 #{hint_string}")
+            line = line.gsub(/library not found for -l(\S+)\b/, "library not found for -l\\1 #{hint_string}")
+            STDERR << line
+          end
+        end
+      rescue exc : File::AccessDeniedError | File::NotFoundError
+        linker_not_found exc.class, linker_name
+      end
+
+      status = $?
+      unless status.success?
+        exit_code = status.exit_code?
+        case exit_code
+        when 126
+          linker_not_found File::AccessDeniedError, linker_name
+        when 127
+          linker_not_found File::NotFoundError, linker_name
+        when nil
+          # abnormal exit
+          exit_code = 1
+        end
+        raise CompilerError.new("execution of command failed with exit status #{status}: #{command}", status: exit_code)
+      end
+    end
+
+    private def run_wasm_opt(output_filename, optimize)
+      quoted = Process.quote_posix(output_filename)
+
+      # WASM post-link pipeline order matters:
+      #
+      # 1. --asyncify: Instrument functions for stack unwinding/rewinding
+      #    (required for fiber context switching). Must run on legacy EH
+      #    format (try/catch) — does not support new try_table instructions.
+      #    crystal_asyncify_switch is declared as an async import so callers
+      #    get proper save/restore instrumentation.
+      #
+      # 2. wasm-merge: Merge asyncify_helper.wasm to provide crystal_* wrapper
+      #    functions. Must run after asyncify to avoid name collisions between
+      #    the helper's asyncify_* imports and the pass's generated definitions.
+      #
+      # 3. --translate-to-exnref: Convert legacy EH (try/catch) to new EH
+      #    format (try_table/exnref). Must run after asyncify.
+      #
+      # 4. --spill-pointers: Spill pointer-typed locals to C stack at every
+      #    call site for Boehm GC conservative stack scanning. Must run after
+      #    asyncify (which modifies function structure).
+      #
+      # 5. -Oz (release only): Size optimization pass.
+
+      # Step 1: Asyncify for fiber support
+      # - Remove _start from instrumentation (it serves as the asyncify boundary)
+      # - Mark crystal_asyncify_switch as an async import so callers get
+      #   save/restore instrumentation around calls to it
+      run_wasm_opt_pass(quoted,
+        "--asyncify" \
+        " --pass-arg=asyncify-removelist@_start" \
+        " --pass-arg=asyncify-imports@env.crystal_asyncify_switch",
+        "asyncify")
+
+      # Step 2: Merge asyncify helper module
+      # asyncify_helper.wasm provides crystal_* wrapper functions that call
+      # the asyncify_* functions created by the asyncify pass. wasm-merge
+      # resolves: main's crystal_* imports → helper's exports, and
+      # helper's asyncify_* imports → main's exports.
+      run_wasm_merge(output_filename)
+
+      # Step 3: Translate legacy EH to new EH format
+      run_wasm_opt_pass(quoted, "--translate-to-exnref", "translate-to-exnref")
+
+      # Step 4: Spill pointers for GC
+      # TODO: Re-enable after verifying compatibility with asyncify
+      # run_wasm_opt_pass(quoted, "--spill-pointers", "spill-pointers")
+
+      if optimize
+        # Step 5: Size optimization in release mode
+        run_wasm_opt_pass(quoted, "-Oz", "optimization")
+      end
+    end
+
+    private def run_wasm_merge(output_filename)
+      # Find asyncify_helper.wasm in CRYSTAL_PATH
+      helper_path = find_asyncify_helper
+      unless helper_path
+        raise CompilerError.new("asyncify_helper.wasm not found in CRYSTAL_PATH. " \
+                                "This file is required for WASM fiber support.", :FAILURE)
+      end
+
+      quoted_output = Process.quote_posix(output_filename)
+      quoted_helper = Process.quote_posix(helper_path)
+
+      # wasm-merge combines two modules:
+      #   - main module (named "crystal_main" so helper's imports resolve)
+      #   - helper module (named "env" so main's crystal_* imports resolve)
+      # Remaining unresolved imports stay as imports in the output.
+      cmd = "wasm-merge #{quoted_output} crystal_main #{quoted_helper} env" \
+            " -o #{quoted_output} --all-features"
+      print_command(cmd, nil) if verbose?
+      status = Process.run(cmd, shell: true, output: Process::Redirect::Inherit, error: Process::Redirect::Inherit)
+      unless status.success?
+        raise CompilerError.new("wasm-merge failed with exit status #{status}: #{cmd}", :FAILURE)
+      end
+    end
+
+    private def find_asyncify_helper : String?
+      crystal_path = ENV["CRYSTAL_PATH"]? || Crystal::Config.path
+      crystal_path.split(Process::PATH_DELIMITER, remove_empty: true).each do |path|
+        resolved = path.starts_with?('/') ? path : File.expand_path(path)
+        helper = File.join(resolved, "crystal", "asyncify_helper.wasm")
+        return helper if File.exists?(helper)
+      end
+      nil
+    end
+
+    private def run_wasm_opt_pass(quoted_filename, pass_flag, pass_name)
+      cmd = "wasm-opt #{quoted_filename} -o #{quoted_filename} #{pass_flag} --all-features"
+      print_command(cmd, nil) if verbose?
+      status = Process.run(cmd, shell: true, output: Process::Redirect::Inherit, error: Process::Redirect::Inherit)
+      unless status.success?
+        raise CompilerError.new("wasm-opt #{pass_name} pass failed with exit status #{status}: #{cmd}", :FAILURE)
+      end
+    end
+
+    private def linker_not_found(exc_class, linker_name)
+      verbose_info = "\nRun with `--verbose` to print the full linker command." unless verbose?
+      case exc_class
+      when File::AccessDeniedError
+        raise CompilerError.new("Could not execute linker: `#{linker_name}`: Permission denied#{verbose_info}", :FAILURE)
+      else
+        raise CompilerError.new("Could not execute linker: `#{linker_name}`: File not found#{verbose_info}", :FAILURE)
+      end
+    end
+
+    private def colorize(obj)
+      obj.colorize.toggle(@color)
+    end
+
+    # An LLVM::Module with information to compile it.
+    class CompilationUnit
+      getter compiler
+      getter name
+      getter original_name
+      getter llvm_mod
+      property? reused_previous_compilation = false
+      # True if this module was skipped entirely (no IR gen, no bitcode, no obj compile)
+      # because all contributing source files were unchanged from the previous compilation.
+      getter? skipped_via_module_cache : Bool
+      getter object_extension : String
+      @memory_buffer : LLVM::MemoryBuffer?
+      @object_name : String?
+      @bc_name : String?
+
+      def initialize(@compiler : Compiler, program : Program, @name : String,
+                     @llvm_mod : LLVM::Module, @output_dir : String, @bc_flags_changed : Bool,
+                     @skipped_via_module_cache : Bool = false)
+        @name = "_main" if @name == ""
+        @original_name = @name
+        @name = String.build do |str|
+          @name.each_char do |char|
+            case char
+            when 'a'..'z', '0'..'9', '_'
+              str << char
+            when 'A'..'Z'
+              # Because OSX has case insensitive filenames, try to avoid
+              # clash of 'a' and 'A' by using 'A-' for 'A'.
+              str << char << '-'
+            else
+              str << char.ord
+            end
+          end
+        end
+
+        if @name.size > 50
+          # 17 chars from name + 1 (dash) + 32 (md5) = 50
+          @name = "#{@name[0..16]}-#{::Crystal::Digest::MD5.hexdigest(@name)}"
+        end
+
+        @name = "#{@name}#{@compiler.optimization_mode.suffix}"
+        @object_extension = compiler.codegen_target.object_extension
+      end
+
+      def generate_bitcode : LLVM::MemoryBuffer?
+        return nil if @skipped_via_module_cache
+        @memory_buffer ||= llvm_mod.write_bitcode_to_memory_buffer
+      end
+
+      # To compile a file we first generate a `.bc` file and then create an
+      # object file from it. These `.bc` files are stored in the cache
+      # directory.
+      #
+      # On a next compilation of the same project, and if the compile flags
+      # didn't change (a combination of the target triple, mcpu and link flags,
+      # amongst others), we check if the new `.bc` file is exactly the same as
+      # the old one. In that case the `.o` file will also be the same, so we
+      # simply reuse the old one. Generating an `.o` file is what takes most
+      # time.
+      #
+      # However, instead of directly generating the final `.o` file from the
+      # `.bc` file, we generate it to a temporary name (`.o.tmp`) and then we
+      # rename that file to `.o`. We do this because the compiler could be
+      # interrupted while the `.o` file is being generated, leading to a
+      # corrupted file that later would cause compilation issues. Moving a file
+      # is an atomic operation so no corrupted `.o` file should be generated.
+      def compile(isolate_context = false)
+        # Phase 4: If all contributing source files are unchanged and a cached
+        # .o file exists, skip IR generation, bitcode, and compilation entirely.
+        if @skipped_via_module_cache
+          @reused_previous_compilation = true
+          return
+        end
+
+        if must_compile?
+          isolate_module_context if isolate_context
+          update_bitcode_cache
+          compile_to_object
+        else
+          @reused_previous_compilation = true
+        end
+        dump_llvm_ir
+      end
+
+      private def must_compile?
+        return true if compiler.no_cache?
+
+        memory_buffer = generate_bitcode
+
+        # generate_bitcode returns nil only when skipped_via_module_cache is true,
+        # in which case compile() returns early and never calls must_compile?.
+        # This check satisfies the type checker.
+        return true unless memory_buffer
+
+        return true unless compiler.emit_targets.none?
+        return true if @bc_flags_changed
+        return true unless File.exists?(bc_name)
+        return true unless File.exists?(object_name)
+
+        # If the user cancelled a previous compilation
+        # it might be that the .o file is empty
+        return true if File.size(object_name) == 0
+
+        memory_io = IO::Memory.new(memory_buffer.to_slice)
+
+        changed = File.open(bc_name) { |bc_file| !IO.same_content?(bc_file, memory_io) }
+
+        memory_buffer.dispose unless changed
+
+        changed
+      end
+
+      # Parse the previously generated bitcode into the LLVM module using a
+      # dedicated context, so we can safely optimize & compile the module in
+      # multiple threads (llvm contexts can't be shared across threads).
+      private def isolate_module_context
+        @llvm_mod = LLVM::Module.parse(@memory_buffer.not_nil!, LLVM::Context.new)
+      end
+
+      private def update_bitcode_cache
+        return unless memory_buffer = @memory_buffer
+
+        # Delete existing .o file. It cannot be used anymore.
+        File.delete?(object_name)
+        # Create the .bc file (for next compilations)
+        File.write(bc_name, memory_buffer.to_slice)
+        memory_buffer.dispose
+      end
+
+      private def compile_to_object
+        temporary_object_name = self.temporary_object_name
+        target_machine = compiler.create_target_machine
+        compiler.optimize llvm_mod, target_machine unless compiler.optimization_mode.o0?
+        target_machine.emit_obj_to_file llvm_mod, temporary_object_name
+        File.rename(temporary_object_name, object_name)
+      end
+
+      private def dump_llvm_ir
+        llvm_mod.print_to_file ll_name if compiler.dump_ll?
+      end
+
+      def emit(emit_targets : EmitTarget, output_filename)
+        if emit_targets.asm?
+          compiler.target_machine.emit_asm_to_file llvm_mod, "#{output_filename}.s"
+        end
+        if emit_targets.llvm_bc?
+          FileUtils.cp(bc_name, "#{output_filename}.bc")
+        end
+        if emit_targets.llvm_ir?
+          llvm_mod.print_to_file "#{output_filename}.ll"
+        end
+        if emit_targets.obj?
+          FileUtils.cp(object_name, output_filename + @object_extension)
+        end
+      end
+
+      def object_name
+        Crystal.relative_filename("#{@output_dir}/#{object_filename}")
+      end
+
+      def object_filename
+        @name + @object_extension
+      end
+
+      def temporary_object_name
+        Crystal.relative_filename("#{@output_dir}/#{object_filename}.tmp")
+      end
+
+      def bc_name
+        "#{@output_dir}/#{@name}.bc"
+      end
+
+      def bc_name_new
+        "#{@output_dir}/#{@name}.new.bc"
+      end
+
+      def ll_name
+        "#{@output_dir}/#{@name}.ll"
+      end
+    end
+  end
+end

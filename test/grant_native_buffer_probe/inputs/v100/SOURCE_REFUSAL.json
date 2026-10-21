@@ -1,0 +1,133 @@
+{
+  "accepted": false,
+  "accepted_target_cells": 0,
+  "actual_compiler_native_calls": 0,
+  "authored_cases_each_mode": 55,
+  "evidence": [
+    {
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_peer_v100/sensitivity-ordinary/SENSITIVITIES.json",
+      "sha256": "7185f656f766c6ef8ea8588c1063a1fe85ef5ee4dcc70dbd4a10ab371a67b6fe"
+    },
+    {
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_peer_v100/sensitivity-optimized/SENSITIVITIES.json",
+      "sha256": "7185f656f766c6ef8ea8588c1063a1fe85ef5ee4dcc70dbd4a10ab371a67b6fe"
+    },
+    {
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_peer_v100/probe_stage.py",
+      "sha256": "b4d361d662f3c10d2da6e123ccbf214797cf4b653ae5188859eb34e76300e2e5"
+    },
+    {
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_native_buffer_ownership_peer_v100/validation/COMMAND_RETURN.json",
+      "sha256": "c01338b1a2294c1458e7bbb6f8a9fe572efa94f8bdb9586eb333601aa9fa36b9"
+    }
+  ],
+  "findings_each_mode": 6,
+  "format": "atlas-native-buffer-independent-source-refusal-v100",
+  "frozen_author_rows_rehashed": 1219,
+  "guard_calls": 0,
+  "original_groups": [
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 6.289190791,
+      "elapsed_seconds": 0.00016812500000007446,
+      "group": 53425,
+      "initial_sample": {
+        "elapsed_seconds": 3.341700000003556e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 30.218479875,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.341700000003556e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.341700000003556e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 7.585348333000001,
+      "elapsed_seconds": 0.00025670799999977234,
+      "group": 53428,
+      "initial_sample": {
+        "elapsed_seconds": 7.366699999966642e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 31.2909395,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 7.366699999966642e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 7.366699999966642e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 8.774682166,
+      "elapsed_seconds": 0.00015325000000032674,
+      "group": 53472,
+      "initial_sample": {
+        "elapsed_seconds": 3.5500000000077137e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 32.586962208,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 3.5500000000077137e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 3.5500000000077137e-05,
+        "status": "absent"
+      }
+    },
+    {
+      "bounded_drain_exhausted": false,
+      "drain_deadline": 9.849121582999999,
+      "elapsed_seconds": 0.00011545800000067885,
+      "group": 53586,
+      "initial_sample": {
+        "elapsed_seconds": 2.4999999999941735e-05,
+        "status": "absent"
+      },
+      "maximum_drain_seconds": 5.0,
+      "original_command_deadline": 33.77597325,
+      "phase": "direct_child_returned",
+      "samples": [
+        {
+          "elapsed_seconds": 2.4999999999941735e-05,
+          "status": "absent"
+        }
+      ],
+      "scope": "original POSIX process group",
+      "status": "absent",
+      "terminal_sample": {
+        "elapsed_seconds": 2.4999999999941735e-05,
+        "status": "absent"
+      }
+    }
+  ],
+  "report_sha256": "95d04656604c2f6496499f1d6ff5a4cd4e5523ec0fa37b6813b1102240a28f23",
+  "required_target_cells": 144,
+  "source_packet_sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf"
+}

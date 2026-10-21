@@ -1,0 +1,372 @@
+{
+  "files": [
+    {
+      "bytes": 7940,
+      "mode": 420,
+      "path": "API_PREREQUISITES.json",
+      "sha256": "e137e03466d5ed56ef8fea2f76bfe1f4bc7db90f21aa6b96a73149aa173bf906"
+    },
+    {
+      "bytes": 1265,
+      "mode": 420,
+      "path": "BASE_INPUT_PINS.json",
+      "sha256": "9fa6664691acefc72d3a461a3ea225ee2889f9da633b59316e4bddb343d6d6c1"
+    },
+    {
+      "bytes": 8965,
+      "mode": 420,
+      "path": "buffer_probe.cr.txt",
+      "sha256": "fcedc0a3963c47ee28cba4f9afdc990e29f43a8f8baae7058fc4bd62786adc7e"
+    },
+    {
+      "bytes": 10301,
+      "mode": 420,
+      "path": "buffer_shim.c",
+      "sha256": "353055091d9b0dd64bc2c715052e62bcf798d53f26e8a12aa6945ca26adf77d9"
+    },
+    {
+      "bytes": 302,
+      "mode": 420,
+      "path": "inputs/COMMAND_READER_ORIGIN.json",
+      "sha256": "1b19c1ff51ff65009e263be1777916974c1b9a109d8c94765cc14f64c196f81e"
+    },
+    {
+      "bytes": 11798,
+      "mode": 420,
+      "path": "inputs/CRYSTAL_LICENSE",
+      "sha256": "d936c11961ab8e041bb54a0dbf6148810a5b9f0a1130a9fd8c557a2252a17bdf"
+    },
+    {
+      "bytes": 24225,
+      "mode": 420,
+      "path": "inputs/EVIDENCE_INDEX.json",
+      "sha256": "d2eb2e282d20c380ba5929de199a7f44c51c3392ea50043fb15f774990254d32"
+    },
+    {
+      "bytes": 6845,
+      "mode": 420,
+      "path": "inputs/OWNERSHIP.md",
+      "sha256": "8eed15ba691ef25c2d2111c549982e4e23c40bd40f7ce25d7ba1d1c44ae171d8"
+    },
+    {
+      "bytes": 2011,
+      "mode": 420,
+      "path": "inputs/READINESS_RECEIPT.json",
+      "sha256": "519113fa7332b5dc99188f58267d6441265d93bec89783325cd06abd91f51c71"
+    },
+    {
+      "bytes": 8602,
+      "mode": 420,
+      "path": "inputs/SOURCE_CORRESPONDENCE.json",
+      "sha256": "260cbebcfca5790d645b93922aef8efe775614e2e4a871ff7765f728ac92420b"
+    },
+    {
+      "bytes": 831,
+      "mode": 420,
+      "path": "inputs/UNADMITTED_NATIVE_POLICY.json",
+      "sha256": "7bffdfc9450462f6643cf25b9b10d70654b85970cbaa1ab2a133c96b69dc3fa2"
+    },
+    {
+      "bytes": 728,
+      "mode": 420,
+      "path": "inputs/UNEXECUTED_SOURCE_GATES.json",
+      "sha256": "dd0593f469626907249a0c582741e7c8631ad76dfd5022351c1921ce3209e872"
+    },
+    {
+      "bytes": 62540,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/array.cr",
+      "sha256": "92ccfd8c8418033c9a18dd62835b5d1ae2b9c8c09f7784c8b753ee7b9734706d"
+    },
+    {
+      "bytes": 30303,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/compiler/crystal/command.cr",
+      "sha256": "feb3414baaf4e92376066c22f20bdf126a7455f8f792e40380ca8a86d4535dad"
+    },
+    {
+      "bytes": 67428,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/compiler/crystal/compiler.cr",
+      "sha256": "ce028e3e19f7d8204ea5bf96ed7a1a0ca02efe18ae970db7e6be7d9de720d166"
+    },
+    {
+      "bytes": 18437,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/gc/boehm.cr",
+      "sha256": "526f1819cfc10f3a97a62da8c0dab11116c4e48bcc07c59903ee562a2f7ed307"
+    },
+    {
+      "bytes": 19209,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/json/serialization.cr",
+      "sha256": "7543b956cb92f5620aea1c36511f95cd79d732ec6c7d15fcb7a8014d2e6aa8d0"
+    },
+    {
+      "bytes": 156,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/llvm/lib_llvm/bit_reader.cr",
+      "sha256": "757af5fcfa904937e9bb44a134fc753c5d2fb71235319e55391299cd19ffc061"
+    },
+    {
+      "bytes": 346,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/llvm/lib_llvm/bit_writer.cr",
+      "sha256": "424d481f19adace43d4bc043d5e83a70c9c3ea170cf059b63b08afc338d394db"
+    },
+    {
+      "bytes": 24316,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/llvm/lib_llvm/core.cr",
+      "sha256": "cda6d0691f233b9bc0a80605125ee36b4258980f24f7716ceb089ebde03dbd9c"
+    },
+    {
+      "bytes": 186,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/llvm/lib_llvm/ir_reader.cr",
+      "sha256": "30598eca8d3c168a4c9a49daecd0ee019a361ac347ed38bddcc1bbd42b415e63"
+    },
+    {
+      "bytes": 38173,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/slice.cr",
+      "sha256": "2cf0556b1a1c6a2b78c7e9612b3466de3e660f809a337ce12f0adf0e1521c305"
+    },
+    {
+      "bytes": 180451,
+      "mode": 420,
+      "path": "inputs/crystal_api_source/string.cr",
+      "sha256": "7c7aceb5e4a6760715a0077728d15f5cb70212b71412ab4d610874115e3c532f"
+    },
+    {
+      "bytes": 1301,
+      "mode": 420,
+      "path": "inputs/llvm_primary/ADDITIONAL_HEADER_READBACK.json",
+      "sha256": "7c0722338b0778308e0a875ab73b90d29c6766fb74cb89288cad4a5bb80afa9f"
+    },
+    {
+      "bytes": 1390,
+      "mode": 420,
+      "path": "inputs/llvm_primary/TAG_OBJECT.json",
+      "sha256": "1ebcfed0e97c28d98eb36d6ece487e9b04be756702be1d4d0f734c9c0f4817ea"
+    },
+    {
+      "bytes": 361,
+      "mode": 420,
+      "path": "inputs/llvm_primary/TAG_REF.json",
+      "sha256": "f4c8d29027b8ee0ba248fc082dbbb71b6d4a55958783607b44c6f0cd82db5d49"
+    },
+    {
+      "bytes": 15141,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+    },
+    {
+      "bytes": 2753,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/include/llvm-c/Analysis.h",
+      "sha256": "b822af9c7ceb7efc92fa5a467e526c18e7a3fce427ec190d1eae906f85a22b50"
+    },
+    {
+      "bytes": 4446,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/include/llvm-c/BitReader.h",
+      "sha256": "2cf3d0d8edcb0f85dfaa2138ce92ebb1aff8f285b657e6e9dc4d792bdd8fe82c"
+    },
+    {
+      "bytes": 2441,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/include/llvm-c/BitWriter.h",
+      "sha256": "d51d5b87e3bb5e95d4f399f7c3cc6077e3fe7b88e7e8ab1cc36ea104d5fc494a"
+    },
+    {
+      "bytes": 169818,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/include/llvm-c/Core.h",
+      "sha256": "43fb6261c37a3be16405456731eb10ae3433f6571ef76556fe997d2822d3aca8"
+    },
+    {
+      "bytes": 1822,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/include/llvm-c/IRReader.h",
+      "sha256": "d9b2b3a017211c5993ed92fcb349e4fffddd076c6f94759b0b39084c66415c1a"
+    },
+    {
+      "bytes": 4849,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/lib/Bitcode/Reader/BitReader.cpp",
+      "sha256": "e43a53a6a37686ec8a3e45a1bd9dafce5a4062752568f8af3926ce1f41bd57af"
+    },
+    {
+      "bytes": 1476,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/lib/Bitcode/Writer/BitWriter.cpp",
+      "sha256": "ea7fc3d387988c11c62c13034bedc27c32c0c8fa4a59e4f0236f6659fa716b0c"
+    },
+    {
+      "bytes": 161689,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/lib/IR/Core.cpp",
+      "sha256": "7be081dc6fd2febf653de41594c42dd353514e07f48123cba5339c3142d01f00"
+    },
+    {
+      "bytes": 7929,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/lib/IR/LLVMContextImpl.cpp",
+      "sha256": "978fefee84b0e8c0040c668649ad3ba670968fcb6023baae51ec448b141b8789"
+    },
+    {
+      "bytes": 5074,
+      "mode": 420,
+      "path": "inputs/llvm_primary/llvm/lib/IRReader/IRReader.cpp",
+      "sha256": "d21aa9e758fc08ff40ba21c1f10e921399a9c9b2bfeff338b750766997752a31"
+    },
+    {
+      "bytes": 864,
+      "mode": 420,
+      "path": "inputs/memory_buffer.fixed.cr.txt",
+      "sha256": "8a22f15a736a19f67528f3c22872b9b006b1a1c5be9013496fa7695d578e8da5"
+    },
+    {
+      "bytes": 671,
+      "mode": 420,
+      "path": "inputs/memory_buffer.original.cr.txt",
+      "sha256": "78205f4cb4dbbb5c3639b89903234879449b61462165165b04376a8ce7fcaabc"
+    },
+    {
+      "bytes": 321893,
+      "mode": 420,
+      "path": "inputs/v100/FROZEN_FILES.json",
+      "sha256": "3c35f7835095b48286cf63f2a558e5b37884ed8d3f3e6da98f6d34cb4ebef877"
+    },
+    {
+      "bytes": 14940,
+      "mode": 420,
+      "path": "inputs/v100/INTEGRATION_PROPOSAL.json",
+      "sha256": "f0686710363d43ffd2857738b8d88014363c3bb56f70fe8406e727b4625d8006"
+    },
+    {
+      "bytes": 49408,
+      "mode": 420,
+      "path": "inputs/v100/PRESERVATION_RECEIPT.json",
+      "sha256": "0fcbda71856d2c203849e273d60ab9fa7a8c4669a3d22149148dd789816aa340"
+    },
+    {
+      "bytes": 12763,
+      "mode": 420,
+      "path": "inputs/v100/PROTOCOL.md",
+      "sha256": "6ad7f573f57651d4980672f8650cc362714a7e57eda3291b0e29dbff7d76003c"
+    },
+    {
+      "bytes": 3070,
+      "mode": 420,
+      "path": "inputs/v100/RECEIPT.json",
+      "sha256": "7933ad589e28448358a3459194e1f2876d25e7c052c4969445c985caa0bee1ea"
+    },
+    {
+      "bytes": 892,
+      "mode": 420,
+      "path": "inputs/v100/SENSITIVITIES.optimized.json",
+      "sha256": "7185f656f766c6ef8ea8588c1063a1fe85ef5ee4dcc70dbd4a10ab371a67b6fe"
+    },
+    {
+      "bytes": 892,
+      "mode": 420,
+      "path": "inputs/v100/SENSITIVITIES.ordinary.json",
+      "sha256": "7185f656f766c6ef8ea8588c1063a1fe85ef5ee4dcc70dbd4a10ab371a67b6fe"
+    },
+    {
+      "bytes": 8696,
+      "mode": 420,
+      "path": "inputs/v100/SOURCE_PINS.json",
+      "sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf"
+    },
+    {
+      "bytes": 4392,
+      "mode": 420,
+      "path": "inputs/v100/SOURCE_REFUSAL.json",
+      "sha256": "b838e7b31979fc3cac66b72cbebd03a4dcdec28d4beb729e9b9a7f4d681a05d4"
+    },
+    {
+      "bytes": 23293,
+      "mode": 420,
+      "path": "inputs/v100/SOURCE_TESTS.json",
+      "sha256": "82cf5145095382e7da75df53711530e14ea713bd080f681d1fcd8b21ff4ddb92"
+    },
+    {
+      "bytes": 7923,
+      "mode": 420,
+      "path": "inputs/v100/grant-installed-mac.proposed.yml",
+      "sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e"
+    },
+    {
+      "bytes": 2150,
+      "mode": 420,
+      "path": "inputs/v100/probe_stage.py",
+      "sha256": "b4d361d662f3c10d2da6e123ccbf214797cf4b653ae5188859eb34e76300e2e5"
+    },
+    {
+      "bytes": 29427,
+      "mode": 420,
+      "path": "inputs/v100/run_probe.py",
+      "sha256": "a010e509fcecec1c78a775c31c704edf29cfea373a7780354551d01397c35691"
+    },
+    {
+      "bytes": 6079,
+      "mode": 420,
+      "path": "inputs/v100/stage_probe.py",
+      "sha256": "1acbbed0927ea81a9604f51b5e2f0b9b68e885c1201a80bbaeb30fed03489475"
+    },
+    {
+      "bytes": 27027,
+      "mode": 420,
+      "path": "inputs/v100/test_probe.py",
+      "sha256": "086bc855ae8c6570a6a993f4491e6531a9aad9b8f46b83a7a3cf3e10568b455d"
+    },
+    {
+      "bytes": 2793,
+      "mode": 420,
+      "path": "inputs/v100/test_workflow.py",
+      "sha256": "60abb858e061fd70b62b1aca864295d6b49927444f044831eeb882a5d1af4a21"
+    },
+    {
+      "bytes": 41895,
+      "mode": 420,
+      "path": "run_probe.py",
+      "sha256": "95229613eb211ad0b82362401af66d0d84a6114efeb2a285e9fb3276432ba8e7"
+    },
+    {
+      "bytes": 11949,
+      "mode": 420,
+      "path": "stage_probe.py",
+      "sha256": "e80c1f057b3e6cbf71ed5dd4e5b3953e3e90859accdd64c651e932ff076b358d"
+    },
+    {
+      "bytes": 46525,
+      "mode": 420,
+      "path": "test_probe.py",
+      "sha256": "a0364de6ad0b6ea1cf3e43e6e7a5bfa4826881229cf7e22a1eef6b63cb249de1"
+    },
+    {
+      "bytes": 2927,
+      "mode": 420,
+      "path": "test_workflow.py",
+      "sha256": "4cd64fe92739d8e5dffe9dac0c328fe305e13465d98d27c23ac636beb1207554"
+    },
+    {
+      "bytes": 4295,
+      "mode": 420,
+      "path": "vendor/command_contract.py",
+      "sha256": "33418b91a8ed01e0d3b442781fb5c7ebdbfbb32927e5caecb9747251d9dd52c9"
+    },
+    {
+      "bytes": 11775,
+      "mode": 420,
+      "path": "vendor/public_evidence_rules.py",
+      "sha256": "eacac63dddddb829c9f4dad67c948b0b4a6386e0365ac910c801a5b6f58312ed"
+    }
+  ],
+  "format": "atlas-native-buffer-source-pins-v1",
+  "mission": "memory-budget-experiment"
+}

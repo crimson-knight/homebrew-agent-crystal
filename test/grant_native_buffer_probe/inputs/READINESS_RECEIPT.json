@@ -1,0 +1,36 @@
+{
+  "actual_local_compiler_native_container_browser_ssh_workload_jobs": 0,
+  "actual_measurements_accepted": false,
+  "actual_native_release_calls_executed": 0,
+  "actual_target_cells_accepted": 0,
+  "compiler_color": "UNEXECUTED",
+  "compiler_source_files": 30,
+  "evidence_index_sha256": "d2eb2e282d20c380ba5929de199a7f44c51c3392ea50043fb15f774990254d32",
+  "experiment_sha256": "95dcfe3e26498187d969047f99473accf40b7c067d1642d99f88146f9a8be29b",
+  "format": "atlas-compiler-attribution-diagnostic-readiness-v100",
+  "frozen_files_sha256": "d3c220f7070aa174addad0cb697464c4bf496ca5b9c813fe56cfbdefb0551f40",
+  "known_source_findings": [
+    "Explicit MemoryBuffer dispose bypasses native disposal site",
+    "Required-file parsing occurs inside semantic work",
+    "Selected30 source files agree with the retained Mini shared-toolchain metadata; local working Boehm overlay is excluded"
+  ],
+  "llvm_commit": "2078da43e25a4623cab2d0d60decddf709aaea28",
+  "llvm_primary_inputs": 8,
+  "local_authorities": 30,
+  "minimum_next_actual_gate": "Bounded actual C-shim/native wrapper disposal and borrowed/consumed ownership probe before full compiler rebuild",
+  "mission": "memory-budget-experiment",
+  "ownership_report_sha256": "8eed15ba691ef25c2d2111c549982e4e23c40bd40f7ce25d7ba1d1c44ae171d8",
+  "parent_ledger_sha256": "937f11eef096d65b68841ae649592687076fb2092b2c22260fa52a3735b10f59",
+  "report_sha256": "8310456f6fe051bd8c1eb808690a658f64f3b31beec8f7865db3453bf8e2408b",
+  "required_target_cells": 144,
+  "route_sources": 6,
+  "scope": "Source/evidence and finite next-experiment design; actual native/compiler/profiler execution pending",
+  "source_correspondence_sha256": "260cbebcfca5790d645b93922aef8efe775614e2e4a871ff7765f728ac92420b",
+  "source_design_rubric": "No Crystal/application code changed; all MAJOR implementation items n/a. Actual future API/type/format/lint/spec/GREEN proof remains required.",
+  "source_model_modes": 2,
+  "source_model_release_path_counts": [
+    0,
+    1,
+    0
+  ]
+}

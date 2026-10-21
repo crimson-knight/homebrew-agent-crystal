@@ -1,0 +1,10 @@
+{
+  "changes": "Only local standalone imports and need/digest dependencies",
+  "functions_preserved_exact": [
+    "finite",
+    "raw_streams",
+    "terminal"
+  ],
+  "path": "grant_dirty_transition_v102/proof_command.py",
+  "sha256": "2fcaa07f38324acf2d531231082b77492cdb3f6eabe77129a12f86cdbc738b7e"
+}

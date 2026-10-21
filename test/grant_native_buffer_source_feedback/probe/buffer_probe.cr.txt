@@ -1,0 +1,209 @@
+require "json"
+
+# The names below preserve the exact pinned MemoryBuffer call boundary.
+lib LibLLVM
+  alias MemoryBufferRef = Void*
+  fun create_memory_buffer_with_contents_of_file = atlas_create_file(path : UInt8*, result : MemoryBufferRef*, message : UInt8**) : Int32
+  fun get_buffer_start = atlas_buffer_start(buffer : MemoryBufferRef) : UInt8*
+  fun get_buffer_size = atlas_buffer_size(buffer : MemoryBufferRef) : LibC::SizeT
+  fun dispose_memory_buffer = atlas_dispose(buffer : MemoryBufferRef) : Void
+end
+
+lib LibAtlasBuffer
+  fun initialize = atlas_initialize(path : UInt8*) : Int32
+  fun error = atlas_error : UInt8*
+  fun image = atlas_image : UInt8*
+  fun parse_error = atlas_parse_error : UInt8*
+  fun copy = atlas_copy(size : UInt64) : Void*
+  fun ir_copy = atlas_ir_copy(valid : Int32) : Void*
+  fun bitcode_copy = atlas_bitcode_copy : Void*
+  fun consume_ir = atlas_consume_ir(buffer : Void*) : Int32
+  fun borrow_bitcode = atlas_borrow_bitcode(buffer : Void*) : Int32
+  fun verify_answer = atlas_verify_answer : Int32
+  fun close_module = atlas_close_module : Void
+  fun message_dispose = atlas_message_dispose(message : UInt8*) : Void
+  fun cleanup = atlas_cleanup : Void
+  fun counter = atlas_counter(key : UInt32) : UInt64
+end
+
+module LLVM
+  def self.string_and_dispose(message : UInt8*) : String
+    result = String.new(message)
+    LibAtlasBuffer.message_dispose(message)
+    result
+  end
+end
+
+require "./memory_buffer"
+
+module AtlasBuffer
+  struct Snapshot
+    include JSON::Serializable
+    getter label : String
+    @[JSON::Field(key: "counters")]
+    getter list_of_counters : Array(UInt64)
+    getter current_rss_bytes : UInt64?
+    getter self_peak_rss_bytes : UInt64?
+    getter physical_footprint_bytes : UInt64?
+    getter monotonic_ns : UInt64
+    getter user_cpu_ns : UInt64
+    getter system_cpu_ns : UInt64
+
+    def initialize(@label : String, observe_memory : Bool)
+      @list_of_counters = Array(UInt64).new(20) { |index| LibAtlasBuffer.counter(index.to_u32) }
+      @monotonic_ns = LibAtlasBuffer.counter(23_u32)
+      @user_cpu_ns = LibAtlasBuffer.counter(24_u32)
+      @system_cpu_ns = LibAtlasBuffer.counter(25_u32)
+      @current_rss_bytes = observe_memory ? LibAtlasBuffer.counter(20_u32) : nil
+      @self_peak_rss_bytes = observe_memory ? LibAtlasBuffer.counter(21_u32) : nil
+      @physical_footprint_bytes = observe_memory ? LibAtlasBuffer.counter(22_u32) : nil
+    end
+  end
+
+  struct Result
+    include JSON::Serializable
+    getter format : String = "atlas-native-buffer-probe-v1"
+    getter arm : String
+    getter mode : String
+    getter loaded_llvm_image : String
+    @[JSON::Field(key: "snapshots")]
+    getter list_of_snapshots : Array(Snapshot)
+    getter? gc_finalizer_observed : Bool
+    getter finalizer_rounds : Int32
+    @[JSON::Field(key: "native_refusal_messages")]
+    getter list_of_native_refusal_messages : Array(String)
+    getter? consumed_native_destructor_observed : Bool = false
+    getter llvm_answer_behavior : String = "Independent parsed module verifies and retains ret i32 42"
+
+    def initialize(@arm : String, @mode : String, @list_of_snapshots : Array(Snapshot),
+                   @gc_finalizer_observed : Bool, @finalizer_rounds : Int32,
+                   @list_of_native_refusal_messages : Array(String))
+      @loaded_llvm_image = String.new(LibAtlasBuffer.image)
+    end
+  end
+
+  # The helper's frame retires before the separately labeled bounded GC control.
+  @[NoInline]
+  def self.allocate_for_gc : Nil
+    LLVM::MemoryBuffer.new(LibAtlasBuffer.copy(1_048_576_u64))
+    nil
+  end
+
+  def self.require_result(condition : Bool, message : String) : Nil
+    raise message unless condition
+  end
+
+  def self.perform(arguments : Array(String)) : Result
+    require_result(arguments.size == 5, "Expected LLVM path, arm, mode, valid file, and missing file")
+    library, arm, mode, file_path, missing_path = arguments
+    require_result(LibAtlasBuffer.initialize(library) == 1, String.new(LibAtlasBuffer.error))
+    observe_memory = mode == "memory"
+    require_result(observe_memory || mode == "counts", "Expected counts or memory mode")
+    list_of_snapshots = [] of Snapshot
+    list_of_buffers = [] of LLVM::MemoryBuffer
+    list_of_refusal_messages = [] of String
+    list_of_snapshots << Snapshot.new("start", observe_memory)
+    64.times do
+      buffer = LLVM::MemoryBuffer.new(LibAtlasBuffer.copy(1_048_576_u64))
+      slice = buffer.to_slice
+      require_result(slice.size == 1_048_576 && slice[0] == 81 && slice[-1] == 81, "Known native copy bytes required")
+      list_of_buffers << buffer
+    end
+    list_of_snapshots << Snapshot.new("allocated64", observe_memory)
+    list_of_buffers.each do |buffer|
+      buffer.dispose
+      buffer.dispose
+      buffer.finalize
+    end
+    list_of_snapshots << Snapshot.new("explicit_dispose64", observe_memory)
+
+    file_buffer = LLVM::MemoryBuffer.from_file(file_path)
+    list_of_buffers << file_buffer
+    require_result(file_buffer.to_slice.size == 262_144, "Exact native file buffer required")
+    file_buffer.dispose
+    file_buffer.finalize
+    missing_refused = false
+    begin
+      LLVM::MemoryBuffer.from_file(missing_path)
+    rescue error : Exception
+      missing_refused = !error.message.to_s.empty?
+      list_of_refusal_messages << error.message.to_s
+    end
+    require_result(missing_refused, "Missing-file native error required")
+
+    direct_finalizer = LLVM::MemoryBuffer.new(LibAtlasBuffer.copy(32_u64))
+    list_of_buffers << direct_finalizer
+    direct_finalizer.finalize
+    direct_finalizer.finalize
+    direct_finalizer.dispose
+    list_of_snapshots << Snapshot.new("manual_finalizer_twice", observe_memory)
+
+    bitcode = LLVM::MemoryBuffer.new(LibAtlasBuffer.bitcode_copy)
+    list_of_buffers << bitcode
+    require_result(LibAtlasBuffer.borrow_bitcode(bitcode.to_unsafe) == 1, "Valid eager borrowed bitcode required")
+    bitcode.dispose
+    require_result(LibAtlasBuffer.verify_answer == 1, "Module use after caller buffer disposal required")
+    LibAtlasBuffer.close_module
+    bad_bitcode = LLVM::MemoryBuffer.new(LibAtlasBuffer.copy(32_u64))
+    list_of_buffers << bad_bitcode
+    require_result(LibAtlasBuffer.borrow_bitcode(bad_bitcode.to_unsafe) == 0, "Invalid borrowed bitcode refusal required")
+    list_of_refusal_messages << String.new(LibAtlasBuffer.parse_error)
+    bad_bitcode.dispose
+    LibAtlasBuffer.close_module
+    list_of_snapshots << Snapshot.new("borrowed_bitcode", observe_memory)
+
+    [1, 0].each do |valid|
+      ir_buffer = LLVM::MemoryBuffer.new(LibAtlasBuffer.ir_copy(valid))
+      list_of_buffers << ir_buffer
+      {% if flag?(:atlas_fixed_buffer) %}
+        transferred_pointer = ir_buffer.release_ownership
+      {% else %}
+        transferred_pointer = ir_buffer.to_unsafe
+      {% end %}
+      require_result(LibAtlasBuffer.consume_ir(transferred_pointer) == valid, "Consuming IR result required")
+      list_of_refusal_messages << String.new(LibAtlasBuffer.parse_error) if valid == 0
+      require_result(LibAtlasBuffer.verify_answer == 1, "Useful valid IR module required") if valid == 1
+      ir_buffer.finalize
+      ir_buffer.dispose
+      LibAtlasBuffer.close_module
+    end
+    list_of_snapshots << Snapshot.new("consuming_ir", observe_memory)
+
+    omitted_buffer = LLVM::MemoryBuffer.new(LibAtlasBuffer.copy(1_048_576_u64))
+    list_of_buffers << omitted_buffer
+    list_of_snapshots << Snapshot.new("deliberate_omission", observe_memory)
+
+    before_gc = LibAtlasBuffer.counter(7_u32)
+    allocate_for_gc
+    rounds = 0
+    while rounds < 4 && LibAtlasBuffer.counter(7_u32) == before_gc
+      GC.collect
+      rounds += 1
+    end
+    gc_observed = LibAtlasBuffer.counter(7_u32) == before_gc + 1
+    list_of_snapshots << Snapshot.new("natural_gc_finalizer", observe_memory)
+    # Keep wrapper roots observable until after each deterministic control.
+    require_result(list_of_buffers.size == 71, "Exact rooted wrapper roster required")
+    # Retire the omitted wrapper's guard before the independent native cleanup.
+    # This also keeps later JSON-allocation GC from revisiting a freed handle.
+    list_of_buffers.each do |buffer|
+      buffer.dispose
+    end
+    LibAtlasBuffer.cleanup
+    list_of_snapshots << Snapshot.new("native_cleanup", observe_memory)
+    require_result(LibAtlasBuffer.counter(2_u32) == 0 && LibAtlasBuffer.counter(9_u32) == 0, "Complete native caller return required")
+    Result.new(arm, mode, list_of_snapshots, gc_observed, rounds, list_of_refusal_messages)
+  end
+end
+
+# This executable perimeter emits one typed result. Runtime errors retain stderr.
+native_result = AtlasBuffer.perform(ARGV)
+serialized_result = native_result.to_json
+last_snapshot = native_result.list_of_snapshots[-1]
+20.times do |index|
+  AtlasBuffer.require_result(
+    LibAtlasBuffer.counter(index.to_u32) == last_snapshot.list_of_counters[index],
+    "Native ownership counters changed during result serialization"
+  )
+end
+STDOUT.puts(serialized_result)

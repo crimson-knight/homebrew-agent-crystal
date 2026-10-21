@@ -1,22 +1,40 @@
-name: Grant installed Mac causal diagnostic
+name: Grant native provider observation and reviewed buffer proof
 
 on:
-  push:
-    branches: [feature/grant-installed-memory-diagnostic]
   workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [observe, resume]
+        default: observe
+        required: true
+      decision_url:
+        description: Immutable public reviewer decision URL for resume
+        type: string
+        required: false
+      decision_sha256:
+        description: Independently selected exact reviewer decision SHA-256
+        type: string
+        required: false
 
-permissions: {}
+permissions:
+  actions: read
 
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
-  ATLAS_GRANT_PACKET_SHA256: 9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09
+  ATLAS_PROVIDER_PACKET_SHA256: 81823332a17911e16169d784da046ff4c9e5755aee4bb628724778cc5bc55693
+  ATLAS_PROVIDER_MODE: ${{ inputs.mode }}
+  ATLAS_PROVIDER_DECISION_URL: ${{ inputs.decision_url }}
+  ATLAS_PROVIDER_DECISION_SHA256: ${{ inputs.decision_sha256 }}
+  ATLAS_GRANT_TRANSFER_SHA256: 439df1016cdfdfa237521eccf1f47f9fc72827a4990c3c35b2ec4d8371e4cd92
+  ATLAS_GRANT_PACKET_SHA256: e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e
 
 jobs:
-  grant-installed-mac:
-    name: One rich10 causal triplet
+  grant-dirty-transition-mac:
+    name: Exact native inputs then optional reviewed ownership proof
     runs-on: macos-26
-    timeout-minutes: 160
+    timeout-minutes: 148
     steps:
       - name: Check out reviewed tap source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -26,18 +44,229 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
 
-      - name: Check source-only installer and SDK controls
+      - name: Retain real pending-provider negative control
+        timeout-minutes: 1
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              pins = root / filename
+              if hashlib.sha256(pins.read_bytes()).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact externally reviewed manifest differs")
+              for row in json.loads(pins.read_bytes())["files"]:
+                  path = root / row["path"]
+                  if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs: " + row["path"])
+          source = root / "preflight_transferred_tools.py"
+          sys.argv = [str(source), "--proof-tools", str(root / "PROOF_TOOLS_PENDING.json"), "--proof-tools-sha256", "7dc906cffee33465969acc8c00b6c65d5339cebe0506be5311831624a89e5893"]
+          try:
+              runpy.run_path(str(source), run_name="__main__")
+          except SystemExit as error:
+              if type(error.code) is not int or error.code != 2:
+                  raise
+          else:
+              raise SystemExit("Pending proof registry unexpectedly admitted")
+          PYTHON
+
+      - name: Allocate fresh private finite tool transfer
+        id: transfer_start
+        timeout-minutes: 1
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'proof_tool_transfer.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in ['initialize', '--root', '$RUNNER_TEMP', '--transfer-sha256', '$ATLAS_GRANT_TRANSFER_SHA256']]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Transfer the exact independently reviewed preparation artifact
+        id: tool_download
+        timeout-minutes: 2
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: '12310618101'
+          repository: crimson-knight/homebrew-agent-crystal
+          run-id: '39518892906'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ steps.transfer_start.outputs.workspace }}/download
+
+      - name: Verify all37 artifact members and canonical tool source identities
+        id: tool_transfer
+        timeout-minutes: 1
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+          TRANSFER_CLOCK_SHA256: ${{ steps.transfer_start.outputs.clock_sha256 }}
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'proof_tool_transfer.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in ['transfer', '--root', '$TRANSFER_WORKSPACE', '--clock-sha256', '$TRANSFER_CLOCK_SHA256', '--transfer-sha256', '$ATLAS_GRANT_TRANSFER_SHA256']]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Exercise all original and installed provider source controls
         timeout-minutes: 3
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
           ruby test/install_test.rb
           python3 -m unittest discover -s test -p 'test_sdk_*.py' -v
-          python3 -I -S -B test/grant_assignment_cost/test_assignment_cost.py
-          python3 -I -S -B test/grant_assignment_cost/test_same_job_policy.py
-          python3 -I -S -B test/grant_assignment_cost/test_causal_only.py
-          python3 -I -S -B test/grant_assignment_cost/test_timing_profile.py
-          python3 -O -I -S -B test/grant_assignment_cost/test_timing_profile.py
-          python3 -I -S -B test/grant_assignment_cost/test_workflow_layout.py
-          python3 -O -I -S -B test/grant_assignment_cost/test_workflow_layout.py
+          python3 -I -S -B test/grant_dirty_transition/test_assignment_cost.py
+          python3 -I -S -B test/grant_dirty_transition/test_same_job_policy.py
+          python3 -I -S -B test/grant_dirty_transition/test_causal_only.py
+          python3 -I -S -B test/grant_dirty_transition/test_timing_profile.py
+          python3 -O -I -S -B test/grant_dirty_transition/test_timing_profile.py
+          python3 -I -S -B test/grant_dirty_transition/test_workflow_layout.py
+          python3 -O -I -S -B test/grant_dirty_transition/test_workflow_layout.py
+          python3 -I -S -B test/grant_dirty_transition/test_dirty_transition.py
+          python3 -O -I -S -B test/grant_dirty_transition/test_dirty_transition.py
+          python3 -I -S -B test/grant_dirty_transition/test_dirty_prerequisites.py
+          python3 -O -I -S -B test/grant_dirty_transition/test_dirty_prerequisites.py
+
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'test_tool_transfer.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in ['--artifact-directory', '$TRANSFER_WORKSPACE/download']]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+          python3 -O - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'test_tool_transfer.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in ['--artifact-directory', '$TRANSFER_WORKSPACE/download']]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'test_native_tool_roots.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in []]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+          python3 -O - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'test_native_tool_roots.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in []]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'controls', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "unused-controls-output")]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+          python3 -O -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'controls', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "unused-controls-output")]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
 
       - name: Install the ordinary formula through the installer
         id: ordinary_install
@@ -53,7 +282,7 @@ jobs:
         run: |
           python3 - <<'PYTHON'
           import hashlib, json, os, pathlib, runpy, sys
-          root = pathlib.Path("test/grant_assignment_cost").resolve()
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
           pins = root / "SOURCE_PINS.json"
           expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
           if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
@@ -69,69 +298,266 @@ jobs:
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Run one rich10 original candidate restored causal triplet
-        id: grant
-        timeout-minutes: 82
+      - name: Observe exact same-job native inputs before analysis-tool execution
+        id: tool_admission
+        timeout-minutes: 3
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
           python3 - <<'PYTHON'
-          import hashlib, json, os, pathlib, runpy, sys
-          root = pathlib.Path("test/grant_assignment_cost").resolve()
-          pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
-          if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Grant packet manifest differs")
-          for row in json.loads(pins.read_bytes())["files"]:
-              path = root / row["path"]
-              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Grant packet source differs: " + row["path"])
-          source = root / "run_causal_only.py"
-          sys.argv = [str(source), "--driver", str(pathlib.Path("test/sdk_install_qualification.py").resolve()),
-              "--sdk-evidence", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-sdk-readiness"),
-              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest(),
-              "--time-sha256", hashlib.sha256(pathlib.Path("/usr/bin/time").read_bytes()).hexdigest(),
-              "--timing-true-sha256", hashlib.sha256(pathlib.Path("/usr/bin/true").read_bytes()).hexdigest(),
-              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal")]
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'proof_tool_transfer.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in ['observe', '--root', '$TRANSFER_WORKSPACE', '--sdk-evidence', '$RUNNER_TEMP/grant-sdk-readiness', '--transfer-sha256', '$ATLAS_GRANT_TRANSFER_SHA256']]]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Snapshot the explicit result artifact roster
-        id: result_stage
-        if: ${{ always() && steps.grant.outcome != 'skipped' }}
+      - name: Observe exact CC LLVM header linker and native inputs
+        id: provider
+        timeout-minutes: 6
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'observe', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "native-provider-observation")]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Fetch independently pinned immutable reviewer decision
+        id: review
+        if: ${{ inputs.mode == 'resume' }}
+        timeout-minutes: 15
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'fetch', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "native-review-decision"), "--decision-url", os.environ["ATLAS_PROVIDER_DECISION_URL"], "--decision-sha256", os.environ["ATLAS_PROVIDER_DECISION_SHA256"]]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Materialize current same-job policies from reviewed stable inputs
+        id: policies
+        if: ${{ inputs.mode == 'resume' }}
         timeout-minutes: 2
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
         run: |
-          python3 - <<'PYTHON'
-          import hashlib, json, os, pathlib, runpy, sys
-          root = pathlib.Path("test/grant_assignment_cost").resolve()
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
           pins = root / "SOURCE_PINS.json"
-          expected = os.environ["ATLAS_GRANT_PACKET_SHA256"]
-          if hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
-              raise SystemExit("Grant packet manifest differs")
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
           for row in json.loads(pins.read_bytes())["files"]:
               path = root / row["path"]
-              if path.is_symlink() or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
-                  raise SystemExit("Grant packet source differs: " + row["path"])
-          source = root / "stage_causal_result_artifact.py"
-          sys.argv = [str(source), "--source", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-causal"),
-              "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "grant-result-artifact")]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'materialize', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          observation = temporary / "native-provider-observation"
+          argv += ["--output", str(temporary / "native-provider-policies"), "--observation", str(observation),
+              "--observation-sha256", hashlib.sha256((observation / "OBSERVATION.json").read_bytes()).hexdigest(),
+              "--decision", str(temporary / "native-review-decision/DECISION.json"), "--decision-sha256", os.environ["ATLAS_PROVIDER_DECISION_SHA256"]]
+          sys.argv = argv
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
-      - name: Preserve original SDK and same-job readiness evidence
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
-        with:
-          name: grant-ordinary-mac-sdk-readiness
-          path: ${{ runner.temp }}/grant-sdk-readiness
-          if-no-files-found: warn
-          retention-days: 30
-          include-hidden-files: false
+      - name: Prove all actual-project APIs and Crystal source feedback
+        id: feedback
+        if: ${{ inputs.mode == 'resume' }}
+        timeout-minutes: 30
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'feedback', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "native-buffer-source-feedback"), "--policies", str(temporary / "native-provider-policies")]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
 
-      - name: Preserve diagnostic results and complete raw command output
-        if: ${{ always() && steps.grant.outcome != 'skipped' && steps.result_stage.outcome == 'success' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+      - name: Execute exact native original fixed restored ownership proof
+        id: probe
+        if: ${{ inputs.mode == 'resume' }}
+        timeout-minutes: 15
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'probe', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "native-buffer-probe"), "--policies", str(temporary / "native-provider-policies"), "--feedback-result", str(temporary / "native-buffer-source-feedback")]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Stage finite positive provider and proof evidence
+        id: stage
+        if: ${{ always() && steps.provider.outcome != 'skipped' }}
+        timeout-minutes: 2
+        env:
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'bundle', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "native-provider-public"), "--source", str(temporary / "native-provider-observation"),
+              "--policies", str(temporary / "native-provider-policies"), "--feedback-result", str(temporary / "native-buffer-source-feedback"), "--probe-result", str(temporary / "native-buffer-probe")]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Retire transferred tools after verified consumer return
+        id: cleanup
+        if: ${{ always() && steps.transfer_start.outcome == 'success' }}
+        timeout-minutes: 1
+        env:
+          FEEDBACK_ATTEMPTED: ${{ steps.feedback.outcome != 'skipped' }}
+          PROBE_ATTEMPTED: ${{ steps.probe.outcome != 'skipped' }}
+          TRANSFER_WORKSPACE: ${{ steps.transfer_start.outputs.workspace }}
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_native_provider").resolve()
+          pins = root / "SOURCE_PINS.json"
+          expected = os.environ["ATLAS_PROVIDER_PACKET_SHA256"]
+          if pins.is_symlink() or hashlib.sha256(pins.read_bytes()).hexdigest() != expected:
+              raise SystemExit("Exact provider source manifest before imports required")
+          for row in json.loads(pins.read_bytes())["files"]:
+              path = root / row["path"]
+              if not stat.S_ISREG(path.lstat().st_mode) or len(path.read_bytes()) != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                  raise SystemExit("Exact provider source before imports required")
+          repo = pathlib.Path.cwd().resolve()
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          source = root / "launch.py"
+          argv = [str(source), 'cleanup', "--repository", str(repo), "--sdk-evidence", str(temporary / "grant-sdk-readiness"),
+              "--transfer-packet", str(repo / "test/grant_dirty_transition"), "--tool-workspace", os.environ["TRANSFER_WORKSPACE"],
+              "--probe-packet", str(repo / "test/grant_native_buffer_probe"), "--feedback-packet", str(repo / "test/grant_native_buffer_source_feedback"),
+              "--packet-sha256", expected, "--python-sha256", hashlib.sha256(pathlib.Path(sys.executable).resolve().read_bytes()).hexdigest()]
+          argv += ["--output", str(temporary / "unused-cleanup-output"), "--source", str(temporary / "native-provider-public"), "--feedback-result", str(temporary / "native-buffer-source-feedback"), "--probe-result", str(temporary / "native-buffer-probe")]
+          if os.environ.get("FEEDBACK_ATTEMPTED") == "true": argv += ["--feedback-attempted"]
+          if os.environ.get("PROBE_ATTEMPTED") == "true": argv += ["--probe-attempted"]
+          sys.argv = argv
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+
+      - name: Preserve exact selected provider and proof evidence
+        if: ${{ always() && steps.stage.outcome == 'success' }}
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: grant-mac-rich10-causal-only-diagnostic
-          path: ${{ runner.temp }}/grant-result-artifact
+          name: grant-native-provider-observation-and-proof
+          path: ${{ runner.temp }}/native-provider-public
+          include-hidden-files: false
           if-no-files-found: error
           retention-days: 30
+
+      - name: Preserve exact same-job SDK evidence
+        if: ${{ always() && steps.sdk.outcome != 'skipped' }}
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: grant-native-provider-sdk
+          path: ${{ runner.temp }}/grant-sdk-readiness
           include-hidden-files: false
+          if-no-files-found: error
+          retention-days: 30

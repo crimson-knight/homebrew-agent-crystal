@@ -1,0 +1,40 @@
+{
+  "base_commit": "6a825b91ccbefd1343bb14bc33afbb6f96dabcfc",
+  "base_files": [
+    {
+      "bytes": 28734,
+      "path": "test/sdk_install_qualification.py",
+      "sha256": "dfa1b22d9d2a534d70ed4c22494cf78e107d0ae40acae45b9f72a8970789a797"
+    },
+    {
+      "bytes": 27387,
+      "path": "test/sdk_source_lock.json",
+      "sha256": "eeb10f483941f761898c86e0869c69a948d5d83136a7f3d2b1231a37bfa6a1b4"
+    },
+    {
+      "bytes": 13961,
+      "path": "test/grant_assignment_cost/same_job_policy.py",
+      "sha256": "9148b3472b7cb9a2a29bbfdd4bf85116b520933a1cd5289d725977fdbdac9f97"
+    },
+    {
+      "bytes": 3134,
+      "path": "test/grant_assignment_cost/qualify_same_job_sdk.py",
+      "sha256": "57b07ac0835f14b5acbce39e43d9aea88fdf709dd7f057e6999d1e20efd48a39"
+    },
+    {
+      "bytes": 37806,
+      "path": "test/grant_assignment_cost/SOURCE_PINS.json",
+      "sha256": "9dca430312103538460af4176fceef93f7744ea1e32572474f36ef73bbc25a09"
+    },
+    {
+      "bytes": 5909,
+      "path": "Formula/agent-crystal.rb",
+      "sha256": "dfb16338b328960bd0e822c2d98eac8b7774d1303e972a5dba09ba1ddf9ab7df"
+    },
+    {
+      "bytes": 3922,
+      "path": "install.sh",
+      "sha256": "970e0e1c0d72cd9c3041220662d65d391edcac42eed7acb7849a7704817c9dcb"
+    }
+  ]
+}

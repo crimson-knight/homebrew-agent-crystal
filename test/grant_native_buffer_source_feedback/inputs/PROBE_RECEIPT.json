@@ -1,0 +1,94 @@
+{
+  "actual_API_formatter_lint_specs": "PENDING_HOSTED_SOURCE_FEEDBACK",
+  "actual_C_and_Crystal_compilation": "UNEXECUTED",
+  "actual_compiler_native_container_browser_ssh_workload_jobs": 0,
+  "actual_target_cells_accepted": 0,
+  "all215_base_source_rows_preserved": true,
+  "all_seven_original_base_dependencies_preserved": true,
+  "canonical_lesson_id": 20261021013354,
+  "changed_missing_workflow_refusals": 6,
+  "components": [
+    {
+      "bytes": 23293,
+      "mode": 420,
+      "path": "SOURCE_TESTS.json",
+      "sha256": "82cf5145095382e7da75df53711530e14ea713bd080f681d1fcd8b21ff4ddb92"
+    },
+    {
+      "bytes": 49408,
+      "mode": 420,
+      "path": "PRESERVATION_RECEIPT.json",
+      "sha256": "0fcbda71856d2c203849e273d60ab9fa7a8c4669a3d22149148dd789816aa340"
+    },
+    {
+      "bytes": 1075,
+      "mode": 420,
+      "path": "INPUT_AUTHORITIES.json",
+      "sha256": "7a926f34a10b760d201196457fa547f202b75a458805c595564ff6a623fa3c8b"
+    },
+    {
+      "bytes": 14940,
+      "mode": 420,
+      "path": "INTEGRATION_PROPOSAL.json",
+      "sha256": "f0686710363d43ffd2857738b8d88014363c3bb56f70fe8406e727b4625d8006"
+    },
+    {
+      "bytes": 12763,
+      "mode": 420,
+      "path": "PROTOCOL.md",
+      "sha256": "6ad7f573f57651d4980672f8650cc362714a7e57eda3291b0e29dbff7d76003c"
+    },
+    {
+      "bytes": 2928,
+      "mode": 420,
+      "path": "RUBRIC.md",
+      "sha256": "faf71b57cbae217f770f07cff31ed55f00171c4bcee3c92541ca2020dd357953"
+    },
+    {
+      "bytes": 4817,
+      "mode": 420,
+      "path": "WORKFLOW_STEPS.yml",
+      "sha256": "d04b6b4a6def34a5e00a25e51c90d8059c656efd3626fc8af73d6e5a338eee14"
+    },
+    {
+      "bytes": 7923,
+      "mode": 420,
+      "path": "grant-installed-mac.proposed.yml",
+      "sha256": "7bed7d3e5c41b2a7618a899e92c09f6c191b7b4005d00e55a03c43d5dcfe7e1e"
+    },
+    {
+      "bytes": 8696,
+      "mode": 420,
+      "path": "source/SOURCE_PINS.json",
+      "sha256": "b870bfa171405927244d58b2ff676617c76de1f23f355bf9c86fd2a2a8b1b0cf"
+    }
+  ],
+  "external_guard_calls": 0,
+  "format": "atlas-native-buffer-preparation-receipt-v1",
+  "guarded_unit_case_executions": 220,
+  "independent_source_acceptance": false,
+  "mission": "memory-budget-experiment",
+  "native_microprobe": {
+    "actual_native_API_calls": 0,
+    "actual_native_disposal_or_RSS_effect_accepted": false,
+    "actual_observed_counts": null,
+    "commands": 13,
+    "complete_seconds": 900,
+    "consumed_native_destructor_observed": false,
+    "expected_disposer_counts_at64MiB_checkpoint": [
+      0,
+      64,
+      0
+    ],
+    "native_buffer_allocations_per_run_expected": 73,
+    "native_disposer_entries_and_returns_per_run_expected": 70
+  },
+  "ordinary_optimized_layout_cohorts": 4,
+  "original_source_fixture_groups_absent": 8,
+  "parent_dispatch_admission": false,
+  "required_target_cells": 144,
+  "source_publication_confidentiality_scan_passed": true,
+  "source_rows": 45,
+  "status": "Frozen source proposal with guarded fixtures; independent review and actual hosted admission pending",
+  "workflow_source_executions": 4
+}

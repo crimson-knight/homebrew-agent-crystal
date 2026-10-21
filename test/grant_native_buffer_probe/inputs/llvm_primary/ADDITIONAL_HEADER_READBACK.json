@@ -1,0 +1,29 @@
+{
+  "headers": [
+    {
+      "bytes": 169818,
+      "path": "llvm/include/llvm-c/Core.h",
+      "sha256": "43fb6261c37a3be16405456731eb10ae3433f6571ef76556fe997d2822d3aca8",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/include/llvm-c/Core.h"
+    },
+    {
+      "bytes": 2753,
+      "path": "llvm/include/llvm-c/Analysis.h",
+      "sha256": "b822af9c7ceb7efc92fa5a467e526c18e7a3fce427ec190d1eae906f85a22b50",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/include/llvm-c/Analysis.h"
+    },
+    {
+      "bytes": 4446,
+      "path": "llvm/include/llvm-c/BitReader.h",
+      "sha256": "2cf3d0d8edcb0f85dfaa2138ce92ebb1aff8f285b657e6e9dc4d792bdd8fe82c",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/include/llvm-c/BitReader.h"
+    },
+    {
+      "bytes": 2441,
+      "path": "llvm/include/llvm-c/BitWriter.h",
+      "sha256": "d51d5b87e3bb5e95d4f399f7c3cc6077e3fe7b88e7e8ab1cc36ea104d5fc494a",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/2078da43e25a4623cab2d0d60decddf709aaea28/llvm/include/llvm-c/BitWriter.h"
+    }
+  ],
+  "llvm_commit": "2078da43e25a4623cab2d0d60decddf709aaea28"
+}
