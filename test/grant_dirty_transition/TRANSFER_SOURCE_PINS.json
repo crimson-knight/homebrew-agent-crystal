@@ -1,4 +1,5 @@
 {
+  "actual_target_cells_accepted": 0,
   "core_manifest_sha256": "e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e",
   "core_source_rows": 254,
   "core_test_bodies": 159,
@@ -10,9 +11,9 @@
       "sha256": "930ccd61cd0f0c0cdb1f4f2f39521148b6dc8c9a42549a035c00e2b14ad898a5"
     },
     {
-      "bytes": 11704,
+      "bytes": 3286,
       "path": "TOOL_TRANSFER.md",
-      "sha256": "301c1829cfa4fe4a9cc9d6f2a9b31a73d9e0f026d1974e55309470d13d5c1561"
+      "sha256": "53b5a7c06819b0b584154a668b1a5005853d791deeb05673c6a1b3fa929a85d5"
     },
     {
       "bytes": 6934,
@@ -40,14 +41,14 @@
       "sha256": "dfdf5213cb6b5308fd46e1df5a75960c6ceb8c5c105c249f2aae15dfa39a43b0"
     },
     {
-      "bytes": 36653,
+      "bytes": 39211,
       "path": "proof_tool_transfer.py",
-      "sha256": "ca650f18401e1bd700f4091c8dc6631314b315053d0bb40d0ea15233f54649ea"
+      "sha256": "8db41f1a4c4829dee29f2e3d7f28e038bcf3d6e402d66067432e87091f74e097"
     },
     {
-      "bytes": 5449,
+      "bytes": 5531,
       "path": "run_admitted_dirty.py",
-      "sha256": "00372bc61297d57aaa104d737b4f10f4cbf7664a0d5a9f090dda63791285fdb1"
+      "sha256": "029f9061fdec1c049201e7d60b399ee99444a9505d65f1a2f8a545f6b2122cff"
     },
     {
       "bytes": 12275,
@@ -60,6 +61,11 @@
       "sha256": "342e7ee149d873d1562ddc3c7749f1748f89af3ba61ec22e8429dcfa54d48c37"
     },
     {
+      "bytes": 8263,
+      "path": "test_native_tool_roots.py",
+      "sha256": "b9df99c7336c01133ad8796f840e943ac8b92c9448be2b796cbe7fdb722b5d36"
+    },
+    {
       "bytes": 43011,
       "path": "test_tool_transfer.py",
       "sha256": "da0bf375ed7b438b5682b87a9865c03c335ed38c7891aeda9829c04f41356fb8"
@@ -68,6 +74,11 @@
       "bytes": 4975,
       "path": "transfer_inputs/ACTUAL_PREPARATION_ACCEPTANCE.json",
       "sha256": "4746c10993e99cdadcdcfe4c082fa615b53040db9c97a32653cfb8c93e7089c5"
+    },
+    {
+      "bytes": 7235,
+      "path": "transfer_inputs/ACTUAL_V102_FAILURE.json",
+      "sha256": "14d4877968e94696c4361ad270bbdb9a5ae93061d39d2279bb59e479f99803f9"
     },
     {
       "bytes": 7021,
@@ -93,6 +104,11 @@
       "bytes": 1195,
       "path": "transfer_inputs/STATIC_TOOL_LOAD_COMMANDS.json",
       "sha256": "fb046a4f158516c6d170d969a7d9de3b60fbac4d70f8d71dddfbe721f7b460d6"
+    },
+    {
+      "bytes": 8816,
+      "path": "transfer_inputs/V102_TRANSFER_SOURCE_PINS.json",
+      "sha256": "78c3c729f17d04b4659abeef4f8fcde61d5b0a1bdc3d60e451be3ec20f57471a"
     },
     {
       "bytes": 1097,
@@ -243,9 +259,22 @@
       "bytes": 33154,
       "path": "transfer_inputs/v101/test_tool_transfer.py",
       "sha256": "684da4dd256554e09cb8908332551349c1671cac290b525a71098c3a11aeee81"
+    },
+    {
+      "bytes": 11704,
+      "path": "transfer_inputs/v102/TOOL_TRANSFER.md",
+      "sha256": "301c1829cfa4fe4a9cc9d6f2a9b31a73d9e0f026d1974e55309470d13d5c1561"
+    },
+    {
+      "bytes": 36653,
+      "path": "transfer_inputs/v102/proof_tool_transfer.py",
+      "sha256": "ca650f18401e1bd700f4091c8dc6631314b315053d0bb40d0ea15233f54649ea"
+    },
+    {
+      "bytes": 5449,
+      "path": "transfer_inputs/v102/run_admitted_dirty.py",
+      "sha256": "00372bc61297d57aaa104d737b4f10f4cbf7664a0d5a9f090dda63791285fdb1"
     }
   ],
-  "format": "atlas-grant-proof-tool-transfer-source-v102",
-  "mission": "memory-budget-experiment",
-  "predecessor_manifest_sha256": "23bf55f5c300618f1e07eb99e75e805b48516a18f6afb14192972b0f29a5a937"
+  "format": "atlas-grant-transfer-source-pins-v103"
 }

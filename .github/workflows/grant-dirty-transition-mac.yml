@@ -9,7 +9,7 @@ permissions:
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
-  ATLAS_GRANT_TRANSFER_SHA256: 78c3c729f17d04b4659abeef4f8fcde61d5b0a1bdc3d60e451be3ec20f57471a
+  ATLAS_GRANT_TRANSFER_SHA256: 439df1016cdfdfa237521eccf1f47f9fc72827a4990c3c35b2ec4d8371e4cd92
   ATLAS_GRANT_PACKET_SHA256: e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e
 
 jobs:
@@ -168,6 +168,42 @@ jobs:
                       raise SystemExit("Exact execution source differs")
           source = root / 'test_tool_transfer.py'
           sys.argv = [str(source), *[os.path.expandvars(value) for value in ['--artifact-directory', '$TRANSFER_WORKSPACE/download']]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'test_native_tool_roots.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in []]]
+          runpy.run_path(str(source), run_name="__main__")
+          PYTHON
+          python3 -O - <<'PYTHON'
+          import hashlib, json, os, pathlib, runpy, stat, sys
+          root = pathlib.Path("test/grant_dirty_transition").resolve()
+          for filename, variable in (("SOURCE_PINS.json", "ATLAS_GRANT_PACKET_SHA256"), ("TRANSFER_SOURCE_PINS.json", "ATLAS_GRANT_TRANSFER_SHA256")):
+              raw = (root / filename).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != os.environ[variable]:
+                  raise SystemExit("Exact execution manifest differs")
+              for row in json.loads(raw)["files"]:
+                  path = root / row["path"]
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise SystemExit("Physical execution source required")
+                  value = path.read_bytes()
+                  if len(value) != row["bytes"] or hashlib.sha256(value).hexdigest() != row["sha256"]:
+                      raise SystemExit("Exact execution source differs")
+          source = root / 'test_native_tool_roots.py'
+          sys.argv = [str(source), *[os.path.expandvars(value) for value in []]]
           runpy.run_path(str(source), run_name="__main__")
           PYTHON
 
@@ -339,7 +375,7 @@ jobs:
 
       - name: Preserve positive analysis-tool admission metadata
         if: ${{ always() && steps.tool_stage.outcome == 'success' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: grant-proof-tool-runtime-admission
           path: ${{ runner.temp }}/grant-tool-admission-artifact
@@ -349,7 +385,7 @@ jobs:
 
       - name: Preserve original SDK and same-job readiness evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: grant-ordinary-mac-sdk-readiness
           path: ${{ runner.temp }}/grant-sdk-readiness
@@ -359,7 +395,7 @@ jobs:
 
       - name: Preserve diagnostic results and complete raw command output
         if: ${{ always() && steps.grant.outcome != 'skipped' && steps.result_stage.outcome == 'success' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: grant-mac-rich2-fixed-carrier-dirty-diagnostic
           path: ${{ runner.temp }}/grant-result-artifact

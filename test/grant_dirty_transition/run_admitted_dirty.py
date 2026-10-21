@@ -33,7 +33,7 @@ def run(args, invoke=None):
         transfer.need(observed['passed'] is True and observed['execution_admitted'] is True and
                       observed['registry_sha256'] == transfer.sha(registry_raw) == args.proof_tools_sha256,
                       'Actual positive reviewed native-input observation/registry required')
-        before = transfer.collect_native(budget, admission)
+        before = transfer.collect_native(budget, admission, tool_root=args.tool_workspace / 'tools')
         transfer.need(before == observed['native'] and
                       transfer.registry(args.tool_workspace / 'tools', transfer.decode(policy_raw), before) ==
                       transfer.decode(registry_raw), 'Exact same-job reviewed native policy before experiment required')
@@ -71,7 +71,7 @@ def run(args, invoke=None):
                 transfer.need(metadata(args.sdk_evidence, os.environ) == admission,
                               'Exact same-job SDK return around analysis tools required')
             if before is not None:
-                transfer.need(transfer.collect_native(budget, admission) == before,
+                transfer.need(transfer.collect_native(budget, admission, tool_root=args.tool_workspace / 'tools') == before,
                               'Exact native bytes/aliases/physical identities after experiment required')
             for path, expected in paths.items():
                 transfer.need(transfer.sha(budget.read(path)) == expected,

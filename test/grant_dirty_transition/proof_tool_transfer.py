@@ -125,7 +125,7 @@ def protect_transfer(expected):
     raw = path.read_bytes()
     need(sha(raw) == expected, 'Exact externally pinned transfer source manifest required')
     rows = decode(raw)['files']
-    need(0 < len(rows) <= 48 and len({row['path'] for row in rows}) == len(rows),
+    need(0 < len(rows) <= 54 and len({row['path'] for row in rows}) == len(rows),
          'Finite unique additive transfer source roster required')
     budget = Budget(time.monotonic() + 30)
     protected = {path: expected}
@@ -345,10 +345,33 @@ def tool_return(root, budget):
     return value
 
 
-def collect_native(budget, admission, prefix=Path('/opt/homebrew')):
+def tool_native_roots(tool_root, budget, observed=None):
+    """Retain actual direct imports from each exact transferred executable."""
+    physical(tool_root, directory=True)
+    declared = decode(budget.read(ROOT / 'transfer_inputs/STATIC_TOOL_LOAD_COMMANDS.json'))
+    need(len(declared) == 2 and {row['member'] for row in declared} == {'tools/amber-lsp', 'tools/ameba'},
+         'Exact two transferred tool Mach-O source rosters required')
+    result = [] if observed is None else observed
+    for row in declared:
+        name = row['member'].split('/')[-1]
+        path = tool_root / name
+        raw = budget.read(path)
+        imports = native_imports(raw)
+        need(type(row['bytes']) is int and len(raw) == row['bytes'] and sha(raw) == row['sha256'] and
+             imports == sorted(item['path'] for item in row['load_commands']),
+             'Exact transferred tool bytes and complete direct native imports required')
+        result.append(dict(tool=name, path=str(path), bytes=len(raw), sha256=sha(raw),
+                           physical_identity=identity(path), imports=imports))
+    return result
+
+
+def collect_native(budget, admission, prefix=Path('/opt/homebrew'), tool_root=None, evidence=None):
     need(admission['job_identity']['RUNNER_OS'] == 'macOS' and admission['job_identity']['RUNNER_ARCH'] == 'ARM64',
          'Exact same-job ARM64 Mac SDK authority required')
-    packages = []
+    progress = {} if evidence is None else evidence
+    progress.update(phase='packages', complete=False, package_rows=[], tool_native_roots=[],
+                    pending=[], current=None, libraries=[], Apple_imports=[], lexical_resolutions=[])
+    packages = progress['package_rows']
     all_dependencies = decode(budget.read(Path(admission['providers']['compiler_wrapper']['path']).parent.parent / 'INSTALL_RECEIPT.json'))['runtime_dependencies']
     for name, version in PACKAGES.items():
         current = [row for row in all_dependencies if row['full_name'] == name]
@@ -372,16 +395,27 @@ def collect_native(budget, admission, prefix=Path('/opt/homebrew')):
             opt_target=os.readlink(alias), opt_identity=identity(alias), physical_prefix=str(target),
             prefix_identity=identity(target), receipt_sha256=sha(receipt_raw), receipt_identity=identity(receipt_path),
             formula_sha256=sha(formula_raw), formula_identity=identity(formula_path)))
+    progress['phase'] = 'tool-roots'
+    roots = []
+    progress['tool_native_roots'] = roots
+    if tool_root is not None:
+        tool_native_roots(tool_root, budget, roots)
     pending = list(DIRECT)
-    rows = []
+    for row in roots:
+        pending.extend(row['imports'])
+    progress['pending'] = pending
+    progress['phase'] = 'native-frontier'
+    rows = progress['libraries']
     systems = set()
     visited = {}
     resolutions = {}
     while pending:
         clock(budget.deadline)
         lexical = pending.pop(0)
+        progress['current'] = lexical
         if lexical in SYSTEM_IMPORTS:
             systems.add(lexical)
+            progress['Apple_imports'] = sorted(systems)
             continue
         need(lexical.startswith(str(prefix / 'opt') + '/') and '..' not in PurePosixPath(lexical).parts,
              'Reviewed absolute Homebrew or Apple native dependency path required')
@@ -391,6 +425,7 @@ def collect_native(budget, admission, prefix=Path('/opt/homebrew')):
             need(resolutions[lexical] == resolved, 'One stable lexical native resolution within observation required')
         else:
             resolutions[lexical] = resolved
+            progress['lexical_resolutions'].append(resolved)
             need(len(resolutions) <= MAX_NATIVE_PATHS, 'Finite96-path lexical native frontier required')
         need(any(str(path).startswith(row['physical_prefix'] + '/') for row in packages),
              'Selected native dependency remains inside the four declared exact packages')
@@ -406,6 +441,8 @@ def collect_native(budget, admission, prefix=Path('/opt/homebrew')):
         rows.append(dict(declared_path=lexical, path=str(path), sha256=sha(raw), bytes=len(raw),
                          mode=stat.S_IMODE(path.stat().st_mode), physical_identity=identity(path), imports=imports))
         need(identity(path) == resolved['resolved_physical_identity'], 'Stable resolved native file identity required')
+    progress['phase'] = 'Apple-import-closure'
+    progress['missing_Apple_imports'] = sorted(set(SYSTEM_IMPORTS) - systems)
     need(systems == set(SYSTEM_IMPORTS), 'Complete accepted Apple import names required')
     system_rows = []
     unresolved_system = []
@@ -416,7 +453,9 @@ def collect_native(budget, admission, prefix=Path('/opt/homebrew')):
             system_rows.append(dict(path=name, sha256=sha(raw), bytes=len(raw), physical_identity=identity(path)))
         else:
             unresolved_system.append(name)
+    progress.update(phase='complete', complete=True, current=None)
     return dict(format='atlas-grant-analysis-tool-native-observation-v1', packages=packages,
+        tool_native_roots=roots,
         libraries=sorted(rows, key=lambda row: row['path']), Apple_imports=sorted(systems),
         lexical_resolutions=sorted(resolutions.values(), key=lambda row: row['declared_path']),
         system_files=system_rows, unresolved_system=unresolved_system, same_job=admission['job_identity'],
@@ -426,7 +465,9 @@ def collect_native(budget, admission, prefix=Path('/opt/homebrew')):
 
 def policy_view(value):
     """Keep reviewed identities while per-job physical IDs join before/after."""
-    return dict(packages=[{key: row[key] for key in ('name', 'declared', 'opt_path', 'opt_target', 'physical_prefix', 'formula_sha256')}
+    return dict(tool_native_roots=[{key: row[key] for key in ('tool', 'sha256', 'bytes', 'imports')}
+                                  for row in value.get('tool_native_roots', [])],
+                packages=[{key: row[key] for key in ('name', 'declared', 'opt_path', 'opt_target', 'physical_prefix', 'formula_sha256')}
                           for row in value['packages']],
                 libraries=[{key: row[key] for key in ('declared_path', 'path', 'sha256', 'bytes', 'mode', 'imports')}
                            for row in value['libraries']],
@@ -566,7 +607,8 @@ def observe(root, sdk, policy_path):
         tool_return(root, budget)
         policy_raw = budget.read(policy_path)
         admission = metadata(sdk, os.environ)
-        before = collect_native(budget, admission)
+        result['native_progress_before'] = {}
+        before = collect_native(budget, admission, tool_root=root / 'tools', evidence=result['native_progress_before'])
         result['native'] = before
         result['native_policy_view'] = policy_view(before)
         value = registry(root / 'tools', decode(policy_raw), before)
@@ -576,7 +618,9 @@ def observe(root, sdk, policy_path):
         if value['execution_admitted']:
             from dirty_proof import admit_tools
             admit_tools(path, sha(path.read_bytes()))
-        need(metadata(sdk, os.environ) == admission and collect_native(budget, admission) == before,
+        result['native_progress_after'] = {}
+        need(metadata(sdk, os.environ) == admission and
+             collect_native(budget, admission, tool_root=root / 'tools', evidence=result['native_progress_after']) == before,
              'Complete same-job SDK/native physical identity return required')
         need(budget.read(policy_path) == policy_raw and budget.read(root / 'TRANSFER_RESULT.json') == transfer_raw,
              'Exact source policy and original transfer evidence return required')

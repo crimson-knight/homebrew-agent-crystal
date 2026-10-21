@@ -1,0 +1,251 @@
+{
+  "core_manifest_sha256": "e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e",
+  "core_source_rows": 254,
+  "core_test_bodies": 159,
+  "execution_admitted": false,
+  "files": [
+    {
+      "bytes": 473,
+      "path": "ANALYSIS_NATIVE_POLICY.json",
+      "sha256": "930ccd61cd0f0c0cdb1f4f2f39521148b6dc8c9a42549a035c00e2b14ad898a5"
+    },
+    {
+      "bytes": 11704,
+      "path": "TOOL_TRANSFER.md",
+      "sha256": "301c1829cfa4fe4a9cc9d6f2a9b31a73d9e0f026d1974e55309470d13d5c1561"
+    },
+    {
+      "bytes": 6934,
+      "path": "grant-causal-mac.proposed.yml",
+      "sha256": "6ac777b761aa67f4a140a622d444905f52c5b4f74a32fec0193301c9aae2459b"
+    },
+    {
+      "bytes": 8553,
+      "path": "grant-dirty-transition-mac.proposed.yml",
+      "sha256": "38aea6c1897f6457bb02d8cd038ba97c031fce8ec79ec685d90eb291bc1bfbf0"
+    },
+    {
+      "bytes": 44400,
+      "path": "inputs/DIRTY_V102_SOURCE_PINS.json",
+      "sha256": "e186b50c45c15da64ede2801b41e1b05112222dd25cc969ca628c1a1007a8d0e"
+    },
+    {
+      "bytes": 770,
+      "path": "preflight_transferred_tools.py",
+      "sha256": "4825268674188629414907091467a740873acc8c8fe1116ecab0de0c7d2f6330"
+    },
+    {
+      "bytes": 10151,
+      "path": "prepare_transfer_workflow.py",
+      "sha256": "dfdf5213cb6b5308fd46e1df5a75960c6ceb8c5c105c249f2aae15dfa39a43b0"
+    },
+    {
+      "bytes": 36653,
+      "path": "proof_tool_transfer.py",
+      "sha256": "ca650f18401e1bd700f4091c8dc6631314b315053d0bb40d0ea15233f54649ea"
+    },
+    {
+      "bytes": 5449,
+      "path": "run_admitted_dirty.py",
+      "sha256": "00372bc61297d57aaa104d737b4f10f4cbf7664a0d5a9f090dda63791285fdb1"
+    },
+    {
+      "bytes": 12275,
+      "path": "run_dirty_experiment_with_deadline.py",
+      "sha256": "c87eaa7ad68576333d6e6a0f8124d4c6fc19bb516b2326adaa696b0222978990"
+    },
+    {
+      "bytes": 4849,
+      "path": "stage_tool_admission.py",
+      "sha256": "342e7ee149d873d1562ddc3c7749f1748f89af3ba61ec22e8429dcfa54d48c37"
+    },
+    {
+      "bytes": 43011,
+      "path": "test_tool_transfer.py",
+      "sha256": "da0bf375ed7b438b5682b87a9865c03c335ed38c7891aeda9829c04f41356fb8"
+    },
+    {
+      "bytes": 4975,
+      "path": "transfer_inputs/ACTUAL_PREPARATION_ACCEPTANCE.json",
+      "sha256": "4746c10993e99cdadcdcfe4c082fa615b53040db9c97a32653cfb8c93e7089c5"
+    },
+    {
+      "bytes": 7021,
+      "path": "transfer_inputs/ARTIFACT_MEMBERS.json",
+      "sha256": "1975a4fb6d8ab4a93a50cfad7822b8d899961fa7115171de2819c96d8071edda"
+    },
+    {
+      "bytes": 1368,
+      "path": "transfer_inputs/BOOTSTRAP_SOURCE_PINS.json",
+      "sha256": "239dfd520deb496fbfa12db558e83cebbf0dac7b2d59e6ed25709e274e606bef"
+    },
+    {
+      "bytes": 1596,
+      "path": "transfer_inputs/DOWNLOAD_ACTION_SOURCE.json",
+      "sha256": "c7633d4fe46892eb5001b76ebd80dced855f8d2b6e1470b3f722b6b034badd3d"
+    },
+    {
+      "bytes": 5189,
+      "path": "transfer_inputs/PENDING_TOOL_FAILED_STEP.log",
+      "sha256": "8571531faba60c96cf3f250547eaf191ae299f06c863b7915ea8a2b1c57aa4c5"
+    },
+    {
+      "bytes": 1195,
+      "path": "transfer_inputs/STATIC_TOOL_LOAD_COMMANDS.json",
+      "sha256": "fb046a4f158516c6d170d969a7d9de3b60fbac4d70f8d71dddfbe721f7b460d6"
+    },
+    {
+      "bytes": 1097,
+      "path": "transfer_inputs/download-artifact/LICENSE",
+      "sha256": "3e855ffa704114a51628ef8f0bf3aeb41728adf9d9070e263bf58aa5640b0eb5"
+    },
+    {
+      "bytes": 9324,
+      "path": "transfer_inputs/download-artifact/README.md",
+      "sha256": "c088294825e648f9f1baf71deefd0a401984d97f0fc43d5c5be9a4ed64211639"
+    },
+    {
+      "bytes": 2137,
+      "path": "transfer_inputs/download-artifact/action.yml",
+      "sha256": "f81d687a5bb7c2c9428a2cfc32fc099c823d56faf533e7d0e1f3cdc0e10f9cc7"
+    },
+    {
+      "bytes": 4798714,
+      "path": "transfer_inputs/download-artifact/dist/index.js",
+      "sha256": "02c2cf24c5b60ae4b3f8d71d3cc85e2e6433dbdf106a38fee7ec3f1c96e2d18e"
+    },
+    {
+      "bytes": 6425,
+      "path": "transfer_inputs/download-artifact/src/download-artifact.ts",
+      "sha256": "1c67eb1bb4f77a462522341189f433422c4d35a6999d0dea2a1846e6edfedd80"
+    },
+    {
+      "bytes": 26249,
+      "path": "transfer_inputs/v100/DRAFT_ALIAS_CONVERGENCE.json",
+      "sha256": "378d67b4670d3fe69c75163371cb1bc802c0373b85c2b07aa03a5c011c6a1f08"
+    },
+    {
+      "bytes": 743,
+      "path": "transfer_inputs/v100/DRAFT_CLEANUP_CLI.json",
+      "sha256": "17d15ddd46543952417c3456d764d2321c19c4b625598cb4d44903b716aff009"
+    },
+    {
+      "bytes": 1751,
+      "path": "transfer_inputs/v100/SOURCE_REFUSAL.v100.json",
+      "sha256": "01c68e2c5b3caa986dc3ada07c546d0ca42c6792eb3e440d54ba257a700db22d"
+    },
+    {
+      "bytes": 9123,
+      "path": "transfer_inputs/v100/TOOL_TRANSFER.md",
+      "sha256": "7715ab814afa5009a49479134291460aa856c66c60db0b7c364ced6023ee33dd"
+    },
+    {
+      "bytes": 4230,
+      "path": "transfer_inputs/v100/TRANSFER_SOURCE_PINS.json",
+      "sha256": "6cd69970f2d666140faf50ffd0a3810e0dc45ec5603c03a9d70881d8b2a44973"
+    },
+    {
+      "bytes": 3755,
+      "path": "transfer_inputs/v100/probe_draft_aliases.py",
+      "sha256": "f0ecc1b665145a3e1cf7a50372fe147b42a6dee776702cea79460bd33bcf4e27"
+    },
+    {
+      "bytes": 2454,
+      "path": "transfer_inputs/v100/probe_draft_cleanup.py",
+      "sha256": "87a956b1f98513f1bad1845a33a91247fe7bec15fdfe8157b5a9d379675126cc"
+    },
+    {
+      "bytes": 30338,
+      "path": "transfer_inputs/v100/proof_tool_transfer.py",
+      "sha256": "31b9f816dee9c058965a5851c7fbcbe9fe1696b31ba00a4f5326c8e7cfa7ce8e"
+    },
+    {
+      "bytes": 29965,
+      "path": "transfer_inputs/v100/test_tool_transfer.py",
+      "sha256": "9728e2228becd17976e06b247518b513f22673c1552a1a021f26e0416f085726"
+    },
+    {
+      "bytes": 2939,
+      "path": "transfer_inputs/v101/CLOCK_ORIGIN_SENSITIVITY.json",
+      "sha256": "ec6c325672db1aa6db7529563e55e54c79ad4c07dfa598499998f274be76d399"
+    },
+    {
+      "bytes": 3203,
+      "path": "transfer_inputs/v101/HANDOFF.md",
+      "sha256": "35d0a0e11af2cd4ba15ab540b0746e96cb74dc7230a0276248256f03e57c79f9"
+    },
+    {
+      "bytes": 83581,
+      "path": "transfer_inputs/v101/IMPLEMENTATION_RECEIPT.json",
+      "sha256": "8888b0d90641d054d548c562caff0d93137d04f4f81e1b44c1887555478a7ff2"
+    },
+    {
+      "bytes": 10657,
+      "path": "transfer_inputs/v101/INTEGRATION_PROPOSAL.json",
+      "sha256": "5e0a01df00180bbb0850e9b7d4113c73ed1672d2282afee16bf650d60a242616"
+    },
+    {
+      "bytes": 4884,
+      "path": "transfer_inputs/v101/REVIEW.md",
+      "sha256": "0bcc65c654b602dd08c18e5057e14d0486cdd06cc74c2bf8e6590fae8bb3e28b"
+    },
+    {
+      "bytes": 12198,
+      "path": "transfer_inputs/v101/SOURCE_REFUSAL.json",
+      "sha256": "c8d8efcc08b3140cadbd4fe5b09c8cb4ffa79103fc0d07375ad6bcf48d254a2e"
+    },
+    {
+      "bytes": 28419,
+      "path": "transfer_inputs/v101/SOURCE_TESTS.json",
+      "sha256": "bf0198e2869563b7aed08c6c653a9926c9e7328868cc26d73c3242536757f4a6"
+    },
+    {
+      "bytes": 10025,
+      "path": "transfer_inputs/v101/TOOL_TRANSFER.md",
+      "sha256": "583a26bb0962ed52d4e03aa65cda4b49665e195c0e1fbb7792ccde0f36c4031d"
+    },
+    {
+      "bytes": 5942,
+      "path": "transfer_inputs/v101/TRANSFER_SOURCE_PINS.json",
+      "sha256": "23bf55f5c300618f1e07eb99e75e805b48516a18f6afb14192972b0f29a5a937"
+    },
+    {
+      "bytes": 21444,
+      "path": "transfer_inputs/v101/grant-dirty-tools-transfer-mac.proposed.yml",
+      "sha256": "dcc4ef698778fbbf1de3cc8e792d7276bd85f36e4924fd509d1a798dbf0d17e8"
+    },
+    {
+      "bytes": 2807,
+      "path": "transfer_inputs/v101/probe_clock_origin.py",
+      "sha256": "89195f021521294e27cfabc439045e5ce414af40c61777106b7e6d99c34a2b3d"
+    },
+    {
+      "bytes": 3194,
+      "path": "transfer_inputs/v101/probe_clock_origins_both.py",
+      "sha256": "6744c175469c036750ef1541cb285d35730f0932c8f45ce3356a05c294673def"
+    },
+    {
+      "bytes": 33349,
+      "path": "transfer_inputs/v101/proof_tool_transfer.py",
+      "sha256": "8b7813c1f10ac0fe13f51f06961b0811bebf4dcaeea655da4c9a2b566044f3b4"
+    },
+    {
+      "bytes": 4781,
+      "path": "transfer_inputs/v101/run_admitted_dirty.py",
+      "sha256": "35d9fd944afc6aa48807981f87808039ad10749f344a3817c977f9a4c7d598f0"
+    },
+    {
+      "bytes": 11769,
+      "path": "transfer_inputs/v101/run_dirty_experiment_with_deadline.py",
+      "sha256": "693a6c0e05ca57f44238c9b438fe33ff7f946da1a13aaa0f12cb3deaeb071145"
+    },
+    {
+      "bytes": 33154,
+      "path": "transfer_inputs/v101/test_tool_transfer.py",
+      "sha256": "684da4dd256554e09cb8908332551349c1671cac290b525a71098c3a11aeee81"
+    }
+  ],
+  "format": "atlas-grant-proof-tool-transfer-source-v102",
+  "mission": "memory-budget-experiment",
+  "predecessor_manifest_sha256": "23bf55f5c300618f1e07eb99e75e805b48516a18f6afb14192972b0f29a5a937"
+}

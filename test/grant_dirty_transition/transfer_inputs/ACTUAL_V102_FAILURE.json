@@ -1,0 +1,174 @@
+{
+  "Grant_execution": "skipped",
+  "SDK_color": "GREEN",
+  "SDK_examples": [
+    39,
+    39
+  ],
+  "SDK_original_groups_absent": 11,
+  "SDK_profile_sha256": "e661682cdb20f21dead6ddfaa689ff3023b76f55bbd1c9941c993989e2a9e7a3",
+  "SDK_source_commit": "08c30535c60b9097a5da664dc7072e89ec02cad7",
+  "actual_SDK_accepted": true,
+  "actual_cleanup_complete": true,
+  "actual_native_observation_accepted": false,
+  "actual_observed_Apple_subset_retained": false,
+  "actual_ordinary_install_step_success": true,
+  "actual_source_build_receipt_accepted": true,
+  "actual_target_cells_accepted": 0,
+  "actual_tool_API_lint_executions": 0,
+  "actual_transfer_accepted": true,
+  "all302_public_source_rows_exact": true,
+  "artifacts": [
+    {
+      "artifact_id": 12314728751,
+      "regular_members": 38,
+      "zip_sha256": "a2374d9c61f0a5cb7781ab659db433e6dcffb1aee56c8a16d459982bde00f72a"
+    },
+    {
+      "artifact_id": 12314413962,
+      "regular_members": 6,
+      "zip_sha256": "78316fd8ce41007a75e4fdd4c6b92edf17635a1f9345179d6c231f429c08e5de"
+    }
+  ],
+  "evidence": [
+    {
+      "bytes": 14079,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/RUN.json",
+      "sha256": "03e4521f6a120219c01a48970060561b22de817dd2dddc2643fa96bfb7f24246"
+    },
+    {
+      "bytes": 5172,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/JOBS.json",
+      "sha256": "6360ef0859a84fdac4238d63bbeaa2567b82d654235e13c2ca2ff9266998642f"
+    },
+    {
+      "bytes": 1553,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/ARTIFACTS.json",
+      "sha256": "93895d684fde4309f083bc3cf77b8f66b01a329cea79b87ecd0fb14e1181c637"
+    },
+    {
+      "bytes": 8926,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/12314728751/READINESS_RESULT.json",
+      "sha256": "280c2c1f0d928a4119a31a756a49a52e5163c10832b7d7538a1aabec4778851e"
+    },
+    {
+      "bytes": 6754,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/12314728751/SAME_JOB_BINDING.json",
+      "sha256": "ec47e6e33c82b20966485664e5f551538613a5c7e68ff9ff3d407270fad0b692"
+    },
+    {
+      "bytes": 546,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/12314728751/REVIEWED_COMPILER_PROFILE.json",
+      "sha256": "e661682cdb20f21dead6ddfaa689ff3023b76f55bbd1c9941c993989e2a9e7a3"
+    },
+    {
+      "bytes": 1584,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/12314413962/TRANSFER_RESULT.json",
+      "sha256": "1eee7e178a63b8a6964b8c949772e6a9886809aa236dc508520917402ee91b73"
+    },
+    {
+      "bytes": 253,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/12314413962/NATIVE_OBSERVATION.json",
+      "sha256": "daebc94845bd0ccc77f163ae94b7b608083fa6e9dd4fc7e1ed81bb1b0fddf80f"
+    },
+    {
+      "bytes": 210,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_actual_v102/run-39529308442/12314413962/CLEANUP.json",
+      "sha256": "27ab2056499f90b8daab63e1ab04617be8c5b65b3d604306b4f9fcdbfe8fc674"
+    },
+    {
+      "bytes": 9626,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_parent_v102/ACTUAL_FAILED_STEP.log",
+      "sha256": "b7fb76c27fb45c5b79413df572647f26702fc2c03258982a1fcc4456b1b531f1"
+    },
+    {
+      "bytes": 12581,
+      "path": "/Users/crimsonknight/personal_coding_projects/.luna/atlas-work/grant_dirty_tool_transfer_parent_v102/PUBLIC_SOURCE_READBACK.json",
+      "sha256": "1c030db458dff7735c2021f35dd6ee78bc2e7ce4dd805816d31d8c0880fd39b7"
+    }
+  ],
+  "exact_tool_header_declarations": [
+    {
+      "bytes": 3590088,
+      "execution_admitted": false,
+      "load_commands": [
+        {
+          "command": "0xc",
+          "path": "/opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib"
+        },
+        {
+          "command": "0xc",
+          "path": "/usr/lib/libiconv.2.dylib"
+        },
+        {
+          "command": "0xc",
+          "path": "/usr/lib/libSystem.B.dylib"
+        }
+      ],
+      "member": "tools/amber-lsp",
+      "sha256": "3691c7fdb6d489b44973c5f76493db83d32ad50fc3932fb2aabfa21062a1de4a"
+    },
+    {
+      "bytes": 4991560,
+      "execution_admitted": false,
+      "load_commands": [
+        {
+          "command": "0xc",
+          "path": "/opt/homebrew/opt/libyaml/lib/libyaml-0.2.dylib"
+        },
+        {
+          "command": "0xc",
+          "path": "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib"
+        },
+        {
+          "command": "0xc",
+          "path": "/opt/homebrew/opt/bdw-gc/lib/libgc.1.dylib"
+        },
+        {
+          "command": "0xc",
+          "path": "/usr/lib/libiconv.2.dylib"
+        },
+        {
+          "command": "0xc",
+          "path": "/usr/lib/libSystem.B.dylib"
+        }
+      ],
+      "member": "tools/ameba",
+      "sha256": "107c91a841e5e8ddef95f4bc6b1bc40ff365741eb51b17828844f3a2864ffd3b"
+    }
+  ],
+  "fixed_positive_artifact_rosters_and_confidentiality": true,
+  "format": "atlas-grant-transfer-v102-actual-failure-review",
+  "head_sha": "780684a470b8e83ed5259dd40a9a0cf842f168b2",
+  "job_id": 118991279586,
+  "local_actual_compiler_native_container_browser_SSH_jobs": 0,
+  "mechanism_is_source_inference": "The error proves an incomplete recorded systems set; the particular absent name is unretained. A successor causal fixture must isolate this distinction.",
+  "native_error": "RuntimeError: Complete accepted Apple import names required",
+  "observed_providers": {
+    "compiler_backend": {
+      "bytes": 13786984,
+      "path": "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/libexec/agent-crystal-bin",
+      "sha256": "952246fa2cd961254e15c41b74ff6af6a2d7864c9c87162a00723dfd6e5bef02"
+    },
+    "compiler_wrapper": {
+      "bytes": 210,
+      "path": "/opt/homebrew/Cellar/agent-crystal/1.21.0-incremental-1_1/bin/crystal-alpha",
+      "sha256": "5597f8891468ec305a55c8d7a910c392c4cd5b923fba475ba061b0221b8763a0"
+    },
+    "ruby_backend": {
+      "bytes": 33968,
+      "path": "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "sha256": "a53f08545808a4588c9f7f6ac2f865ea4ba852a64f71f45bf8d61e114428f42d"
+    },
+    "ruby_launcher": {
+      "bytes": 33968,
+      "path": "/opt/homebrew/Cellar/ruby@3.4/3.4.11_1/bin/ruby",
+      "sha256": "a53f08545808a4588c9f7f6ac2f865ea4ba852a64f71f45bf8d61e114428f42d"
+    }
+  },
+  "required_cells": 144,
+  "run_id": 39529308442,
+  "source_mechanism": "collect_native seeds four Homebrew library roots but demands both Apple import names; the exact transferred tool import tables include both names but are absent from those roots",
+  "source_tree_id": "9d3633db561c2d2f6ac32271c6be465de09c365b",
+  "transfer_elapsed_seconds": 1.630822000000009
+}
