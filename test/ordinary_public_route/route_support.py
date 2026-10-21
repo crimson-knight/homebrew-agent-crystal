@@ -5,8 +5,10 @@ import json
 import math
 import os
 from pathlib import Path, PurePosixPath
+import re
 import stat
 import tarfile
+import time
 
 ROOT=Path(__file__).resolve().parent
 LIMIT=64*2**20
@@ -57,12 +59,60 @@ def inventory(root,maximum_files=512):
         need(len(rows)<=maximum_files,'Finite physical file roster required')
     return rows
 
-def catalog(cache):
-    root=cache/'api';rows={}
+CATALOG_MEMBER_BYTES=64*2**20
+CATALOG_TOTAL_BYTES=3*CATALOG_MEMBER_BYTES
+CATALOG_DIRECTORY_ENTRIES=64
+CATALOG_SECONDS=5
+
+def catalog_name(name):
+    return type(name) is str and (name in ('formula.jws.json','formula.json') or re.fullmatch(r'internal/packages\.[A-Za-z0-9_]+\.jws\.json',name) is not None)
+
+def catalog_at_root(root):
+    """Retain legacy catalogs and one unambiguous platform package catalog."""
+    root=Path(root);deadline=time.monotonic()+CATALOG_SECONDS;names=[];internal=root/'internal';directory_identity=None;root_identity=None
+    if root.exists() or root.is_symlink():
+        state=root.lstat();need(stat.S_ISDIR(state.st_mode),'Physical ordinary catalog root required');root_identity=physical_fields(state)
     for name in ('formula.jws.json','formula.json'):
         path=root/name
-        if path.exists() or path.is_symlink():rows[name]=stable(path)[0]
+        if path.exists() or path.is_symlink():names.append(name)
+    if internal.exists() or internal.is_symlink():
+        state=internal.lstat();need(stat.S_ISDIR(state.st_mode),'Physical ordinary internal catalog directory required')
+        directory_identity=physical_fields(state);candidates=[]
+        with os.scandir(internal) as entries:
+            for index,entry in enumerate(entries):
+                need(index<CATALOG_DIRECTORY_ENTRIES and time.monotonic()<=deadline,'Finite internal catalog directory census required')
+                name='internal/'+entry.name
+                if catalog_name(name):candidates.append(name)
+        need(len(candidates)<=1,'One unambiguous current platform package catalog required')
+        names.extend(candidates)
+    rows={};total=0
+    for name in sorted(names):
+        need(time.monotonic()<=deadline and catalog_name(name),'Finite exact catalog member required')
+        path=root/name;state=path.lstat()
+        need(stat.S_ISREG(state.st_mode) and 0<=state.st_size<=CATALOG_MEMBER_BYTES,'Bounded ordinary catalog member required')
+        total+=state.st_size;need(total<=CATALOG_TOTAL_BYTES,'Finite complete catalog byte allowance required')
+        rows[name]=stable(path,CATALOG_MEMBER_BYTES)[0]
+    if directory_identity is not None:need(physical_fields(internal.lstat())==directory_identity,'Exact internal catalog directory return required')
+    if root_identity is not None:need(physical_fields(root.lstat())==root_identity,'Exact catalog root directory return required')
+    need(time.monotonic()<=deadline,'Complete catalog observation deadline required')
     return rows
+
+def catalog(cache):
+    return catalog_at_root(Path(cache)/'api')
+
+def retain_catalog(snapshot,destination):
+    need(type(snapshot) is dict and len(snapshot)<=3 and all(catalog_name(name) for name in snapshot),'Finite exact retained catalog roster required')
+    for name,row in snapshot.items():
+        current,raw=stable(row['path'],CATALOG_MEMBER_BYTES);need(current==row,'Exact resolved API bytes required')
+        path=Path(destination)/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);path.chmod(row['mode'])
+
+def staged_catalog(source):
+    root=Path(source)/'resolved-catalog';rows=catalog_at_root(root)
+    before=read(Path(source)/'CATALOG_BEFORE.json')['API'] if (Path(source)/'CATALOG_BEFORE.json').exists() else {}
+    if any(name.startswith('internal/') for name in rows) or any(name.startswith('internal/') for name in before):
+        need(set(before)==set(rows) and all(catalog_name(name) for name in before),'Exact declared internal catalog staging roster required')
+        for name,row in rows.items():need(all(row[key]==before[name][key] for key in ('bytes','sha256','mode')),'Complete declared catalog staging bytes and mode required')
+    return ['resolved-catalog/'+name for name in sorted(rows)]
 
 def verify_commands(commands,group_observations,successful=True):
     need(len(commands)<=96 and len(commands)==len(group_observations),'Finite exact command/group journal required')

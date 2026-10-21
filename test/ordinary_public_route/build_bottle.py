@@ -9,7 +9,7 @@ import tarfile
 import time
 from urllib.parse import urlsplit
 
-from route_support import catalog,ROOT,need,sha,read,write,stable,revalidate,inventory,verify_commands
+from route_support import catalog,retain_catalog,ROOT,need,sha,read,write,stable,revalidate,inventory,verify_commands
 from run_route import get_context,clean_environment,run_command,tap_readback,sdk_return,ALPHA,SDK,homebrew_layout
 
 ROOT_URL='https://github.com/crimson-knight/homebrew-agent-crystal/releases/download/agent-crystal-1.21.0-incremental-1_2-bottle.1'
@@ -80,8 +80,7 @@ def build(args,driver,protected,providers):
         need(catalog_snapshot or core_identity,'Actual resolved core/API source identity required')
         write(output/'CATALOG_BEFORE.json',{'API':catalog_snapshot,'homebrew_commit_tree':brew_identity.splitlines(),'core_commit_tree':core_identity})
         (output/'resolved-catalog').mkdir()
-        for name,row in catalog_snapshot.items():
-            current,raw=stable(row['path']);need(current==row,'Exact resolved API bytes required');(output/'resolved-catalog'/name).write_bytes(raw)
+        retain_catalog(catalog_snapshot,output/'resolved-catalog')
         need(runner.deadline-time.monotonic()>=840+180,'Full original SDK840 seconds plus return reserve required')
         code=driver.qualify(output/'sdk',read(ROOT/'vendor/test/sdk_source_lock.json'))
         sdk_retired=read(output/'sdk/READINESS_RESULT.json').get('writers_confirmed_retired') is True

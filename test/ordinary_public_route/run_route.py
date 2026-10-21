@@ -13,7 +13,7 @@ import sys
 import time
 import source_modes
 
-from route_support import ROOT,need,sha,read,write,stable,source_packet,revalidate,load_driver,inventory,catalog,verify_commands,extract_provider
+from route_support import ROOT,need,sha,read,write,stable,source_packet,revalidate,load_driver,inventory,catalog,retain_catalog,verify_commands,extract_provider
 
 ALPHA=read(ROOT/'inputs/ALPHA_MAIN.json')['main_commit']
 SDK='6aaf4f953189c051bf11543e64d4c9f3f36e2cd3'
@@ -254,8 +254,7 @@ def observe(args,driver,protected,providers):
         catalog_snapshot=catalog(cache);need(catalog_snapshot or core_identity,'Exact API catalog or core Git source identity required')
         write(output/'CATALOG_BEFORE.json',{'cache':str(cache),'API':catalog_snapshot,'homebrew_commit_tree':git_identity.splitlines(),'core_commit_tree':core_identity})
         (output/'resolved-catalog').mkdir()
-        for name,row in catalog_snapshot.items():
-            current,raw=stable(Path(row['path']));need(current==row,'Exact resolved API bytes required');(output/'resolved-catalog'/name).write_bytes(raw)
+        retain_catalog(catalog_snapshot,output/'resolved-catalog')
         write(output/'TAP_BEFORE.json',tap)
         need(runner.deadline-time.monotonic()>=SDK_SECONDS+RETURN_RESERVE,'Full original SDK840-second interval plus return reserve required')
         selected='bottle_vendor' if getattr(args,'sdk_mode','source')=='bottle' else 'vendor'

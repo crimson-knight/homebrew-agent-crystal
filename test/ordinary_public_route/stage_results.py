@@ -7,7 +7,7 @@ import tarfile
 import hashlib
 import time
 import bottle_source_screen as source_screen
-from route_support import ROOT,need,sha,read,write,stable,source_packet,command_maximum,verify_commands
+from route_support import ROOT,need,sha,read,write,stable,source_packet,command_maximum,verify_commands,staged_catalog
 from build_bottle import bottle_inputs,ROOT_URL
 
 MAIN=('HOMEBREW_INVOCATION.json','TAP_WORKTREE_installed.json','TAP_WORKTREE_returned.json','TAP_WORKTREE_before-bottle.json','TAP_WORKTREE_after-bottle.json','OBSERVATION_RESULT.json','CONSUMER_RESULT.json','PROVIDER_PREPARATION_RESULT.json','REVIEW_HOLD_RESULT.json','DRAFT_PROVIDER_CANDIDATE.json','CATALOG_INITIAL.json','CATALOG_BEFORE.json','CATALOG_AFTER.json','TAP_BEFORE.json','ALIASES_BEFORE.json','ALIASES_AFTER.json','COMMANDS.json','FROZEN_LOCK_RECEIPT.json','FROZEN_DEPENDENCY_RECEIPT.json','REVIEWED_CONSUMER_ADMISSION.json','MINECART_PROVIDER_ROSTER.json','BOTTLE_RESULT.json','BOTTLE_INPUTS.json','BOTTLE_ARCHIVE_ROSTER.json','DRAFT_BOTTLE_PROVIDER.json')
@@ -36,7 +36,7 @@ def select_evidence(source):
                     name=(Path(folder)/(row['label']+'.'+stream+'.txt')).as_posix();need(stable(source/name)[0]['sha256']==row[stream+'_sha256'],'Exact original command/raw stream hash join required');selected.add(name)
         selected.update('sdk/'+n for n in read(ROOT/'inputs/SDK_ARTIFACT_ROSTER.json')['files'] if (source/'sdk'/n).exists())
         selected.update('provider-preparation/'+n for n in PREP if (source/'provider-preparation'/n).exists())
-        selected.update('resolved-catalog/'+n for n in ('formula.jws.json','formula.json') if (source/'resolved-catalog'/n).exists())
+        selected.update(staged_catalog(source))
         selected.update('admitted-inputs/'+n for n in ('profile.json','native.json','git.json') if (source/'admitted-inputs'/n).exists())
         selected.update(n for n in ('public-install.sh','public-SDK-main.tar.gz','minecart-provider.tar.gz') if (source/n).exists())
         if (source/'BOTTLE_INPUTS.json').exists():
@@ -117,13 +117,14 @@ def verify_projection(source,packet_sha256,complete=False):
         if row['path'].startswith('source/'):rules.inspect_public_bytes(row['path'],raw)
         else:inspect_payload(row['path'],source/row['path'],raw,rules,bottle,authority,recognized)
     rules.inspect_public_bytes('PUBLIC_STAGE.json',stable(source/'PUBLIC_STAGE.json')[1])
+    if receipt['screening_complete'] is True:staged_catalog(source)
     if complete:need(receipt['screening_complete'] is True and receipt['refusal_count']==0,'Complete credential-screened artifact required before publication acceptance')
     return receipt
 
 
 def stage(source,output,packet_sha256,retain_clean_refusals=False):
     source=source.resolve(strict=True);need(output.parent.resolve(strict=True)==output.parent and not output.exists(),'Fresh physical public artifact stage required');protected=source_packet(packet_sha256);rules=load_rules();authority=None
-    payload={};failures=[];recognized=[];metadata_rosters=[];first_error=None;total=0;observed_input_bytes=0;uncertain=True;bottle=None
+    payload={};catalog_modes={};failures=[];recognized=[];metadata_rosters=[];first_error=None;total=0;observed_input_bytes=0;uncertain=True;bottle=None
     try:authority=source_screen.provenance(ROOT)
     except Exception as error:
         first_error=error;failures.extend(context_diagnostics([('source/'+n,ROOT/n) for n in ('inputs/PUBLIC_COMPILER_SOURCE_CLASSIFICATION.json','bottle_vendor/Formula/agent-crystal.rb','bottle_vendor/test/sdk_source_lock.json','inputs/ALPHA_MAIN.json')],'public-source-provenance-admission','unadmitted-public-source-context',rules))
@@ -145,6 +146,7 @@ def stage(source,output,packet_sha256,retain_clean_refusals=False):
                 except ValueError as error:error.public_diagnostic=source_screen.diagnostic(None,name,raw,source_screen.categories(raw,rules),rules);raise
             else:inspect_payload(name,path,raw,rules,bottle,authority,recognized,metadata_rosters)
             total+=len(raw);need(total<=192*2**20,'Finite192-MiB complete source/evidence bound required');payload[name]=raw
+            if name.startswith('resolved-catalog/'):catalog_modes[name]=row['mode']
         except Exception as error:
             if first_error is None:first_error=error
             failures.append(getattr(error,'public_diagnostic',{'archive_path':None,'member_path':source_screen.safe_path(name,rules),'member_path_sha256':sha(name.encode()),'bytes':None,'sha256':None,'pattern_categories':['input-path-size-or-archive-admission'],'origin_classification':'unadmitted-input','matching_contents_included':False,'error_type':type(error).__name__}))
@@ -154,7 +156,9 @@ def stage(source,output,packet_sha256,retain_clean_refusals=False):
     if first_error is not None and not retain_clean_refusals:raise first_error
     output.mkdir();rows=[]
     for name,raw in payload.items():
-        target=output/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw);need(stable(target)[0]['sha256']==sha(raw),'Exact clean projection copy required');rows.append({'path':name,'bytes':len(raw),'sha256':sha(raw)})
+        target=output/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+        if name in catalog_modes:target.chmod(catalog_modes[name])
+        copied,_=stable(target);need(copied['sha256']==sha(raw) and (name not in catalog_modes or copied['mode']==catalog_modes[name]),'Exact clean projection bytes and catalog mode required');rows.append({'path':name,'bytes':len(raw),'sha256':sha(raw)})
     receipt={'format':'ordinary-public-route-screened-projection-v109','files':rows,'file_count':len(rows),'unqualified_writer_scope':uncertain,'execution_admitted':False,'public_release_publication_admitted':False,'source_manifest_sha256':packet_sha256,'clean_projection_verified':True,'screening_complete':not failures,'refusal_count':len(failures),'recognized_public_source_count':len(recognized),'original_private_inputs_retained_in_owned_workspace':True,'actual_v107_first_refused_member_identified':False}
     write(output/'PUBLIC_STAGE.json',receipt)
     from route_support import revalidate

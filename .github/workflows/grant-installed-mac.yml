@@ -6,16 +6,16 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   PYTHONDONTWRITEBYTECODE: 1
   ROUTE_SOURCE: test/ordinary_public_route
-  ATLAS_ROUTE_PACKET_SHA256: 295286e546e66006c9f5900c0ffd08506c2c5cf9f1ac450723e32472c97ef035
+  ATLAS_ROUTE_PACKET_SHA256: 6f6275d2448a67e8a89f4ab201ccb255c1097e8b316e018976c85a4023fad5f1
   ATLAS_ROUTE_LAUNCH_SHA256: 809cceb5b85bdad8458052a839cc14a66aebd8aeb4d84b8cbf50b65e60d00513
   CAPACITY_SOURCE: test/ordinary_public_route_capacity
-  ATLAS_CAPACITY_PACKET_SHA256: f8614daa4019d889993831e633e61fb42986155c610915dc5e4f1470a0775fd9
+  ATLAS_CAPACITY_PACKET_SHA256: 96d5efaff42f5e6067e6d855e1c1adedf6ef59410ba732fd8e474f51b75870c1
   ATLAS_CAPACITY_DRIVER_SHA256: 7822b36291956e1443ec1d0a015b818175125db323587647f520e78654543ea3
 jobs:
   prepare-public-bottle:
     name: Prepare returned source-qualified bottle on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 135
+    timeout-minutes: 140
     strategy:
       fail-fast: false
       matrix:
@@ -68,6 +68,21 @@ jobs:
               '--python', str(python), '--python-sha256', hashlib.sha256(python.read_bytes()).hexdigest(),
               '--output', str(pathlib.Path(os.environ['RUNNER_TEMP']) / 'ordinary-capacity-controls')]
           runpy.run_path(str(driver), run_name='__main__')
+          PYTHON
+      - name: Verify current Homebrew package catalog controls
+        id: catalog_controls
+        timeout-minutes: 2
+        env:
+          ATLAS_CATALOG_CONTROL_SHA256: 66cae39bcd7615ce28d20f021bafed7be9c17a063cc11e1a2d33dbfe0abccd75
+        run: |
+          python3 -I -S -B - <<'PYTHON'
+          import hashlib, os, pathlib, runpy, sys
+          source = pathlib.Path('test/ordinary_catalog_controls.py').resolve(strict=True)
+          raw = source.read_bytes()
+          if hashlib.sha256(raw).hexdigest() != os.environ['ATLAS_CATALOG_CONTROL_SHA256']:
+              raise SystemExit('Exact catalog control source required')
+          sys.argv = [str(source), '--output', os.environ['RUNNER_TEMP'] + '/ordinary-catalog-controls', os.environ['ATLAS_ROUTE_PACKET_SHA256'], os.environ['ATLAS_CATALOG_CONTROL_SHA256']]
+          runpy.run_path(str(source), run_name='__main__')
           PYTHON
       - name: Detach only the verified current-job setup checkout link
         id: ci_detach
@@ -175,5 +190,15 @@ jobs:
             ${{ runner.temp }}/ordinary-capacity-controls/provider-admission-optimized.stdout.txt
             ${{ runner.temp }}/ordinary-capacity-controls/provider-admission-optimized.stderr.txt
           if-no-files-found: warn
+          include-hidden-files: false
+          retention-days: 30
+      - name: Preserve current package catalog control evidence
+        timeout-minutes: 3
+        if: ${{ always() && steps.catalog_controls.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ordinary-catalog-controls-${{ matrix.os }}
+          path: ${{ runner.temp }}/ordinary-catalog-controls
+          if-no-files-found: error
           include-hidden-files: false
           retention-days: 30
