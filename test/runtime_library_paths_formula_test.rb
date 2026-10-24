@@ -46,6 +46,10 @@ class RuntimeLibraryFormulaTest < Minitest::Test
     @formula = Class.new do
       attr_accessor :pkgshare, :bin, :libexec, :dependencies, :observed_dependency_options
 
+      def formula_opt_lib(name)
+        HOMEBREW_PREFIX / "opt/#{name}/lib"
+      end
+
       def runtime_dependencies(**options)
         self.observed_dependency_options = options
         dependencies
@@ -88,13 +92,19 @@ class RuntimeLibraryFormulaTest < Minitest::Test
       assert_equal((@formula.libexec / "agent-crystal-bin").to_s, row[:target])
       assert_equal("${LD_RUN_PATH:+${LD_RUN_PATH}:}" + paths.join(":"), row[:environment]["LD_RUN_PATH"])
       assert_equal "lib:#{@formula.pkgshare}/src", row[:environment]["CRYSTAL_PATH"]
+      assert_equal expected_pkg_config_path, row[:environment]["PKG_CONFIG_PATH"]
     end
   end
 
   def test_darwin_alias_uses_the_original_environment_template
     OS.linux = false
     @formula.install_wrapper("crystal-alpha")
-    assert_equal({"CRYSTAL_PATH" => "lib:#{@formula.pkgshare}/src"}, $observed_wrappers.values.first[:environment])
+    expected = {"CRYSTAL_PATH" => "lib:#{@formula.pkgshare}/src", "PKG_CONFIG_PATH" => expected_pkg_config_path}
+    assert_equal expected, $observed_wrappers.values.first[:environment]
+  end
+
+  def expected_pkg_config_path
+    "#{@root}/opt/openssl@3/lib/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
   end
 
   def test_missing_linux_manifest_refuses_wrapper_creation

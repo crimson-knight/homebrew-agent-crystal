@@ -5,8 +5,11 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-1"
   sha256 "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05"
   license "Apache-2.0"
-  revision 2
+  revision 3
 
+  # Install `stable`: it is the tagged release tarball verified by the sha256 above.
+  # `head` follows the moving tip of the incremental-compilation branch with no hash,
+  # so it is reserved for compiler development on that branch.
   head "https://github.com/crimson-knight/crystal.git", branch: "incremental-compilation"
 
   livecheck do
@@ -16,7 +19,6 @@ class AgentCrystal < Formula
 
   depends_on "bdw-gc"
   depends_on "gmp"
-  depends_on "libevent"
   depends_on "libyaml"
   depends_on "llvm@21"
   depends_on "openssl@3"
@@ -110,6 +112,20 @@ class AgentCrystal < Formula
     install_completion("fish", "etc/completion.fish", "crystal-alpha")
   end
 
+  def caveats
+    <<~EOS
+      Install the hash-verified stable release:
+        brew install crimson-knight/agent-crystal/agent-crystal
+
+      A keg built with --HEAD reports a version such as HEAD-<commit>. Replace it with
+      the verified release:
+        brew uninstall agent-crystal && brew install crimson-knight/agent-crystal/agent-crystal
+
+      Programs that `require "openssl"` link against #{formula_opt_prefix("openssl@3")},
+      which the compiler wrappers place first on PKG_CONFIG_PATH.
+    EOS
+  end
+
   def runtime_library_paths
     list_of_library_paths = runtime_dependencies(read_from_tab: false, undeclared: false)
                             .map { |dependency| dependency.to_formula.opt_lib }
@@ -121,6 +137,9 @@ class AgentCrystal < Formula
   def install_wrapper(command_name)
     wrapper_env = {}
     wrapper_env["CRYSTAL_PATH"] = "lib:#{pkgshare}/src"
+    # The stdlib resolves libssl/libcrypto through pkg-config; pin it to the declared openssl@3.
+    openssl_pkgconfig = "#{formula_opt_lib("openssl@3")}/pkgconfig"
+    wrapper_env["PKG_CONFIG_PATH"] = "#{openssl_pkgconfig}${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
     if OS.linux?
       list_of_library_paths = (pkgshare/"runtime_library_paths.txt").read.lines(chomp: true)
       wrapper_env["LD_RUN_PATH"] = "${LD_RUN_PATH:+${LD_RUN_PATH}:}#{list_of_library_paths.join(":")}"
