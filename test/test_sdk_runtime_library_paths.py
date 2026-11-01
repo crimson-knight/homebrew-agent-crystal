@@ -13,12 +13,13 @@ from types import SimpleNamespace
 SPEC = importlib.util.spec_from_file_location('runtime_path_sdk_source', Path(__file__).with_name('sdk_install_qualification.py'))
 SDK = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(SDK)
+ALPHA_PACKAGE_VERSION = json.loads(Path(__file__).with_name('sdk_source_lock.json').read_text())['alpha']['installed_package_version']
 
 
 class RuntimePathControls(unittest.TestCase):
     def fixture(self, temporary):
         root = Path(temporary).resolve()
-        prefix = root / 'Cellar/agent-crystal/1.21.0-incremental-1_2'
+        prefix = root / 'Cellar/agent-crystal' / ALPHA_PACKAGE_VERSION
         (root / 'lib').mkdir(); (root / 'opt').mkdir()
         prefix.mkdir(parents=True)
         rows = []
@@ -26,7 +27,7 @@ class RuntimePathControls(unittest.TestCase):
                  'openssl@3': ['ca-certificates'], 'openssl@4': ['ca-certificates'],
                  'pkgconf': [], 'ca-certificates': [], 'libffi': []}
         for name, dependencies in graph.items():
-            version = '1.21.0-incremental-1_2' if name == 'agent-crystal' else '1.0_1'
+            version = ALPHA_PACKAGE_VERSION if name == 'agent-crystal' else '1.0_1'
             directory = root / 'Cellar' / name / version
             directory.mkdir(parents=True, exist_ok=True)
             (directory / '.brew').mkdir()
@@ -162,6 +163,11 @@ class RuntimePathControls(unittest.TestCase):
             self.assertEqual(calls[0][2]['seconds'], 45)
             self.assertEqual(json.loads((root / 'RUNTIME_LIBRARY_PATHS.json').read_text()), value)
 
+    def test_install_revision_is_read_from_the_keg_name(self):
+        self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1'), 0)
+        self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1_2'), 2)
+        self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1_3'), 3)
+
     def test_qualified_revision2_linux_wrapper_refuses_absent_runtime_identity(self):
         with tempfile.TemporaryDirectory() as temporary:
             root, prefix, metadata, manifest, paths = self.fixture(temporary)
@@ -271,7 +277,7 @@ class RuntimePathControls(unittest.TestCase):
             formula = Path(SDK.__file__).parent.parent / 'Formula/agent-crystal.rb'
             (prefix / '.brew/agent-crystal.rb').write_bytes(formula.read_bytes())
             alpha = metadata['formulae'][0]
-            alpha.update(versions=dict(stable=lock['alpha']['source_version']), revision=2,
+            alpha.update(versions=dict(stable=lock['alpha']['source_version']), revision=lock['alpha']['formula_revision'],
                          urls=dict(stable=dict(checksum=lock['alpha']['source_archive_sha256'])))
             alpha['installed'][0].update(version=lock['alpha']['installed_package_version'], poured_from_bottle=False)
             compiler = prefix / 'libexec/agent-crystal-bin'; compiler.parent.mkdir(); compiler.write_bytes(b'synthetic compiler')

@@ -5,8 +5,11 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-1"
   sha256 "2c85084ce5ed4973d7f1f73987ba990b7b16381f60dd8ccc8a92b2bec1203b05"
   license "Apache-2.0"
-  revision 2
+  revision 3
 
+  # Install `stable`: it is the tagged release tarball verified by the sha256 above.
+  # `head` follows the moving tip of the incremental-compilation branch with no hash,
+  # so it is reserved for compiler development on that branch.
   head "https://github.com/crimson-knight/crystal.git", branch: "incremental-compilation"
 
   livecheck do
@@ -108,6 +111,17 @@ class AgentCrystal < Formula
     install_completion("fish", "etc/completion.fish", "acrystal")
     install_completion("fish", "etc/completion.fish", "agent-crystal")
     install_completion("fish", "etc/completion.fish", "crystal-alpha")
+  end
+
+  def caveats
+    <<~EOS
+      Install the hash-verified stable release:
+        brew install crimson-knight/agent-crystal/agent-crystal
+
+      A keg built with --HEAD reports a version such as HEAD-<commit>. Replace it with
+      the verified release:
+        brew uninstall agent-crystal && brew install crimson-knight/agent-crystal/agent-crystal
+    EOS
   end
 
   def runtime_library_paths
