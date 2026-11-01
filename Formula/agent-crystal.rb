@@ -19,6 +19,7 @@ class AgentCrystal < Formula
 
   depends_on "bdw-gc"
   depends_on "gmp"
+  depends_on "libevent"
   depends_on "libyaml"
   depends_on "llvm@21"
   depends_on "openssl@3"
