@@ -13,10 +13,6 @@ from types import SimpleNamespace
 SPEC = importlib.util.spec_from_file_location('runtime_path_sdk_source', Path(__file__).with_name('sdk_install_qualification.py'))
 SDK = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(SDK)
-def openssl_pkg_config_assignment(brew_root):
-    return 'PKG_CONFIG_PATH="' + str(brew_root / 'opt/openssl@3/lib/pkgconfig') + '${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}" '
-
-
 ALPHA_PACKAGE_VERSION = json.loads(Path(__file__).with_name('sdk_source_lock.json').read_text())['alpha']['installed_package_version']
 
 
@@ -148,7 +144,7 @@ class RuntimePathControls(unittest.TestCase):
             root, prefix, metadata, manifest, paths = self.fixture(temporary)
             value = SDK.runtime_dependency_identity(metadata, prefix, root)
             compiler, stdlib = prefix / 'libexec/agent-crystal-bin', prefix / 'share/agent-crystal/src'
-            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" ' + openssl_pkg_config_assignment(root) + 'LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + ':'.join(paths) + '" exec "' + str(compiler) + '"  "$@"\n'
+            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + ':'.join(paths) + '" exec "' + str(compiler) + '"  "$@"\n'
             for alias in ('acrystal', 'agent-crystal', 'crystal-alpha'):
                 SDK.verify_wrapper(wrapper, compiler, stdlib, root, 'Linux', lambda: value)
                 with self.assertRaises(SDK.QualificationError):
@@ -167,20 +163,6 @@ class RuntimePathControls(unittest.TestCase):
             self.assertEqual(calls[0][2]['seconds'], 45)
             self.assertEqual(json.loads((root / 'RUNTIME_LIBRARY_PATHS.json').read_text()), value)
 
-    def test_revision3_wrapper_requires_exact_openssl_pkg_config_path(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root, prefix, metadata, manifest, paths = self.fixture(temporary)
-            self.assertGreaterEqual(SDK.formula_revision_of_install(prefix.name), 3)
-            compiler, stdlib = prefix / 'libexec/agent-crystal-bin', prefix / 'share/agent-crystal/src'
-            value = SDK.runtime_dependency_identity(metadata, prefix, root)
-            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" ' + openssl_pkg_config_assignment(root) + 'LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + ':'.join(paths) + '" exec "' + str(compiler) + '"  "$@"\n'
-            SDK.verify_wrapper(wrapper, compiler, stdlib, root, 'Linux', value)
-            for changed in (wrapper.replace(openssl_pkg_config_assignment(root), ''),
-                            wrapper.replace('openssl@3', 'openssl@4'),
-                            wrapper.replace('${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}', '')):
-                with self.subTest(changed=changed), self.assertRaisesRegex(SDK.QualificationError, 'exact static Homebrew'):
-                    SDK.verify_wrapper(changed, compiler, stdlib, root, 'Linux', value)
-
     def test_install_revision_is_read_from_the_keg_name(self):
         self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1'), 0)
         self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1_2'), 2)
@@ -190,7 +172,7 @@ class RuntimePathControls(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root, prefix, metadata, manifest, paths = self.fixture(temporary)
             compiler, stdlib = prefix / 'libexec/agent-crystal-bin', prefix / 'share/agent-crystal/src'
-            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" ' + openssl_pkg_config_assignment(root) + 'LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + str(root / 'lib') + '" exec "' + str(compiler) + '"  "$@"\n'
+            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + str(root / 'lib') + '" exec "' + str(compiler) + '"  "$@"\n'
             for context in (None, lambda: None):
                 with self.assertRaisesRegex(SDK.QualificationError, 'Qualified revision2'):
                     SDK.verify_wrapper(wrapper, compiler, stdlib, root, 'Linux', context)
@@ -301,7 +283,7 @@ class RuntimePathControls(unittest.TestCase):
             compiler = prefix / 'libexec/agent-crystal-bin'; compiler.parent.mkdir(); compiler.write_bytes(b'synthetic compiler')
             (prefix / 'bin').mkdir(); (root / 'bin').mkdir()
             stdlib = prefix / 'share/agent-crystal/src'; stdlib.mkdir()
-            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" ' + openssl_pkg_config_assignment(root) + 'LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + ':'.join(paths) + '" exec "' + str(compiler) + '"  "$@"\n'
+            wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" LD_RUN_PATH="${LD_RUN_PATH:+${LD_RUN_PATH}:}' + ':'.join(paths) + '" exec "' + str(compiler) + '"  "$@"\n'
             mapping = {}
             for alias in ('acrystal', 'agent-crystal', 'crystal-alpha'):
                 actual = prefix / 'bin' / alias; actual.write_text(wrapper)

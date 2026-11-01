@@ -120,9 +120,6 @@ class AgentCrystal < Formula
       A keg built with --HEAD reports a version such as HEAD-<commit>. Replace it with
       the verified release:
         brew uninstall agent-crystal && brew install crimson-knight/agent-crystal/agent-crystal
-
-      Programs that `require "openssl"` link against #{formula_opt_prefix("openssl@3")},
-      which the compiler wrappers place first on PKG_CONFIG_PATH.
     EOS
   end
 
@@ -137,9 +134,6 @@ class AgentCrystal < Formula
   def install_wrapper(command_name)
     wrapper_env = {}
     wrapper_env["CRYSTAL_PATH"] = "lib:#{pkgshare}/src"
-    # The stdlib resolves libssl/libcrypto through pkg-config; pin it to the declared openssl@3.
-    openssl_pkgconfig = "#{formula_opt_lib("openssl@3")}/pkgconfig"
-    wrapper_env["PKG_CONFIG_PATH"] = "#{openssl_pkgconfig}${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
     if OS.linux?
       list_of_library_paths = (pkgshare/"runtime_library_paths.txt").read.lines(chomp: true)
       wrapper_env["LD_RUN_PATH"] = "${LD_RUN_PATH:+${LD_RUN_PATH}:}#{list_of_library_paths.join(":")}"

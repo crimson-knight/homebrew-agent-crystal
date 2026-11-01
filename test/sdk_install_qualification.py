@@ -215,10 +215,6 @@ def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system, runtime_i
                 "Wrapper source requires literal absolute Homebrew paths")
     parts = [re.escape('CRYSTAL_PATH="lib:' + str(stdlib) + '"')]
     revision = formula_revision_of_install(compiler.parent.parent.name)
-    if revision >= 3:
-        # Revision 3 wrappers place the declared openssl@3 first on PKG_CONFIG_PATH.
-        openssl_pkgconfig = homebrew_prefix / "opt/openssl@3/lib/pkgconfig"
-        parts.append(re.escape('PKG_CONFIG_PATH="' + str(openssl_pkgconfig) + '${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"'))
     if system == "Linux":
         if callable(runtime_identity):
             runtime_identity = runtime_identity()
