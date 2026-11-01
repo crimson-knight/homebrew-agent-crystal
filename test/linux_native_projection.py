@@ -327,14 +327,17 @@ def classify_elf_candidates(roster, pending, seen, result, physical_seen=None):
             need(row['kind'] == 'file' and stat.S_ISREG(observed.st_mode)
                  and stat.S_IMODE(observed.st_mode) == row['mode'], 'ELF candidate requires its current regular-file kind and mode')
             need(observed.st_size == row['bytes'], 'ELF candidate physical size changed')
+            # The change time moves on any write to, or rename of, this inode and cannot be
+            # set back, so a swap that is later restored still leaves a different value.
             identity = {'device': observed.st_dev, 'inode': observed.st_ino,
-                        'bytes': row['bytes'], 'sha256': row['sha256'], 'mode': row['mode']}
+                        'bytes': row['bytes'], 'sha256': row['sha256'], 'mode': row['mode'],
+                        'change_time_ns': observed.st_ctime_ns}
             previous_path = by_path.get(resolved)
-            need(previous_path is None or previous_path == identity, 'ELF candidate physical inode/hash/mode identity changed')
+            need(previous_path is None or previous_path == identity, 'ELF candidate physical inode/hash/mode/change-time identity changed')
             key = (observed.st_dev, observed.st_ino)
             previous = by_key.get(key)
             if previous is not None:
-                need(previous['identity'] == identity, 'ELF physical inode/hash/mode alias identity changed')
+                need(previous['identity'] == identity, 'ELF physical inode/hash/mode/change-time alias identity changed')
                 need(roster.read_file(resolved) == {k: row[k] for k in ('path', 'bytes', 'sha256')},
                      'Previously inspected ELF physical bytes changed')
                 is_elf = previous['is_elf']
@@ -396,7 +399,14 @@ def discover_elf_closure(roster, commands, readelf, initial, cache_map, search_r
                 break
             label = 'elf-wave-' + str(wave)
             entry['command_label'] = label
+            inspected = {path: physical_seen['by_path'][path] for path in active_physical}
             raw = commands.run(label, [readelf, '-W', '-d', '-l', *active_physical])[0]
+            for path, identity in inspected.items():
+                after = Path(path).lstat()
+                need(stat.S_ISREG(after.st_mode) and
+                     (after.st_dev, after.st_ino, after.st_size, stat.S_IMODE(after.st_mode), after.st_ctime_ns) ==
+                     (identity['device'], identity['inode'], identity['bytes'], identity['mode'], identity['change_time_ns']),
+                     'ELF provider changed while readelf ran: ' + path)
             completed += 1
             entry['readelf_completed'] = True
             search_directories = sorted(set(list(search_roots) + elf_search_directories(raw, active_physical)))
@@ -449,6 +459,12 @@ def verify_elf_physical_identities(roster, result):
     observations = result['ELF_physical_return_observations'] = []
     verified = {}
     for row in result.get('ELF_candidate_classifications', []):
+        # Every lexical candidate must still resolve, link by link, to the physical path
+        # that was inspected; Roster.add refuses a retargeted known alias.
+        roster.check()
+        need(roster.add(row['requested_path'], required=True) == row['resolved_path'],
+             'ELF candidate alias resolves elsewhere on final return: ' + row['requested_path'])
+    for row in result.get('ELF_candidate_classifications', []):
         if 'physical_identity' not in row:
             continue
         roster.check()
@@ -458,7 +474,8 @@ def verify_elf_physical_identities(roster, result):
             continue
         before = Path(path).lstat()
         observed = {'device': before.st_dev, 'inode': before.st_ino,
-                    'bytes': before.st_size, 'mode': stat.S_IMODE(before.st_mode)}
+                    'bytes': before.st_size, 'mode': stat.S_IMODE(before.st_mode),
+                    'change_time_ns': before.st_ctime_ns}
         observation = {'path': path, 'expected_identity': expected,
                        'observed_identity': observed, 'verified': False}
         observations.append(observation)

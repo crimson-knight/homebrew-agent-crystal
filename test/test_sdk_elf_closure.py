@@ -110,25 +110,32 @@ class ELFClosureControls(unittest.TestCase):
         alias = self.alias('fresh alias', physical)
         return physical, alias, seen, result, identities
 
-    def test_same_inode_changed_bytes_refuses_and_exact_restoration_succeeds(self):
+    def fresh_collection_accepts(self, physical):
+        roster = native.Roster(reader.file_identity, time.monotonic() + 15)
+        self.assertEqual(native.classify_elf_candidates(roster, [physical], set(), {}, {}), [physical])
+        roster.verify()
+
+    def test_same_inode_changed_bytes_refuses_even_after_exact_restoration(self):
         physical, alias, seen, result, identities = self.retained()
         original = Path(physical).read_bytes()
         Path(physical).write_bytes(original[:-1] + b'X')
-        with self.assertRaisesRegex(RuntimeError, 'bytes changed'):
+        with self.assertRaisesRegex(RuntimeError, 'change-time identity changed'):
             native.classify_elf_candidates(self.roster, [alias], seen, result, identities)
         Path(physical).write_bytes(original)
-        self.assertEqual(native.classify_elf_candidates(self.roster, [alias], seen, result, identities), [])
-        self.roster.verify()
+        with self.assertRaisesRegex(RuntimeError, 'change-time identity changed'):
+            native.classify_elf_candidates(self.roster, [alias], seen, result, identities)
+        self.fresh_collection_accepts(physical)
 
-    def test_changed_mode_refuses_and_exact_restoration_succeeds(self):
+    def test_changed_mode_refuses_even_after_exact_restoration(self):
         physical, alias, seen, result, identities = self.retained()
         mode = Path(physical).stat().st_mode & 0o777
         Path(physical).chmod(mode ^ 0o100)
         with self.assertRaisesRegex(RuntimeError, 'regular-file kind and mode'):
             native.classify_elf_candidates(self.roster, [alias], seen, result, identities)
         Path(physical).chmod(mode)
-        self.assertEqual(native.classify_elf_candidates(self.roster, [alias], seen, result, identities), [])
-        self.roster.verify()
+        with self.assertRaisesRegex(RuntimeError, 'change-time identity changed'):
+            native.classify_elf_candidates(self.roster, [alias], seen, result, identities)
+        self.fresh_collection_accepts(physical)
 
     def test_changed_inode_same_bytes_refuses(self):
         physical, alias, seen, result, identities = self.retained()
@@ -136,11 +143,13 @@ class ELFClosureControls(unittest.TestCase):
         Path(physical).rename(backup)
         Path(physical).write_bytes(backup.read_bytes())
         self.assertNotEqual(Path(physical).stat().st_ino, backup.stat().st_ino)
-        with self.assertRaisesRegex(RuntimeError, 'inode/hash/mode identity'):
+        with self.assertRaisesRegex(RuntimeError, 'change-time identity changed'):
             native.classify_elf_candidates(self.roster, [alias], seen, result, identities)
         Path(physical).unlink()
         backup.rename(physical)
-        self.assertEqual(native.classify_elf_candidates(self.roster, [alias], seen, result, identities), [])
+        with self.assertRaisesRegex(RuntimeError, 'change-time identity changed'):
+            native.classify_elf_candidates(self.roster, [alias], seen, result, identities)
+        self.fresh_collection_accepts(physical)
 
     def test_same_inode_new_hardlink_changed_hash_refuses(self):
         physical, alias, seen, result, identities = self.retained()
@@ -346,7 +355,7 @@ class ELFClosureControls(unittest.TestCase):
             driver_path.write_bytes(original)
         native.pin(driver_path, args.driver_sha256)
 
-    def test_final_physical_return_refuses_replaced_inode_and_exact_restoration(self):
+    def test_final_physical_return_refuses_replaced_inode_even_after_restoration(self):
         physical, alias, seen, result, identities = self.retained()
         native.verify_elf_physical_identities(self.roster, result)
         self.assertTrue(result['ELF_physical_identities_verified_on_return'])
@@ -364,10 +373,11 @@ class ELFClosureControls(unittest.TestCase):
         finally:
             Path(physical).unlink()
             backup.rename(physical)
-        native.verify_elf_physical_identities(self.roster, result)
-        self.assertTrue(result['ELF_physical_identities_verified_on_return'])
-        self.assertTrue(all(row['verified'] for row in result['ELF_physical_return_observations']))
-        self.roster.verify()
+        # Renaming the original inode back moves its change time, so the restored
+        # file is still refused; only a fresh collection accepts it.
+        with self.assertRaisesRegex(RuntimeError, 'physical provider identity changed on final return'):
+            native.verify_elf_physical_identities(self.roster, result)
+        self.fresh_collection_accepts(physical)
 
     def test_missing_interpreter_retains_unresolved_frontier_and_restored_control(self):
         physical = self.binary('main ELF fixture')
@@ -395,6 +405,32 @@ class ELFClosureControls(unittest.TestCase):
         native.verify_elf_physical_identities(roster, restored_result)
         self.assertTrue(restored_result['ELF_physical_identities_verified_on_return'])
         roster.verify()
+
+
+    def test_provider_swapped_and_restored_while_readelf_runs_refuses(self):
+        nodes, edges = self.chain(2)
+        target = Path(nodes[1])
+        def swap(label, argv):
+            if label == 'elf-wave-1':
+                original = target.read_bytes()
+                target.write_bytes(original[:-1] + b'X')
+                target.write_bytes(original)
+        with self.assertRaisesRegex(RuntimeError, 'changed while readelf ran'):
+            self.discovery(nodes, edges, callback=swap)
+
+    def test_final_return_refuses_a_retargeted_candidate_alias(self):
+        nodes, edges = self.chain(2)
+        alias = self.alias('retargeted alias', nodes[1])
+        edges[nodes[0]] = ['libalias.so']
+        value, result, commands = self.discovery(nodes, edges, final_alias=alias)
+        self.assertTrue(value)
+        native.verify_elf_physical_identities(self.roster, result)
+        other = self.binary('other provider')
+        Path(alias).unlink()
+        Path(alias).symlink_to(Path(other).name)
+        with self.assertRaisesRegex(RuntimeError, 'alias changed during collection'):
+            native.verify_elf_physical_identities(self.roster, result)
+        self.assertFalse(result['ELF_physical_identities_verified_on_return'])
 
 
 if __name__ == '__main__':
