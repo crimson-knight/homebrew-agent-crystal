@@ -202,16 +202,27 @@ def collect_runtime_dependency_identity(runner, brew, prefix, brew_root, output,
     return value
 
 
+def formula_revision_of_install(install_name):
+    """Homebrew names a revised keg <version>_<revision>; an unrevised keg has revision 0."""
+    match = re.fullmatch(r".+_([1-9][0-9]*)", install_name)
+    return int(match.group(1)) if match else 0
+
+
 def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system, runtime_identity=None):
     require(system in ("Linux", "Darwin"), "Wrapper platform requires a reviewed template")
     for path in (compiler, stdlib, homebrew_prefix):
         require(path.is_absolute() and not any(character in str(path) for character in ('"', "\\", "$", "`", "\n", "\r")),
                 "Wrapper source requires literal absolute Homebrew paths")
     parts = [re.escape('CRYSTAL_PATH="lib:' + str(stdlib) + '"')]
+    revision = formula_revision_of_install(compiler.parent.parent.name)
+    if revision >= 3:
+        # Revision 3 wrappers place the declared openssl@3 first on PKG_CONFIG_PATH.
+        openssl_pkgconfig = homebrew_prefix / "opt/openssl@3/lib/pkgconfig"
+        parts.append(re.escape('PKG_CONFIG_PATH="' + str(openssl_pkgconfig) + '${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"'))
     if system == "Linux":
         if callable(runtime_identity):
             runtime_identity = runtime_identity()
-        require(compiler.parent.parent.name != "1.21.0-incremental-1_2" or runtime_identity is not None, "Qualified revision2 Linux wrapper requires independently verified runtime identity")
+        require(revision < 2 or runtime_identity is not None, "Qualified revision2 Linux wrapper requires independently verified runtime identity")
         if runtime_identity is not None:
             verify_runtime_dependency_identity(runtime_identity)
         paths = runtime_identity["library_paths"] if runtime_identity is not None else [str(homebrew_prefix / "lib")]
