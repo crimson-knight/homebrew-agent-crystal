@@ -66,7 +66,10 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
 
       - name: Register tap checkout
-        run: brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+        run: |
+          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+          # Homebrew 7 loads formulae from a non-official tap only once they are trusted.
+          brew trust --formula crimson-knight/agent-crystal/agent-crystal
 
       - name: Audit formula
         run: brew audit --strict --online crimson-knight/agent-crystal/agent-crystal
@@ -136,7 +139,7 @@ jobs:
           import os
 
           source = pathlib.Path("test/linux_native_projection.py").resolve()
-          expected = "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          expected = "97996926be4679731f8f71c6ba1f5474b015451116c107a76b8cf2f01fb55e17"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("Native projection collector source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
