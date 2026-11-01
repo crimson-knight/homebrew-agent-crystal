@@ -47,7 +47,8 @@ class ELFClosureControls(unittest.TestCase):
                 if callback:
                     callback(label, argv)
                 lines = []
-                for physical in argv[4:]:
+                snapshots = result['ELF_discovery_waves'][-1]['readelf_snapshots']
+                for physical in [snapshots[value] for value in argv[4:]]:
                     for soname in edges.get(physical, []):
                         lines.append('0x1 (NEEDED) Shared library: [' + soname + ']')
                 return '\n'.join(lines), ''
@@ -396,7 +397,8 @@ class ELFClosureControls(unittest.TestCase):
         interpreter.write_bytes(b'\x7fELF restored synthetic interpreter')
         roster = native.Roster(reader.file_identity, time.monotonic() + 15)
         def restored_metadata(label, argv):
-            return (text if physical in argv[4:] else ''), ''
+            snapshots = restored_result['ELF_discovery_waves'][-1]['readelf_snapshots']
+            return (text if physical in [snapshots[value] for value in argv[4:]] else ''), ''
         restored = types.SimpleNamespace(run=mock.Mock(side_effect=restored_metadata))
         restored_result = {}
         self.assertTrue(native.discover_elf_closure(roster, restored, '/synthetic/readelf', [physical], {}, [], restored_result))
@@ -431,6 +433,33 @@ class ELFClosureControls(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'alias changed during collection'):
             native.verify_elf_physical_identities(self.roster, result)
         self.assertFalse(result['ELF_physical_identities_verified_on_return'])
+
+
+    def test_readelf_reads_private_snapshots_with_the_recorded_bytes(self):
+        nodes, edges = self.chain(2)
+        seen_snapshots = []
+        def inspect(label, argv):
+            for value in argv[4:]:
+                self.assertNotIn(value, nodes)
+                self.assertEqual(Path(value).stat().st_mode & 0o777, 0o400)
+                seen_snapshots.append((value, Path(value).read_bytes()))
+        value, result, commands = self.discovery(nodes, edges, callback=inspect)
+        self.assertTrue(value)
+        originals = {path: Path(path).read_bytes() for path in nodes}
+        mapping = {}
+        for wave in result['ELF_discovery_waves']:
+            mapping.update(wave.get('readelf_snapshots', {}))
+        self.assertEqual(len(seen_snapshots), 2)
+        for snapshot, data in seen_snapshots:
+            self.assertEqual(data, originals[mapping[snapshot]])
+            self.assertFalse(Path(snapshot).exists())
+
+    def test_snapshot_refuses_bytes_that_differ_from_the_recorded_identity(self):
+        physical, alias, seen, result, identities = self.retained()
+        Path(physical).write_bytes(Path(physical).read_bytes()[:-1] + b'X')
+        with tempfile.TemporaryDirectory() as private:
+            with self.assertRaisesRegex(RuntimeError, 'differ from their recorded identity'):
+                native.snapshot_elf_inputs(self.roster, [physical], private)
 
 
 if __name__ == '__main__':

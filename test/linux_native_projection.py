@@ -10,6 +10,7 @@ import platform
 import re
 import shutil
 import stat
+import tempfile
 import sys
 import time
 
@@ -368,6 +369,36 @@ def classify_elf_candidates(roster, pending, seen, result, physical_seen=None):
     return physical
 
 
+def snapshot_elf_inputs(roster, physical, directory):
+    """Copy each provider into a private directory, hashing while copying.
+
+    readelf then reads bytes proven equal to the recorded identity, whatever happens
+    to the original path while it runs.
+    """
+    snapshots = {}
+    for index, path in enumerate(physical):
+        roster.check()
+        row = roster.entries[path]
+        target = Path(directory) / str(index) / Path(path).name
+        target.parent.mkdir(mode=0o700)
+        digest, copied = hashlib.sha256(), 0
+        descriptor = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with Path(path).open('rb') as source, os.fdopen(descriptor, 'wb') as sink:
+            while True:
+                block = source.read(1024 * 1024)
+                if not block:
+                    break
+                copied += len(block)
+                need(copied <= row['bytes'], 'ELF provider grew while it was copied: ' + path)
+                digest.update(block)
+                sink.write(block)
+        need(copied == row['bytes'] and digest.hexdigest() == row['sha256'],
+             'ELF provider bytes differ from their recorded identity: ' + path)
+        os.chmod(target, 0o400)
+        snapshots[str(target)] = path
+    return snapshots
+
+
 def discover_elf_closure(roster, commands, readelf, initial, cache_map, search_roots, result):
     """Inspect at most eight physical ELF waves and retain the exact final frontier."""
     pending, seen, physical_seen = list(initial), set(), {}
@@ -400,7 +431,13 @@ def discover_elf_closure(roster, commands, readelf, initial, cache_map, search_r
             label = 'elf-wave-' + str(wave)
             entry['command_label'] = label
             inspected = {path: physical_seen['by_path'][path] for path in active_physical}
-            raw = commands.run(label, [readelf, '-W', '-d', '-l', *active_physical])[0]
+            with tempfile.TemporaryDirectory(prefix='elf-wave-') as private:
+                os.chmod(private, 0o700)
+                snapshots = snapshot_elf_inputs(roster, active_physical, private)
+                entry['readelf_snapshots'] = dict(snapshots)
+                raw = commands.run(label, [readelf, '-W', '-d', '-l', *snapshots])[0]
+                for snapshot, path in snapshots.items():
+                    need(sha(snapshot) == inspected[path]['sha256'], 'ELF snapshot changed while readelf ran: ' + path)
             for path, identity in inspected.items():
                 after = Path(path).lstat()
                 need(stat.S_ISREG(after.st_mode) and
@@ -486,8 +523,8 @@ def verify_elf_physical_identities(roster, result):
         need(actual == {'path': path, 'bytes': expected['bytes'], 'sha256': expected['sha256']},
              'ELF physical provider bytes changed on final return: ' + path)
         after = Path(path).lstat()
-        need((before.st_dev, before.st_ino, before.st_mode, before.st_size) ==
-             (after.st_dev, after.st_ino, after.st_mode, after.st_size),
+        need((before.st_dev, before.st_ino, before.st_mode, before.st_size, before.st_ctime_ns) ==
+             (after.st_dev, after.st_ino, after.st_mode, after.st_size, after.st_ctime_ns),
              'ELF physical provider changed during final verification: ' + path)
         roster.check()
         observation['verified'] = True
