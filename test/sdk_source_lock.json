@@ -989,13 +989,13 @@
     ]
   },
   "alpha": {
-    "formula_sha256": "bebe20c6bb67e8f7d6475d0373bc241a1607797ac270a870d9d6b36d6fff3d4e",
-    "source_version": "1.21.0-incremental-2",
+    "formula_sha256": "be709c94d8a28ca7826fd7add66c04a541ae490518fea852de7df23558dec8cd",
+    "source_version": "1.21.0-incremental-3",
     "formula_revision": 0,
-    "installed_package_version": "1.21.0-incremental-2",
-    "source_commit": "57c62c3f1b724d383c946391dbf5d090ee872949",
-    "source_archive_sha256": "354e8af7cae6f902f39d1c9d545b85e2fdcc32b8cca631f2d73fdc079888da7c",
-    "stdlib_sha256": "b3ab31c1851f892226020440dd4b39b9f954d3a279f67a800930431b0e3571ce",
+    "installed_package_version": "1.21.0-incremental-3",
+    "source_commit": "946e55e1b73050d0c2b620e8461295a6c60ba2ac",
+    "source_archive_sha256": "580a1220641da5cd6e0750a74f2dc58db55ae56048a2c2144dda37fc6b28d139",
+    "stdlib_sha256": "956d44728971fd669ddb8e4073d494c9b7b65066b4874e37eba6b74e6c229558",
     "stdlib_file_count": 1692,
     "stdlib_directory_aliases": {
       "lib_c/aarch64-android": "aarch64-linux-android",
@@ -1022,8 +1022,8 @@
       "lib_c/x86_64-windows-gnu": "x86_64-windows-msvc"
     },
     "full_versions": {
-      "Linux": "Crystal 1.21.0 (2026-11-01)\n\nLLVM: 21.1.8\nDefault target: x86_64-unknown-linux-gnu\n",
-      "Darwin": "Crystal 1.21.0 (2026-11-01)\n\nLLVM: 21.1.8\nDefault target: aarch64-apple-darwin25.6.0\n"
+      "Linux": "Crystal 1.21.0 (2026-11-02)\n\nLLVM: 21.1.8\nDefault target: x86_64-unknown-linux-gnu\n",
+      "Darwin": "Crystal 1.21.0 (2026-11-02)\n\nLLVM: 21.1.8\nDefault target: aarch64-apple-darwin25.6.0\n"
     }
   },
   "scope": "Same-runner ordinary Alpha install plus package/compiler/spec/tutorial readiness; schema-3 native/Git/frozen-install and customer-device acceptance remain separate."
