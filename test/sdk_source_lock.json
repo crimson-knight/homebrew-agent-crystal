@@ -1022,8 +1022,8 @@
       "lib_c/x86_64-windows-gnu": "x86_64-windows-msvc"
     },
     "full_versions": {
-      "Linux": "Crystal 1.21.0 (2026-07-20)\n\nLLVM: 21.1.8\nDefault target: x86_64-unknown-linux-gnu\n",
-      "Darwin": "Crystal 1.21.0 (2026-07-20)\n\nLLVM: 21.1.8\nDefault target: aarch64-apple-darwin25.6.0\n"
+      "Linux": "Crystal 1.21.0 (2026-11-01)\n\nLLVM: 21.1.8\nDefault target: x86_64-unknown-linux-gnu\n",
+      "Darwin": "Crystal 1.21.0 (2026-11-01)\n\nLLVM: 21.1.8\nDefault target: aarch64-apple-darwin25.6.0\n"
     }
   },
   "scope": "Same-runner ordinary Alpha install plus package/compiler/spec/tutorial readiness; schema-3 native/Git/frozen-install and customer-device acceptance remain separate."
