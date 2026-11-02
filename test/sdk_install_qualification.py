@@ -208,17 +208,26 @@ def formula_revision_of_install(install_name):
     return int(match.group(1)) if match else 0
 
 
+# Kegs of 1.21.0-incremental-1 from before formula revision 2 shipped a Linux wrapper without an
+# independently verified runtime identity. Every later keg requires one, including a later
+# version whose formula revision starts again at 0.
+LEGACY_LINUX_KEGS_WITHOUT_RUNTIME_IDENTITY = ("1.21.0-incremental-1", "1.21.0-incremental-1_1")
+
+
+def requires_linux_runtime_identity(install_name):
+    return install_name not in LEGACY_LINUX_KEGS_WITHOUT_RUNTIME_IDENTITY
+
+
 def verify_wrapper(wrapper, compiler, stdlib, homebrew_prefix, system, runtime_identity=None):
     require(system in ("Linux", "Darwin"), "Wrapper platform requires a reviewed template")
     for path in (compiler, stdlib, homebrew_prefix):
         require(path.is_absolute() and not any(character in str(path) for character in ('"', "\\", "$", "`", "\n", "\r")),
                 "Wrapper source requires literal absolute Homebrew paths")
     parts = [re.escape('CRYSTAL_PATH="lib:' + str(stdlib) + '"')]
-    revision = formula_revision_of_install(compiler.parent.parent.name)
     if system == "Linux":
         if callable(runtime_identity):
             runtime_identity = runtime_identity()
-        require(revision < 2 or runtime_identity is not None, "Qualified revision2 Linux wrapper requires independently verified runtime identity")
+        require(not requires_linux_runtime_identity(compiler.parent.parent.name) or runtime_identity is not None, "Qualified revision2 Linux wrapper requires independently verified runtime identity")
         if runtime_identity is not None:
             verify_runtime_dependency_identity(runtime_identity)
         paths = runtime_identity["library_paths"] if runtime_identity is not None else [str(homebrew_prefix / "lib")]
