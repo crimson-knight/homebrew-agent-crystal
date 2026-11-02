@@ -1,9 +1,9 @@
 class AgentCrystal < Formula
   desc "AgentC-enhanced Crystal compiler with incremental compilation and WASM support"
   homepage "https://github.com/crimson-knight/crystal/tree/incremental-compilation"
-  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-3.tar.gz"
-  version "1.21.0-incremental-3"
-  sha256 "580a1220641da5cd6e0750a74f2dc58db55ae56048a2c2144dda37fc6b28d139"
+  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-4.tar.gz"
+  version "1.21.0-incremental-4"
+  sha256 "ae00ac905491a2d762220a216d707443b76815fb23a9bbfc858947657eb5a25a"
   license "Apache-2.0"
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
