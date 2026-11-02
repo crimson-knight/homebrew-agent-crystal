@@ -168,6 +168,12 @@ class RuntimePathControls(unittest.TestCase):
         self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1_2'), 2)
         self.assertEqual(SDK.formula_revision_of_install('1.21.0-incremental-1_3'), 3)
 
+    def test_only_legacy_kegs_skip_the_linux_runtime_identity(self):
+        self.assertFalse(SDK.requires_linux_runtime_identity('1.21.0-incremental-1'))
+        self.assertFalse(SDK.requires_linux_runtime_identity('1.21.0-incremental-1_1'))
+        self.assertTrue(SDK.requires_linux_runtime_identity('1.21.0-incremental-1_2'))
+        self.assertTrue(SDK.requires_linux_runtime_identity('1.21.0-incremental-2'))
+
     def test_qualified_revision2_linux_wrapper_refuses_absent_runtime_identity(self):
         with tempfile.TemporaryDirectory() as temporary:
             root, prefix, metadata, manifest, paths = self.fixture(temporary)

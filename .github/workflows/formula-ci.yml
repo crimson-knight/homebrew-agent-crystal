@@ -54,7 +54,7 @@ jobs:
           provider = pathlib.Path(sys.executable).resolve()
           sys.argv = [str(source),
               "--driver", "test/sdk_install_qualification.py",
-              "--driver-sha256", "6c59984236dc8c927acb40694c091a20ea298eb40003e064903b18308e9b0585",
+              "--driver-sha256", "8d3850fed7592fb1e891515c17bfcea5a4c9e1c150ddc1045c2a11e0397c4c7b",
               "--source-sha256", expected_source,
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--python-version", platform.python_version(),
@@ -114,7 +114,7 @@ jobs:
           import sys
 
           source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
-          expected = "7b8d8f601abffd0bedbf2280d5dd94e8ffb510e751bd196f182e345653eb4353"
+          expected = "9a76e33512e1edcfc32efa9e0a6ff9004bc0d78d81720bd20634f7e65fc97ea5"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("CPU diagnostic source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
@@ -146,11 +146,11 @@ jobs:
           sys.argv = [str(source),
               "--source-sha256", expected,
               "--driver", "test/sdk_install_qualification.py",
-              "--driver-sha256", "6c59984236dc8c927acb40694c091a20ea298eb40003e064903b18308e9b0585",
+              "--driver-sha256", "8d3850fed7592fb1e891515c17bfcea5a4c9e1c150ddc1045c2a11e0397c4c7b",
               "--linux-reader", "test/linux_projection_identity.py",
               "--linux-reader-sha256", "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb",
               "--source-lock", "test/sdk_source_lock.json",
-              "--source-lock-sha256", "edf0297ce5079b27e2f963a1d13bf29a43fed3da531c58f22dd771d504040c9b",
+              "--source-lock-sha256", "45b32554ab52619cea32d6fa3c562cf751fe85e18eb180e22931ecd6593035c1",
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--repository", str(pathlib.Path.cwd()),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-native-projection")]

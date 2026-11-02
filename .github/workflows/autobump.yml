@@ -62,6 +62,7 @@ jobs:
             -e "s|^  url \".*\"$|  url \"${URL}\"|" \
             -e "s|^  version \".*\"$|  version \"${VERSION}\"|" \
             -e "s|^  sha256 \".*\"$|  sha256 \"${SHA}\"|" \
+            -e "/^  revision [0-9]*$/d" \
             Formula/agent-crystal.rb
           git diff --stat
 
@@ -71,7 +72,10 @@ jobs:
 
       - name: Register tap checkout
         if: steps.detect.outputs.bump == 'true'
-        run: brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+        run: |
+          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+          # Homebrew 7 loads formulae from a non-official tap only once they are trusted.
+          brew trust --formula crimson-knight/agent-crystal/agent-crystal
 
       - name: Audit formula
         if: steps.detect.outputs.bump == 'true'
