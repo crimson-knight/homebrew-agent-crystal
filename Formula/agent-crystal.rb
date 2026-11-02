@@ -1,9 +1,9 @@
 class AgentCrystal < Formula
   desc "AgentC-enhanced Crystal compiler with incremental compilation and WASM support"
   homepage "https://github.com/crimson-knight/crystal/tree/incremental-compilation"
-  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-2.tar.gz"
-  version "1.21.0-incremental-2"
-  sha256 "354e8af7cae6f902f39d1c9d545b85e2fdcc32b8cca631f2d73fdc079888da7c"
+  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-3.tar.gz"
+  version "1.21.0-incremental-3"
+  sha256 "580a1220641da5cd6e0750a74f2dc58db55ae56048a2c2144dda37fc6b28d139"
   license "Apache-2.0"
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
@@ -100,6 +100,7 @@ class AgentCrystal < Formula
     install_wrapper("acrystal")
     install_wrapper("agent-crystal")
     install_wrapper("crystal-alpha")
+    libexec.install "scripts/seed_macro_run.cr"
 
     install_completion("bash", "etc/completion.bash", "acrystal")
     install_completion("bash", "etc/completion.bash", "agent-crystal")
@@ -110,6 +111,18 @@ class AgentCrystal < Formula
     install_completion("fish", "etc/completion.fish", "acrystal")
     install_completion("fish", "etc/completion.fish", "agent-crystal")
     install_completion("fish", "etc/completion.fish", "crystal-alpha")
+  end
+
+  # Compiles the standard library's ECR helper once for this keg, into
+  # pkgshare/macro_run_seed: clean builds of apps that render ECR templates run it
+  # instead of compiling it. It runs after install because the compiler only uses a
+  # seed built by its final executable, which Homebrew relinks at the end of install.
+  def post_install
+    Dir.mktmpdir("agent-crystal-seed") do |cache_dir|
+      with_env(CRYSTAL_CACHE_DIR: cache_dir) do
+        system bin/"crystal-alpha", "run", libexec/"seed_macro_run.cr", "--", bin/"crystal-alpha", pkgshare/"src"
+      end
+    end
   end
 
   def caveats
@@ -173,5 +186,6 @@ class AgentCrystal < Formula
     assert_match "Crystal", shell_output("#{bin}/crystal-alpha --version")
     assert_equal "42\n", shell_output("#{bin}/acrystal eval 'puts 40 + 2'")
     assert_equal "42\n", shell_output("#{bin}/crystal-alpha eval 'puts 40 + 2'")
+    assert_path_exists pkgshare/"macro_run_seed/ecr-process.cr/macro_run"
   end
 end
