@@ -46,6 +46,17 @@ macOS 26 and Ubuntu 24.04. Memory budget tooling records the installed compiler
 backend, standard-library tree and native dependencies in its own reviewed
 toolchain profile.
 
+## Garbage collector
+
+The formula builds its own Boehm collector (bdw-gc 8.2.12, pinned by SHA-256) and
+links it statically into the compiler and into every program the compiler builds.
+The collector's heap blocks match the machine's memory pages, because a free block
+goes back to the operating system only when it covers whole pages: 16 KB on arm64
+macOS, the kernel's page size up to 16 KB on arm64 Linux (4 KB on most kernels),
+and the collector's 4 KB default on x86_64 Linux and every other target. On Apple
+Silicon a churn test returned 120 of 120 MB of freed memory with 16 KB blocks
+against 31 of 117 MB with 4 KB blocks.
+
 ## Verify
 
 ```bash

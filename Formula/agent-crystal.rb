@@ -5,6 +5,7 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-4"
   sha256 "ae00ac905491a2d762220a216d707443b76815fb23a9bbfc858947657eb5a25a"
   license "Apache-2.0"
+  revision 1
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
   # `head` follows the moving tip of the incremental-compilation branch with no hash,
@@ -16,7 +17,7 @@ class AgentCrystal < Formula
     regex(/^v?(\d+(?:\.\d+)+(?:-[A-Za-z0-9.-]+)?)$/i)
   end
 
-  depends_on "bdw-gc"
+  depends_on "cmake" => :build
   depends_on "gmp"
   depends_on "libevent"
   depends_on "libyaml"
@@ -49,6 +50,14 @@ class AgentCrystal < Formula
     end
   end
 
+  # The Boehm collector the compiler and every program it builds link statically.
+  # Its heap blocks match the target's memory pages, so each free block is whole
+  # pages and goes back to the operating system (see `gc_heap_block_size`).
+  resource "bdw-gc" do
+    url "https://github.com/bdwgc/bdwgc/releases/download/v8.2.12/gc-8.2.12.tar.gz"
+    sha256 "42e5194ad06ab6ffb806c83eb99c03462b495d979cda782f3c72c08af833cd4e"
+  end
+
   def install
     llvm = deps.find { |dep| dep.name.match?(/^llvm(@\d+)?$/) }
                .to_formula
@@ -70,7 +79,42 @@ class AgentCrystal < Formula
     crystal_install_dir = libexec
     stdlib_install_dir = pkgshare
 
-    config_library_path = "\\$$ORIGIN/#{HOMEBREW_PREFIX.relative_path_from(crystal_install_dir)}/lib"
+    # Build bdw-gc with Homebrew's `bdw-gc` formula options as a static library in
+    # libexec/gc, and run the collector's own tests against the chosen block size.
+    resource("bdw-gc").stage do
+      gc_args = %w[
+        -Denable_cplusplus=ON
+        -Denable_large_config=ON
+        -Dwithout_libatomic_ops=OFF
+        -Dwith_libatomic_ops=OFF
+        -DBUILD_SHARED_LIBS=OFF
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+        -Dbuild_tests=ON
+      ]
+      if gc_heap_block_size != 4_096
+        gc_args << "-DCMAKE_C_FLAGS=-DHBLKSIZE=#{gc_heap_block_size}"
+        gc_args << "-DCMAKE_CXX_FLAGS=-DHBLKSIZE=#{gc_heap_block_size}"
+      end
+
+      system "cmake", "-S", ".", "-B", "build",
+             *gc_args, *std_cmake_args(install_prefix: libexec/"gc"),
+             "-DBUILD_TESTING=ON" # Pass this *after* `std_cmake_args`
+      system "cmake", "--build", "build"
+      system "ctest", "--test-dir", "build",
+             "--parallel", ENV.make_jobs,
+             "--output-on-failure",
+             "--repeat", "until-pass:3"
+      system "cmake", "--install", "build"
+    end
+
+    # The collector's folder comes first at build time and in the installed compiler's
+    # default library path: the linker takes the first folder that holds a libgc.
+    ENV.prepend_path "CRYSTAL_LIBRARY_PATH", gc_lib
+
+    config_library_path = [
+      "\\$$ORIGIN/#{gc_lib.relative_path_from(crystal_install_dir)}",
+      "\\$$ORIGIN/#{HOMEBREW_PREFIX.relative_path_from(crystal_install_dir)}/lib",
+    ].join(":")
     config_path = "\\$$ORIGIN/#{stdlib_install_dir.relative_path_from(crystal_install_dir)}/src"
 
     release_flags = ["release=true", "FLAGS=--no-debug"]
@@ -136,6 +180,24 @@ class AgentCrystal < Formula
     EOS
   end
 
+  def gc_lib
+    libexec/"gc/lib"
+  end
+
+  # Heap block size the collector is built with, in bytes. A free block goes back
+  # to the operating system only when it covers whole memory pages, and the
+  # collector's incremental mode requires the page size to be a multiple of the
+  # block size. arm64 macOS has 16 KB pages, so it gets 16 KB blocks. arm64 Linux
+  # kernels have 4 KB, 16 KB or 64 KB pages, so it gets the page size of the
+  # machine running the build, up to 16 KB. Every other target keeps the
+  # collector's 4 KB default, which matches x86_64 pages.
+  def gc_heap_block_size
+    return 4_096 if Hardware::CPU.arch != :arm64
+    return 16_384 if OS.mac?
+
+    Etc.sysconf(Etc::SC_PAGESIZE).clamp(4_096, 16_384)
+  end
+
   def runtime_library_paths
     list_of_library_paths = runtime_dependencies(read_from_tab: false, undeclared: false)
                             .map { |dependency| dependency.to_formula.opt_lib }
@@ -187,5 +249,20 @@ class AgentCrystal < Formula
     assert_equal "42\n", shell_output("#{bin}/acrystal eval 'puts 40 + 2'")
     assert_equal "42\n", shell_output("#{bin}/crystal-alpha eval 'puts 40 + 2'")
     assert_path_exists pkgshare/"macro_run_seed/ecr-process.cr/macro_run"
+
+    # A program built by the installed compiler carries this formula's collector:
+    # it loads no shared libgc, and the collector reports the block size chosen
+    # for this target. The largest small-object size class is half a block.
+    (testpath/"gc_block_size.cr").write <<~CRYSTAL
+      list_of_block_sizes = {65_536, 32_768, 16_384, 8_192, 4_096}
+      block_size = list_of_block_sizes.find do |candidate|
+        LibGC.size(GC.malloc((candidate // 2 - 24).to_u64)) == candidate // 2
+      end
+      puts "heap block size: \#{block_size}"
+    CRYSTAL
+    system bin/"crystal-alpha", "build", "gc_block_size.cr", "-o", "gc_block_size"
+    list_of_shared_libraries = shell_output(OS.mac? ? "otool -L gc_block_size" : "ldd gc_block_size")
+    refute_match(/libgc\b/, list_of_shared_libraries)
+    assert_equal "heap block size: #{gc_heap_block_size}\n", shell_output("./gc_block_size")
   end
 end
