@@ -50,12 +50,15 @@ toolchain profile.
 
 The formula builds its own Boehm collector (bdw-gc 8.2.12, pinned by SHA-256) and
 links it statically into the compiler and into every program the compiler builds.
-The collector's heap blocks match the machine's memory pages, because a free block
-goes back to the operating system only when it covers whole pages: 16 KB on arm64
-macOS, the kernel's page size up to 16 KB on arm64 Linux (4 KB on most kernels),
-and the collector's 4 KB default on x86_64 Linux and every other target. On Apple
-Silicon a churn test returned 120 of 120 MB of freed memory with 16 KB blocks
-against 31 of 117 MB with 4 KB blocks.
+The collector's heap blocks are sized for the machine's memory pages, because a free
+block goes back to the operating system only when it covers whole pages. On arm64
+macOS (16 KB pages) the programs the compiler builds get 8 KB blocks, two of which
+fill a page, and the compiler itself gets 16 KB blocks. On arm64 Linux both use the
+kernel's page size up to 16 KB (4 KB on most kernels), and on x86_64 Linux and every
+other target the collector's 4 KB default. On Apple Silicon an Amber app under load
+peaked at 21.5 MiB with 8 KB blocks, against 21.9 MiB with 4 KB and 25.2 MiB with
+16 KB. The compiler spent 81 to 84 s collecting to the end of IR generation of a
+300-model Grant app with 16 KB blocks, against 93 s with 8 KB and 120 s with 4 KB.
 
 ## Verify
 

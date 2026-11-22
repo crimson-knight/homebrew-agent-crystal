@@ -5,6 +5,7 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-5"
   sha256 "25f6f94bdf670e3d83a5270ec88e8c533c2369e737e9eb4dbeb4e2a11207f368"
   license "Apache-2.0"
+  revision 1
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
   # `head` follows the moving tip of the incremental-compilation branch with no hash,
@@ -50,8 +51,8 @@ class AgentCrystal < Formula
   end
 
   # The Boehm collector the compiler and every program it builds link statically.
-  # Its heap blocks match the target's memory pages, so each free block is whole
-  # pages and goes back to the operating system (see `gc_heap_block_size`).
+  # Its heap blocks are sized for the target's memory pages, so free blocks fill
+  # whole pages and go back to the operating system (see `gc_heap_block_size`).
   resource "bdw-gc" do
     url "https://github.com/bdwgc/bdwgc/releases/download/v8.2.12/gc-8.2.12.tar.gz"
     sha256 "42e5194ad06ab6ffb806c83eb99c03462b495d979cda782f3c72c08af833cd4e"
@@ -78,37 +79,21 @@ class AgentCrystal < Formula
     crystal_install_dir = libexec
     stdlib_install_dir = pkgshare
 
-    # Build bdw-gc with Homebrew's `bdw-gc` formula options as a static library in
-    # libexec/gc, and run the collector's own tests against the chosen block size.
-    resource("bdw-gc").stage do
-      gc_args = %w[
-        -Denable_cplusplus=ON
-        -Denable_large_config=ON
-        -Dwithout_libatomic_ops=OFF
-        -Dwith_libatomic_ops=OFF
-        -DBUILD_SHARED_LIBS=OFF
-        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-        -Dbuild_tests=ON
-      ]
-      if gc_heap_block_size != 4_096
-        gc_args << "-DCMAKE_C_FLAGS=-DHBLKSIZE=#{gc_heap_block_size}"
-        gc_args << "-DCMAKE_CXX_FLAGS=-DHBLKSIZE=#{gc_heap_block_size}"
-      end
-
-      system "cmake", "-S", ".", "-B", "build",
-             *gc_args, *std_cmake_args(install_prefix: libexec/"gc"),
-             "-DBUILD_TESTING=ON" # Pass this *after* `std_cmake_args`
-      system "cmake", "--build", "build"
-      system "ctest", "--test-dir", "build",
-             "--parallel", ENV.make_jobs,
-             "--output-on-failure",
-             "--repeat", "until-pass:3"
-      system "cmake", "--install", "build"
+    # Build bdw-gc with Homebrew's `bdw-gc` formula options as static libraries, and
+    # run the collector's own tests against each block size: one in libexec/gc for
+    # the programs the compiler builds, and, where the compiler is better served by
+    # another block size, one linked into the compiler alone.
+    build_collector(gc_heap_block_size, libexec/"gc")
+    compiler_gc_lib = gc_lib
+    if compiler_gc_heap_block_size != gc_heap_block_size
+      build_collector(compiler_gc_heap_block_size, buildpath/"gc-compiler")
+      compiler_gc_lib = buildpath/"gc-compiler/lib"
     end
 
-    # The collector's folder comes first at build time and in the installed compiler's
-    # default library path: the linker takes the first folder that holds a libgc.
-    ENV.prepend_path "CRYSTAL_LIBRARY_PATH", gc_lib
+    # The compiler's collector comes first at build time; the programs' collector
+    # comes first in the installed compiler's default library path. The linker takes
+    # the first folder that holds a libgc.
+    ENV.prepend_path "CRYSTAL_LIBRARY_PATH", compiler_gc_lib
 
     config_library_path = [
       "\\$$ORIGIN/#{gc_lib.relative_path_from(crystal_install_dir)}",
@@ -183,18 +168,60 @@ class AgentCrystal < Formula
     libexec/"gc/lib"
   end
 
-  # Heap block size the collector is built with, in bytes. A free block goes back
-  # to the operating system only when it covers whole memory pages, and the
-  # collector's incremental mode requires the page size to be a multiple of the
-  # block size. arm64 macOS has 16 KB pages, so it gets 16 KB blocks. arm64 Linux
-  # kernels have 4 KB, 16 KB or 64 KB pages, so it gets the page size of the
-  # machine running the build, up to 16 KB. Every other target keeps the
-  # collector's 4 KB default, which matches x86_64 pages.
+  # Builds bdw-gc with `block_size`-byte heap blocks into `prefix`, after its own tests pass.
+  def build_collector(block_size, prefix)
+    resource("bdw-gc").stage do
+      gc_args = %w[
+        -Denable_cplusplus=ON
+        -Denable_large_config=ON
+        -Dwithout_libatomic_ops=OFF
+        -Dwith_libatomic_ops=OFF
+        -DBUILD_SHARED_LIBS=OFF
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+        -Dbuild_tests=ON
+      ]
+      if block_size != 4_096
+        gc_args << "-DCMAKE_C_FLAGS=-DHBLKSIZE=#{block_size}"
+        gc_args << "-DCMAKE_CXX_FLAGS=-DHBLKSIZE=#{block_size}"
+      end
+
+      system "cmake", "-S", ".", "-B", "build",
+             *gc_args, *std_cmake_args(install_prefix: prefix),
+             "-DBUILD_TESTING=ON" # Pass this *after* `std_cmake_args`
+      system "cmake", "--build", "build"
+      system "ctest", "--test-dir", "build",
+             "--parallel", ENV.make_jobs,
+             "--output-on-failure",
+             "--repeat", "until-pass:3"
+      system "cmake", "--install", "build"
+    end
+  end
+
+  # Heap block size of the collector in the programs the compiler builds, in bytes.
+  # A free block goes back to the operating system only when it covers whole memory
+  # pages, and the collector's incremental mode requires the page size to be a
+  # multiple of the block size. arm64 macOS has 16 KB pages and gets 8 KB blocks: a
+  # pair of free neighbors fills a page, and a small server keeps the 4 KB peak (an
+  # Amber app under load peaked at 21.5 MiB with 8 KB blocks, 21.9 MiB with 4 KB
+  # and 25.2 MiB with 16 KB). arm64 Linux kernels have 4 KB, 16 KB or 64 KB pages,
+  # so it gets the page size of the machine running the build, up to 16 KB. Every
+  # other target keeps the collector's 4 KB default, which matches x86_64 pages.
   def gc_heap_block_size
     return 4_096 if Hardware::CPU.arch != :arm64
-    return 16_384 if OS.mac?
+    return 8_192 if OS.mac?
 
     Etc.sysconf(Etc::SC_PAGESIZE).clamp(4_096, 16_384)
+  end
+
+  # Heap block size of the collector linked into the compiler itself, in bytes. The
+  # compiler frees gigabytes between stages, so on arm64 macOS it keeps 16 KB
+  # blocks, which return every free block: to the end of IR generation of a
+  # 300-model Grant app, 81 to 84 s of collection against 93 s with 8 KB blocks and
+  # 120 s with 4 KB. Every other target uses the programs' block size.
+  def compiler_gc_heap_block_size
+    return 16_384 if Hardware::CPU.arch == :arm64 && OS.mac?
+
+    gc_heap_block_size
   end
 
   def runtime_library_paths
@@ -263,5 +290,10 @@ class AgentCrystal < Formula
     list_of_shared_libraries = shell_output(OS.mac? ? "otool -L gc_block_size" : "ldd gc_block_size")
     refute_match(/libgc\b/, list_of_shared_libraries)
     assert_equal "heap block size: #{gc_heap_block_size}\n", shell_output("./gc_block_size")
+
+    # The compiler's own collector starts its heap with 64 blocks.
+    compiler_first_heap_kib = compiler_gc_heap_block_size * 64 / 1024
+    assert_match "Grow heap to #{compiler_first_heap_kib} KiB",
+                 shell_output("GC_PRINT_STATS=1 #{bin}/crystal-alpha --version 2>&1")
   end
 end
