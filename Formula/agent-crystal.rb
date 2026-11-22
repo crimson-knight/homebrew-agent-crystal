@@ -1,9 +1,9 @@
 class AgentCrystal < Formula
   desc "AgentC-enhanced Crystal compiler with incremental compilation and WASM support"
   homepage "https://github.com/crimson-knight/crystal/tree/incremental-compilation"
-  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-5.tar.gz"
-  version "1.21.0-incremental-5"
-  sha256 "25f6f94bdf670e3d83a5270ec88e8c533c2369e737e9eb4dbeb4e2a11207f368"
+  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-6.tar.gz"
+  version "1.21.0-incremental-6"
+  sha256 "4230eb0f99fce3e27782d68b4d4d2860772c644dc7a33ce7676aee48d2898e03"
   license "Apache-2.0"
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
@@ -263,5 +263,22 @@ class AgentCrystal < Formula
     list_of_shared_libraries = shell_output(OS.mac? ? "otool -L gc_block_size" : "ldd gc_block_size")
     refute_match(/libgc\b/, list_of_shared_libraries)
     assert_equal "heap block size: #{gc_heap_block_size}\n", shell_output("./gc_block_size")
+
+    # Regex and YAML run on the Mica engines by default, so a program links
+    # neither PCRE2 nor libyaml. Each C library is one flag away.
+    (testpath/"engines.cr").write <<~CRYSTAL
+      require "yaml"
+      list_of_numbers = "a1b22".scan(/[0-9]+/).map(&.[0])
+      puts "\#{Regex::Engine} \#{list_of_numbers.join(",")} \#{YAML.parse("port: 3000")["port"]}"
+    CRYSTAL
+    library_listing = OS.mac? ? "otool -L" : "ldd"
+    system bin/"crystal-alpha", "build", "engines.cr", "-o", "engines_default"
+    assert_equal "Regex::MicaEngine 1,22 3000\n", shell_output("./engines_default")
+    refute_match(/libpcre|libyaml/, shell_output("#{library_listing} engines_default"))
+    system bin/"crystal-alpha", "build", "-Duse_pcre2", "-Duse_libyaml", "engines.cr", "-o", "engines_c"
+    assert_equal "Regex::PCRE2 1,22 3000\n", shell_output("./engines_c")
+    list_of_c_libraries = shell_output("#{library_listing} engines_c")
+    assert_match(/libpcre2-8/, list_of_c_libraries)
+    assert_match(/libyaml/, list_of_c_libraries)
   end
 end
