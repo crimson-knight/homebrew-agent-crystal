@@ -5,6 +5,7 @@ class AgentCrystal < Formula
   version "1.21.0-incremental-5"
   sha256 "25f6f94bdf670e3d83a5270ec88e8c533c2369e737e9eb4dbeb4e2a11207f368"
   license "Apache-2.0"
+  revision 1
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
   # `head` follows the moving tip of the incremental-compilation branch with no hash,
@@ -50,8 +51,8 @@ class AgentCrystal < Formula
   end
 
   # The Boehm collector the compiler and every program it builds link statically.
-  # Its heap blocks match the target's memory pages, so each free block is whole
-  # pages and goes back to the operating system (see `gc_heap_block_size`).
+  # Its heap blocks are sized for the target's memory pages, so free blocks fill
+  # whole pages and go back to the operating system (see `gc_heap_block_size`).
   resource "bdw-gc" do
     url "https://github.com/bdwgc/bdwgc/releases/download/v8.2.12/gc-8.2.12.tar.gz"
     sha256 "42e5194ad06ab6ffb806c83eb99c03462b495d979cda782f3c72c08af833cd4e"
@@ -186,13 +187,16 @@ class AgentCrystal < Formula
   # Heap block size the collector is built with, in bytes. A free block goes back
   # to the operating system only when it covers whole memory pages, and the
   # collector's incremental mode requires the page size to be a multiple of the
-  # block size. arm64 macOS has 16 KB pages, so it gets 16 KB blocks. arm64 Linux
-  # kernels have 4 KB, 16 KB or 64 KB pages, so it gets the page size of the
-  # machine running the build, up to 16 KB. Every other target keeps the
-  # collector's 4 KB default, which matches x86_64 pages.
+  # block size. arm64 macOS has 16 KB pages and gets 8 KB blocks: a pair of free
+  # neighbors fills a page, and a small server keeps the 4 KB peak (16 KB blocks
+  # raised an Amber app from 21.9 to 25.2 MiB and left it at 20.1 MiB after load,
+  # where 8 KB blocks peak at 21.5 and settle at 17.6). arm64 Linux kernels have
+  # 4 KB, 16 KB or 64 KB pages, so it gets the page size of the machine running
+  # the build, up to 16 KB. Every other target keeps the collector's 4 KB
+  # default, which matches x86_64 pages.
   def gc_heap_block_size
     return 4_096 if Hardware::CPU.arch != :arm64
-    return 16_384 if OS.mac?
+    return 8_192 if OS.mac?
 
     Etc.sysconf(Etc::SC_PAGESIZE).clamp(4_096, 16_384)
   end
