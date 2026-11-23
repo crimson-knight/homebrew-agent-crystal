@@ -108,6 +108,13 @@ class AgentCrystal < Formula
     ]
     crystal_build_opts << "CRYSTAL_CONFIG_BUILD_COMMIT=#{Utils.git_short_head}" if build.head?
 
+    # `crystal --version` prints the date in SOURCE_DATE_EPOCH. Homebrew sets it from
+    # the time of the build, so pass the release tarball's own date: the version string
+    # is then the same on every day the compiler is built.
+    source_date_epoch = (buildpath/"src/SOURCE_DATE_EPOCH").read.strip
+    odie "src/SOURCE_DATE_EPOCH is not Unix seconds: #{source_date_epoch}" unless source_date_epoch.match?(/\A\d+\z/)
+    ENV["SOURCE_DATE_EPOCH"] = source_date_epoch
+
     (buildpath/".build").mkpath
     system "make", "deps"
     system "make", "llvm_ext"
