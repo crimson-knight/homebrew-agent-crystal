@@ -1,9 +1,9 @@
 class AgentCrystal < Formula
   desc "AgentC-enhanced Crystal compiler with incremental compilation and WASM support"
   homepage "https://github.com/crimson-knight/crystal/tree/incremental-compilation"
-  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-8.tar.gz"
-  version "1.21.0-incremental-8"
-  sha256 "832ffc5b3bb517f5e66e612d9719519026fedfe93b9263155b9b5f0c12086946"
+  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.21.0-incremental-9.tar.gz"
+  version "1.21.0-incremental-9"
+  sha256 "8993da91acc4296d822c6d5f3a508282318ed624887c85cd95521f184753bcd8"
   license "Apache-2.0"
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
@@ -151,12 +151,16 @@ class AgentCrystal < Formula
   # pkgshare/macro_run_seed: clean builds of apps that render ECR templates run it
   # instead of compiling it. It runs after install because the compiler only uses a
   # seed built by its final executable, which Homebrew relinks at the end of install.
-  def post_install
-    Dir.mktmpdir("agent-crystal-seed") do |cache_dir|
-      with_env(CRYSTAL_CACHE_DIR: cache_dir) do
-        system bin/"crystal-alpha", "run", libexec/"seed_macro_run.cr", "--", bin/"crystal-alpha", pkgshare/"src"
-      end
-    end
+  # The compiler cache for that one run lives in Homebrew's temporary folder and is
+  # removed afterward.
+  post_install_steps do
+    remove "agent-crystal-seed-cache", base: :temp, recursive: true
+    run "crystal-alpha", base:           :bin,
+                         args:           ["run", "{{libexec}}/seed_macro_run.cr", "--",
+                                          "{{bin}}/crystal-alpha", "{{pkgshare}}/src"],
+                         env:            { "CRYSTAL_CACHE_DIR" => "{{temp}}/agent-crystal-seed-cache" },
+                         writable_paths: ["{{pkgshare}}", "{{temp}}/agent-crystal-seed-cache"]
+    remove "agent-crystal-seed-cache", base: :temp, recursive: true
   end
 
   def caveats
