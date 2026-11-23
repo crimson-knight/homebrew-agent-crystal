@@ -151,12 +151,16 @@ class AgentCrystal < Formula
   # pkgshare/macro_run_seed: clean builds of apps that render ECR templates run it
   # instead of compiling it. It runs after install because the compiler only uses a
   # seed built by its final executable, which Homebrew relinks at the end of install.
-  def post_install
-    Dir.mktmpdir("agent-crystal-seed") do |cache_dir|
-      with_env(CRYSTAL_CACHE_DIR: cache_dir) do
-        system bin/"crystal-alpha", "run", libexec/"seed_macro_run.cr", "--", bin/"crystal-alpha", pkgshare/"src"
-      end
-    end
+  # The compiler cache for that one run lives in Homebrew's temporary folder and is
+  # removed afterward.
+  post_install_steps do
+    remove "agent-crystal-seed-cache", base: :temp, recursive: true
+    run "crystal-alpha", base:           :bin,
+                         args:           ["run", "{{libexec}}/seed_macro_run.cr", "--",
+                                          "{{bin}}/crystal-alpha", "{{pkgshare}}/src"],
+                         env:            { "CRYSTAL_CACHE_DIR" => "{{temp}}/agent-crystal-seed-cache" },
+                         writable_paths: ["{{pkgshare}}", "{{temp}}/agent-crystal-seed-cache"]
+    remove "agent-crystal-seed-cache", base: :temp, recursive: true
   end
 
   def caveats
