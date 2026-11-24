@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "sdk": {
-    "commit": "58c20acfed71e27cbcf207014f29d7c7b53dab18",
-    "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/58c20acfed71e27cbcf207014f29d7c7b53dab18",
-    "archive_sha256": "3a6d9c982ece74ef3b72eea0e2569bbfe31cd1767b3c4c7e8723d8f5f6d4b9bf",
-    "archive_bytes": 8369770,
+    "commit": "1bcad5894e50c337cce8d1f6a98af0eeeb33e1f6",
+    "url": "https://codeload.github.com/amberframework/memory_budget/tar.gz/1bcad5894e50c337cce8d1f6a98af0eeeb33e1f6",
+    "archive_sha256": "f25334e5ee275090ef009ba565eb0c973ddb4e2df8a12f194cc492226acda4c4",
+    "archive_bytes": 8372074,
     "files": [
       {
         "file": ".github/workflows/docs.yml",
@@ -42,6 +42,13 @@
         "sha256": "ae050ba7506d647c4c0e74fc5a9f99056d600e003f637ae186ab4bb55b16d2ea"
       },
       {
+        "file": "CHANGELOG.md",
+        "mode": "100644",
+        "git_blob": "459013f215bd47c0119456b427bd9fbf6ba7b05c",
+        "bytes": 1352,
+        "sha256": "4253876fd7c7c7a51b46771dec26349a14bbdfe8767d1f90342e08d9e5281df2"
+      },
+      {
         "file": "LICENSE",
         "mode": "100644",
         "git_blob": "69e248c1d6d9dd08785da3e4ee4a2ac9e3750d82",
@@ -58,16 +65,16 @@
       {
         "file": "PACKAGE_PINS.json",
         "mode": "100644",
-        "git_blob": "b3dfbe89b6b1c470be6c8463323f69e3509974a3",
+        "git_blob": "fa37394286a94e915273654878516158fab405a3",
         "bytes": 10171,
-        "sha256": "7cde7c36e16a241153f6e12d88da2830c10cacec0ece46c5ff5e9712e15a19bd"
+        "sha256": "a8cfa3dbf7ab3c8440fee0be8d86eb9cd25022e5f1ddf150dd28e573a5eae767"
       },
       {
         "file": "README.md",
         "mode": "100644",
-        "git_blob": "f110a77ef73bd1fab7ab4596386b1a024d300add",
-        "bytes": 15466,
-        "sha256": "4eb42fddef1c6da2980153c9d2f096588b8a5d17750e29c882fc588e2ded3367"
+        "git_blob": "db3c1e5ce2ba736ebdb95bba3aec07a681bda026",
+        "bytes": 15652,
+        "sha256": "154ba1c954c5e969028363a2dada4d4d37bdc054e9f35e16b1f4475f6715c9a1"
       },
       {
         "file": "docs/0.1.1/capabilities.md",
@@ -191,16 +198,16 @@
       {
         "file": "runtime_overlay/crystal/system/thread.cr",
         "mode": "100644",
-        "git_blob": "f95709191d12840ebbcbc2a6d03579e3519aceea",
-        "bytes": 7140,
-        "sha256": "7f5126246b4d2eae8e8128ad64077bde8f6504325f7f0d2e804686c227eb8e47"
+        "git_blob": "e894841eaa8c1a29d940178d76912207b38fba86",
+        "bytes": 8383,
+        "sha256": "3f93e4f218d9b55930a1cd488b7aad7a87861155518adf27009d9623707c68e3"
       },
       {
         "file": "runtime_overlay/fiber.cr",
         "mode": "100644",
-        "git_blob": "305466a52898ed6fe221b9e1a634669adf5cf271",
-        "bytes": 13393,
-        "sha256": "2f1eefd6cac6065ec2e15bd8d7a02e1e19ceda91faf6282220c209efe5e68093"
+        "git_blob": "1675bb0135bd47c69dfee060a52a862effc123d3",
+        "bytes": 12527,
+        "sha256": "4b1dad11bee1ef9af8c6df184d3c36bb6df14119b6876b7c044f0a7bf4a03402"
       },
       {
         "file": "runtime_overlay/fiber/allocation_tally.cr",
@@ -212,16 +219,16 @@
       {
         "file": "runtime_overlay/gc/boehm.cr",
         "mode": "100644",
-        "git_blob": "26961c69713e86d0b0aac602305be2ee0ad92b60",
-        "bytes": 18894,
-        "sha256": "342b192533eb2e3b5fd82d8ab7a74f35512fb12d69f8b49d2fc7de1fa2d9474b"
+        "git_blob": "45cdaa2fae04f43c30a9b029bf0367e95e7eb948",
+        "bytes": 20468,
+        "sha256": "6d84360c39591415c76eda71affea5ef9bc8d287ba79e5b9d3eef1a456b09a29"
       },
       {
         "file": "runtime_overlay/manifest.json",
         "mode": "100644",
-        "git_blob": "908ab30fa2bb9804338b4c451014de82d0459ecb",
+        "git_blob": "adc857acba3c390af15b8d6c3befc1365f57755a",
         "bytes": 653,
-        "sha256": "9f54bd1b56e15bee0b139bf2ae7396867b11d63ded7d7f0d849b698552d25fe3"
+        "sha256": "3fee2014d4901e797376cabcca77edf8824d4512d57d06cf830e18b276b287ba"
       },
       {
         "file": "scripts/budget.rb",
@@ -324,9 +331,9 @@
       {
         "file": "shard.yml",
         "mode": "100644",
-        "git_blob": "84de242ac300edf9bc2e2ec31316458e4e8f831d",
+        "git_blob": "6b7f789dffcdb71b9a8f5a361c2074cfb208e811",
         "bytes": 313,
-        "sha256": "1241d9353c290a5f72b4e05014e48e22084f8405f757952388f547b7fae400ba"
+        "sha256": "ffef6db16cbd3b09489a3cefc21c98bb37e83282ab64dcf27c35d40b68c8f367"
       },
       {
         "file": "skills/crystal-memory-budgets/SKILL.md",

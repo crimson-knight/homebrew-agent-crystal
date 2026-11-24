@@ -114,7 +114,7 @@ jobs:
           import sys
 
           source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
-          expected = "9ff945f65662740a6944221281f926d3acad9c59b79493b5dc247757b462072c"
+          expected = "dba6e1db0546bde442a920f83dde708cd0b808c242159eb427194a286cdde789"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("CPU diagnostic source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
@@ -150,7 +150,7 @@ jobs:
               "--linux-reader", "test/linux_projection_identity.py",
               "--linux-reader-sha256", "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb",
               "--source-lock", "test/sdk_source_lock.json",
-              "--source-lock-sha256", "ed2bf04bed74e0c00decc90b86b900ffd15c3014c462f06b041863d8b140f6b5",
+              "--source-lock-sha256", "94415267f1c4e1cb7d3c4f39532066047bd58522fa1687ef17372a357b632087",
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--repository", str(pathlib.Path.cwd()),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-native-projection")]
