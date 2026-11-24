@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: autobump
@@ -64,6 +65,9 @@ jobs:
             -e "s|^  sha256 \".*\"$|  sha256 \"${SHA}\"|" \
             -e "/^  revision [0-9]*$/d" \
             Formula/agent-crystal.rb
+          # The bottles pinned for the previous version do not fit the new one; the
+          # Bottles workflow writes the new block after this push.
+          ruby -e 'p = "Formula/agent-crystal.rb"; File.write(p, File.read(p).sub(/^  bottle do\n.*?^  end\n\n/m, ""))'
           git diff --stat
 
       - name: Set up Homebrew
@@ -119,3 +123,9 @@ jobs:
           git add Formula/agent-crystal.rb
           git commit -m "agent-crystal ${{ steps.detect.outputs.latest }} (autobump)"
           git push origin HEAD:main
+
+      - name: Build and publish bottles for the new version
+        if: steps.detect.outputs.bump == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run bottles.yml --ref main

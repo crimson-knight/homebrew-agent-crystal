@@ -35,6 +35,17 @@ def sha256(path):
         return digest.hexdigest()
 
 
+def formula_sha256(path):
+    """SHA-256 of the formula without its bottle block.
+
+    The Bottles workflow writes that block after each release; the reviewed
+    formula is everything else, so publishing bottles keeps this pin.
+    """
+    text = pathlib.Path(path).read_text()
+    text = re.sub(r"^  bottle do\n.*?^  end\n\n", "", text, count=1, flags=re.M | re.S)
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
 def write_json(path, value):
     pathlib.Path(path).write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
 
@@ -595,7 +606,7 @@ def qualify(output, lock):
         require(len(manifest_rows) == 1, "SDK source lock requires its unique bundle manifest")
         bundle_manifest_sha256 = manifest_rows[0]["sha256"]
         repository = pathlib.Path(__file__).resolve().parent.parent
-        require(sha256(repository / "Formula/agent-crystal.rb") == lock["alpha"]["formula_sha256"], "Alpha formula differs from its accepted source")
+        require(formula_sha256(repository / "Formula/agent-crystal.rb") == lock["alpha"]["formula_sha256"], "Alpha formula differs from its accepted source")
         brew = shutil.which("brew")
         require(brew is not None, "Ordinary Homebrew installation is required")
         prefix_text, _ = runner.run("brew-prefix", [brew, "--prefix", "agent-crystal"], cwd=source, seconds=45)
@@ -605,7 +616,7 @@ def qualify(output, lock):
         receipt_text, _ = runner.run("brew-receipt", [brew, "info", "--json=v2", "agent-crystal"], cwd=source, seconds=45)
         receipt = json.loads(receipt_text)["formulae"]
         verify_formula_receipt(receipt, lock["alpha"])
-        require(sha256(prefix / ".brew/agent-crystal.rb") == lock["alpha"]["formula_sha256"], "Installed formula source differs")
+        require(formula_sha256(prefix / ".brew/agent-crystal.rb") == lock["alpha"]["formula_sha256"], "Installed formula source differs")
         shutil.copyfile(prefix / ".brew/agent-crystal.rb", output / "INSTALLED_FORMULA.rb")
         shutil.copyfile(prefix / "INSTALL_RECEIPT.json", output / "INSTALL_RECEIPT.json")
         package_inputs = {str(path): sha256(path) for path in (repository / "Formula/agent-crystal.rb", prefix / ".brew/agent-crystal.rb", prefix / "INSTALL_RECEIPT.json", pathlib.Path(__file__), pathlib.Path(__file__).with_name("sdk_source_lock.json"))}

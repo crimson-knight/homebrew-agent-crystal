@@ -346,7 +346,7 @@ def collect(args):
         receipt = commands.run('brew-alpha-info', [brew, 'info', '--json=v2', 'agent-crystal'])[0]
         driver.verify_formula_receipt(json.loads(receipt)['formulae'], lock['alpha'])
         for source in (args.repository / 'Formula/agent-crystal.rb', prefix / '.brew/agent-crystal.rb'):
-            pin(source, lock['alpha']['formula_sha256']); roster.add(source, required=True)
+            need(driver.formula_sha256(source) == lock['alpha']['formula_sha256'], 'Formula SHA-256 mismatch: ' + str(source)); roster.add(source, required=True)
         for name in ('INSTALL_RECEIPT.json', '.brew/agent-crystal.rb'):
             roster.add(prefix / name, required=True)
             shutil.copyfile(prefix / name, output / Path(name).name)

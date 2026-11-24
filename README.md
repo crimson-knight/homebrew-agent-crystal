@@ -46,6 +46,46 @@ macOS 26 and Ubuntu 24.04. Memory budget tooling records the installed compiler
 backend, standard-library tree and native dependencies in its own reviewed
 toolchain profile.
 
+## Prebuilt bottles
+
+`brew install` pours a prebuilt bottle on macOS arm64, Linux arm64 and Linux
+x86_64, so installing takes seconds. Each bottle is an asset of the tap release
+`agent-crystal-<version>`, and the formula pins each one by SHA-256 in its
+`bottle do` block. Other platforms, and `--build-from-source`, build the compiler
+from the hash-pinned release tarball.
+
+Every version ships with bottles. After the formula moves to a new version
+(autobump starts this itself):
+
+```bash
+gh workflow run bottles.yml -R crimson-knight/homebrew-agent-crystal --ref main
+```
+
+The workflow builds and tests a bottle on each platform, checks each file against
+the SHA-256 `brew bottle` recorded, publishes the release assets, writes the
+`bottle do` block, and then installs from the tap on each platform and requires
+that Homebrew poured the bottle.
+
+The SDK checks pin the formula without its `bottle do` block, so publishing
+bottles keeps every reviewed pin. After any other edit to the formula or to a
+pinned test script, run `ruby scripts/repin_formula.rb` and review the diff.
+
+## Lean by default
+
+Programs link no C library for Regex, YAML, text encodings or compression: Mica
+runs them in Crystal. The formula therefore installs only what the compiler and a
+default Amber V2 app need (llvm@21, openssl@3, pkgconf). Each C library is one flag
+away; install it before building with that flag:
+
+| Build with | Install |
+|---|---|
+| `-Duse_pcre2` | `brew install pcre2` |
+| `-Duse_libyaml` | `brew install libyaml` |
+| `-Devloop=libevent` | `brew install libevent` |
+| `require "big"` | `brew install gmp` |
+
+When one is missing, the compiler's link error names the flag and the command.
+
 ## Garbage collector
 
 The formula builds its own Boehm collector (bdw-gc 8.2.12, pinned by SHA-256) and
