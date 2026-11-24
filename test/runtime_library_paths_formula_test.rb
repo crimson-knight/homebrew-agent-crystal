@@ -133,13 +133,13 @@ class ReleaseDateFormulaTest < Minitest::Test
   end
 
   def test_install_replaces_the_build_time_with_the_tarball_release_date
-    (@formula.buildpath / "src/SOURCE_DATE_EPOCH").write("1784160000\n")
+    (@formula.buildpath / "src/SOURCE_DATE_EPOCH").write("1794528000\n")
     @formula.apply_release_date
-    assert_equal "1784160000", ENV["SOURCE_DATE_EPOCH"]
+    assert_equal "1794528000", ENV["SOURCE_DATE_EPOCH"]
   end
 
   def test_release_date_that_is_not_unix_seconds_stops_the_build
-    (@formula.buildpath / "src/SOURCE_DATE_EPOCH").write("2026-07-16\n")
+    (@formula.buildpath / "src/SOURCE_DATE_EPOCH").write("2026-11-13\n")
     assert_raises(ArgumentError) { @formula.apply_release_date }
     assert_equal "1795392000", ENV["SOURCE_DATE_EPOCH"]
   end

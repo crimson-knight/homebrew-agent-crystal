@@ -113,15 +113,15 @@ class StandardLibraryTest(unittest.TestCase):
 
 class FormulaReceiptTest(unittest.TestCase):
     def test_requires_exact_source_and_one_actual_source_build(self):
-        expected = {"source_version": "1.21.0-incremental-1", "formula_revision": 1,
-                    "installed_package_version": "1.21.0-incremental-1_1", "source_archive_sha256": "a" * 64}
+        expected = {"source_version": "1.22.3-incremental-1", "formula_revision": 1,
+                    "installed_package_version": "1.22.3-incremental-1_1", "source_archive_sha256": "a" * 64}
         receipt = [{"versions": {"stable": expected["source_version"]}, "revision": 1,
                     "urls": {"stable": {"checksum": expected["source_archive_sha256"]}},
                     "installed": [{"version": expected["installed_package_version"], "poured_from_bottle": False}]}]
         SDK.verify_formula_receipt(receipt, expected)
         mutations = []
         changed = copy.deepcopy(receipt)
-        changed[0]["versions"]["stable"] = "1.22.0"
+        changed[0]["versions"]["stable"] = "1.21.0-incremental-10"
         mutations.append(changed)
         changed = copy.deepcopy(receipt)
         changed[0]["revision"] = 0
@@ -166,7 +166,7 @@ class CompilerWrapperTest(unittest.TestCase):
 
     def test_accepts_static_darwin_wrapper_with_spaces(self):
         prefix = pathlib.Path("/ordinary prefix with spaces")
-        compiler = prefix / "Cellar/agent-crystal/1.21.0-incremental-1/libexec/agent-crystal-bin"
+        compiler = prefix / "Cellar/agent-crystal/1.22.3-incremental-1/libexec/agent-crystal-bin"
         stdlib = compiler.parent.parent / "share/agent-crystal/src"
         wrapper = '#!/bin/bash\nCRYSTAL_PATH="lib:' + str(stdlib) + '" exec "' + str(compiler) + '" "$@"\n'
         SDK.verify_wrapper(wrapper, compiler, stdlib, prefix, "Darwin")
