@@ -54,7 +54,7 @@ jobs:
           provider = pathlib.Path(sys.executable).resolve()
           sys.argv = [str(source),
               "--driver", "test/sdk_install_qualification.py",
-              "--driver-sha256", "8d3850fed7592fb1e891515c17bfcea5a4c9e1c150ddc1045c2a11e0397c4c7b",
+              "--driver-sha256", "5edada502a1d2d32173bc581a8d2259b6957a39c85052a0f3c443c89467d1a85",
               "--source-sha256", expected_source,
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--python-version", platform.python_version(),
@@ -114,7 +114,7 @@ jobs:
           import sys
 
           source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
-          expected = "dba6e1db0546bde442a920f83dde708cd0b808c242159eb427194a286cdde789"
+          expected = "5f2105301d4d8803a9397abf6a3efa07d58e490fc7d119eaa29144fa83412fda"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("CPU diagnostic source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
@@ -139,18 +139,18 @@ jobs:
           import os
 
           source = pathlib.Path("test/linux_native_projection.py").resolve()
-          expected = "d496fffaf31a6e9ec1869892054d4282c6190e2851fac0f8c2b7d39eae1f865c"
+          expected = "bd2e2f15f0aefe862d6953a13cbf7e939aa3551275f620ddc6a742e00fa63c4c"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("Native projection collector source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
           sys.argv = [str(source),
               "--source-sha256", expected,
               "--driver", "test/sdk_install_qualification.py",
-              "--driver-sha256", "8d3850fed7592fb1e891515c17bfcea5a4c9e1c150ddc1045c2a11e0397c4c7b",
+              "--driver-sha256", "5edada502a1d2d32173bc581a8d2259b6957a39c85052a0f3c443c89467d1a85",
               "--linux-reader", "test/linux_projection_identity.py",
               "--linux-reader-sha256", "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb",
               "--source-lock", "test/sdk_source_lock.json",
-              "--source-lock-sha256", "94415267f1c4e1cb7d3c4f39532066047bd58522fa1687ef17372a357b632087",
+              "--source-lock-sha256", "aab282b69a0a984eba2a9f08887608472939b43248822f44287274d2fb94f945",
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--repository", str(pathlib.Path.cwd()),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-native-projection")]

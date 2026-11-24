@@ -17,12 +17,14 @@ class AgentCrystal < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "gmp"
-  depends_on "libevent"
-  depends_on "libyaml"
+  # The test builds a program with -Duse_pcre2 -Duse_libyaml to prove each C library
+  # is one flag away. Programs need these only when they pass those flags.
+  depends_on "libyaml" => :test
+  depends_on "pcre2" => :test
   depends_on "llvm@21"
+  # Every default Amber V2 app still links OpenSSL (stdlib Digest::SHA256 and the
+  # TLS listener), so the formula installs it.
   depends_on "openssl@3"
-  depends_on "pcre2"
   depends_on "pkgconf"
 
   uses_from_macos "libffi"
@@ -171,6 +173,15 @@ class AgentCrystal < Formula
       A keg built with --HEAD reports a version such as HEAD-<commit>. Replace it with
       the verified release:
         brew uninstall agent-crystal && brew install crimson-knight/agent-crystal/agent-crystal
+
+      Programs start lean: Regex, YAML, text encodings and compression run on Mica,
+      written in Crystal, and link no C library. Each C library is one flag away;
+      install it before building with that flag:
+        -Duse_pcre2          brew install pcre2
+        -Duse_libyaml        brew install libyaml
+        -Devloop=libevent    brew install libevent
+        require "big"        brew install gmp
+      When one is missing, the compiler's link error names the flag and the command.
     EOS
   end
 

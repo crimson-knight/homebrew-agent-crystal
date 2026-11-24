@@ -1,0 +1,181 @@
+name: Bottles
+
+# Builds prebuilt bottles of the formula's current version on macOS arm64, Linux
+# arm64 and Linux x86_64, publishes them as assets of the tap release
+# agent-crystal-<version>, writes the bottle block (each bottle pinned by sha256)
+# into the formula, and pushes to main. The SDK checks pin the formula without its
+# bottle block, so this commit keeps every reviewed pin. A last job installs from the tap on each platform and requires that
+# Homebrew poured the bottle.
+#
+# Run it after every version change of the formula (autobump starts it):
+#   gh workflow run bottles.yml -R crimson-knight/homebrew-agent-crystal --ref main
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: bottles
+  cancel-in-progress: false
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  HOMEBREW_NO_INSTALL_FROM_API: 1
+  FORMULA: crimson-knight/agent-crystal/agent-crystal
+
+jobs:
+  build:
+    name: "${{ matrix.os }} bottle"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - macos-26
+          - ubuntu-24.04-arm
+          - ubuntu-24.04
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      - name: Register tap checkout
+        run: |
+          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+          # Homebrew 7 loads formulae from a non-official tap only once they are trusted.
+          brew trust --formula "$FORMULA"
+
+      - name: Build for bottling
+        run: brew install --build-bottle "$FORMULA"
+
+      - name: Write the bottle
+        run: |
+          VERSION=$(brew info --json=v2 "$FORMULA" | ruby -rjson -e 'puts JSON.parse(STDIN.read)["formulae"][0]["versions"]["stable"]')
+          mkdir -p bottles && cd bottles
+          brew bottle --json \
+            --root-url="https://github.com/crimson-knight/homebrew-agent-crystal/releases/download/agent-crystal-${VERSION}" \
+            "$FORMULA"
+          ls -l
+
+      # --build-bottle leaves out the post-install step, so the ECR seed is built
+      # here, after the bottle is written, and the bottle carries no seed.
+      - name: Post-install and formula test
+        run: |
+          brew postinstall "$FORMULA"
+          brew test "$FORMULA"
+
+      - name: Keep the bottle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bottle-${{ matrix.os }}
+          path: bottles/
+          if-no-files-found: error
+
+  publish:
+    name: Publish bottles and pin them in the formula
+    needs: build
+    runs-on: macos-26
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    outputs:
+      commit: ${{ steps.push.outputs.commit }}
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      - name: Register tap checkout
+        run: |
+          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+          brew trust --formula "$FORMULA"
+
+      - name: Collect bottles
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          pattern: bottle-*
+          path: bottles
+          merge-multiple: true
+
+      - name: Check each bottle against its sha256 and name it for upload
+        run: ruby scripts/prepare_bottle_assets.rb bottles
+
+      - name: Publish the release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(cat bottles/release_tag.txt)
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" bottles/upload/* --clobber
+          else
+            gh release create "$TAG" bottles/upload/* --title "$TAG bottles" --notes-file bottles/release_notes.md
+          fi
+
+      - name: Write the bottle block
+        run: |
+          brew bottle --merge --write --no-commit bottles/*.bottle.json
+          cp "$(brew --repository crimson-knight/agent-crystal)/Formula/agent-crystal.rb" Formula/agent-crystal.rb
+          ruby test/runtime_library_paths_formula_test.rb
+          PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p 'test_sdk_*.py'
+          git diff --stat
+
+      - name: Commit and push
+        id: push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/agent-crystal.rb
+          git commit -m "$(cat bottles/release_tag.txt): bottles for $(cat bottles/bottle_tags.txt)"
+          git push origin HEAD:main
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  verify:
+    name: "${{ matrix.os }} pours the bottle"
+    needs: publish
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-26
+          - ubuntu-24.04-arm
+          - ubuntu-24.04
+    steps:
+      - name: Check out the published tap
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.publish.outputs.commit }}
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      - name: Register tap checkout
+        run: |
+          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+          brew trust --formula "$FORMULA"
+
+      - name: Install from the bottle
+        run: |
+          brew install "$FORMULA"
+          POURED=$(brew info --json=v2 --installed "$FORMULA" | ruby -rjson -e 'puts JSON.parse(STDIN.read)["formulae"][0]["installed"][0]["poured_from_bottle"]')
+          echo "poured_from_bottle=$POURED"
+          test "$POURED" = "true"
+
+      - name: Smoke test and formula test
+        run: |
+          acrystal --version
+          test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
+          brew test "$FORMULA"
