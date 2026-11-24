@@ -5,8 +5,8 @@ tests, and installer-script round trip. The added step uses that same installati
 to exercise the exact public Memory Budget source candidate on macOS and Linux.
 
 `sdk_source_lock.json` binds public SDK commit
-`58c20acfed71e27cbcf207014f29d7c7b53dab18`, its codeload archive,
-all 140 Git blobs and modes, the accepted Alpha formula, its exact source archive and version,
+`1bcad5894e50c337cce8d1f6a98af0eeeb33e1f6`, its codeload archive,
+all 141 Git blobs and modes, the accepted Alpha formula, its exact source archive and version,
 and the complete source-derived standard-library digest. The 22 standard-library
 directory aliases carry their own exact target roster.
 
