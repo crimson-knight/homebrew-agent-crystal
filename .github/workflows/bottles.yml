@@ -116,10 +116,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG=$(cat bottles/release_tag.txt)
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" bottles/upload/* --clobber
+          # The tap checkout is registered with Homebrew, which changes its remotes, so
+          # gh is told the repository.
+          if gh release view "$TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" bottles/upload/* -R "$GITHUB_REPOSITORY" --clobber
           else
-            gh release create "$TAG" bottles/upload/* --title "$TAG bottles" --notes-file bottles/release_notes.md
+            gh release create "$TAG" bottles/upload/* -R "$GITHUB_REPOSITORY" --title "$TAG bottles" --notes-file bottles/release_notes.md
           fi
 
       - name: Write the bottle block
