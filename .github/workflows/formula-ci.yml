@@ -78,6 +78,12 @@ jobs:
         id: formula_source_install
         run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
 
+      # The formula test builds with -Duse_pcre2 -Duse_libyaml, and the SDK checks
+      # build Grant programs that use BigDecimal (GMP) and SQLite. The formula leaves
+      # these to the programs that ask for them, so CI installs them here.
+      - name: Install the libraries the tests build with
+        run: brew install pcre2 libyaml gmp sqlite
+
       - name: Smoke test commands
         run: |
           acrystal --version

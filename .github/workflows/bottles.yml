@@ -67,6 +67,7 @@ jobs:
       # here, after the bottle is written, and the bottle carries no seed.
       - name: Post-install and formula test
         run: |
+          brew install pcre2 libyaml
           brew postinstall "$FORMULA"
           brew test "$FORMULA"
 
@@ -178,4 +179,5 @@ jobs:
         run: |
           acrystal --version
           test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
+          brew install pcre2 libyaml
           brew test "$FORMULA"
