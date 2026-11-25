@@ -3,7 +3,7 @@ name: Bottles
 # Builds prebuilt bottles of the formula's current version on macOS arm64, Linux
 # arm64 and Linux x86_64, publishes them as assets of the tap release
 # agent-crystal-<version>, writes the bottle block (each bottle pinned by sha256)
-# into the formula, and pushes to main. The SDK checks pin the formula without its
+# into the formula, and pushes to main, then runs verify-bottles.yml on that commit. The SDK checks pin the formula without its
 # bottle block, so this commit keeps every reviewed pin. A last job installs from the tap on each platform and requires that
 # Homebrew poured the bottle.
 #
@@ -150,43 +150,9 @@ jobs:
           echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   verify:
-    name: "${{ matrix.os }} pours the bottle"
     needs: publish
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
     permissions:
       contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - macos-26
-          - ubuntu-24.04-arm
-          - ubuntu-24.04
-    steps:
-      - name: Check out the published tap
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: ${{ needs.publish.outputs.commit }}
-
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
-
-      - name: Register tap checkout
-        run: |
-          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
-          brew trust --formula "$FORMULA"
-
-      - name: Install from the bottle
-        run: |
-          brew install "$FORMULA"
-          POURED=$(brew info --json=v2 --installed "$FORMULA" | ruby -rjson -e 'puts JSON.parse(STDIN.read)["formulae"][0]["installed"][0]["poured_from_bottle"]')
-          echo "poured_from_bottle=$POURED"
-          test "$POURED" = "true"
-
-      - name: Smoke test and formula test
-        run: |
-          acrystal --version
-          test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
-          brew install pcre2 libyaml
-          brew test "$FORMULA"
+    uses: ./.github/workflows/verify-bottles.yml
+    with:
+      ref: ${{ needs.publish.outputs.commit }}
