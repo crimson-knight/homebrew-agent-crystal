@@ -16,6 +16,14 @@ class AgentCrystal < Formula
     regex(/^v?(\d+(?:\.\d+)+(?:-[A-Za-z0-9.-]+)?)$/i)
   end
 
+  bottle do
+    root_url "https://github.com/crimson-knight/homebrew-agent-crystal/releases/download/agent-crystal-1.22.3-incremental-3"
+    rebuild 1
+    sha256 cellar: :any, arm64_tahoe:  "edede66c94b4d3420b7e266ccab52909e6d3fd509db758dde8c3d8176988a952"
+    sha256 cellar: :any, arm64_linux:  "9180e53fe51099f8f122a243a8f7cc5dd82028e04fe6960b16bc0918dec82ce6"
+    sha256 cellar: :any, x86_64_linux: "8a0e63c5d9a9be1319629cc436725c5b3a9d389c647ce78873737cb2097f20e1"
+  end
+
   depends_on "cmake" => :build
   # The test builds a program with -Duse_pcre2 -Duse_libyaml to prove each C library
   # is one flag away. Programs need these only when they pass those flags.
