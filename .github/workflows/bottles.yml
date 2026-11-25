@@ -127,7 +127,10 @@ jobs:
       - name: Write the bottle block
         run: |
           brew bottle --merge --write --no-commit bottles/*.bottle.json
-          cp "$(brew --repository crimson-knight/agent-crystal)/Formula/agent-crystal.rb" Formula/agent-crystal.rb
+          # On macOS the registered tap is this checkout, so the file is already here.
+          TAPPED_FORMULA="$(brew --repository crimson-knight/agent-crystal)/Formula/agent-crystal.rb"
+          [ "$TAPPED_FORMULA" -ef Formula/agent-crystal.rb ] || cp "$TAPPED_FORMULA" Formula/agent-crystal.rb
+          grep -q "^  bottle do" Formula/agent-crystal.rb
           ruby test/runtime_library_paths_formula_test.rb
           PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p 'test_sdk_*.py'
           git diff --stat
