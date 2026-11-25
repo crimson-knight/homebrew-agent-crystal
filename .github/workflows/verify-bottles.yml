@@ -1,0 +1,67 @@
+name: Verify bottles
+
+# Installs the formula on main from its published bottles on macOS arm64, Linux
+# arm64 and Linux x86_64, requires Homebrew to have poured each bottle (downloaded
+# and checked against the sha256 in the formula), and runs the formula test.
+# The Bottles workflow calls it after publishing; run it by hand any time:
+#   gh workflow run verify-bottles.yml -R crimson-knight/homebrew-agent-crystal --ref main
+#
+# --force-bottle: on the GitHub runners Homebrew built from source although the
+# same formula pours on an ordinary Mac (2026-11-25), so this job asks for the
+# bottle explicitly and still fails unless it was poured.
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+
+permissions: {}
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  FORMULA: crimson-knight/agent-crystal/agent-crystal
+
+jobs:
+  verify:
+    name: "${{ matrix.os }} pours the bottle"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-26
+          - ubuntu-24.04-arm
+          - ubuntu-24.04
+    steps:
+      - name: Check out the published tap
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.ref || 'main' }}
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      - name: Register tap checkout
+        run: |
+          brew tap --custom-remote crimson-knight/agent-crystal "$PWD"
+          brew trust --formula "$FORMULA"
+
+      - name: Install from the bottle
+        run: |
+          brew install --force-bottle "$FORMULA"
+          POURED=$(brew info --json=v2 "$FORMULA" | ruby -rjson -e 'puts JSON.parse(STDIN.read)["formulae"][0]["installed"][0]["poured_from_bottle"]')
+          echo "poured_from_bottle=$POURED"
+          test "$POURED" = "true"
+
+      - name: Smoke test and formula test
+        run: |
+          acrystal --version
+          test "$(crystal-alpha eval 'puts 40 + 2')" = "42"
+          brew install pcre2 libyaml
+          brew test "$FORMULA"
