@@ -1,9 +1,9 @@
 class AgentCrystal < Formula
   desc "AgentC-enhanced Crystal compiler with incremental compilation and WASM support"
   homepage "https://github.com/crimson-knight/crystal/tree/incremental-compilation"
-  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.22.3-incremental-2.tar.gz"
-  version "1.22.3-incremental-2"
-  sha256 "61fa886f25d2679abed92ce6117d6b0ef29f4aaa5652a72cf5a2bf53f3f151a3"
+  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.22.3-incremental-3.tar.gz"
+  version "1.22.3-incremental-3"
+  sha256 "790b77c65d65123615266e143e831d67a80dd62c39625fc14e027d9e9518b8db"
   license "Apache-2.0"
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
@@ -14,14 +14,6 @@ class AgentCrystal < Formula
   livecheck do
     url "https://github.com/crimson-knight/crystal/releases"
     regex(/^v?(\d+(?:\.\d+)+(?:-[A-Za-z0-9.-]+)?)$/i)
-  end
-
-  bottle do
-    root_url "https://github.com/crimson-knight/homebrew-agent-crystal/releases/download/agent-crystal-1.22.3-incremental-2"
-    rebuild 1
-    sha256 cellar: :any, arm64_tahoe:  "7c3d78fd195e442485b7250b6cf5360c6a4e66f45c056180e65d3e8a52a4277e"
-    sha256 cellar: :any, arm64_linux:  "b0fc039e361bcea9e1a90dab2f4e1b57cf0c10a68054b5a019c5e05386ed1157"
-    sha256 cellar: :any, x86_64_linux: "603b93017f77bde9b29383ebfda727f68ab4491495e53fdfb2c6a7e7352525bd"
   end
 
   depends_on "cmake" => :build
