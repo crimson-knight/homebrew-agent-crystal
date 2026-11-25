@@ -996,13 +996,13 @@
     ]
   },
   "alpha": {
-    "formula_sha256": "25ebdbdbdf053ba1cc594afce02c1ae86d3694892a9434c3504e3f9965b4c8e5",
-    "source_version": "1.22.3-incremental-3",
+    "formula_sha256": "bb8f1c7c19dec3e7c51612c3b3e2e3614b57dd65f7801126aa13d305fe5330fd",
+    "source_version": "1.22.3-incremental-4",
     "formula_revision": 0,
-    "installed_package_version": "1.22.3-incremental-3",
-    "source_commit": "3923a40905a2c00983bfc61dbf2688e7a9bffd2f",
-    "source_archive_sha256": "790b77c65d65123615266e143e831d67a80dd62c39625fc14e027d9e9518b8db",
-    "stdlib_sha256": "e67ee42785eb46f6a835586b0d3099607db10e6672ff84a39fb7412e62043fde",
+    "installed_package_version": "1.22.3-incremental-4",
+    "source_commit": "b9b8ba04ec40b13e620ef1035ec4d51a24d4f287",
+    "source_archive_sha256": "7a7af1bde5927cf71b401f30d551ace173d6c0d17661987f4a347586fff99ee3",
+    "stdlib_sha256": "762a9135041852bd9d9a51ef52ab0bd4a3275af785e1b5c50b52c0f8c47d01ee",
     "stdlib_file_count": 2041,
     "stdlib_directory_aliases": {
       "lib_c/aarch64-android": "aarch64-linux-android",

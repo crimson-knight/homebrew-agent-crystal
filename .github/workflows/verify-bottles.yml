@@ -6,9 +6,10 @@ name: Verify bottles
 # The Bottles workflow calls it after publishing; run it by hand any time:
 #   gh workflow run verify-bottles.yml -R crimson-knight/homebrew-agent-crystal --ref main
 #
-# --force-bottle: on the GitHub runners Homebrew built from source although the
-# same formula pours on an ordinary Mac (2026-11-25), so this job asks for the
-# bottle explicitly and still fails unless it was poured.
+# setup-homebrew checks out the commit that triggered the run, which for a call
+# from Bottles predates the bottle block; the job therefore checks out the
+# requested ref again before installing. --force-bottle makes a missing bottle
+# fail the job instead of building from source.
 
 on:
   workflow_dispatch:
@@ -46,6 +47,19 @@ jobs:
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+
+      # setup-homebrew moves the tap into the workspace and checks out the commit
+      # that triggered the run. Called from the Bottles workflow, that commit
+      # predates the bottle block, so this step puts the tap at the commit under test.
+      - name: Put the tap at the commit under test
+        env:
+          COMMIT: ${{ inputs.ref || 'main' }}
+        run: |
+          git fetch --quiet origin "$COMMIT"
+          git checkout --quiet --force -B main FETCH_HEAD
+          TAP_HEAD="$(git -C "$(brew --repository crimson-knight/agent-crystal)" rev-parse HEAD)"
+          echo "tap is at $TAP_HEAD"
+          test "$TAP_HEAD" = "$(git rev-parse FETCH_HEAD)"
 
       - name: Register tap checkout
         run: |
