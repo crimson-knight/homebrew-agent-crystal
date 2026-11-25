@@ -142,7 +142,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Formula/agent-crystal.rb
           git commit -m "$(cat bottles/release_tag.txt): bottles for $(cat bottles/bottle_tags.txt)"
-          git push origin HEAD:main
+          # Registering the checkout as a tap repoints its origin, so push to GitHub by URL.
+          git push "https://github.com/${GITHUB_REPOSITORY}.git" HEAD:main
           echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   verify:
