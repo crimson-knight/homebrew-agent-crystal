@@ -137,13 +137,16 @@ jobs:
 
       - name: Commit and push
         id: push
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Formula/agent-crystal.rb
           git commit -m "$(cat bottles/release_tag.txt): bottles for $(cat bottles/bottle_tags.txt)"
-          # Registering the checkout as a tap repoints its origin, so push to GitHub by URL.
-          git push "https://github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+          # Registering the checkout as a tap repoints its origin and drops the
+          # credentials checkout stored, so push to GitHub by URL with the job token.
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
           echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   verify:
