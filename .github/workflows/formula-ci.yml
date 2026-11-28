@@ -31,6 +31,7 @@ jobs:
         run: |
           ruby test/install_test.rb
           ruby test/runtime_library_paths_formula_test.rb
+          ruby test/sync_downstreams_test.rb
 
       - name: Test SDK source and result validation
         timeout-minutes: 2

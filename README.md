@@ -70,6 +70,40 @@ The SDK checks pin the formula without its `bottle do` block, so publishing
 bottles keeps every reviewed pin. After any other edit to the formula or to a
 pinned test script, run `ruby scripts/repin_formula.rb` and review the diff.
 
+## Releasing a compiler version
+
+A release is done when every tool built with the compiler is rebuilt on it, not
+when this formula moves. In order:
+
+1. Tag `v<version>` on crimson-knight/crystal and publish the release with the
+   tag's commit and the source archive's sha256.
+2. Move `Formula/agent-crystal.rb` and `test/sdk_source_lock.json` to it, run
+   `ruby scripts/repin_formula.rb`, and merge the pull request once Formula CI is
+   green on both platforms.
+3. Publish the bottles (`gh workflow run bottles.yml ...`, above) and wait for
+   verify-bottles.yml to pass.
+4. Move every downstream to the release:
+
+   ```bash
+   ruby scripts/sync_downstreams.rb plan                    # what still names an earlier release
+   ruby scripts/sync_downstreams.rb sync --work-dir "$TMPDIR/downstream-sync"
+   ```
+
+   `sync` opens one pull request in each repository marked `automatic` in
+   `downstreams.json`. It moves each pin to the new tap bottles commit, compiler
+   commit and sha256s. It also raises the revision of each formula that builds
+   with the compiler (amber_cli, minecart, engram), so Homebrew rebuilds it and
+   its users upgrade to it. Repositories marked `by_hand` are listed with what
+   to change. Review and merge each pull request like any other.
+5. Once those pull requests merge, publish the rebuilt bottles in each tap:
+   `ruby scripts/sync_downstreams.rb bottles`.
+6. `ruby scripts/sync_downstreams.rb check` exits 0 only when no pin file names
+   an earlier release and every rebuilt formula has its bottles. The release
+   stays open until it passes.
+
+A repository that starts pinning the compiler gets its entry in `downstreams.json`
+in the same pull request.
+
 ## Lean by default
 
 Programs link no C library for Regex, YAML, text encodings or compression: Mica
