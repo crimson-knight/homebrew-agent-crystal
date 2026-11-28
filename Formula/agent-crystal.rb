@@ -1,9 +1,9 @@
 class AgentCrystal < Formula
   desc "AgentC-enhanced Crystal compiler with incremental compilation and WASM support"
   homepage "https://github.com/crimson-knight/crystal/tree/incremental-compilation"
-  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.22.3-incremental-4.tar.gz"
-  version "1.22.3-incremental-4"
-  sha256 "7a7af1bde5927cf71b401f30d551ace173d6c0d17661987f4a347586fff99ee3"
+  url "https://github.com/crimson-knight/crystal/archive/refs/tags/v1.22.3-incremental-6.tar.gz"
+  version "1.22.3-incremental-6"
+  sha256 "c8d091a1f3cd94d6d941b74caa5b7e60fd15e291eb55f0364a428ba2ac66d5f5"
   license "Apache-2.0"
 
   # Install `stable`: it is the tagged release tarball verified by the sha256 above.
@@ -16,17 +16,10 @@ class AgentCrystal < Formula
     regex(/^v?(\d+(?:\.\d+)+(?:-[A-Za-z0-9.-]+)?)$/i)
   end
 
-  bottle do
-    root_url "https://github.com/crimson-knight/homebrew-agent-crystal/releases/download/agent-crystal-1.22.3-incremental-4"
-    rebuild 1
-    sha256 cellar: :any, arm64_tahoe:  "1c527c5eef8485471f6b6590a5d65b93a8e595cdcb8e45196597e37bd87f2cfb"
-    sha256 cellar: :any, arm64_linux:  "a35beb3273af3f45f098f9e5af0cca720ba2168c3d6f6ba034f4a67ae7d98794"
-    sha256 cellar: :any, x86_64_linux: "9595523baca53998b2a1c72c239900e71a1694be302825d2604c47982eb2c1ba"
-  end
-
   depends_on "cmake" => :build
-  # The test builds a program with -Duse_pcre2 -Duse_libyaml to prove each C library
-  # is one flag away. Programs need these only when they pass those flags.
+  # The test builds programs with -Duse_pcre2 -Duse_libyaml and -Duse_gmp to prove
+  # each C library is one flag away. Programs need these only when they pass those flags.
+  depends_on "gmp" => :test
   depends_on "libyaml" => :test
   depends_on "pcre2" => :test
   depends_on "llvm@21"
@@ -183,12 +176,13 @@ class AgentCrystal < Formula
         brew uninstall agent-crystal && brew install crimson-knight/agent-crystal/agent-crystal
 
       Programs start lean: Regex, YAML, text encodings and compression run on Mica,
-      written in Crystal, and link no C library. Each C library is one flag away;
-      install it before building with that flag:
+      and BigInt, BigFloat, BigRational and BigDecimal on Crystal::BigNum, all written
+      in Crystal, and link no C library. Each C library is one flag away; install it
+      before building with that flag:
         -Duse_pcre2          brew install pcre2
         -Duse_libyaml        brew install libyaml
         -Devloop=libevent    brew install libevent
-        require "big"        brew install gmp
+        -Duse_gmp            brew install gmp   (kept for this release only)
       When one is missing, the compiler's link error names the flag and the command.
     EOS
   end
@@ -341,5 +335,19 @@ class AgentCrystal < Formula
     list_of_c_libraries = shell_output("#{library_listing} engines_c")
     assert_match(/libpcre2-8/, list_of_c_libraries)
     assert_match(/libyaml/, list_of_c_libraries)
+
+    # The big numbers run on Crystal::BigNum by default and link no GMP;
+    # -Duse_gmp links libgmp and gives the same results.
+    (testpath/"big_numbers.cr").write <<~CRYSTAL
+      require "big"
+      puts "\#{BigInt.new(2)**100} \#{BigRational.new(1, 3) + BigRational.new(1, 6)} \#{BigDecimal.new("1.25") * 2}"
+    CRYSTAL
+    expected_big_numbers = "1267650600228229401496703205376 1/2 2.5\n"
+    system bin/"crystal-alpha", "build", "big_numbers.cr", "-o", "big_numbers_default"
+    assert_equal expected_big_numbers, shell_output("./big_numbers_default")
+    refute_match(/libgmp/, shell_output("#{library_listing} big_numbers_default"))
+    system bin/"crystal-alpha", "build", "-Duse_gmp", "big_numbers.cr", "-o", "big_numbers_gmp"
+    assert_equal expected_big_numbers, shell_output("./big_numbers_gmp")
+    assert_match(/libgmp/, shell_output("#{library_listing} big_numbers_gmp"))
   end
 end

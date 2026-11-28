@@ -73,16 +73,18 @@ pinned test script, run `ruby scripts/repin_formula.rb` and review the diff.
 ## Lean by default
 
 Programs link no C library for Regex, YAML, text encodings or compression: Mica
-runs them in Crystal. The formula therefore installs only what the compiler and a
-default Amber V2 app need (llvm@21, openssl@3, pkgconf). Each C library is one flag
-away; install it before building with that flag:
+runs them in Crystal. `require "big"` (BigInt, BigFloat, BigRational, BigDecimal)
+is pure Crystal too and needs nothing installed. The formula therefore installs
+only what the compiler and a default Amber V2 app need (llvm@21, openssl@3,
+pkgconf). Each C library is one flag away; install it before building with that
+flag:
 
 | Build with | Install |
 |---|---|
 | `-Duse_pcre2` | `brew install pcre2` |
 | `-Duse_libyaml` | `brew install libyaml` |
 | `-Devloop=libevent` | `brew install libevent` |
-| `require "big"` | `brew install gmp` |
+| `-Duse_gmp` (GMP for big numbers; kept for this release only) | `brew install gmp` |
 
 When one is missing, the compiler's link error names the flag and the command.
 
