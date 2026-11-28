@@ -32,7 +32,7 @@ module DownstreamSync
   FULL_VERSION_PATTERN = /(?<![\w.])\d+\.\d+\.\d+-incremental-\d+(?![\w.])/
   SHORT_VERSION_PATTERN = /(?<![\w.-])incremental-\d+(?![\w.])/
   BOTTLE_BLOCK_PATTERN = /^  bottle do\n.*?^  end\n\n/m
-  COMPILER_COMMENT_PATTERN = /^  # Built with agent-crystal \S+ .*\n/
+  COMPILER_COMMENT_PATTERN = /^  # Built with agent-crystal \S+ .*\n(?:  # scripts\/sync_downstreams\.rb .*\n)?/
   COMPILER_DEPENDENCY_LINE = %(  depends_on "crimson-knight/agent-crystal/agent-crystal")
   REPORTED_PINS_PER_FILE = 5
 
@@ -148,12 +148,13 @@ module DownstreamSync
     if rebuilt.match?(/^  revision (\d+)$/)
       rebuilt = rebuilt.sub(/^  revision (\d+)$/) { "  revision #{Regexp.last_match(1).to_i + 1}" }
     else
-      rebuilt = rebuilt.sub(/^(  sha256 "[0-9a-f]{64}"\n)/) { "#{Regexp.last_match(1)}  revision 1\n" }
-      raise SyncRefused, "the formula has no top-level sha256 line to put a revision after" unless rebuilt.match?(/^  revision 1$/)
+      # Homebrew's component order puts revision right after license (or sha256 when there is no license).
+      anchor_pattern = rebuilt.match?(/^  license .*\n/) ? /^(  license .*\n)/ : /^(  sha256 "[0-9a-f]{64}"\n)/
+      rebuilt = rebuilt.sub(anchor_pattern) { "#{Regexp.last_match(1)}  revision 1\n" }
+      raise SyncRefused, "the formula has no top-level license or sha256 line to put a revision after" unless rebuilt.match?(/^  revision 1$/)
     end
-    compiler_comment = "  # Built with agent-crystal #{current_release.version} " \
-                       "(tap commit #{current_release.bottles_commit[0, 12]}); " \
-                       "scripts/sync_downstreams.rb in crimson-knight/homebrew-agent-crystal raises the revision when it moves.\n"
+    compiler_comment = "  # Built with agent-crystal #{current_release.version} (tap commit #{current_release.bottles_commit[0, 12]}).\n" \
+                       "  # scripts/sync_downstreams.rb in crimson-knight/homebrew-agent-crystal raises the revision when it moves.\n"
     rebuilt = rebuilt.sub(COMPILER_COMMENT_PATTERN, "")
     rebuilt.sub(/^#{Regexp.escape(COMPILER_DEPENDENCY_LINE)}(.*)$/) { "#{compiler_comment}#{COMPILER_DEPENDENCY_LINE}#{Regexp.last_match(1)}" }
   end

@@ -74,9 +74,9 @@ class SyncDownstreamsTest < Minitest::Test
 
   def test_rebuild_adds_a_revision_drops_the_bottles_and_names_the_compiler
     rebuilt = DownstreamSync.rebuild_formula_text(FORMULA_TEXT, CURRENT_RELEASE)
-    assert_match(/^  sha256 "1{64}"\n  revision 1\n/, rebuilt)
+    assert_match(/^  license "MIT"\n  revision 1\n/, rebuilt)
     refute_includes rebuilt, "bottle do"
-    assert_match(/^  # Built with agent-crystal 1\.22\.3-incremental-6 \(tap commit c{12}\);.*\n  depends_on "crimson-knight\/agent-crystal\/agent-crystal"\n/, rebuilt)
+    assert_match(/^  # Built with agent-crystal 1\.22\.3-incremental-6 \(tap commit c{12}\)\.\n  # scripts\/sync_downstreams\.rb .*\n  depends_on "crimson-knight\/agent-crystal\/agent-crystal"\n/, rebuilt)
     assert DownstreamSync.formula_names_compiler?(rebuilt, CURRENT_RELEASE)
     refute DownstreamSync.formula_has_bottles?(rebuilt)
   end
