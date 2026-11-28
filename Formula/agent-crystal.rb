@@ -176,9 +176,10 @@ class AgentCrystal < Formula
         brew uninstall agent-crystal && brew install crimson-knight/agent-crystal/agent-crystal
 
       Programs start lean: Regex, YAML, text encodings and compression run on Mica,
-      and BigInt, BigFloat, BigRational and BigDecimal on Crystal::BigNum, all written
-      in Crystal, and link no C library. Each C library is one flag away; install it
-      before building with that flag:
+      and BigInt, BigFloat, BigRational and BigDecimal on Crystal::BigNum (64-bit
+      targets; 32-bit targets such as wasm32 use GMP), all written in Crystal, and
+      link no C library. Each C library is one flag away; install it before
+      building with that flag:
         -Duse_pcre2          brew install pcre2
         -Duse_libyaml        brew install libyaml
         -Devloop=libevent    brew install libevent
@@ -340,9 +341,9 @@ class AgentCrystal < Formula
     # -Duse_gmp links libgmp and gives the same results.
     (testpath/"big_numbers.cr").write <<~CRYSTAL
       require "big"
-      puts "\#{BigInt.new(2)**100} \#{BigRational.new(1, 3) + BigRational.new(1, 6)} \#{BigDecimal.new("1.25") * 2}"
+      puts "\#{BigInt.new(2)**100} \#{BigRational.new(1, 3) + BigRational.new(1, 6)} \#{BigDecimal.new("1.25") * 2} \#{BigFloat.new("1.5") * 2}"
     CRYSTAL
-    expected_big_numbers = "1267650600228229401496703205376 1/2 2.5\n"
+    expected_big_numbers = "1267650600228229401496703205376 1/2 2.5 3.0\n"
     system bin/"crystal-alpha", "build", "big_numbers.cr", "-o", "big_numbers_default"
     assert_equal expected_big_numbers, shell_output("./big_numbers_default")
     refute_match(/libgmp/, shell_output("#{library_listing} big_numbers_default"))
