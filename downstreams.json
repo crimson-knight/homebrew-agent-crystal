@@ -47,7 +47,7 @@
       "branch": "main",
       "what_it_ships": "the crystal-stack package that installs the compiler on member Macs",
       "sync": "by_hand",
-      "how_to_sync": "Raise the crystal-stack package version, pin the new tap bottles commit and the arm64_tahoe bottle sha256 in steps.sh, and roll it out test Mac first (docs/ROLLOUTS.md).",
+      "how_to_sync": "After the downstream taps publish their rebuilt bottles: raise the crystal-stack package version, pin in steps.sh the new agent-crystal tap commit and bottle sha256, and the amber_cli and homebrew-tap commits with their rebuilt amber_cli, minecart and engram bottle sha256s, then roll it out test Mac first (docs/ROLLOUTS.md).",
       "list_of_pin_files": [
         "packages/agentc-toolchain/crystal-stack/steps.sh"
       ]
@@ -88,6 +88,29 @@
         "tooling/runtime_optimization_test.rb",
         "tooling/runner-toolchain/container_native_inputs.json",
         "tooling/wasm/wasm_toolchain.lock.json"
+      ]
+    },
+    {
+      "repository": "AgentC-Consulting/premium-agentc-app-template",
+      "branch": "main",
+      "what_it_ships": "the premium template's runner SDK recipe and WASM toolchain lock that every premium app starts from",
+      "sync": "by_hand",
+      "how_to_sync": "Provision the runner SDK for the new version from its bottle (tooling/runner-toolchain/alpha_sdk_recipe.json), then move the SDK root and the WASM lock to it with their sha256s.",
+      "list_of_pin_files": [
+        "tooling/runner-toolchain/alpha_sdk_recipe.json",
+        "tooling/install_verified_dependencies.sh",
+        "tooling/wasm/wasm_toolchain.lock.json"
+      ]
+    },
+    {
+      "repository": "AgentC-Consulting/drafting-room",
+      "branch": "main",
+      "what_it_ships": "Drafting Room's self-hosted runner toolchain and its local toolchain pins",
+      "sync": "by_hand",
+      "how_to_sync": "Rebuild the runner toolchain release for the new version (tooling/runner-toolchain), and pin tooling/toolchain_pins.json to the released keg and its sha256s.",
+      "list_of_pin_files": [
+        "tooling/runner-toolchain/release_manifest.json",
+        "tooling/toolchain_pins.json"
       ]
     }
   ]
