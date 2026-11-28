@@ -996,14 +996,14 @@
     ]
   },
   "alpha": {
-    "formula_sha256": "bb8f1c7c19dec3e7c51612c3b3e2e3614b57dd65f7801126aa13d305fe5330fd",
-    "source_version": "1.22.3-incremental-4",
+    "formula_sha256": "a77dae82fbe29f823bfc1f0b5b74cc76052ca43c6ee126b9efe58f99a86e9fb6",
+    "source_version": "1.22.3-incremental-6",
     "formula_revision": 0,
-    "installed_package_version": "1.22.3-incremental-4",
-    "source_commit": "b9b8ba04ec40b13e620ef1035ec4d51a24d4f287",
-    "source_archive_sha256": "7a7af1bde5927cf71b401f30d551ace173d6c0d17661987f4a347586fff99ee3",
-    "stdlib_sha256": "762a9135041852bd9d9a51ef52ab0bd4a3275af785e1b5c50b52c0f8c47d01ee",
-    "stdlib_file_count": 2041,
+    "installed_package_version": "1.22.3-incremental-6",
+    "source_commit": "31372f755ad61f6fb754fe463210f268b791e17a",
+    "source_archive_sha256": "c8d091a1f3cd94d6d941b74caa5b7e60fd15e291eb55f0364a428ba2ac66d5f5",
+    "stdlib_sha256": "f5c31e88ef03aad45dc5bdccb192baedff8c2a687aa6f932d5e491f1503ee995",
+    "stdlib_file_count": 2076,
     "stdlib_directory_aliases": {
       "lib_c/aarch64-android": "aarch64-linux-android",
       "lib_c/aarch64-ios": "aarch64-darwin",

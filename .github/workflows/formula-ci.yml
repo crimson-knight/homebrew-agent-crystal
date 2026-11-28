@@ -78,9 +78,10 @@ jobs:
         id: formula_source_install
         run: brew install --build-from-source crimson-knight/agent-crystal/agent-crystal
 
-      # The formula test builds with -Duse_pcre2 -Duse_libyaml, and the SDK checks
-      # build Grant programs that use BigDecimal (GMP) and SQLite. The formula leaves
-      # these to the programs that ask for them, so CI installs them here.
+      # The formula test builds with -Duse_pcre2 -Duse_libyaml and -Duse_gmp (its test
+      # dependencies), and the SDK checks build Grant programs that use BigDecimal
+      # (on Crystal::BigNum by default) and SQLite. The formula leaves these
+      # libraries to the programs that ask for them, so CI installs them here.
       - name: Install the libraries the tests build with
         run: brew install pcre2 libyaml gmp sqlite
 
@@ -120,7 +121,7 @@ jobs:
           import sys
 
           source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
-          expected = "f51d2ebc020d37ce010beca9d11c85c9e44aba02e006a9b8a0043e085b8a11de"
+          expected = "08773250ddb2516b3b60ac6dd4952c1778abc5225eff857af10accffabddcec7"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("CPU diagnostic source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()
@@ -156,7 +157,7 @@ jobs:
               "--linux-reader", "test/linux_projection_identity.py",
               "--linux-reader-sha256", "aa8d0764cc36fc1be2136d8b6649dc2d44bdbc093e60ab8321e9a1649ff2a6eb",
               "--source-lock", "test/sdk_source_lock.json",
-              "--source-lock-sha256", "197e7439eae7bfc94f205f1d034127b90a0ed81db1e50e4bbf4257b0574ae343",
+              "--source-lock-sha256", "e0b20aca2535ee4d93333ee1c362ac6425dede71316b2888fd78168b7d0fd69b",
               "--python-sha256", hashlib.sha256(provider.read_bytes()).hexdigest(),
               "--repository", str(pathlib.Path.cwd()),
               "--output", str(pathlib.Path(os.environ["RUNNER_TEMP"]) / "linux-native-projection")]
