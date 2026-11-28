@@ -31,6 +31,7 @@ jobs:
         run: |
           ruby test/install_test.rb
           ruby test/runtime_library_paths_formula_test.rb
+          ruby test/sync_downstreams_test.rb
 
       - name: Test SDK source and result validation
         timeout-minutes: 2
@@ -121,7 +122,7 @@ jobs:
           import sys
 
           source = pathlib.Path("test/sdk_cpu_diagnostic.py").resolve()
-          expected = "08773250ddb2516b3b60ac6dd4952c1778abc5225eff857af10accffabddcec7"
+          expected = "79d5f14ab2ccb80442306b398d00b2418b82b5a82703af19ff6e5eb5a61d2edf"
           if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
               raise SystemExit("CPU diagnostic source SHA-256 mismatch")
           provider = pathlib.Path(sys.executable).resolve()

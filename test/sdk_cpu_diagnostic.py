@@ -41,6 +41,17 @@ def digest(path):
     return result.hexdigest()
 
 
+def formula_digest(path):
+    """SHA-256 of a formula without its bottle block, the form the source lock pins.
+
+    bottles.yml rewrites the bottle block on every release, so the installed and
+    checkout formulae carry one that the lock's formula_sha256 leaves out.
+    """
+    text = pathlib.Path(path).read_text()
+    text = re.sub(r"^  bottle do\n.*?^  end\n\n", "", text, count=1, flags=re.M | re.S)
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
 def write_json(path, value):
     pathlib.Path(path).write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
 
@@ -280,7 +291,7 @@ def qualify(arguments):
         result["filtered_homebrew_metadata_control"] = receipt_control(filtered, output, driver, lock)
         result["homebrew_context_control_scope"] = "Same lexical brew entrypoint and argv; ordinary versus compiler-filtered metadata environment"
         for formula in (prefix / ".brew/agent-crystal.rb", repository / "Formula/agent-crystal.rb"):
-            require(digest(formula) == lock["formula_sha256"], "Exact installed and checkout formula source required")
+            require(formula_digest(formula) == lock["formula_sha256"], "Exact installed and checkout formula source required")
             protected[str(formula)] = digest(formula)
         shutil.copyfile(prefix / "INSTALL_RECEIPT.json", output / "INSTALL_RECEIPT.json")
         protected[str(prefix / "INSTALL_RECEIPT.json")] = digest(prefix / "INSTALL_RECEIPT.json")

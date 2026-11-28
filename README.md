@@ -70,6 +70,48 @@ The SDK checks pin the formula without its `bottle do` block, so publishing
 bottles keeps every reviewed pin. After any other edit to the formula or to a
 pinned test script, run `ruby scripts/repin_formula.rb` and review the diff.
 
+## Releasing a compiler version
+
+A release is done when every tool built with the compiler is rebuilt on it, not
+when this formula moves. In order:
+
+1. Tag `v<version>` on crimson-knight/crystal and publish the release with the
+   tag's commit and the source archive's sha256.
+2. Move `Formula/agent-crystal.rb` and `test/sdk_source_lock.json` to it, run
+   `ruby scripts/repin_formula.rb`, and merge the pull request once Formula CI is
+   green on both platforms.
+3. Publish the bottles (`gh workflow run bottles.yml ...`, above) and wait for
+   verify-bottles.yml to pass.
+4. In a full clone of this tap with main pulled (the script refuses a shallow or
+   stale one), move every downstream to the release. `gh` must be signed in with
+   the `workflow` scope, because the pull requests edit workflows.
+
+   ```bash
+   ruby scripts/sync_downstreams.rb plan                    # what still names an earlier release
+   ruby scripts/sync_downstreams.rb sync --work-dir "$TMPDIR/downstream-sync"
+   ```
+
+   `sync` opens one pull request in each repository marked `automatic` in
+   `downstreams.json`. It moves each pin to the new tap bottles commit, compiler
+   commit and sha256s. It also raises the revision of each formula that builds
+   with the compiler (amber_cli, minecart, engram), so Homebrew rebuilds it and
+   its users upgrade to it. Review and merge each pull request like any other.
+5. Once those pull requests merge, publish the rebuilt bottles in each tap with
+   `ruby scripts/sync_downstreams.rb bottles`, and wait for each tap's
+   verify-bottles.yml to pass.
+6. Do the `by_hand` repositories, each as its `how_to_sync` says, in this order:
+   amber, deck_designer, the premium template and Drafting Room first; agentc-mdm
+   after step 5, because it pins the rebuilt amber_cli, minecart and engram
+   bottles; cluster_health last, once agentc-mdm's rollout has reached every Mac.
+7. `ruby scripts/sync_downstreams.rb check` exits 0 only when no pin file names
+   an earlier release (by version, compiler commit, tap commit or sha256, or the
+   pre-rebuild commits and bottles of a downstream tap) and every rebuilt formula
+   has its bottles. The release stays open until it passes. A pin file line that
+   records history rather than a pin carries `sync-downstreams: keep`.
+
+A repository that starts pinning the compiler gets its entry in `downstreams.json`
+in the same pull request.
+
 ## Lean by default
 
 Programs link no C library for Regex, YAML, text encodings or compression: Mica
