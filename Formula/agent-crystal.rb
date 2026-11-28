@@ -25,15 +25,14 @@ class AgentCrystal < Formula
   end
 
   depends_on "cmake" => :build
-  # The test builds programs with -Duse_pcre2 -Duse_libyaml and -Duse_gmp to prove
-  # each C library is one flag away. Programs need these only when they pass those flags.
+  # The test builds programs with -Duse_pcre2 -Duse_libyaml, -Duse_gmp and
+  # -Duse_openssl to prove each C library is one flag away. Programs need these
+  # only when they pass those flags (or, for OpenSSL, require "openssl").
   depends_on "gmp" => :test
   depends_on "libyaml" => :test
+  depends_on "openssl@3" => :test
   depends_on "pcre2" => :test
   depends_on "llvm@21"
-  # Every default Amber V2 app still links OpenSSL (stdlib Digest::SHA256 and the
-  # TLS listener), so the formula installs it.
-  depends_on "openssl@3"
   depends_on "pkgconf"
 
   uses_from_macos "libffi"
@@ -192,6 +191,10 @@ class AgentCrystal < Formula
         -Duse_libyaml        brew install libyaml
         -Devloop=libevent    brew install libevent
         -Duse_gmp            brew install gmp   (kept for this release only)
+        -Duse_openssl        brew install openssl@3   (kept for this release only)
+      TLS (HTTP::Client, HTTP::Server#bind_tls, WebSockets), Digest, OAuth and
+      OAuth2 run on Beryl, written in Crystal, and link no OpenSSL. A program
+      that requires "openssl" itself needs: brew install openssl@3
       When one is missing, the compiler's link error names the flag and the command.
     EOS
   end
@@ -358,5 +361,21 @@ class AgentCrystal < Formula
     system bin/"crystal-alpha", "build", "-Duse_gmp", "big_numbers.cr", "-o", "big_numbers_gmp"
     assert_equal expected_big_numbers, shell_output("./big_numbers_gmp")
     assert_match(/libgmp/, shell_output("#{library_listing} big_numbers_gmp"))
+
+    # Digest, HMAC in OAuth and OAuth2, and TLS run on Beryl, so a program that
+    # requires them links no OpenSSL. -Duse_openssl puts TLS back on OpenSSL.
+    (testpath/"no_openssl.cr").write <<~CRYSTAL
+      require "digest"
+      require "http"
+      require "oauth"
+      require "oauth2"
+      puts "\#{Digest::SHA256.hexdigest("abc")[0, 8]} \#{Digest::MD5.hexdigest("abc")[0, 8]} \#{HTTP::Server::TLSServerContext}"
+    CRYSTAL
+    system bin/"crystal-alpha", "build", "no_openssl.cr", "-o", "no_openssl_default"
+    assert_equal "ba7816bf 90015098 Crystal::Beryl::TLS::Context::Server\n", shell_output("./no_openssl_default")
+    refute_match(/libssl|libcrypto/, shell_output("#{library_listing} no_openssl_default"))
+    system bin/"crystal-alpha", "build", "-Duse_openssl", "no_openssl.cr", "-o", "no_openssl_openssl"
+    assert_equal "ba7816bf 90015098 OpenSSL::SSL::Context::Server\n", shell_output("./no_openssl_openssl")
+    assert_match(/libssl/, shell_output("#{library_listing} no_openssl_openssl"))
   end
 end
